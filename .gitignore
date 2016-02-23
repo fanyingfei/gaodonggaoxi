@@ -1,0 +1,16 @@
+
+.DS_Store
+**/.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+.idea/
+*.iml
+?config.php
+application/config/*
+application/views/template_c/*
+*-map.json
