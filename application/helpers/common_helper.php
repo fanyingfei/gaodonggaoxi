@@ -43,3 +43,24 @@ function get_real_ip(){
     }
     return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
+
+function valid($name = '' ,$email='' ,$content = ''){
+    if(empty($name)) splash('error','请填写昵称');
+    if(empty($email)) splash('error','请填写email');
+    $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+    if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+    if(empty($content)) splash('error','请填写内容');
+}
+
+function valid_msg($name = '' ,$email='' , $title='' , $content = ''){
+    if(empty($name)) error_msg('请填写昵称');
+    if(empty($email)) error_msg('请填写email');
+    if(empty($title)) error_msg('标题不能为空');
+    $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+    if ( !preg_match( $pattern, $email ) ) error_msg('email格式不正确');
+    if(empty($content)) error_msg('请填写内容');
+}
+
+function error_msg($msg){
+    echo $msg;exit;
+}

@@ -27,7 +27,7 @@ class know extends MY_Controller  {
 
     public function index($p = 1)
 	{
-        $limit = 1;
+        $limit = 10;
         $this->load->library('page');
         //得到数据
         $list  = $this->model_content->data_list($p,$limit,$this->_type);
@@ -43,45 +43,22 @@ class know extends MY_Controller  {
         //生成页码
         $page = get_page($count,$limit,$p);
 
-
-     //   $this->load->view('v_images',$out);
         $this->assign('title','小知士');
+        $this->assign('count',$count);
         $this->assign('list',$list);
         $this->assign('page',$page);
         $this->display('know.html');
     }
 
     public function save(){
-        $data['name'] = trim($_REQUEST['name']);
-        if(empty($data['name'])) splash('error','昵称不能为空');
-        $data['email'] = trim($_REQUEST['email']);
-        if(empty($data['email'])) splash('error','email不能为空');
-        $data['content'] = trim($_REQUEST['content']);
-        if(empty($data['content'])) splash('error','内容不能为空');
-
-        $data['type'] = $this->_type;
-        $res  = $this->model_content->save($data);
-        if($res){
-            splash('success','提交成功');
-        }else{
-            splash('error','提交失败');
-        }
+        parent::content_save($this->_type);
     }
 
     /*
      * 点赞
      */
     function comment(){
-        $id = $_REQUEST['id'];
-        $click = $_REQUEST['click'];
-        if(empty($id) || empty($click)) splash('error','try again');
-        parent::record($id, $this->_type);
-        $res  = $this->model_content->update($click,$id);
-        if($res){
-            splash('success','think you');
-        }else{
-            splash('error','try again');
-        }
+        parent::record($this->_type);
     }
 
 }

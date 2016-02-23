@@ -47,6 +47,11 @@ $route['joke/(:num)'] = "joke/index/$1";
 $route['know'] = "know";
 $route['know/(:num)'] = "know/index/$1";
 
+$route['myth'] = "myth";
+$route['detail'] = "myth";
+$route['myth/(:num)'] = "myth/index/$1";
+$route['myth/detail/(:num)'] = "myth/detail/$1";
+
 $route['default_controller'] = "joke";
 $route['404_override'] = '';
 

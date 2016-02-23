@@ -1,18 +1,24 @@
 <div class="main left">
-    {$page}
-    {foreach from=$list item=one}
-    <div class="one" data-id="{$one.con_id}">
-        <div class="left">
+    <div class="title">{$title}</div>
+    <div class="depict">介绍一些生活小常识</div>
+    <div class="total">
+        <span class="left">总数：{$count}</span>
+        <span id="mao" class="right cursor time">{if $name}{$name}，想说些什么呢？{else}来说些什么吧{/if}</span>
+    </div>
+    {if $list|count > 5}{$page}{/if}
+    {foreach from=$list key=key item=one}
+    <div class="one {if $key == 0 }first{/if}">
+        <div class="user">
             <p class="name" title="{$one.u_name}">{$one.name}</p>
             <p class="time">{$one.create_time}</p>
         </div>
-        <div class="left second">
+        <div class="content">
             <p>{$one.content}</p>
         </div>
         <p class="right clear click">
             <span class="response"></span>
-            <a class="oo">oo</a>(<span class="good">{$one.good}</span>)
-            <a class="xx">xx</a>(<span class="bad">{$one.bad}</span>)
+            <a class="oo" data-id="{$one.con_id}">oo</a>[<span class="good">{$one.good}</span>]
+            <a class="xx" data-id="{$one.con_id}">xx</a>[<span class="bad">{$one.bad}</span>]
         </p>
     </div>
     {/foreach}
@@ -31,18 +37,22 @@
 <script src="/resources/js/jquery.cookie.js"></script>
 <script>
     var sub_cfg = {};
+    var comment_url = '/know/comment';
     sub_cfg.requestUrl = '/know/save';
     sub_cfg.success = function(result){
-        window.location.href='http://fanfan.com/know'
+        window.location.href='/know'
     };
 
     $("#submit").click(function(){
-        var name = $("#name").val();
-        var email = $("#email").val();
-        var content = $("#content").val();
+        var name = $.trim($("#name").val());
+        var email = $.trim($("#email").val());
+        var content = $.trim($("#content").val());
         content = content. replace(/\n/g,'<br/>'); //换行
-        $.cookie('name', name , { path: '/', expires: 5*365*24*60*60 });
-        $.cookie('email', email , { path: '/', expires: 5*365*24*60*60 });
+        if(!valid(name,email,content)){
+            return false;
+        }
+        $.cookie('name', name ,  { expires: 365 });
+        $.cookie('email', email ,  { expires: 365 });
         sub_cfg.data = {
             "name":name,"email":email,'content':content
         };
@@ -51,12 +61,10 @@
 
 
     $(".oo").click(function(){
-        var url = '/know/comment';
-        click_good(url,this);
+        click_good(comment_url,this);
     })
 
     $(".xx").click(function(){
-        var url = '/know/comment';
-        click_bad(url,this);
+        click_bad(comment_url,this);
     })
 </script>

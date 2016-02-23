@@ -3,6 +3,7 @@
 class model_content extends CI_Model{
 
     CONST TABLE_NAME = 'content';
+    CONST PRI_KEY           = 'con_id';
 
     function __construct()
     {
@@ -14,7 +15,7 @@ class model_content extends CI_Model{
      * 查找一页的内容
      */
     public function data_list( $p = 1 ,$limit = 10 ,$type = 1){
-        $sql = 'select * from '.self::TABLE_NAME."  where status = 1 and type = $type order by con_id desc limit ".($p-1)*$limit.', '.$limit;
+        $sql = 'select * from '.self::TABLE_NAME."  where status = 1 and type = $type order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 
@@ -22,7 +23,7 @@ class model_content extends CI_Model{
     * 得到全部数量
     */
     public function data_count($type = 1){
-        $sql = 'select count(con_id) as num from '.self::TABLE_NAME .' where status = 1 and type = '.$type;
+        $sql = 'select count(*) as num from '.self::TABLE_NAME .' where status = 1 and type = '.$type;
         return $this->db->query($sql)->first_row('array')['num'];
     }
 

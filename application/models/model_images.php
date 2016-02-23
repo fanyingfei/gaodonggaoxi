@@ -22,7 +22,7 @@ class model_images extends CI_Model{
     * 得到全部数量
     */
     public function girl_count(){
-        $sql = 'select count(girl_id) as num from '.self::TABLE_NAME .' where status = 1';
+        $sql = 'select count(*) as num from '.self::TABLE_NAME .' where status = 1';
         return $this->db->query($sql)->first_row('array')['num'];
     }
 

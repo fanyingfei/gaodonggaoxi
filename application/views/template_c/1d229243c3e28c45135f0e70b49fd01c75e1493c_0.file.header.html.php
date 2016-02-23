@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2016-02-23 02:20:12
+/* Smarty version 3.1.29, created on 2016-02-23 15:00:42
   from "D:\work\fanfan\application\views\header.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_56cbc1dc272c10_57316948',
+  'unifunc' => 'content_56cc741a272d78_69146578',
   'file_dependency' => 
   array (
     '1d229243c3e28c45135f0e70b49fd01c75e1493c' => 
     array (
       0 => 'D:\\work\\fanfan\\application\\views\\header.html',
-      1 => 1456194010,
+      1 => 1456239639,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_56cbc1dc272c10_57316948 ($_smarty_tpl) {
+function content_56cc741a272d78_69146578 ($_smarty_tpl) {
 ?>
 <html>
 <head>
@@ -38,6 +38,7 @@ function content_56cbc1dc272c10_57316948 ($_smarty_tpl) {
     <ul>
         <li><a href="/joke">段子</a></li>
         <li><a href="/know">小知士</a></li>
+        <li><a href="/myth">神话</a></li>
     </ul>
 </div>
 <div class="wapper"><?php }
