@@ -1,0 +1,41 @@
+<div class="main left">
+    <div class="title center">{$data.title}</div>
+
+    <div class="detail">
+        {$data.content}
+    </div>
+</div>
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script src="/resources/js/jquery.cookie.js"></script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/joke/save';
+    sub_cfg.success = function(result){
+        window.location.href='http://fanfan.com/joke'
+    };
+
+    $("#submit").click(function(){
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var content = $("#content").val();
+        content = content. replace(/\n/g,'<br/>'); //换行
+        $.cookie('name', name , { path: '/', expires: 5*365*24*60*60 });
+        $.cookie('email', email , { path: '/', expires: 5*365*24*60*60 });
+        sub_cfg.data = {
+            "name":name,"email":email,'content':content
+        };
+        ajax_res(sub_cfg);
+    })
+
+
+    $(".oo").click(function(){
+        var url = '/joke/comment';
+        click_good(url,this);
+    })
+
+    $(".xx").click(function(){
+        var url = '/joke/comment';
+        click_bad(url,this);
+    })
+</script>
