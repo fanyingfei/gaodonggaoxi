@@ -1,0 +1,62 @@
+<div class="main left">
+    {$page}
+    {foreach from=$list item=one}
+    <div class="one" data-id="{$one.con_id}">
+        <div class="left">
+            <p class="name" title="{$one.u_name}">{$one.name}</p>
+            <p class="time">{$one.create_time}</p>
+        </div>
+        <div class="left second">
+            <p>{$one.content}</p>
+        </div>
+        <p class="right clear click">
+            <span class="response"></span>
+            <a class="oo">oo</a>(<span class="good">{$one.good}</span>)
+            <a class="xx">xx</a>(<span class="bad">{$one.bad}</span>)
+        </p>
+    </div>
+    {/foreach}
+
+    {$page}
+
+    <div class="sub">
+        <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
+        <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
+        <p><textarea name="content" id="content"></textarea></p>
+        <p><button id="submit" class="clear">提交</button></p>
+    </div>
+</div>
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script src="/resources/js/jquery.cookie.js"></script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/joke/save';
+    sub_cfg.success = function(result){
+        window.location.href='http://fanfan.com/joke'
+    };
+
+    $("#submit").click(function(){
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var content = $("#content").val();
+        content = content. replace(/\n/g,'<br/>'); //换行
+        $.cookie('name', name , { path: '/', expires: 5*365*24*60*60 });
+        $.cookie('email', email , { path: '/', expires: 5*365*24*60*60 });
+        sub_cfg.data = {
+            "name":name,"email":email,'content':content
+        };
+        ajax_res(sub_cfg);
+    })
+
+
+    $(".oo").click(function(){
+        var url = '/joke/comment';
+        click_good(url,this);
+    })
+
+    $(".xx").click(function(){
+        var url = '/joke/comment';
+        click_bad(url,this);
+    })
+</script>
