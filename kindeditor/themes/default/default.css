@@ -421,11 +421,14 @@
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
+    max-width: 660px;
+    min-width: 660px;
+    max-height: 1000px;
 }
 /* toolbar */
 .ke-toolbar {
 	border-bottom: 1px solid #CCC;
-	background-color: #F0F0EE;
+	background-color: #f9f9f9;;
 	padding: 2px 5px;
 	text-align: left;
 	overflow: hidden;
@@ -450,7 +453,7 @@
 	overflow: hidden;
 	cursor: pointer;
 	display: block;
-	float: left;
+	float: right;
 }
 .ke-toolbar .ke-on {
 	border: 1px solid #5690D2;
@@ -504,7 +507,7 @@
 /* statusbar */
 .ke-statusbar {
 	position: relative;
-	background-color: #F0F0EE;
+	background-color: #f9f9f9;;
 	border-top: 1px solid #CCCCCC;
 	font-size: 0;
 	line-height: 0;
@@ -1145,4 +1148,3 @@
 	width: 30%;
 	text-align: center;
 }
-

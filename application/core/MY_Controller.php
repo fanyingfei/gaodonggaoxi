@@ -9,16 +9,22 @@ class MY_controller extends CI_Controller {
     {
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ;
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ;
+        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         $this->ci_smarty->assign('name',$name);
         $this->ci_smarty->assign('email',$email);
+        $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign($key,$val);
     }
 
-    public function display($html)
+    public function display($html,$header='header.html',$footer='footer.html',$right= 'right.html')
     {
-        $this->ci_smarty->display('header.html');
+        if(empty($header)) $header = 'header.html';
+        if(empty($footer))   $footer = 'footer.html';
+        if(empty($right))     $right = 'right.html';
+        $this->ci_smarty->display($header);
         $this->ci_smarty->display($html);
-        $this->ci_smarty->display('footer.html');
+        $this->ci_smarty->display($right);
+        $this->ci_smarty->display($footer);
     }
 
     public function admin_display($html)
@@ -31,9 +37,11 @@ class MY_controller extends CI_Controller {
     /*
     * 记录
     */
-    public function record($type , $table_name = 'model_content'){
-        $id = $_REQUEST['id'];
+    public function record( $table_name = 'model_content'){
+        $id = intval($_REQUEST['id']);
         $click = $_REQUEST['click'];
+        if(!in_array($click,array('good','bad'))) splash('error','Try again');
+        $type = intval($_REQUEST['type']);
         if(empty($id) || empty($click)) splash('error','Try again');
         $this->load->model('model_record');
         $res = $this->model_record->is_has($id,$type);
@@ -50,24 +58,8 @@ class MY_controller extends CI_Controller {
         }
     }
 
-    /*
-     * 文字保存
-     */
-    public function content_save($type){
-        $data['name'] = trim($_REQUEST['name']);
-        $data['email'] = trim($_REQUEST['email']);
-        $data['content'] = str_replace('/\n/g','<br/>',trim($_REQUEST['content']));
-        valid($data['name'],$data['email'],$data['content']);
-        $this->load->model('model_black');
-        $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单，以后请谨慎发言');
-
-        $data['type'] = $type;
-        $res  = $this->model_content->save($data);
-        if($res){
-            splash('success','提交成功');
-        }else{
-            splash('error','提交失败');
-        }
+    public function error_msg($msg){
+        $this->assign('msg',$msg);
+        $this->ci_smarty->display('index.html');
     }
 }

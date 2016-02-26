@@ -68,17 +68,17 @@ class CI_Page {
                 for($i=0;$i<5;$i++){
                     array_push($pageList,$i+1);
                 }
-                array_push($pageList,-1);
-                array_push($pageList,$this->pageCount);
+            //    array_push($pageList,-1);
+            //    array_push($pageList,$this->pageCount);
 
-            }else if($this->pageNo > $this->pageCount - 4){
+            }else if($this->pageNo > $this->pageCount - 2){
                 array_push($pageList,1);
 
                 array_push($pageList,-1);
-                for($i=5;$i>0;$i--){
+                for($i=3;$i>0;$i--){
                     array_push($pageList,$this->pageCount - $i+1);
                 }
-            }else if($this->pageNo > 4 && $this->pageNo <= $this->pageCount - 4){
+            }else if($this->pageNo > 4 && $this->pageNo <= $this->pageCount - 2){
                 array_push($pageList,1);
                 array_push($pageList,-1);
 
@@ -86,8 +86,8 @@ class CI_Page {
                 array_push($pageList,$this->pageNo);
                 array_push($pageList,$this->pageNo + 1);
 
-                array_push($pageList,-1);
-                array_push($pageList,$this->pageCount);
+             //   array_push($pageList,-1);
+             //   array_push($pageList,$this->pageCount);
 
             }
         }
@@ -102,7 +102,7 @@ class CI_Page {
     public function echoPageAsDiv(){
         $pageList = $this->generatePageList();
 
-        $pageString ="<div class='pagination'><div class='page-bottom'>";
+        $pageString ="<div class='page-bottom'>";
 
         if(!empty($pageList)){
             if($this->pageCount >1){
@@ -150,7 +150,7 @@ class CI_Page {
 
             }
         }
-        $pageString = $pageString .("</div></div>");
+        $pageString = $pageString .("</div>");
         return $pageString;
     }
 }

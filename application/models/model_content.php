@@ -14,21 +14,29 @@ class model_content extends CI_Model{
     /*
      * 查找一页的内容
      */
-    public function data_list( $p = 1 ,$limit = 10 ,$type = 1){
-        $sql = 'select * from '.self::TABLE_NAME."  where status = 1 and type = $type order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
+    public function data_list( $p = 1 ,$limit = 10 ,$type = 1 , $where = ''){
+        $sql = 'select * from '.self::TABLE_NAME."  where status = 1 and type = $type $where order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 
     /*
     * 得到全部数量
     */
-    public function data_count($type = 1){
-        $sql = 'select count(*) as num from '.self::TABLE_NAME .' where status = 1 and type = '.$type;
+    public function data_count($type = 1,$where = ''){
+        $sql = 'select count(*) as num from '.self::TABLE_NAME ." where status = 1 and type = $type $where";
         return $this->db->query($sql)->first_row('array')['num'];
     }
 
     /*
-     * 插入笑话
+  * 得到一个
+  */
+    public function detail($id = 1){
+        $sql = 'select * from '.self::TABLE_NAME .' where status = 1 and '.self::PRI_KEY.' = '.$id;
+        return $this->db->query($sql)->first_row('array');
+    }
+
+    /*
+     * 插入
      */
     public function save($data){
         $data['create_time'] = date('Y-m-d H:i:s');

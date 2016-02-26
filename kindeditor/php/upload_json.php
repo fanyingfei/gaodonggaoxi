@@ -9,6 +9,13 @@
 
 require_once 'JSON.php';
 
+$email = $_COOKIE['email'];
+$admin  = array('929632454@qq.com','1602515264@qq.com');
+if(!in_array($email,$admin)){
+    echo 'you can not upload image';
+    exit;
+}
+
 $php_path = dirname(__FILE__) . '/';
 $php_url = dirname($_SERVER['PHP_SELF']) . '/';
 
@@ -24,7 +31,7 @@ $ext_arr = array(
 	'file' => array(),
 );
 //最大文件大小
-$max_size = 200000;
+$max_size = 10000000;
 
 $save_path = realpath($save_path) . '/';
 

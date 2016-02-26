@@ -3174,7 +3174,7 @@ _extend(KCmd, {
 	insertimage : function(url, title, width, height, border, align) {
 		title = _undef(title, '');
 		border = _undef(border, 0);
-		var html = '<img src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		var html = '<p style="text-align: center;"><img style="max-width:96%;" src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
 		}
@@ -3187,8 +3187,7 @@ _extend(KCmd, {
 		if (align) {
 			html += 'align="' + _escape(align) + '" ';
 		}
-		html += 'alt="' + _escape(title) + '" ';
-		html += '/>';
+		html += '/></p></br>';
 		return this.inserthtml(html);
 	},
 	createlink : function(url, type) {
@@ -3603,7 +3602,7 @@ _extend(KEdit, KWidget, {
 				(isDocumentDomain ? 'document.domain="' + document.domain + '";' : '') +
 				'document.close();'),
 			iframeSrc = _IE ? ' src="javascript:void(function(){' + encodeURIComponent(srcScript) + '}())"' : '';
-		self.iframe = K('<iframe class="ke-edit-iframe" hidefocus="true" frameborder="0"' + iframeSrc + '></iframe>').css('width', '100%');
+		self.iframe = K('<iframe id="myiframe" class="ke-edit-iframe" hidefocus="true" frameborder="0"' + iframeSrc + '></iframe>').css('width', '100%');
 		self.textarea = K('<textarea class="ke-edit-textarea" hidefocus="true"></textarea>').css('width', '100%');
 		if (self.width) {
 			self.setWidth(self.width);
@@ -4923,14 +4922,18 @@ KEditor.prototype = {
 		}
 		var htmlList = [];
 		K.each(self.items, function(i, name) {
-			if (name == '|') {
+            if(name == 'image' || name == 'emoticons' || name == 'selectall'){
+                htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
+                htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
+            }
+		/*	if (name == '|') {
 				htmlList.push('<span class="ke-inline-block ke-separator"></span>');
 			} else if (name == '/') {
 				htmlList.push('<div class="ke-hr"></div>');
 			} else {
-				htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
+                htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
 				htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
-			}
+             }*/
 		});
 		var toolbar = self.toolbar = _toolbar({
 			src : toolbarDiv,

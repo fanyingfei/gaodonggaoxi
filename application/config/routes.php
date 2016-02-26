@@ -37,23 +37,34 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
-$route['pic'] = "girl";
-$route['pic/(:num)'] = "girl/index/$1";
-
-$route['joke'] = "joke";
-$route['joke/(:num)'] = "joke/index/$1";
-
-$route['know'] = "know";
-$route['know/(:num)'] = "know/index/$1";
-
-$route['myth'] = "myth";
-$route['detail'] = "myth";
-$route['myth/(:num)'] = "myth/index/$1";
-$route['myth/detail/(:num)'] = "myth/detail/$1";
-
-$route['default_controller'] = "joke";
+$route['default_controller'] = "content/joke";
 $route['404_override'] = '';
+
+$route['joke'] = "content/joke";
+$route['joke/(:num)'] = "content/joke/$1";
+
+$route['know'] = "content/know";
+$route['know/(:num)'] = "content/know/$1";
+
+$route['wen'] = "content/wen";
+$route['wen/(:num)'] = "content/wen/$1";
+
+$route['wl'] = "content/wl";
+$route['wl/(:num)'] = "content/wl/$1";
+
+$route['meizi'] = "content/meizi";
+$route['meizi/(:num)'] = "content/meizi/$1";
+
+$route['myth'] = "article/myth";
+$route['myth/detail'] = "article/detail";
+$route['myth/(:num)'] = "article/index/$1";
+$route['myth/detail/(:num)'] = "article/detail/$1";
+
+
+$route['zzs'] = "article/zzs";
+$route['zzs/detail'] = "article/detail";
+$route['zzs/(:num)'] = "article/zzs/$1";
+$route['zzs/detail/(:num)'] = "article/zzs/$1";
 
 $route['admin'] = "admin/admin/index";
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
