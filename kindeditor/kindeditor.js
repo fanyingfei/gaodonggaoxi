@@ -4922,9 +4922,9 @@ KEditor.prototype = {
 		}
 		var htmlList = [];
 		K.each(self.items, function(i, name) {
-            if(name == 'image' || name == 'emoticons' || name == 'selectall'){
+            if(name == 'image' || name == 'emoticons'){
                 htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
-                htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
+                htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span><span class="ke-outline-name ke-toolbar-icon">'+self.lang(name)+'</span></span>');
             }
 		/*	if (name == '|') {
 				htmlList.push('<span class="ke-inline-block ke-separator"></span>');

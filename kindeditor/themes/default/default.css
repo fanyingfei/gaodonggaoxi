@@ -435,28 +435,34 @@
 	zoom: 1;
 }
 .ke-toolbar-icon {
-	background-repeat: no-repeat;
+/*	background-repeat: no-repeat;
 	font-size: 0;
 	line-height: 0;
 	overflow: hidden;
-	display: block;
+	display: block;*/
 }
 .ke-toolbar-icon-url {
 	background-image: url(default.png);
+    float: left;
+    margin-top:2px;
+    margin-right: 2px;
+}
+.ke-outline-name{
+    color:#6c6c6c;
 }
 .ke-toolbar .ke-outline {
-	border: 1px solid #F0F0EE;
-	margin: 1px;
+	margin: 1px 3px 1px 1px;
 	padding: 1px 2px;
-	font-size: 0;
-	line-height: 0;
 	overflow: hidden;
 	cursor: pointer;
 	display: block;
 	float: right;
 }
+.ke-icon-image{
+    margin-top:3px;
+}
 .ke-toolbar .ke-on {
-	border: 1px solid #5690D2;
+/*	border: 1px solid #5690D2;*/
 }
 .ke-toolbar .ke-selected {
 	border: 1px solid #5690D2;

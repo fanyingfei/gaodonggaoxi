@@ -61,12 +61,6 @@ function click_bad(url , thi){
     })
 }
 
-$(".search button").click(function(){
-    var search = $("#search").val();
-    $.cookie('search', search);
-    window.location.href=window.location.href;
-})
-
 function valid(name,email,content){
     if(name == ''){
         alert('请填写昵称');
@@ -103,5 +97,11 @@ $(document).ready(function(){
 
     $(".mao").click(function(){
         document.getElementsByTagName('BODY')[0].scrollTop=document.getElementsByTagName('BODY')[0].scrollHeight;
+    })
+
+    $(".search button").click(function(){
+        var search = $("#search").val();
+        $.cookie('search', search);
+        window.location.href=window.location.href;
     })
 })
