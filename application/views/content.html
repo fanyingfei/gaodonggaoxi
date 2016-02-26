@@ -1,0 +1,69 @@
+<div class="main left">
+    <div class="title">{$title}</div>
+    <div class="depict">{$info}</div>
+    {if $count > 0}
+        <div class="total">
+            <span class="left">总数：{$count}</span>
+            <span class="mao right cursor time">{if $name}{$name}，想说些什么呢？{else}来说些什么吧{/if}</span>
+        </div>
+        {if $list|count > 2}<div class="pagination page-top">{$page}</div>{/if}
+
+        {foreach from=$list key=key item=one}
+        <div class="one {if $key == 0 }first{/if}">
+            <div class="user">
+                <p class="name" title="{$one.u_name}">{$one.name}</p>
+                <p class="time">{$one.create_time}</p>
+            </div>
+            <div class="content">
+                <p>{$one.content}</p>
+                <p class="right clear click">
+                    <span class="response"></span>
+                    <a class="oo" data-id="{$one.con_id}">oo</a>[<span class="good">{$one.good}</span>]
+                    <a class="xx" data-id="{$one.con_id}">xx</a>[<span class="bad">{$one.bad}</span>]
+                </p>
+            </div>
+        </div>
+        {/foreach}
+        {if $count > 10}<div class="pagination">{$page}</div>{/if}
+    {else}
+        <div class="empty">没东西</div>
+    {/if}
+
+    <div class="sub">
+        <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
+        <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
+        <p><textarea name="content" id="content"></textarea></p>
+        <p><button id="submit" class="clear">submit</button></p>
+    </div>
+    <input type="hidden" id="type" value="{$type}" />
+</div>
+
+<script src="/resources/js/common.js"></script>
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<script>KindEditor.ready(function(K) { window.editor = K.create('#content');});</script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/content/save';
+    sub_cfg.success = function(result){
+        window.location.href=window.location.href;
+    };
+
+    $("#submit").click(function(){
+        var name = $.trim($("#name").val());
+        var email = $.trim($("#email").val());
+        var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
+        var re=new RegExp("</p>","g");
+        content = content.replace(re,"</p><br>");
+        var type = $("#type").val();
+        if(!valid(name,email,content)){
+            return false;
+        }
+        $.cookie('name', name ,  { expires: 365 });
+        $.cookie('email', email ,  { expires: 365 });
+        sub_cfg.data = {
+            "name":name,"email":email,'content':content,'type':type
+        };
+        ajax_res(sub_cfg);
+    })
+</script>
