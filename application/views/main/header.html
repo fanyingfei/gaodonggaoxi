@@ -25,9 +25,9 @@
         {if $is_login == 0}
             <a href="/login">登录</a>
             <span>|</span>
-            <a href="register">注册</a>
+            <a href="/register">注册</a>
         {else}
-            <span class="user_name">{$name}</span>
+            <a href="/user/info"><span class="user_name">{$name}</span></a>
             <span>|</span>
             <span class="login_out"><a href="/login/login_out">退出</a></span>
         {/if}

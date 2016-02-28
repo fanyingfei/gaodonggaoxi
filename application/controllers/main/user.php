@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class login extends MY_Controller  {
+class user extends MY_Controller  {
 
 	/**
 	 * Index Page for this controller.
@@ -25,9 +25,25 @@ class login extends MY_Controller  {
         $this->assign('description','闲话');
     }
 
+    public function user_info(){
+        if(!is_login()){
+            header("Location: http://".$_SERVER['HTTP_HOST'].'/login'); exit;
+        }
+        $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
+
+        $this->assign('user',$user);
+        $this->assign('title','用户中心');
+        $this->assign('body','user_info');
+        $this->login_display('main/header.html');
+        $this->login_display('user/user_info.html');
+    }
+
     public function login_index($param=''){
+        if(is_login()){
+            header("Location: http://".$_SERVER['HTTP_HOST'].'/xian'); exit;
+        }
         $this->assign('title','登录');
-        $this->login_display('login/login.html');
+        $this->login_display('user/login.html');
     }
 
     public function login_in(){
@@ -37,12 +53,7 @@ class login extends MY_Controller  {
         $one = $this->model_users->get_user_by_email($email);
         if(empty($one)) splash('error','邮箱不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
-        $_SESSION['user_id'] = $one['user_id'];
-        $_SESSION['name']    = $one['name'];
-        $_SESSION['email']    = $one['email'];
-        my_set_cookie('is_login',1);
-        my_set_cookie('name', $one['name']);
-        my_set_cookie('email',  $one['email']);
+        $this->set_login_in($one);
         splash('success','');
     }
 
@@ -56,7 +67,7 @@ class login extends MY_Controller  {
 
     public function register($param=''){
         $this->assign('title','注册');
-        $this->login_display('login/register.html');
+        $this->login_display('user/register.html');
     }
 
     public function register_save(){
@@ -79,10 +90,20 @@ class login extends MY_Controller  {
         $data['password'] = md5($data['password'].ENCRYPTION);
         $res = $this->model_users->save($data);
         if($res){
+            $this->set_login_in($data);
             splash('success','注册成功');
         }else{
             splash('error','注册失败,请重试');
         }
+    }
+
+    public function set_login_in($one){
+        $_SESSION['user_id'] = $one['user_id'];
+        $_SESSION['name']    = $one['name'];
+        $_SESSION['email']    = $one['email'];
+        my_set_cookie('is_login',1);
+        my_set_cookie('name', $one['name']);
+        my_set_cookie('email',  $one['email']);
     }
 
 }

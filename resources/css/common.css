@@ -328,10 +328,41 @@ button:hover{
 .login{
     padding:10px 20px;
 }
-.login a:hover{
+.login a:hover , .login span:hover{
     color:#fff;
 }
-.login .user_name , .login_out{
+.login .user_name{
     color:#acacac;
+    display: block;
+    float: left;
+    max-width: 200px;
+    overflow: hidden;
+    margin-right:10px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    text-overflow:ellipsis;
+}
+.user_info{
+    min-height: 200px;
+}
+.wapper.user_info{
+    border:0;
+}
+#top{
+    bottom:0;
+    margin-left:1060px;
+    margin-bottom: 30px;
+    position: fixed;
+    width:50px;
+    height: 48px;
+    line-height: 48px;
+    display: none;
+    text-align: center;
+    background-color: #dedede;
     cursor: pointer;
+    border-radius: 60px;
+}
+#top:hover{
+    background-color: #6c6c6c;
+    color:#afafaf;
 }

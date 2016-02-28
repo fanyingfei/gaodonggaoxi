@@ -95,9 +95,26 @@ $(document).ready(function(){
         click_bad(comment_url,this);
     })
 
-    $(".mao").click(function(){
-        document.getElementsByTagName('BODY')[0].scrollTop=document.getElementsByTagName('BODY')[0].scrollHeight;
+    $("#top").click(function(){
+        $('html,body').animate({scrollTop: 0}, 500);
     })
+
+    $(".mao").click(function(){
+        var height = $(document).height();
+        $('html,body').animate({scrollTop: height}, 500);
+    })
+
+    $("#checkpic").click(function(){
+        $(this).attr('src','/code.php?'+Math.random());
+    })
+
+    $(window).scroll(function(){
+        if($(window).scrollTop() >$(window).height()/2){
+            $("#top").show();
+        }else{
+            $("#top").hide();
+        }
+    });
 
     $(".nav li a").click(function(){
         $.cookie('search', '');

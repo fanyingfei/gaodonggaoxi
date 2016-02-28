@@ -39,38 +39,42 @@
 */
 $route['default_controller'] = "main/content/xian";
 $route['404_override'] = '';
-
+//闲话
 $route['xian'] = "main/content/xian";
 $route['xian/(:num)'] = "main/content/xian/$1";
-
+//小知识
 $route['know'] = "main/content/know";
 $route['know/(:num)'] = "main/content/know/$1";
-
+//美文
 $route['wen'] = "main/content/wen";
 $route['wen/(:num)'] = "main/content/wen/$1";
-
+//妹子
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";
-
+//神话
 $route['myth'] = "main/article/myth";
-$route['myth/detail'] = "main/article/detail";
 $route['myth/(:num)'] = "main/article/index/$1";
+//详情
+$route['myth/detail'] = "main/article/detail";
 $route['myth/detail/(:num)'] = "main/article/detail/$1";
-
+//渣渣说
 $route['zzs'] = "main/article/zzs";
 $route['zzs/detail'] = "main/article/detail";
 $route['zzs/(:num)'] = "main/article/zzs/$1";
 $route['zzs/detail/(:num)'] = "main/article/zzs/$1";
-
+//点赞，保存
 $route['content/comment'] = "main/content/comment";
 $route['content/save'] = "main/content/save";
 $route['article/save'] = "main/article/save";
-
+//登录
 $route['login'] = "main/user/login_index";
 $route['login/login_in'] = "main/user/login_in";
 $route['login/login_out'] = "main/user/login_out";
+//注册
 $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
+//用户中心
+$route['user/info'] = "main/user/user_info";
 
 $route['admin'] = "admin/admin/index";
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";

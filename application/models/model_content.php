@@ -56,7 +56,7 @@ class model_content extends CI_Model{
      * 删除
      */
     public function del($id){
-        $this->db->where('con_id',$id);
+        $this->db->where(self::PRI_KEY ,$id);
         $this->db->delete(self::TABLE_NAME);
         return true;
     }

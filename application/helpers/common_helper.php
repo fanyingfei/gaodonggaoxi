@@ -68,7 +68,7 @@ function register_valid($data){
     if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
 
     if(empty($password)) splash('error','请填写密码');
-    if(strlen($name) > 50 || strlen($name) < 6) splash('error','密码长度6-50个字符');
+    if(strlen($password) > 50 || strlen($password) < 6) splash('error','密码长度6-50个字符');
 
     if(empty($confirm)) splash('error','请确认密码');
     if($confirm != $password) splash('error','前后密码不一致');
@@ -101,7 +101,8 @@ function change_time($time) {
 }
 
 function is_login(){
-    if(!empty($_SESSION['user_id']) && !empty($_COOKIE['is_login']) && $_COOKIE['is_login'] == 1){
+    if(empty($_SESSION['user_id'])) return false;
+    if(!empty($_COOKIE['is_login']) && $_COOKIE['is_login'] == 1){
        return true;
     }
     return false;
