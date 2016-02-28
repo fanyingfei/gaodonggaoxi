@@ -249,7 +249,7 @@ K.options = {
 	cssPath : '',
 	cssData : '',
 	minWidth : 650,
-	minHeight : 100,
+	minHeight : 150,
 	minChangeSize : 50,
 	zIndex : 811213,
 	items : [
@@ -3352,7 +3352,7 @@ _extend(KWidget, {
 		self.name = options.name || '';
 		self.doc = options.doc || document;
 		self.win = _getWin(self.doc);
-		self.x = _addUnit(options.x);
+		self.x = _addUnit(options.x-155);
 		self.y = _addUnit(options.y);
 		self.z = options.z;
 		self.width = _addUnit(options.width);

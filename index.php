@@ -175,6 +175,9 @@ if (defined('ENVIRONMENT'))
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
+    define('ENCRYPTION','fanyingfei');
+
+    define('COOKIE_EXPIRE',3600*24*365);
 
 	// The path to the "application" folder
 	if (is_dir($application_folder))

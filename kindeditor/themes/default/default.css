@@ -543,7 +543,9 @@
 	border: 1px solid #A0A0A0;
 	background-color: #F1F1F1;
 	color: #222222;
-	padding: 2px;
+	padding-top: 5px;
+    margin-top:5px;
+    margin-left: -5px;
 	font-family: "sans serif",tahoma,verdana,helvetica;
 	font-size: 12px;
 	text-align: left;

@@ -10,7 +10,6 @@ Thumbs.db
 
 .idea/
 *.iml
-?config.php
-application/config/*
+application/config/database.php
 application/views/template_c/*
 *-map.json

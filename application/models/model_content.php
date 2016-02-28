@@ -40,6 +40,7 @@ class model_content extends CI_Model{
      */
     public function save($data){
         $data['create_time'] = date('Y-m-d H:i:s');
+        $data['user_id'] = empty($_SESSION['user_id']) ? 0 : $_SESSION['user_id'];
         return $this->db->insert(self::TABLE_NAME ,$data);
     }
 

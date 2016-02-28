@@ -44,7 +44,7 @@ KindEditor.lang({
 	media : '多媒體',
 	table : '表格',
 	hr : '插入水平線',
-	emoticons : '插入表情',
+	emoticons : '表情',
 	link : '超連結',
 	unlink : '移除超連結',
 	fullscreen : '最大化',

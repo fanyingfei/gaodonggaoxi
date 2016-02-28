@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="all" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/resources/css/login.css"/>
+    <script src="/resources/js/jquery.js"></script>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <title>{$title}</title>
+</head>
+<body>
+<div class="layout">
+    <input type="text" name="email" id="email" placeholder="邮箱"/>
+    <input type="text" name="name" id="name" placeholder="昵称"/>
+    <input type="password" name="password" id="password" placeholder="密码"/>
+    <input type="password" name="confirm" id="confirm" placeholder="确认密码"/>
+    <div class="sub" id="sub">注册</div>
+    <div class="bottom-item"><a href="/login">已有帐号？立即登录</a></div>
+</div>
+</body>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script type="text/javascript">
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/register/save';
+    sub_cfg.success = function(result){
+        window.location.href=window.location.href;
+    };
+
+    $("#sub").click(function(){
+        var email = $.trim($("#email").val());
+        var name = $.trim($("#name").val());
+        var password = $.trim($("#password").val());
+        var confirm = $.trim($("#confirm").val());
+
+        if(!reg_valid(email,name,password,confirm)){
+            return false;
+        }
+        sub_cfg.data = {
+            "name":name,"email":email,'password':password,'confirm':confirm
+        };
+        ajax_res(sub_cfg);
+    })
+
+    function reg_valid(email,name,password,confirm){
+        if(email == ''){
+            alert('请填写email');
+            return false;
+        }
+        if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+            alert('email格式不正确');
+            return false;
+        }
+        if(name == ''){
+            alert('请填写昵称');
+            return false;
+        }
+        if((name.length < 3) || (name.length > 20)){
+            alert('昵称长度3-20个字符');
+            return false;
+        }
+        if(password == ''){
+            alert('请填写密码');
+            return false;
+        }
+        if((password.length < 6) || (password.length > 50)){
+            alert('密码长度6-50个字符');
+            return false;
+        }
+        if(confirm == ''){
+            alert('请确认密码');
+            return false;
+        }
+        if(password != confirm){
+            alert('前后密码不一致');
+            return false;
+        }
+        return true;
+    }
+</script>
+{/literal}
+</html>

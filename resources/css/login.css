@@ -1,0 +1,107 @@
+html, body {
+    background: #fff none repeat scroll 0 0;
+    box-sizing: border-box;
+    font-family: "Hiragino Sans GB","Microsoft YaHei","宋体",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.layout{
+    width: 360px;
+    margin:0 auto;
+}
+input{
+    width:100%;
+    height: 45px;
+    line-height: 45px;
+    outline: 0 none;
+    padding: 6px 12px 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #585858;
+    margin-top:15px;
+}
+.sub{
+    margin-top: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 45px;
+    color: #fff;
+    line-height: 45px;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url("../images/login/login_btn.png");
+}
+.sub:hover{
+    background-image: url("../images/login/login_btn_hover.png");
+}
+.bottom-item{
+    overflow: auto;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.bottom-item a{
+    float:right;
+    font-size: 12px;
+    color: #4896ff;
+    text-decoration: none;
+}
+.login-register{
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    color: #585858;
+    cursor: pointer;
+    float: right;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    width: 80px;
+}
+.login-register:hover{
+    background:#136dfb;
+    color:#fff;
+    border:1px solid #136dfb;
+}
+.login-third{
+    float:left;
+    margin-top:-10px;
+}
+.login-third p{
+    width:100px;
+    color:#6c6c6c;
+    font-size:12px;
+    margin:0;
+    padding:0;
+    margin-bottom: 2px;
+}
+.third-icon {
+    background-image: url("../images/login/icon.png");
+    background-repeat: no-repeat;
+    float: left;
+    height: 30px;
+    margin-right: 15px;
+    width: 30px;
+}
+.login-item .third-icon.moretv {
+    background-position: -101px -68px;
+}
+.qq {
+    background-position: -173px 0;
+}
+.sina {
+    background-position: -139px 0;
+}
+.douban {
+    background-position: -244px 0;
+}
+.weixin {
+    background-position: -209px 0;
+}

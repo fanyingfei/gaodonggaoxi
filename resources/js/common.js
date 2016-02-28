@@ -99,6 +99,10 @@ $(document).ready(function(){
         document.getElementsByTagName('BODY')[0].scrollTop=document.getElementsByTagName('BODY')[0].scrollHeight;
     })
 
+    $(".nav li a").click(function(){
+        $.cookie('search', '');
+    })
+
     $(".search button").click(function(){
         var search = $("#search").val();
         $.cookie('search', search);

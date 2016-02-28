@@ -45,7 +45,7 @@ KindEditor.lang({
 	table : '表格',
 	tablecell : '单元格',
 	hr : '插入横线',
-	emoticons : '插入表情',
+	emoticons : '表情',
 	link : '超级链接',
 	unlink : '取消超级链接',
 	fullscreen : '全屏显示',

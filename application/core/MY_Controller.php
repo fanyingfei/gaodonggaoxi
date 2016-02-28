@@ -2,17 +2,20 @@
 
 class MY_controller extends CI_Controller {
     public function __construct() {
-
+        session_start();
         parent::__construct();
     }
     public function assign($key,$val)
     {
+        $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ;
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ;
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
+
         $this->ci_smarty->assign('name',$name);
         $this->ci_smarty->assign('email',$email);
         $this->ci_smarty->assign('search',$search);
+        $this->ci_smarty->assign('is_login',$is_login);
         $this->ci_smarty->assign($key,$val);
     }
 
@@ -21,10 +24,10 @@ class MY_controller extends CI_Controller {
         if(empty($header)) $header = 'header.html';
         if(empty($footer))   $footer = 'footer.html';
         if(empty($right))     $right = 'right.html';
-        $this->ci_smarty->display($header);
-        $this->ci_smarty->display($html);
-        $this->ci_smarty->display($right);
-        $this->ci_smarty->display($footer);
+        $this->ci_smarty->display('main/'.$header);
+        $this->ci_smarty->display('main/'.$html);
+        $this->ci_smarty->display('main/'.$right);
+        $this->ci_smarty->display('main/'.$footer);
     }
 
     public function admin_display($html)
@@ -32,6 +35,11 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->display('admin/header.html');
         $this->ci_smarty->display($html);
         $this->ci_smarty->display('admin/footer.html');
+    }
+
+    public function login_display($html)
+    {
+        $this->ci_smarty->display($html);
     }
 
     /*

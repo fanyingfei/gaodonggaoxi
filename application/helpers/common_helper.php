@@ -47,15 +47,36 @@ function get_real_ip(){
 function valid($name = '' ,$email='' ,$content = ''){
     if(empty($name)) splash('error','请填写昵称');
     if(strlen($name) > 15) splash('error','昵称过长');
+
     if(empty($email)) splash('error','请填写email');
     $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
     if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+
     if(empty($content)) splash('error','请填写内容');
+}
+
+function register_valid($data){
+    $email = $data['email'];
+    $name = $data['name'];
+    $password = $data['password'];
+    $confirm = $data['confirm'];
+    if(empty($name)) splash('error','请填写昵称');
+    if(strlen($name) > 20 || strlen($name) < 3) splash('error','昵称长度3-20个字符');
+
+    if(empty($email)) splash('error','请填写email');
+    $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+    if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+
+    if(empty($password)) splash('error','请填写密码');
+    if(strlen($name) > 50 || strlen($name) < 6) splash('error','密码长度6-50个字符');
+
+    if(empty($confirm)) splash('error','请确认密码');
+    if($confirm != $password) splash('error','前后密码不一致');
 }
 
 function get_type(){
     $self   = explode('/',$_SERVER['PHP_SELF']);
-    $data = array('joke'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'wl'=>6,'myth'=>101);
+    $data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>101);
     return $data[$self[2]];
 }
 
@@ -77,4 +98,19 @@ function change_time($time) {
         $str = date('Y-m-d H:i:s', $time);
     }
     return $str;
+}
+
+function is_login(){
+    if(!empty($_SESSION['user_id']) && !empty($_COOKIE['is_login']) && $_COOKIE['is_login'] == 1){
+       return true;
+    }
+    return false;
+}
+
+function my_set_cookie($key,$value){
+    setcookie($key,$value,time()+COOKIE_EXPIRE , '/');
+}
+
+function expire_cookie($key){
+    setcookie($key,'',time(),'/');
 }

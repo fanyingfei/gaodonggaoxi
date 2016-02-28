@@ -9,6 +9,9 @@ hr{
     border:0;
     border-bottom: 1px solid #dedede;
 }
+.none{
+    display: none;
+}
 input,textarea{
     border:1px solid #dedede;
     font-family: 微软雅黑;
@@ -166,14 +169,6 @@ button{
     font-size: 12px;
     padding:2px 10px;
 }
-.sub textarea{
-    width:700px;
-    max-width:700px;
-    min-width:700px;
-    height:100px;
-    font-size: 12px;
-    padding:10px;
-}
 .list_one{
     clear:both;
     padding:20px 0px 10px;
@@ -329,4 +324,14 @@ button:hover{
 }
 .ke-dialog-content .ke-tabs{
     display: none !important;
+}
+.login{
+    padding:10px 20px;
+}
+.login a:hover{
+    color:#fff;
+}
+.login .user_name , .login_out{
+    color:#acacac;
+    cursor: pointer;
 }

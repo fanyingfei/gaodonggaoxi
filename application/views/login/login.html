@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="all" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/resources/css/login.css"/>
+    <script src="/resources/js/jquery.js"></script>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <title>{$title}</title>
+</head>
+<body>
+<div class="layout">
+    <input type="text" name="email" id="email" placeholder="邮箱账号" value="{$email}"/>
+    <input type="password" name="password" id="password" placeholder="密码"/>
+    <div class="sub" id="sub">立即登录</div>
+    <div class="bottom-item"><a href="/login">忘记密码？</a></div>
+    <div>
+        <div  class="login-third">
+            <p>第三方帐号登录</p>
+            <div class="login-item">
+                <div class="third-icon-box">
+                    <a href="/sns/login/preauth?action=login&amp;type=qq&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_qq"><div class="third-icon qq"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=wb&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_wb"> <div class="third-icon sina"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=db&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_db"><div class="third-icon douban"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=wx&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_wx"> <div class="third-icon weixin"></div></a>
+                </div>
+            </div>
+        </div>
+        <a href="register"><div class="login-register">注册</div></a>
+    </div>
+</div>
+</body>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script type="text/javascript">
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/login/login_in';
+    sub_cfg.success = function(result){
+        window.location.href='/xian';
+    };
+
+    $("#sub").click(function(){
+        var email = $.trim($("#email").val());
+        var password = $.trim($("#password").val());
+
+        if(!login_valid(email,password)){
+            return false;
+        }
+        sub_cfg.data = {
+            "email":email,'password':password
+        };
+        ajax_res(sub_cfg);
+    })
+
+    function login_valid(email,password){
+        if(email == ''){
+            alert('请填写email');
+            return false;
+        }
+        if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+            alert('email格式不正确');
+            return false;
+        }
+
+        if(password == ''){
+            alert('请填写密码');
+            return false;
+        }
+        return true;
+    }
+</script>
+{/literal}
+</html>
