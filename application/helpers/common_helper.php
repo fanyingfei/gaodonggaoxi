@@ -58,8 +58,13 @@ function valid($name = '' ,$email='' ,$content = ''){
 function register_valid($data){
     $email = $data['email'];
     $name = $data['name'];
+    $code  = $data['code'];
     $password = $data['password'];
     $confirm = $data['confirm'];
+
+    if(empty($_SESSION['code'])) splash('error','验证码已过期');
+    if(empty($code) || strtolower($code) != strtolower($_SESSION['code'])) splash('error','验证码不正确');
+
     if(empty($name)) splash('error','请填写昵称');
     if(strlen($name) > 20 || strlen($name) < 3) splash('error','昵称长度3-20个字符');
 
@@ -76,8 +81,9 @@ function register_valid($data){
 
 function get_type(){
     $self   = explode('/',$_SERVER['PHP_SELF']);
+    if(empty($self[2])) return 1;
     $data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>101);
-    return $data[$self[2]];
+    return empty($data[$self[2]]) ? 1 :  $data[$self[2]];
 }
 
 function change_time($time) {

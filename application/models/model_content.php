@@ -14,16 +14,16 @@ class model_content extends CI_Model{
     /*
      * 查找一页的内容
      */
-    public function data_list( $p = 1 ,$limit = 10 ,$type = 1 , $where = ''){
-        $sql = 'select * from '.self::TABLE_NAME."  where status = 1 and type = $type $where order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
+    public function data_list( $p = 1 ,$limit = 10  , $where = ''){
+        $sql = 'select * from '.self::TABLE_NAME." $where order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 
     /*
     * 得到全部数量
     */
-    public function data_count($type = 1,$where = ''){
-        $sql = 'select count(*) as num from '.self::TABLE_NAME ." where status = 1 and type = $type $where";
+    public function data_count($where = ''){
+        $sql = 'select count(*) as num from '.self::TABLE_NAME ." $where";
         return $this->db->query($sql)->first_row('array')['num'];
     }
 

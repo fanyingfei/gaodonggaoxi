@@ -34,8 +34,8 @@ class user extends MY_Controller  {
         $this->assign('user',$user);
         $this->assign('title','用户中心');
         $this->assign('body','user_info');
-        $this->login_display('main/header.html');
-        $this->login_display('user/user_info.html');
+        $this->native_display('main/header.html');
+        $this->native_display('user/user_info.html');
     }
 
     public function login_index($param=''){
@@ -43,7 +43,7 @@ class user extends MY_Controller  {
             header("Location: http://".$_SERVER['HTTP_HOST'].'/xian'); exit;
         }
         $this->assign('title','登录');
-        $this->login_display('user/login.html');
+        $this->native_display('user/login.html');
     }
 
     public function login_in(){
@@ -67,7 +67,7 @@ class user extends MY_Controller  {
 
     public function register($param=''){
         $this->assign('title','注册');
-        $this->login_display('user/register.html');
+        $this->native_display('user/register.html');
     }
 
     public function register_save(){
@@ -78,12 +78,14 @@ class user extends MY_Controller  {
 
         $data['email'] = trim(strip_tags($_REQUEST['email']));
         $data['name'] = trim(strip_tags($_REQUEST['name']));
+        $data['code'] = trim(strip_tags($_REQUEST['code']));
         $data['password'] = trim(strip_tags($_REQUEST['password']));
         $data['confirm'] = trim(strip_tags($_REQUEST['confirm']));
 
         register_valid($data);
 
         unset($data['confirm']);
+        unset($data['code']);
         $one = $this->model_users->get_user_by_email($data['email']);
         if(!empty($one)) splash('error','该邮箱已被注册，不可使用');
 

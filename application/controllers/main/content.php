@@ -27,23 +27,24 @@ class content extends MY_Controller  {
     public function index($p = 1)
 	{
         $limit = 10;
-        $where = '';
         $p = intval($p);
 
         $this->type = get_type();
         $this->load->library('page');
 
+        $where = 'where status = 1 and type = '.$this->type;
+
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        if(!empty($search)) $where = " and name like '%$search%' ";
+        if(!empty($search)) $where .= " and name like '%$search%' ";
         //得到数据
-        $list  = $this->model_content->data_list($p,$limit,$this->type,$where);
+        $list  = $this->model_content->data_list($p,$limit,$where);
         foreach($list as &$v){
             $v['u_name'] = md5($v['email']);
             $v['content'] = strip_tags($v['content'],'<br><img>');
             $v['create_time'] = change_time($v['create_time']);
         }
         //得到总数
-        $count = $this->model_content->data_count($this->type,$where);
+        $count = $this->model_content->data_count($where);
         //生成页码
         $page = get_page($count,$limit,$p);
 

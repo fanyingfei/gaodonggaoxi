@@ -38,59 +38,66 @@
                     <table class="result-tab" width="100%">
                         <tr>
                             <th class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
-                            <th>排序</th>
                             <th>ID</th>
                             <th>标题</th>
-                            <th>审核状态</th>
-                            <th>点击</th>
+                            <th>内容</th>
                             <th>发布人</th>
-                            <th>更新时间</th>
-                            <th>评论</th>
+                            <th>是否注册</th>
+                            <th>oo</th>
+                            <th>XX</th>
+                            <th>状态</th>
+                            <th>发布时间</th>
                             <th>操作</th>
                         </tr>
-                        <tr>
-                            <td class="tc"><input name="id[]" value="59" type="checkbox"></td>
-                            <td>
-                                <input name="ids[]" value="59" type="hidden">
-                                <input class="common-input sort-input" name="ord[]" value="0" type="text">
-                            </td>
-                            <td>59</td>
-                            <td title="发哥经典"><a target="_blank" href="#" title="发哥经典">发哥经典</a> …
-                            </td>
-                            <td>0</td>
-                            <td>2</td>
-                            <td>admin</td>
-                            <td>2014-03-15 21:11:01</td>
-                            <td></td>
-                            <td>
-                                <a class="link-update" href="#">修改</a>
-                                <a class="link-del" href="#">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tc"><input name="id[]" value="58" type="checkbox"></td>
-                            <td>
-                                <input name="ids[]" value="58" type="hidden">
-                                <input class="common-input sort-input" name="ord[]" value="0" type="text">
-                            </td>
-                            <td>58</td>
-                            <td title="黑色经典"><a target="_blank" href="#" title="黑色经典">黑色经典</a> …
-                            </td>
-                            <td>0</td>
-                            <td>35</td>
-                            <td>admin</td>
-                            <td>2013-12-30 22:34:00</td>
-                            <td></td>
-                            <td>
-                                <a class="link-update" href="#">修改</a>
-                                <a class="link-del" href="#">删除</a>
-                            </td>
-                        </tr>
+                        {foreach from=$list key=key item=one}
+                            <tr>
+                                <td class="tc"><input name="id[]" value="{$one['con_id']}" type="checkbox"></td>
+                                <td>{$one['con_id']}</td>
+                                <td>{$one.title}</td>
+                                <td><div class="content">{$one.content}</div></td>
+                                <td>{$one.email}<br>昵称：{$one.name}</td>
+                                <td align="center">{$one.is_user}</td>
+                                <td align="center">{$one.good}</td>
+                                <td align="center">{$one.bad}</td>
+                                <td align="center">{$one.status_msg}</td>
+                                <td align="center">{$one.create_time}</td>
+                                <td>
+                                    <a class="link-update" href="#">修改</a>
+                                    <a class="link-del" href="#">删除</a>
+                                </td>
+                            </tr>
+                        {/foreach}
                     </table>
-                    <div class="list-page"> 2 条 1/1 页</div>
+                    <div class="list-page">{$page}</div>
                 </div>
             </form>
         </div>
     </div>
     <!--/main-->
 </div>
+    <div class="container">
+        <table id="table"
+               data-toggle="table"
+               data-url="/pic"
+               data-show-columns="true"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-pagination="true"
+               data-height="500">
+            <thead>
+            <tr>
+                <th data-field="id">ID</th>
+                <th data-field="name">Item Name</th>
+                <th data-field="price">Item Price</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <!--<script src="assets/bootstrap2.3/js/bootstrap.min.js"></script>-->
+    <script src="/resources/js/tableExport.js"></script>
+    <script src="/resources/js/jquery.base64.js"></script>
+    <script src="/resources/js/bootstrap-table.js"></script>
+    <script src="/resources/js/bootstrap-table-export.js"></script>

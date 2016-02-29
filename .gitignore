@@ -11,5 +11,5 @@ Thumbs.db
 .idea/
 *.iml
 application/config/database.php
-application/views/template_c/*
+application/template/*
 *-map.json

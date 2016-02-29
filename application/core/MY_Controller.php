@@ -37,7 +37,7 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->display('admin/footer.html');
     }
 
-    public function login_display($html)
+    public function native_display($html)
     {
         $this->ci_smarty->display($html);
     }

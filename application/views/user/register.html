@@ -15,6 +15,10 @@
     <div class="logo"></div>
     <input type="text" name="email" id="email" placeholder="邮箱" value="{$email}"/>
     <input type="text" name="name" id="name" placeholder="昵称" value="{$name}"/>
+    <div>
+        <input type="code" name="code" id="code" placeholder="验证码"/>
+        <img id="checkpic" src="/code.php" />
+    </div>
     <input type="password" name="password" id="password" placeholder="密码"/>
     <input type="password" name="confirm" id="confirm" placeholder="确认密码"/>
     <div class="sub" id="sub">注册</div>
@@ -28,12 +32,13 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/register/save';
     sub_cfg.success = function(result){
-        window.location.href=window.location.href;
+        window.location.href='/';
     };
 
     $("#sub").click(function(){
         var email = $.trim($("#email").val());
         var name = $.trim($("#name").val());
+        var code  = $.trim($("#code").val());
         var password = $.trim($("#password").val());
         var confirm = $.trim($("#confirm").val());
 
@@ -41,7 +46,7 @@
             return false;
         }
         sub_cfg.data = {
-            "name":name,"email":email,'password':password,'confirm':confirm
+            "name":name,"email":email,'code':code,'password':password,'confirm':confirm
         };
         ajax_res(sub_cfg);
     })

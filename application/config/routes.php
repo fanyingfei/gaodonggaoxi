@@ -37,8 +37,7 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-$route['default_controller'] = "main/content/xian";
-$route['404_override'] = '';
+
 //闲话
 $route['xian'] = "main/content/xian";
 $route['xian/(:num)'] = "main/content/xian/$1";
@@ -76,7 +75,11 @@ $route['register/save'] = "main/user/register_save";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 
+$route['default_controller'] = "main/content/xian";
+$route['404_override'] = '';
+
 $route['admin'] = "admin/admin/index";
+$route['admin/(:num)'] = "admin/admin/index/$1";
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

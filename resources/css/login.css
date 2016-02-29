@@ -29,6 +29,14 @@ html, body {
 .layout input:focus{
     border-color:#8297b0;
 }
+#code{
+    width:80%;
+}
+#checkpic{
+    float: right;
+    margin-top:20px;
+    cursor: pointer;
+}
 .sub{
     margin-top: 40px;
     cursor: pointer;
