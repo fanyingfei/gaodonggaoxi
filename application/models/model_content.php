@@ -14,8 +14,9 @@ class model_content extends CI_Model{
     /*
      * 查找一页的内容
      */
-    public function data_list( $p = 1 ,$limit = 10  , $where = ''){
-        $sql = 'select * from '.self::TABLE_NAME." $where order by ".self::PRI_KEY." desc limit ".($p-1)*$limit.', '.$limit;
+    public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
+        if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
+        $sql = 'select * from '.self::TABLE_NAME." $where $order_by limit ".($p-1)*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 
@@ -45,20 +46,27 @@ class model_content extends CI_Model{
     }
 
     /*
-     * good
+     * update good
      */
     public function update($click , $id){
-        $sql = 'update '.self::TABLE_NAME ." set $click = $click + 1 where con_id = $id ";
+        $sql = 'update '.self::TABLE_NAME ." set $click = $click + 1 where ".self::PRI_KEY ." = $id ";
+        return $this->db->query($sql);
+    }
+
+    /*
+     * update status
+     */
+    public function update_status($ids,$status){
+        $sql = 'update '.self::TABLE_NAME ." set status = $status where ".self::PRI_KEY ." in ( $ids )";
         return $this->db->query($sql);
     }
 
     /*
      * 删除
      */
-    public function del($id){
-        $this->db->where(self::PRI_KEY ,$id);
-        $this->db->delete(self::TABLE_NAME);
-        return true;
+    public function delete($ids){
+        $this->db->where_in(self::PRI_KEY ,$ids);
+        return $this->db->delete(self::TABLE_NAME);
     }
 }
 ?>

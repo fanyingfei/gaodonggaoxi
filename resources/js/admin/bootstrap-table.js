@@ -208,7 +208,7 @@
         valign: undefined, // top, middle, bottom
         width: undefined,
         sortable: false,
-        order: 'asc', // asc, desc
+        order: 'desc', // asc, desc
         visible: true,
         switchable: true,
         clickToSelect: true,
@@ -960,9 +960,9 @@
                                 getPropertyFromOther(that.options.columns, 'field', 'title', field)) : '',
                             sprintf('<span class="value">%s</span>', value),
                             '</div>'].join('') :
-                        [sprintf('<td%s %s %s>', id_, class_, style),
+                        [sprintf('<td %s %s><div>', id_, class_),
                             value,
-                            '</td>'].join('');
+                            '</div></td>'].join('');
 
                     // Hide empty data on Card view when smartDisplay is set to true.
                     if (that.options.cardView && that.options.smartDisplay && value === '') {

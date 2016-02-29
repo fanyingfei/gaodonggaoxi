@@ -82,7 +82,7 @@ function register_valid($data){
 function get_type(){
     $self   = explode('/',$_SERVER['PHP_SELF']);
     if(empty($self[2])) return 1;
-    $data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>101);
+    $data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>6);
     return empty($data[$self[2]]) ? 1 :  $data[$self[2]];
 }
 

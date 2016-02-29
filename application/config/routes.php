@@ -79,7 +79,11 @@ $route['default_controller'] = "main/content/xian";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin/index";
-$route['admin/(:num)'] = "admin/admin/index/$1";
+$route['admin/content'] = "admin/admin/content_index";
+$route['admin/content_list'] = "admin/admin/content_list";
+$route['admin/content_delete'] = "admin/admin/content_delete";
+$route['admin/content_pass'] = "admin/admin/content_pass";
+$route['admin/content_fail'] = "admin/admin/content_fail";
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

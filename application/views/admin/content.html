@@ -1,103 +1,61 @@
-
-    <!--/sidebar-->
-    <div class="main-wrap">
-
-        <div class="crumb-wrap">
-            <div class="crumb-list"><i class="icon-font"></i><a href="index.html">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">作品管理</span></div>
+<link rel="stylesheet" href="/resources/css/admin/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/admin/bootstrap-table.min.css">
+<link rel="stylesheet" href="/resources/css/admin/iframe.css">
+<div class="container">
+    <div class="table-toolbar">
+        <button class="btn" id="remove" data-url="/admin/content_delete">Delete</button>
+        <button class="btn" id="pass" data-url="/admin/content_pass">Pass</button>
+        <button class="btn" id="fail" data-url="/admin/content_fail">Fail</button>
+        <span>审核状态：</span>
+        <div class="form-group">
+            <select class="form-control" name="search_status" id="search_status">
+                <option value="-1" >未选择</option>
+                {foreach key=key item=item from=$status_list}
+                <option value="{$key}" >{$item}</option>
+                {/foreach}
+            </select>
         </div>
-        <div class="search-wrap">
-            <div class="search-content">
-                <form action="#" method="post">
-                    <table class="search-tab">
-                        <tr>
-                            <th width="120">选择分类:</th>
-                            <td>
-                                <select name="search-sort" id="">
-                                    <option value="">全部</option>
-                                    <option value="19">精品界面</option><option value="20">推荐界面</option>
-                                </select>
-                            </td>
-                            <th width="70">关键字:</th>
-                            <td><input class="common-text" placeholder="关键字" name="keywords" value="" id="" type="text"></td>
-                            <td><input class="btn btn-primary btn2" name="sub" value="查询" type="submit"></td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="result-wrap">
-            <form name="myform" id="myform" method="post">
-                <div class="result-title">
-                    <div class="result-list">
-                        <a href="insert.html"><i class="icon-font"></i>新增作品</a>
-                        <a id="batchDel" href="javascript:void(0)"><i class="icon-font"></i>批量删除</a>
-                        <a id="updateOrd" href="javascript:void(0)"><i class="icon-font"></i>更新排序</a>
-                    </div>
-                </div>
-                <div class="result-content">
-                    <table class="result-tab" width="100%">
-                        <tr>
-                            <th class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
-                            <th>ID</th>
-                            <th>标题</th>
-                            <th>内容</th>
-                            <th>发布人</th>
-                            <th>是否注册</th>
-                            <th>oo</th>
-                            <th>XX</th>
-                            <th>状态</th>
-                            <th>发布时间</th>
-                            <th>操作</th>
-                        </tr>
-                        {foreach from=$list key=key item=one}
-                            <tr>
-                                <td class="tc"><input name="id[]" value="{$one['con_id']}" type="checkbox"></td>
-                                <td>{$one['con_id']}</td>
-                                <td>{$one.title}</td>
-                                <td><div class="content">{$one.content}</div></td>
-                                <td>{$one.email}<br>昵称：{$one.name}</td>
-                                <td align="center">{$one.is_user}</td>
-                                <td align="center">{$one.good}</td>
-                                <td align="center">{$one.bad}</td>
-                                <td align="center">{$one.status_msg}</td>
-                                <td align="center">{$one.create_time}</td>
-                                <td>
-                                    <a class="link-update" href="#">修改</a>
-                                    <a class="link-del" href="#">删除</a>
-                                </td>
-                            </tr>
-                        {/foreach}
-                    </table>
-                    <div class="list-page">{$page}</div>
-                </div>
-            </form>
+        <span>类型：</span>
+        <div class="form-group">
+            <select class="form-control" name="search_type" id="search_type">
+                <option value="-1" >未选择</option>
+                {foreach key=key item=item from=$type_list}
+                <option value="{$key}" >{$item}</option>
+                {/foreach}
+            </select>
         </div>
     </div>
-    <!--/main-->
+    <table id="table"
+           data-toggle="table"
+           data-url="/admin/content_list"
+           data-show-columns="true"
+           data-search="false"
+           data-show-refresh="true"
+           data-show-toggle="false"
+           data-pagination="true"
+           data-side-pagination="server"
+           data-height="600">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-sortable="true" data-field="con_id">ID</th>
+            <th data-field="type">类型</th>
+            <th data-field="title">标题</th>
+            <th data-field="content">内容</th>
+            <th data-field="email">邮箱</th>
+            <th data-field="name">昵称</th>
+            <th data-sortable="true" data-field="user_id">是否注册</th>
+            <th data-sortable="true" data-field="good">oo</th>
+            <th data-sortable="true" data-field="bad">xx</th>
+            <th data-sortable="true" data-field="status">审核状态</th>
+            <th data-field="op">操作</th>
+        </tr>
+        </thead>
+    </table>
 </div>
-    <div class="container">
-        <table id="table"
-               data-toggle="table"
-               data-url="/pic"
-               data-show-columns="true"
-               data-search="true"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-pagination="true"
-               data-height="500">
-            <thead>
-            <tr>
-                <th data-field="id">ID</th>
-                <th data-field="name">Item Name</th>
-                <th data-field="price">Item Price</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-    <script src="/resources/js/jquery.min.js"></script>
-    <script src="/resources/js/bootstrap.min.js"></script>
-    <!--<script src="assets/bootstrap2.3/js/bootstrap.min.js"></script>-->
-    <script src="/resources/js/tableExport.js"></script>
-    <script src="/resources/js/jquery.base64.js"></script>
-    <script src="/resources/js/bootstrap-table.js"></script>
-    <script src="/resources/js/bootstrap-table-export.js"></script>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/admin/admin.js"></script>
+<script src="/resources/js/admin/bootstrap.min.js"></script>
+<script src="/resources/js/admin/bootstrap-table.js"></script>
+{/literal}

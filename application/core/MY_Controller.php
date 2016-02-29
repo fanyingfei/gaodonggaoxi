@@ -30,13 +30,6 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->display('main/'.$footer);
     }
 
-    public function admin_display($html)
-    {
-        $this->ci_smarty->display('admin/header.html');
-        $this->ci_smarty->display($html);
-        $this->ci_smarty->display('admin/footer.html');
-    }
-
     public function native_display($html)
     {
         $this->ci_smarty->display($html);

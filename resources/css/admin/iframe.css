@@ -1,0 +1,45 @@
+#table td{
+    max-width:300px;
+}
+#table td div{
+    max-height: 80px;
+    overflow-x: hidden;
+    overflow-y:auto;
+}
+.container .table-toolbar{
+    width:800px;
+    float:left;
+    margin-top: 10px;
+}
+.container .table-toolbar .form-group{
+    float:left;
+    margin-right: 20px;
+    margin-bottom: 0px;
+}
+.container .table-toolbar span{
+     float:left;
+    margin-left:5px;
+    margin-top:10px;
+ }
+.form-control{
+    margin-bottom: 0px;
+}
+.table-toolbar button{
+    float:left;
+    margin-right: 20px;
+}
+.table-toolbar button:hover{
+    background-color: #dedede;
+}
+#table td div{
+    font-size: 12px;
+}
+.table-hover th div{
+    font-weight: normal;
+}
+.fixed-table-header{
+    background-color: #ffffff;
+}
+body{
+    overflow: hidden;
+}

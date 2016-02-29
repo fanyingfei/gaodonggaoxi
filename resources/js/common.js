@@ -122,7 +122,7 @@ $(document).ready(function(){
 
     $(".search button").click(function(){
         var search = $("#search").val();
-        $.cookie('search', search);
+        $.cookie('search', search , {path:'/'});
         window.location.href=window.location.href;
     })
 })
