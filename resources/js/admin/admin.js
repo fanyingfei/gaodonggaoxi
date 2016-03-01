@@ -6,7 +6,7 @@ sub_cfg.success = function(result){
 $(".table-toolbar .btn").click(function(){
     var ids = get_selected();
     if(ids == ''){
-        alert('请选择删除项');
+        alert('请选择操作项');
         return false;
     }
 

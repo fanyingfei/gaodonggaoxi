@@ -12,9 +12,8 @@
 </head>
 <body>
 <div class="layout">
-    <div class="logo"></div>
-    <input type="text" name="email" id="email" placeholder="邮箱" value="{$email}"/>
-    <input type="text" name="name" id="name" placeholder="昵称" value="{$name}"/>
+    <a href="/"><div class="logo"></div></a>
+    <input type="text" name="email" id="email" placeholder="邮箱（收到邮件后验证激活账号）" value=""/>
     <div>
         <input type="code" name="code" id="code" placeholder="验证码"/>
         <img id="checkpic" src="/code.php" />
@@ -37,12 +36,11 @@
 
     $("#sub").click(function(){
         var email = $.trim($("#email").val());
-        var name = $.trim($("#name").val());
         var code  = $.trim($("#code").val());
         var password = $.trim($("#password").val());
         var confirm = $.trim($("#confirm").val());
 
-        if(!reg_valid(email,name,password,confirm)){
+        if(!reg_valid(email,password,confirm)){
             return false;
         }
         sub_cfg.data = {
@@ -51,7 +49,7 @@
         ajax_res(sub_cfg);
     })
 
-    function reg_valid(email,name,password,confirm){
+    function reg_valid(email,password,confirm){
         if(email == ''){
             alert('请填写email');
             return false;
@@ -60,20 +58,12 @@
             alert('email格式不正确');
             return false;
         }
-        if(name == ''){
-            alert('请填写昵称');
-            return false;
-        }
-        if((name.length < 3) || (name.length > 20)){
-            alert('昵称长度3-20个字符');
-            return false;
-        }
         if(password == ''){
             alert('请填写密码');
             return false;
         }
-        if((password.length < 6) || (password.length > 50)){
-            alert('密码长度6-50个字符');
+        if((password.length < 6) || (password.length > 30)){
+            alert('密码长度6-30个字符');
             return false;
         }
         if(confirm == ''){

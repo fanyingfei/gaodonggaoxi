@@ -1,3 +1,5 @@
+var max_name_len = 30;
+var min_name_len = 3;
 function ajax_res(obj){
     $.ajax({
         type:'POST',
@@ -66,8 +68,8 @@ function valid(name,email,content){
         alert('请填写昵称');
         return false;
     }
-    if(name.length > 12){
-        alert('昵称过长');
+    if(name.length > max_name_len || name.length < min_name_len){
+        alert('昵称长度3-30个字符');
         return false;
     }
     if(email == ''){
@@ -117,7 +119,7 @@ $(document).ready(function(){
     });
 
     $(".nav li a").click(function(){
-        $.cookie('search', '');
+        $.cookie('search', '' ,{ path : '/' });
     })
 
     $(".search button").click(function(){

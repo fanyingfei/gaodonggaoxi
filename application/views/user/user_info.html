@@ -1,8 +1,69 @@
-<div class="user_info">
+<div class="user_center">
+    <div class="user_menu_left">
+        <h3>个人中心</h3>
+        <ul>
+            <li class="at">
+                <a href="/user/info">个人资料</a>
+            </li>
+            <li>
+                <a href="/user/news">我的消息</a>
+            </li>
+        </ul>
+    </div>
     <div class="user_info_right">
         <h3>个人资料</h3>
-        {$user.name}
-        {$user.email}
+        <div class="person_info">
+            <div>
+                <span class="u_name">{$user.name}</span>
+            </div>
+            <div>
+                <label class="label">电子邮箱</label>
+                <span class="separate"></span>
+                <label class="label">{$user.email}</label>
+            </div>
+            <div>
+                <label class="label">手机</label>
+                <span class="separate"></span>
+                <input name="mobile" type="text" maxlength="16" value="{$user.mobile}">
+            </div>
+            <div>
+                <label class="label">微信</label>
+                <span class="separate"></span>
+                <input name="weixin" type="text" maxlength="16" value="{$user.weixin}">
+            </div>
+            <div>
+                <label class="label">新浪</label>
+                <span class="separate"></span>
+                <input name="sina" type="text" maxlength="16" value="{$user.sina}">
+            </div>
+            <div>
+                <label class="label qq">&nbsp;QQ</label>
+                <span class="separate"></span>
+                <input name="qq" type="text" maxlength="16" value="{$user.qq}">
+            </div>
+            <div>
+                <label class="label">性别</label>
+                <span class="separate"></span>
+                <label class="label">
+                    <select name="sex">
+                        {foreach from=$sex key=key item=value}
+                            <option value="{$key}" {if $user.sex == $key}selected{/if} >{$value}</option>
+                        {/foreach}
+                    </select>
+                </label>
+            </div>
+            <div>
+                <label class="label">年龄</label>
+                <span class="separate"></span>
+                <label class="label">
+                    <select name="age">
+                        {foreach from=$age key=key item=value}
+                        <option value="{$key}" {if $user.age == $key}selected{/if} >{$value}</option>
+                        {/foreach}
+                    </select>
+                </label>
+            </div>
+        </div>
     </div>
 </div>
 <script src="/resources/js/common.js"></script>

@@ -84,7 +84,7 @@ class article extends MY_Controller  {
         //是否拉入黑名单
         $this->load->model('model_black');
         $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单，以后请谨慎发言');
+        if($res) splash('error','你已被拉入黑名单');
 
         $data['type'] = intval($_REQUEST['type']);
         $res  = $this->model_content->save($data);

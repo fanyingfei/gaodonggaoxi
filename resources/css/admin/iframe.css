@@ -3,8 +3,7 @@
 }
 #table td div{
     max-height: 80px;
-    overflow-x: hidden;
-    overflow-y:auto;
+    overflow: hidden;
 }
 .container .table-toolbar{
     width:800px;
@@ -27,6 +26,7 @@
 .table-toolbar button{
     float:left;
     margin-right: 20px;
+    color:#8c8c8c;
 }
 .table-toolbar button:hover{
     background-color: #dedede;
@@ -42,4 +42,10 @@
 }
 body{
     overflow: hidden;
+}
+body,td,td,div,input,select button{
+    font-family: 微软雅黑;
+}
+.container{
+    margin-left:0px;
 }

@@ -39,7 +39,7 @@ class content extends MY_Controller  {
         //得到数据
         $list  = $this->model_content->data_list($p,$limit,$where);
         foreach($list as &$v){
-            $v['u_name'] = md5($v['email']);
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             $v['content'] = strip_tags($v['content'],'<br><img>');
             $v['create_time'] = change_time($v['create_time']);
         }
@@ -58,18 +58,31 @@ class content extends MY_Controller  {
     public function save(){
         //是否拉入黑名单
         $this->load->model('model_black');
+        $this->load->model('model_users');
         $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单，以后请谨慎发言');
+        if($res) splash('error','你已被拉入黑名单');
 
-        $data['name'] = strip_tags(trim($_REQUEST['name']));
-        $data['email'] = strip_tags(trim($_REQUEST['email']));
         $content = trim($_REQUEST['content']);
-        //除了图片其他全去掉看还有无内容
-        valid($data['name'],$data['email'],strip_tags($content,'<img>'));
+        $data['type'] = intval($_REQUEST['type']);
         //保存时要把图片和换行符也保存
         $data['content'] = preg_replace('/(<br\s*?\/?>)+$/i','',strip_tags($content,'<br><img>'));
 
-        $data['type'] = intval($_REQUEST['type']);
+        if(is_login()){
+            //已登陆用户
+            $user_info = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
+            $data['name'] = $user_info['name'];
+            $data['email'] = $user_info['email'];
+        }else{
+            $data['name'] = strip_tags(trim($_REQUEST['name']));
+            $data['email'] = strip_tags(trim($_REQUEST['email']));
+            //除了图片其他全去掉看还有无内容
+            valid($data['name'],$data['email'],strip_tags($content,'<img>'));
+
+            //已经注册过的昵称不能用
+            $res_by_name = $this->model_users->get_user_by_name($data['name']);
+            if(!empty($res_by_name)) splash('error','该昵称已被注册，只限登陆后使用');
+        }
+
         $res  = $this->model_content->save($data);
         if($res){
             splash('success','提交成功');

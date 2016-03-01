@@ -66,8 +66,8 @@
         if(!valid(name,email,content)){
             return false;
         }
-        $.cookie('name', name ,  { expires: 365 });
-        $.cookie('email', email ,  { expires: 365 });
+        $.cookie('name', name ,  { path:'/', expires: 365 });
+        $.cookie('email', email ,  { path:'/', expires: 365 });
         sub_cfg.data = {
             "name":name,"email":email,'content':content,'type':type
         };

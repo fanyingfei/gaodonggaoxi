@@ -5,18 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/admin/admin.css">
     <script src="/resources/js/jquery.js"></script>
+    <script src="/resources/js/jquery.cookie.js"></script>
     <script>
         $(document).ready(function () {
-            $(".menu li").click(function(){
-                $("iframe").attr('src',$(this).attr('data-url'));
+            if($.cookie('cur_path') != undefined && $.cookie('cur_path') != ''){
+                var url = $.cookie('cur_path');
+                $("iframe").attr('src',url);
+                $(".sub-menu li").each(function(){
+                    if($(this).attr('data-url') == url){
+                        $(this).children("a").addClass("select").end().siblings().children('a').removeClass("select");
+                    }
+                })
+            }
+
+            $(".sidebar-list li").click(function(){
+                var url = $(this).attr('data-url');
+                $("iframe").attr('src',url);
+                $.cookie('cur_path', url ,{ path : '/admin' });
+                $(this).children("a").addClass("select").end().siblings().children('a').removeClass("select");
             })
         });
     </script>
 </head>
 <body>
-<div>后台</div>
-<ul class="menu">
-    <li data-url="/admin/content">内容</li>
-</ul>
+<div class="topbar-wrap">
+    <span>管理后台</span>
+    <a target="_blank" href="/">返回首页</a>
+</div>
 <div class="main">
-<iframe src="/admin/content">
+    <div class="sidebar-wrap">
+        <div class="sidebar-title">
+            <h1>菜单</h1>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <li>
+                    <a href="javascript:void(0);">常用操作</a>
+                    <ul class="sub-menu">
+                        <li data-url="/admin/content"><a href="javascript:void(0);">发布管理</a></li>
+                        <li data-url="/admin/user"><a href="javascript:void(0);">用户管理</a></li>
+                        <li data-url="/admin/black"><a href="javascript:void(0);">黑名单管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <iframe src="/admin/content">

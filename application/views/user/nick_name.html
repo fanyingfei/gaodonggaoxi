@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="all" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/resources/css/login.css"/>
+    <script src="/resources/js/jquery.js"></script>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <title>{$title}</title>
+</head>
+<body>
+<div class="layout">
+    <a href="/"><div class="logo"></div></a>
+    <div>请完善如下资料</div>
+    <input type="text" name="name" id="name" placeholder="请输入您的昵称" value="{$name}"/>
+    <p class="info_one">昵称长度3-30个字符，1个中文占1个字符</p>
+    <p class="info_two">提交后不能修改，请谨慎选择</p>
+    <div class="sub" id="sub">确认</div>
+    <div class="bottom-item"><a href="/login">已有昵称？立即登录</a></div>
+    <input type="hidden"  id="unique_id" value="{$unique_id}"/>
+</div>
+</body>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script type="text/javascript">
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/nick/save';
+    sub_cfg.success = function(result){
+        window.location.href='/';
+    };
+
+    $("#sub").click(function(){
+        var id = $.trim($("#unique_id").val());
+        var name = $.trim($("#name").val());
+        if(!nick_valid(name)){
+            return false;
+        }
+        sub_cfg.data = {
+            "name":name,"id":id
+        };
+        ajax_res(sub_cfg);
+    })
+
+    function nick_valid(name){
+        if(name == ''){
+            alert('请填写昵称');
+            return false;
+        }
+        if((name.length < 3) || (name.length > 30)){
+            alert('昵称长度3-30个字符');
+            return false;
+        }
+        return true;
+    }
+</script>
+{/literal}
+</html>

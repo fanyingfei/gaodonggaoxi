@@ -11,11 +11,13 @@ class MY_controller extends CI_Controller {
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ;
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ;
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
+        $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin'];
 
         $this->ci_smarty->assign('name',$name);
         $this->ci_smarty->assign('email',$email);
         $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign('is_login',$is_login);
+        $this->ci_smarty->assign('is_admin',$is_admin);
         $this->ci_smarty->assign($key,$val);
     }
 

@@ -25,7 +25,9 @@ function ajax_response($response){
 
     die($response);
 }
-
+/*
+ * 得到IP地址
+ */
 function get_real_ip(){
     $ip=false;
     if(!empty($_SERVER["HTTP_CLIENT_IP"])){
@@ -44,20 +46,25 @@ function get_real_ip(){
     return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
 
-function valid($name = '' ,$email='' ,$content = ''){
+function valid_name($name){
     if(empty($name)) splash('error','请填写昵称');
-    if(strlen($name) > 15) splash('error','昵称过长');
+    if(utf8_strlen($name) > 20 || utf8_strlen($name) < 3) splash('error','昵称长度3-20个字符');
+}
 
+function valid_email($email){
     if(empty($email)) splash('error','请填写email');
     $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
     if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+}
 
+function valid($name = '' ,$email='' ,$content = ''){
+    valid_name($name);
+    valid_email($email);
     if(empty($content)) splash('error','请填写内容');
 }
 
 function register_valid($data){
     $email = $data['email'];
-    $name = $data['name'];
     $code  = $data['code'];
     $password = $data['password'];
     $confirm = $data['confirm'];
@@ -65,15 +72,10 @@ function register_valid($data){
     if(empty($_SESSION['code'])) splash('error','验证码已过期');
     if(empty($code) || strtolower($code) != strtolower($_SESSION['code'])) splash('error','验证码不正确');
 
-    if(empty($name)) splash('error','请填写昵称');
-    if(strlen($name) > 20 || strlen($name) < 3) splash('error','昵称长度3-20个字符');
-
-    if(empty($email)) splash('error','请填写email');
-    $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
-    if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+    valid_email($email);
 
     if(empty($password)) splash('error','请填写密码');
-    if(strlen($password) > 50 || strlen($password) < 6) splash('error','密码长度6-50个字符');
+    if(strlen($password) > 30 || strlen($password) < 6) splash('error','密码长度6-30个字符');
 
     if(empty($confirm)) splash('error','请确认密码');
     if($confirm != $password) splash('error','前后密码不一致');
@@ -85,7 +87,9 @@ function get_type(){
     $data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>6);
     return empty($data[$self[2]]) ? 1 :  $data[$self[2]];
 }
-
+/*
+ * 转化时间
+ */
 function change_time($time) {
     $time = (int) substr(strtotime($time), 0, 10);
     $int = time() - $time;
@@ -105,7 +109,9 @@ function change_time($time) {
     }
     return $str;
 }
-
+/*
+ * 是否登陆
+ */
 function is_login(){
     if(empty($_SESSION['user_id'])) return false;
     if(!empty($_COOKIE['is_login']) && $_COOKIE['is_login'] == 1){
@@ -113,11 +119,62 @@ function is_login(){
     }
     return false;
 }
-
+/*
+ * 设置COOKIE
+ */
 function my_set_cookie($key,$value){
     setcookie($key,$value,time()+COOKIE_EXPIRE , '/');
 }
-
+/*
+ * COOKIE过期
+ */
 function expire_cookie($key){
     setcookie($key,'',time(),'/');
+}
+/*
+ * 计算中文字符串长度
+ */
+function utf8_strlen($string = '') {
+    // 将字符串分解为单元
+    preg_match_all("/./us", $string, $match);
+    // 返回单元个数
+    return count($match[0]);
+}
+
+function my_send_email($to = '929632454@qq.com',$title = '',$content = '')
+{
+    $email_name = 'xianliao_register@163.com';
+    $email_pass = 'qweasd13145';
+
+    $config['protocol'] = 'smtp';
+    $config['smtp_host'] = 'smtp.163.com';
+    $config['smtp_user'] = $email_name;//这里写上你的163邮箱账户
+    $config['smtp_pass'] = $email_pass;//这里写上你的163邮箱密码
+    $config['mailtype'] = 'html';
+    $config['validate'] = true;
+    $config['priority'] = 1;
+    $config['crlf']  = "\r\n";
+    $config['smtp_port'] = 25;
+    $config['charset'] = 'utf-8';
+    $config['wordwrap'] = TRUE;
+
+    require_once(BASEPATH.'libraries/Email.php');
+    $email = new CI_Email();
+    $email->initialize($config);
+
+    $email->from($email_name);//发件人
+    $email->to($to);  //收件人
+    $email->subject($title);
+    $email->message($content);
+    $res = $email->send();
+}
+
+function get_email_content($user_id,$email,$code){
+    $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate?param='.base64_encode($user_id.'|'.$email.'|'.$code);
+    return '<p>请点击以下链接激活账号</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
+}
+
+function header_index($url = ''){
+    header("Location: /".$url);
+    exit;
 }

@@ -30,6 +30,10 @@
             <a href="/user/info"><span class="user_name">{$name}</span></a>
             <span>|</span>
             <span class="login_out"><a href="/login/login_out">退出</a></span>
+            {if $is_admin == 1}
+                <span>|</span>
+                <span><a href="/admin">后台管理</a></span>
+            {/if}
         {/if}
     </div>
 </div>

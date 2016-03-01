@@ -74,16 +74,30 @@ $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
 //用户中心
 $route['user/info'] = "main/user/user_info";
+$route['user/news'] = "main/user/user_news";
+$route['user/validate'] = "main/user/user_validate";
+$route['nick/save'] = "main/user/nick_save";
 
 $route['default_controller'] = "main/content/xian";
 $route['404_override'] = '';
 
 $route['admin'] = "admin/admin/index";
-$route['admin/content'] = "admin/admin/content_index";
+$route['admin/content'] = "admin/admin/content";
 $route['admin/content_list'] = "admin/admin/content_list";
 $route['admin/content_delete'] = "admin/admin/content_delete";
 $route['admin/content_pass'] = "admin/admin/content_pass";
 $route['admin/content_fail'] = "admin/admin/content_fail";
+
+$route['admin/user'] = "admin/admin/user";
+$route['admin/user_list'] = "admin/admin/user_list";
+$route['admin/user_delete'] = "admin/admin/user_delete";
+$route['admin/user_add_admin'] = "admin/admin/user_add_admin";
+$route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
+
+$route['admin/black'] = "admin/admin/black";
+$route['admin/black_list'] = "admin/admin/black_list";
+$route['admin/black_delete'] = "admin/admin/black_delete";
+
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

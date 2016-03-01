@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/resources/css/admin/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/admin/bootstrap-table.min.css">
+<link rel="stylesheet" href="/resources/css/admin/iframe.css">
+<div class="container">
+    <div class="table-toolbar">
+        <button class="btn" id="remove" data-url="/admin/user_delete">Delete</button>
+        <button class="btn" id="add_admin" data-url="/admin/user_add_admin">Add admin</button>
+        <button class="btn" id="remove_admin" data-url="/admin/user_remove_admin">Remove admin</button>
+    </div>
+    <table id="table"
+           data-toggle="table"
+           data-url="/admin/user_list"
+           data-show-columns="true"
+           data-search="false"
+           data-show-refresh="true"
+           data-show-toggle="false"
+           data-pagination="true"
+           data-side-pagination="server"
+           data-height="600">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-sortable="true" data-field="user_id">ID</th>
+            <th data-field="email">邮箱</th>
+            <th data-field="name">昵称</th>
+            <th data-field="sex">性别</th>
+            <th data-field="age">年龄</th>
+            <th data-field="mobile">手机</th>
+            <th data-field="qq">QQ</th>
+            <th data-field="sina">新浪</th>
+            <th data-field="weixin">微信</th>
+            <th data-sortable="true" data-field="is_admin">是否admin</th>
+            <th data-field="avatar">头像</th>
+            <th data-sortable="true" data-field="ip">ip</th>
+            <th data-field="create_time">注册时间</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/admin/admin.js"></script>
+<script src="/resources/js/admin/bootstrap.min.js"></script>
+<script src="/resources/js/admin/bootstrap-table.js"></script>
+{/literal}

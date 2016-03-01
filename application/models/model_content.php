@@ -12,7 +12,7 @@ class model_content extends CI_Model{
     }
 
     /*
-     * 查找一页的内容
+     * 列表
      */
     public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
@@ -29,7 +29,7 @@ class model_content extends CI_Model{
     }
 
     /*
-  * 得到一个
+  * 得到单条记录
   */
     public function detail($id = 1){
         $sql = 'select * from '.self::TABLE_NAME .' where status = 1 and '.self::PRI_KEY.' = '.$id;
@@ -37,16 +37,17 @@ class model_content extends CI_Model{
     }
 
     /*
-     * 插入
+     * 保存用户提交内容
      */
     public function save($data){
         $data['create_time'] = date('Y-m-d H:i:s');
+        $data['ip'] = get_real_ip();
         $data['user_id'] = empty($_SESSION['user_id']) ? 0 : $_SESSION['user_id'];
         return $this->db->insert(self::TABLE_NAME ,$data);
     }
 
     /*
-     * update good
+     * 点oo或者xx
      */
     public function update($click , $id){
         $sql = 'update '.self::TABLE_NAME ." set $click = $click + 1 where ".self::PRI_KEY ." = $id ";
@@ -54,9 +55,10 @@ class model_content extends CI_Model{
     }
 
     /*
-     * update status
+     * 更新状态
      */
     public function update_status($ids,$status){
+        if(empty($ids) || !isset($status)) return false;
         $sql = 'update '.self::TABLE_NAME ." set status = $status where ".self::PRI_KEY ." in ( $ids )";
         return $this->db->query($sql);
     }
