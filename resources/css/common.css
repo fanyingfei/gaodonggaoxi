@@ -67,14 +67,14 @@ button{
 }
 .title{
     padding:12px 20px;
-    background:#f4f4f4;
+    background:#f9f9f9;
     border-bottom: 1px solid #dedede;;
 }
 .total
 {
     padding:10px 20px;
     overflow: auto;
-    background:#f4f4f4;
+    background:#f9f9f9;
 }
 .nav{
     overflow:auto;
@@ -105,11 +105,6 @@ button{
     border:1px solid #dedede;
     border-top:0;
 }
-.empty{
-    width:1050px;
-    margin:0 auto;
-    overflow: auto;
-}
 .main{
     border-right:1px solid #dedede;
     width:700px;
@@ -117,7 +112,7 @@ button{
 }
 .main .depict{
     font-size: 14px;
-    color:black;
+    color:#8c8c8c;
     padding:10px 20px;
     border-bottom:1px solid #dedede;
 }

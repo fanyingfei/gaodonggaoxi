@@ -3,7 +3,7 @@ html,body{
     padding:0;
     height: 100%;
     font-family: 微软雅黑;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 a{
     text-decoration: none;
@@ -89,4 +89,7 @@ ul, ol {
 }
 .sub-menu li {
     padding-left: 21px;
+}
+.right_iframe{
+    overflow: auto;
 }

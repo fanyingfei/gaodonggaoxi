@@ -942,7 +942,7 @@ class CI_Loader {
 			$is_duplicate = FALSE;
 			foreach ($this->_ci_library_paths as $path)
 			{
-				$filepath = $path.'libraries/'.$subdir.$class.'.php';
+				$filepath = $path.'libraries/'.ucfirst($subdir).$class.'.php';
 
 				// Does the file exist?  No?  Bummer...
 				if ( ! file_exists($filepath))

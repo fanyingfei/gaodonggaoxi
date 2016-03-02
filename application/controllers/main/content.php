@@ -43,9 +43,6 @@ class content extends MY_Controller  {
             $v['content'] = strip_tags($v['content'],'<br><img>');
             $v['create_time'] = change_time($v['create_time']);
         }
-
-        if(empty($list)) parent::empty_html();
-
         //得到总数
         $count = $this->model_content->data_count($where);
         //生成页码
@@ -104,8 +101,8 @@ class content extends MY_Controller  {
     public function xian($p = 1){
         $this->assign('body','xian');
         $this->assign('title','闲话');
-        $this->assign('info','闲话，段子，笑话，糗事，等你来说');
-        $this->assign('keywords','闲话');
+        $this->assign('info','闲话，段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
+        $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
         $this->assign('description','闲话');
         $this->index($p);
     }
@@ -131,7 +128,7 @@ class content extends MY_Controller  {
     public function meizi($p = 1){
         $this->assign('body','meizi');
         $this->assign('title','妹子');
-        $this->assign('info','妹子');
+        $this->assign('info','快来养养眼吧，大把大把的妹子');
         $this->assign('keywords','妹子');
         $this->assign('description','妹子');
         $this->index($p);

@@ -65,14 +65,8 @@ class MY_controller extends CI_Controller {
         $this->assign('body','support');
         $this->assign('msg',$msg);
         $this->ci_smarty->display('main/header.html');
-        $this->ci_smarty->display('support/error.html');
+        $this->ci_smarty->display('error.html');
         exit;
     }
 
-    public function empty_html(){
-        $this->assign('body','support');
-        $this->ci_smarty->display('main/header.html');
-        $this->ci_smarty->display('support/empty.html');
-        exit;
-    }
 }
