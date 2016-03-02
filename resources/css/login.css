@@ -34,6 +34,7 @@ html, body {
     float: right;
     margin-top:20px;
     cursor: pointer;
+    border-radius: 4px;
 }
 .sub{
     margin-top: 40px;

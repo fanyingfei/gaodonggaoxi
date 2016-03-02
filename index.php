@@ -213,6 +213,7 @@ if(substr($complete_url,-4,4) == '.php'){
     $url_array = explode('/',$complete_url);
     $current_url = end($url_array);
     require_once dirname(__FILE__).'/application/controllers/tools/' .$current_url;
+    exit;
 }
 require_once BASEPATH.'core/CodeIgniter.php';
 

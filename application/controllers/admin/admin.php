@@ -124,7 +124,12 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['is_admin'] = empty($v['is_admin']) ? '否' : '是';
             $v['sex'] = $this->sex_data[$v['sex']];
+            $v['is_validate'] = '否';
+            if(!empty($v['is_validate']) && !empty($v['name'])){
+                $v['is_validate'] = '是';
+            }
             $v['avatar'] = empty($v['avatar']) ? '' : "<img src='".$v['avatar']."' />";
+            $v['last_login'] = empty($v['last_login']) ? '' : change_time($v['last_login']);
         }
 
         $total = $this->model_users->data_count($where);

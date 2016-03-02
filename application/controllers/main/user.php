@@ -80,6 +80,7 @@ class user extends MY_Controller  {
         if(empty($one['is_validate']) || empty($one['name'])){
             splash('error','请先激活账号');
         }
+        $this->model_users->update_login_time($one['user_id']);
         $_SESSION['user_id'] = $one['user_id'];
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];

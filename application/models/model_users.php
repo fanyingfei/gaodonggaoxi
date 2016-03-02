@@ -107,6 +107,14 @@ class model_users extends CI_Model{
         $sql = 'update '.self::TABLE_NAME ." set name = '$name' , is_validate = 1 where ".self::PRI_KEY ." = $id";
         return $this->db->query($sql);
     }
+
+    /*
+     * 更新登陆时间
+     */
+    public function update_login_time($id){
+        $sql = 'update '.self::TABLE_NAME ." set last_login = '".date('Y-m-d H:i:s')."'  where ".self::PRI_KEY ." = $id";
+        $this->db->query($sql);
+    }
 }
 ?>
 
