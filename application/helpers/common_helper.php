@@ -57,6 +57,13 @@ function valid_email($email){
     if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
 }
 
+function valid_mobile($mobile){
+    if(empty($mobile)) splash('error','手机号不能为空');
+    if(!preg_match("/1[34578]{1}\d{9}$/",$mobile)){
+        splash('error','请输入正确手机号');
+    }
+}
+
 function valid($name = '' ,$email='' ,$content = ''){
     valid_name($name);
     valid_email($email);
@@ -143,8 +150,8 @@ function utf8_strlen($string = '') {
 
 function my_send_email($to = '929632454@qq.com',$title = '',$content = '')
 {
-    $email_name = 'xianliao_register@163.com';
-    $email_pass = 'qweasd13145';
+    $email_name = EMAIL_NUMBER ;
+    $email_pass = EMAIL_PASSWORD ;
 
     $config['protocol'] = 'smtp';
     $config['smtp_host'] = 'smtp.163.com';
@@ -166,12 +173,13 @@ function my_send_email($to = '929632454@qq.com',$title = '',$content = '')
     $email->to($to);  //收件人
     $email->subject($title);
     $email->message($content);
-    $res = $email->send();
+    return $email->send();
 }
 
-function get_email_content($user_id,$email,$code){
-    $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate?param='.base64_encode($user_id.'|'.$email.'|'.$code);
-    return '<p>请点击以下链接激活账号</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
+function get_email_content($user_id,$email){
+    $data = array('user_id'=>$user_id,'email'=>$email,'time'=>time());
+    $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate?param='.base64_encode(json_encode($data));
+    return '<p>请点击以下链接激活账号，24小时有效</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
 }
 
 function header_index($url = ''){

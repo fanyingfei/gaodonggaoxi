@@ -29,6 +29,14 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/nick/save';
     sub_cfg.success = function(result){
+        if(result.data != '' && result.data.op == 1){
+            if(confirm(result.msg)){
+                window.location.href='/login';
+                return true;
+            }
+        }else{
+            alert(result.msg);
+        }
         window.location.href='/';
     };
 

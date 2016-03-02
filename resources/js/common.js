@@ -11,7 +11,7 @@ function ajax_res(obj){
                 alert(result.msg);
                 return false;
             }
-            obj.success(result.data);
+            obj.success(result);
         },
         error:function (){}
     })

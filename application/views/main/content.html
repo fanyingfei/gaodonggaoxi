@@ -44,7 +44,6 @@
     <input type="hidden" id="type" value="{$type}" />
 </div>
 {literal}
-<script src="/resources/js/common.js"></script>
 <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
 <script charset="utf-8" src="/kindeditor/emoticons.js"></script>
 <script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
@@ -53,6 +52,7 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/content/save';
     sub_cfg.success = function(result){
+        alert(result.msg);
         window.location.href=window.location.href;
     };
 

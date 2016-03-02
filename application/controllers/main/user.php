@@ -30,7 +30,7 @@ class user extends MY_Controller  {
             header_index('login');
         }
         $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
-        if(empty($user)) header_index();
+        if(empty($user)) parent::error_msg();
 
         $sex = array('M'=>'男','W'=>'女','U'=>'未知');
         $age = array('');
@@ -40,7 +40,7 @@ class user extends MY_Controller  {
         $this->assign('user',$user);
         $this->assign('sex',$sex);
         $this->assign('age',$age);
-        $this->assign('title','用户中心');
+        $this->assign('title','用户中心-个人资料');
         $this->assign('body','person_center');
         $this->native_display('main/header.html');
         $this->native_display('user/user_info.html');
@@ -51,17 +51,9 @@ class user extends MY_Controller  {
             header_index('login');
         }
         $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
-        if(empty($user)) header_index();
+        if(empty($user)) parent::error_msg();
 
-        $sex = array('M'=>'男','W'=>'女','U'=>'未知');
-        $age = array('');
-        for($i = 10 ; $i < 90 ; $i++){
-            array_push($age,$i);
-        }
-        $this->assign('user',$user);
-        $this->assign('sex',$sex);
-        $this->assign('age',$age);
-        $this->assign('title','用户中心');
+        $this->assign('title','用户中心-我的消息');
         $this->assign('body','person_center');
         $this->native_display('main/header.html');
         $this->native_display('user/user_news.html');
@@ -135,9 +127,13 @@ class user extends MY_Controller  {
         $data['password'] = md5($data['password'].ENCRYPTION);
         $data['user_id'] = $this->model_users->save($data);
         if($data['user_id']){
-            $email_content = get_email_content($data['user_id'],$data['email'],$code);
-            my_send_email($data['email'],'账号激活',$email_content);
-            splash('success','注册成功，收到邮件后请激活账号');
+            $email_content = get_email_content($data['user_id'],$data['email']);
+            $res = my_send_email($data['email'],'账号激活',$email_content);
+            if($res){
+                splash('success','注册成功，收到邮件后请激活账号');
+            }else{
+                splash('success','注册成功，邮件发送失败，请联系邮箱 '.EMAIL_NUMBER);
+            }
         }else{
             splash('error','注册失败,请重试');
         }
@@ -147,15 +143,18 @@ class user extends MY_Controller  {
      * 激活账号，填昵称页面
      */
     public function user_validate(){
-        $get_str = base64_decode($_REQUEST['param']);
-        $param = explode('|',$get_str);
+        $param = json_decode(base64_decode($_REQUEST['param']),true);
 
-        $user_id = intval($param[0]);
+        $time = $param['time'];
+        if(time() - $time > 24*3600){
+            parent::error_msg('链接已失效');
+        }
+        $user_id = intval($param['user_id']);
         if(empty($user_id)){
-            $this->native_display('index.html'); exit;
+            parent::error_msg('');
         }
         $user_info = $this->model_users->get_user_by_user_id($user_id);
-        if(empty($user_info) || $user_info['email'] != $param[1]){
+        if(empty($user_info) || $user_info['email'] != $param['email']){
             $this->native_display('index.html'); exit;
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
@@ -180,13 +179,36 @@ class user extends MY_Controller  {
         }
 
         $res_by_name = $this->model_users->get_user_by_name($name);
-        if(!empty($res_by_name)) splash('error','该昵称已被注册，不可使用');
+        if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
         $res = $this->model_users->user_validate($id,$name);
         if($res){
-            splash('sucess','资料完善成功,请重试');
+            splash('sucess','激活成功，立即登录',array('op'=>1));
         }else{
-            splash('error','资料完善失败,请重试');
+            splash('error','激活失败,请重试');
         }
+    }
+
+    public function info_save(){
+        if(!is_login()) header_index();
+        $user_id = $_SESSION['user_id'];
+        if(empty($user_id)) header_index();
+        $data['mobile'] = trim(strip_tags($_REQUEST['mobile']));
+        $data['weixin'] = trim(strip_tags($_REQUEST['weixin']));
+        $data['sina'] = trim(strip_tags($_REQUEST['sina']));
+        $data['age'] = trim(strip_tags($_REQUEST['age']));
+        $data['sex'] = trim(strip_tags($_REQUEST['sex']));
+        $data['qq'] = trim(strip_tags($_REQUEST['qq']));
+        if(!empty($data['mobile'])) valid_mobile($data['mobile']);
+        $res = $this->model_users->update_user_info($user_id,$data);
+        if($res){
+            splash('sucess','保存成功');
+        }else{
+            splash('error','保存失败,请重试');
+        }
+    }
+
+    public function user_send_email(){
+
     }
 
 }

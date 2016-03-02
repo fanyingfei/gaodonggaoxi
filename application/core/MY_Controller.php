@@ -61,8 +61,18 @@ class MY_controller extends CI_Controller {
         }
     }
 
-    public function error_msg($msg){
+    public function error_msg($msg = ''){
+        $this->assign('body','support');
         $this->assign('msg',$msg);
-        $this->ci_smarty->display('index.html');
+        $this->ci_smarty->display('main/header.html');
+        $this->ci_smarty->display('support/error.html');
+        exit;
+    }
+
+    public function empty_html(){
+        $this->assign('body','support');
+        $this->ci_smarty->display('main/header.html');
+        $this->ci_smarty->display('support/empty.html');
+        exit;
     }
 }

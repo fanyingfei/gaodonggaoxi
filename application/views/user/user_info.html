@@ -17,35 +17,35 @@
                 <span class="u_name">{$user.name}</span>
             </div>
             <div>
-                <label class="label">电子邮箱</label>
+                <label class="label">邮箱</label>
                 <span class="separate"></span>
                 <label class="label">{$user.email}</label>
             </div>
             <div>
                 <label class="label">手机</label>
                 <span class="separate"></span>
-                <input name="mobile" type="text" maxlength="16" value="{$user.mobile}">
+                <input name="mobile" id="mobile" type="text" maxlength="16" value="{$user.mobile}">
             </div>
             <div>
                 <label class="label">微信</label>
                 <span class="separate"></span>
-                <input name="weixin" type="text" maxlength="16" value="{$user.weixin}">
+                <input name="weixin" id="weixin" type="text" maxlength="16" value="{$user.weixin}">
             </div>
             <div>
                 <label class="label">新浪</label>
                 <span class="separate"></span>
-                <input name="sina" type="text" maxlength="16" value="{$user.sina}">
+                <input name="sina" id="sina" type="text" maxlength="16" value="{$user.sina}">
             </div>
             <div>
                 <label class="label qq">&nbsp;QQ</label>
                 <span class="separate"></span>
-                <input name="qq" type="text" maxlength="16" value="{$user.qq}">
+                <input name="qq"  id="qq" type="text" maxlength="16" value="{$user.qq}">
             </div>
             <div>
                 <label class="label">性别</label>
                 <span class="separate"></span>
                 <label class="label">
-                    <select name="sex">
+                    <select name="sex" id="sex">
                         {foreach from=$sex key=key item=value}
                             <option value="{$key}" {if $user.sex == $key}selected{/if} >{$value}</option>
                         {/foreach}
@@ -56,16 +56,38 @@
                 <label class="label">年龄</label>
                 <span class="separate"></span>
                 <label class="label">
-                    <select name="age">
+                    <select name="age" id="age">
                         {foreach from=$age key=key item=value}
                         <option value="{$key}" {if $user.age == $key}selected{/if} >{$value}</option>
                         {/foreach}
                     </select>
                 </label>
             </div>
+            <p id="submit" class="c_subbutton">保&nbsp;存</p>
         </div>
     </div>
 </div>
 <script src="/resources/js/common.js"></script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/user/save';
+    sub_cfg.success = function(result){
+        alert('保存成功');
+    };
+
+    $("#submit").click(function(){
+        var mobile = $.trim($("#mobile").val());
+        var weixin = $.trim($("#weixin").val());
+        var sina = $.trim($("#sina").val());
+        var age = $.trim($("#age").val());
+        var sex = $.trim($("#sex").val());
+        var qq = $.trim($("#qq").val());
+
+        sub_cfg.data = {
+            "mobile":mobile,"weixin":weixin,'sina':sina,'age':age,"sex":sex,'qq':qq
+        };
+        ajax_res(sub_cfg);
+    })
+</script>
 </body>
 </html>

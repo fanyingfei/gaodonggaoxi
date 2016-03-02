@@ -77,6 +77,13 @@ class model_users extends CI_Model{
     }
 
     /*
+     * 用户信息更新
+     */
+    public function update_user_info($user_id,$data){
+        return $this->db->update(self::TABLE_NAME , $data, array(self::PRI_KEY =>$user_id));
+    }
+
+    /*
      * update admin
      */
     public function update_admin($ids,$is_admin){

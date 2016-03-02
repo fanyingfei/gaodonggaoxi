@@ -179,6 +179,9 @@ if (defined('ENVIRONMENT'))
 
     define('COOKIE_EXPIRE',3600*24*365);
 
+    define('EMAIL_NUMBER','xianliao_register@163.com');
+    define('EMAIL_PASSWORD','qweasd13145');
+
 	// The path to the "application" folder
 	if (is_dir($application_folder))
 	{

@@ -76,6 +76,7 @@ $route['register/save'] = "main/user/register_save";
 $route['user/info'] = "main/user/user_info";
 $route['user/news'] = "main/user/user_news";
 $route['user/validate'] = "main/user/user_validate";
+$route['user/save'] = "main/user/info_save";
 $route['nick/save'] = "main/user/nick_save";
 
 $route['default_controller'] = "main/content/xian";

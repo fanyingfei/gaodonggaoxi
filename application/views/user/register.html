@@ -31,6 +31,7 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/register/save';
     sub_cfg.success = function(result){
+        alert(result.msg);
         window.location.href='/';
     };
 

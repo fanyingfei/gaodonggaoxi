@@ -40,7 +40,7 @@ class article extends MY_Controller  {
         //得到数据
         $list  = $this->model_content->data_list($p,$limit,$where);
         foreach($list as &$v){
-            $v['u_name'] = md5($v['email']);
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
             $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];
             $v['create_time'] = change_time($v['create_time']);
@@ -60,7 +60,9 @@ class article extends MY_Controller  {
     public function detail($id){
         $id = intval($id);
         $detail = $this->model_content->detail($id);
+        if(empty($detail)) parent::error_msg();
         $detail['content'] = strip_tags($detail['content'],'<img><p><br>');
+        $detail['title'] = empty($detail['title']) ? mb_substr(strip_tags($detail['content']), 0, 20, 'utf-8').'...' : $detail['title'];
         $this->assign('data',$detail);
         $this->assign('body','myth');
         $this->assign('title','神话');

@@ -43,6 +43,9 @@ class content extends MY_Controller  {
             $v['content'] = strip_tags($v['content'],'<br><img>');
             $v['create_time'] = change_time($v['create_time']);
         }
+
+        if(empty($list)) parent::empty_html();
+
         //得到总数
         $count = $this->model_content->data_count($where);
         //生成页码
@@ -85,7 +88,7 @@ class content extends MY_Controller  {
 
         $res  = $this->model_content->save($data);
         if($res){
-            splash('success','提交成功');
+            splash('success','提交成功，审核后自动发布');
         }else{
             splash('error','提交失败');
         }
