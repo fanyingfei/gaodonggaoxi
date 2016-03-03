@@ -4922,7 +4922,7 @@ KEditor.prototype = {
 		}
 		var htmlList = [];
 		K.each(self.items, function(i, name) {
-            if(name == 'image' || name == 'emoticons'){
+            if(name == 'image' || name == 'emoticons' || name == 'link'){
                 htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
                 htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span><span class="ke-outline-name ke-toolbar-icon">'+self.lang(name)+'</span></span>');
             }

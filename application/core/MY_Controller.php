@@ -8,13 +8,15 @@ class MY_controller extends CI_Controller {
     public function assign($key,$val)
     {
         $is_login = is_login() ? 1 : 0;
-        $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ;
-        $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ;
-        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin'];
+        $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
+        $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
+        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
+        $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
+        $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
 
         $this->ci_smarty->assign('name',$name);
         $this->ci_smarty->assign('email',$email);
+        $this->ci_smarty->assign('avatar',$avatar);
         $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign('is_login',$is_login);
         $this->ci_smarty->assign('is_admin',$is_admin);
@@ -37,32 +39,15 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->display($html);
     }
 
-    /*
-    * 记录
-    */
-    public function record( $table_name = 'model_content'){
-        $id = intval($_REQUEST['id']);
-        $click = $_REQUEST['click'];
-        if(!in_array($click,array('good','bad'))) splash('error','Try again');
-        $type = intval($_REQUEST['type']);
-        if(empty($id) || empty($click)) splash('error','Try again');
-        $this->load->model('model_record');
-        $res = $this->model_record->is_has($id,$type);
-        if(!$res){
-            splash('error','You are voted');
-        }
-        $data = array('ip'=>get_real_ip(),'type'=>$type,'row_id'=>$id);
-        $list  = $this->model_record->save($data);
-        $res  = $this->$table_name->update($click,$id);
-        if($res){
-            splash('success','Think you');
-        }else{
-            splash('error','Try again');
-        }
+    public function user_display($html)
+    {
+        $this->ci_smarty->display('main/header.html');
+        $this->ci_smarty->display('user/menu.html');
+        $this->ci_smarty->display($html);
     }
 
     public function error_msg($msg = ''){
-        $this->assign('body','support');
+        $this->assign('body','error');
         $this->assign('msg',$msg);
         $this->ci_smarty->display('main/header.html');
         $this->ci_smarty->display('error.html');

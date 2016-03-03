@@ -177,10 +177,10 @@ if (defined('ENVIRONMENT'))
 
     define('ENCRYPTION','fanyingfei');
 
-    define('COOKIE_EXPIRE',3600*24*365);
+    define('COOKIE_EXPIRE',3600*24*30);
 
-    define('EMAIL_NUMBER','xianliao_register@163.com');
-    define('EMAIL_PASSWORD','qweasd13145');
+    define('EMAIL_NUMBER','fanfan_zone@163.com');
+    define('EMAIL_PASSWORD','qweasd19880722');
 
 	// The path to the "application" folder
 	if (is_dir($application_folder))

@@ -53,8 +53,14 @@ ul{
     color:#8c8c8c;
     font-size:12px;
 }
-.oo:hover,.xx:hover{
+.oo:hover{
     color:red;
+}
+.xx:hover{
+    color:#0000ff;
+}
+.reply:hover{
+    text-decoration: underline;
 }
 button{
     border:1px solid #dedede;
@@ -123,7 +129,7 @@ button{
     border-top:1px solid #dedede;
     margin:0 20px;
 }
-.one.first , .list_one.first{
+.one.first{
     border-top:0;
 }
 .one .user{
@@ -140,7 +146,7 @@ button{
     color:#6c6c6c;
     font-weight: bold;
     word-wrap: break-word;
-    max-height: 40px;
+    max-height: 20px;
     overflow: hidden;
 }
 .one .content img{
@@ -171,8 +177,11 @@ button{
     margin:0 20px;
 }
 .list_one .article_title a{
-    font-size:14px;
-    color:#3c3c3c;
+    font-size:18px;
+    color:#EA4335;
+}
+.list_one .article_title a:hover{
+    color:#4285F4;
 }
 .list_one .article_desc{
     margin: 5px 0;
@@ -504,6 +513,50 @@ button:hover{
     font-size: 16px;
     box-shadow: none;
 }
-.support{
+.error{
     border:0;
+}
+.ke-dialog-body .ke-dialog-row:last-child{
+    display: none;
+}
+.one .content p:first-child a{
+    color:#4285f4;
+}
+.reply_main{
+    height: 100px;
+    border-top:1px solid #dedede;
+    clear:both;
+    margin:0 20px;
+}
+.user_center .avatar_info{
+    width:460px;
+    float:left;
+}
+.user_center .avatar_info input{
+    width:380px;
+}
+.user_center .person_info .avatar_img{
+    float:left;
+    width:100px;
+    height: 100px;
+    border-radius:4px;
+    border:1px solid #dedede;
+    padding:0.5px;
+}
+.user_center .avatar_img img{
+    border-radius:4px;
+    width:100%;
+    height: 100%;
+}
+.user_center .person_info .op{
+    clear:both;
+}
+.user_center  .op .c_subbutton{
+    margin-right:20px;
+}
+.op #show{
+    background-color:#4285f4;
+}
+.op #show:hover{
+    background-color:#4265a4;
 }

@@ -9,7 +9,7 @@
         {if $list|count > 2}<div class="pagination page-top">{$page}</div>{/if}
 
         {foreach from=$list key=key item=one}
-        <div class="list_one {if $key == 0 }first{/if}">
+        <div class="list_one{if $key == 0 } first{/if}">
             <div class="article_title">
                 <p>
                     <a href="/myth/detail/{$one.con_id}">{$one.title}</a>
@@ -29,8 +29,9 @@
                 </p>
                 <p class="right click">
                     <span class="response"></span>
-                    <a class="oo" data-id="{$one.con_id}">oo</a>[<span class="good">{$one.good}</span>]
-                    <a class="xx" data-id="{$one.con_id}">xx</a>[<span class="bad">{$one.bad}</span>]
+                    <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
+                    <a class="xx" title="反对" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                    <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span>{$one.reply}</span>]
                 </p>
             </div>
         </div>
@@ -60,7 +61,7 @@
 <script>KindEditor.ready(function(K) { window.editor = K.create('#content');});</script>
 <script>
     var sub_cfg = {};
-    sub_cfg.requestUrl = '/article/save';
+    sub_cfg.requestUrl = '/common/save';
     sub_cfg.success = function(result){
         alert(result.msg);
         window.location.href=window.location.href;

@@ -5935,7 +5935,7 @@ KindEditor.lang({
 	tablecell : '单元格',
 	hr : '插入横线',
 	emoticons : '表情',
-	link : '超级链接',
+	link : '链接',
 	unlink : '取消超级链接',
 	fullscreen : '全屏显示',
 	about : '关于',

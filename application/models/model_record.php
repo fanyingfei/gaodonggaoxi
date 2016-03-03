@@ -24,6 +24,7 @@ class model_record extends CI_Model{
      * 插入记录
      */
     public function save($data){
+        $data['ip'] = get_real_ip();
         $data['create_time'] = date('Y-m-d H:i:s');
         return $this->db->insert(self::TABLE_NAME ,$data);
     }

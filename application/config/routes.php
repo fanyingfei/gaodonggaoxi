@@ -51,20 +51,22 @@ $route['wen/(:num)'] = "main/content/wen/$1";
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";
 //神话
-$route['myth'] = "main/article/myth";
-$route['myth/(:num)'] = "main/article/index/$1";
-//详情
-$route['myth/detail'] = "main/article/detail";
-$route['myth/detail/(:num)'] = "main/article/detail/$1";
+$route['myth'] = "main/content/myth";
+$route['myth/(:num)'] = "main/content/myth/$1";
+$route['myth/detail'] = "main/content/myth";
+$route['myth/detail/(:num)'] = "main/content/myth_detail/$1";
 //渣渣说
-$route['zzs'] = "main/article/zzs";
-$route['zzs/detail'] = "main/article/detail";
-$route['zzs/(:num)'] = "main/article/zzs/$1";
-$route['zzs/detail/(:num)'] = "main/article/zzs/$1";
-//点赞，保存
-$route['content/comment'] = "main/content/comment";
+$route['zzs'] = "main/content/zzs";
+$route['zzs/detail'] = "main/content/zzs";
+$route['zzs/(:num)'] = "main/content/zzs/$1";
+$route['zzs/detail/(:num)'] = "main/content/zzs_detail/$1";
+//回复列表，回复
+$route['reply'] = "main/content/reply_list";
+$route['reply/save'] = "main/content/reply_save";
+//保存
 $route['content/save'] = "main/content/save";
-$route['article/save'] = "main/article/save";
+//点赞记录
+$route['record'] = "main/content/record";
 //登录
 $route['login'] = "main/user/login_index";
 $route['login/login_in'] = "main/user/login_in";
@@ -75,9 +77,11 @@ $route['register/save'] = "main/user/register_save";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 $route['user/news'] = "main/user/user_news";
+$route['user/avatar'] = "main/user/user_avatar";
 $route['user/validate'] = "main/user/user_validate";
 $route['user/save'] = "main/user/info_save";
 $route['nick/save'] = "main/user/nick_save";
+$route['avatar/save'] = "main/user/avatar_save";
 
 $route['default_controller'] = "main/content/xian";
 $route['404_override'] = '';

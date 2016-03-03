@@ -13,7 +13,9 @@ function ajax_res(obj){
             }
             obj.success(result);
         },
-        error:function (){}
+        error:function (){
+            alert('提交失败,请刷新重试');
+        }
     })
 }
 
@@ -87,7 +89,7 @@ function valid(name,email,content){
     return true;
 }
 $(document).ready(function(){
-    var comment_url = '/content/comment';
+    var comment_url = '/record';
 
     $(".oo").click(function(){
         click_good(comment_url,this);
@@ -126,5 +128,38 @@ $(document).ready(function(){
         var search = $("#search").val();
         $.cookie('search', search , {path:'/'});
         window.location.href=window.location.href;
+    })
+
+    $("a.reply").click(function(){
+        var obj = $(this);
+        var id = obj.attr('data-id');
+        $.ajax({
+            type:'POST',
+            data:{
+                "id":id
+            },
+            url:'/reply',
+            dataType:'json',
+            success:function(result){
+                if(result.status == 'error'){
+                    alert(result.msg);
+                    return false;
+                }
+                if(obj.parents('.one').next().hasClass('reply_main')){
+                    obj.text('↓回复');
+                    obj.parents('.one').next('.reply_main').remove();
+                }else{
+                    obj.text('↑回复');
+                    var html = '<div class="reply_main">';
+
+                    html +='<textarea placeholder="说点什么吧"></textarea>'
+                    html += '</div>';
+                    obj.parents('.one').after(html);
+                }
+            },
+            error:function (){
+                alert('提交失败,请刷新重试');
+            }
+        })
     })
 })

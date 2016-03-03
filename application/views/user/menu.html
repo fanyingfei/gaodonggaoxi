@@ -1,0 +1,15 @@
+<div class="user_center">
+    <div class="user_menu_left">
+        <h3>个人中心</h3>
+        <ul>
+            <li {if $select == 1}class="at"{/if} >
+            <a href="/user/info">个人资料</a>
+            </li>
+            <li {if $select == 2}class="at"{/if} >
+            <a href="/user/avatar">修改头像</a>
+            </li>
+            <li {if $select == 3}class="at"{/if} >
+            <a href="/user/news">我的消息</a>
+            </li>
+        </ul>
+    </div>

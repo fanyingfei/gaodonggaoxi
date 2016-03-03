@@ -40,10 +40,25 @@ class user extends MY_Controller  {
         $this->assign('user',$user);
         $this->assign('sex',$sex);
         $this->assign('age',$age);
+        $this->assign('select',1);
         $this->assign('title','用户中心-个人资料');
         $this->assign('body','person_center');
-        $this->native_display('main/header.html');
-        $this->native_display('user/user_info.html');
+        $this->user_display('user/user_info.html');
+    }
+
+    public function user_avatar(){
+        if(!is_login()){
+            header_index('login');
+        }
+        $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
+        if(empty($user)) parent::error_msg();
+        $avatar = empty($user['avatar']) ? '' : $user['avatar'];
+
+        $this->assign('select',2);
+        $this->assign('avatar',$avatar);
+        $this->assign('title','用户中心-修改头像');
+        $this->assign('body','person_center');
+        $this->user_display('user/user_avatar.html');
     }
 
     public function user_news(){
@@ -53,10 +68,10 @@ class user extends MY_Controller  {
         $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
         if(empty($user)) parent::error_msg();
 
+        $this->assign('select',3);
         $this->assign('title','用户中心-我的消息');
         $this->assign('body','person_center');
-        $this->native_display('main/header.html');
-        $this->native_display('user/user_news.html');
+        $this->user_display('user/user_news.html');
     }
 
     public function login_index($param=''){
@@ -85,10 +100,13 @@ class user extends MY_Controller  {
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];
         $_SESSION['is_admin'] = empty($one['is_admin']) ? 0 : $one['is_admin'];
+        if(!empty( $one['avatar'])) $_SESSION['avatar'] = $one['avatar'];
 
         my_set_cookie('is_login',1);
         my_set_cookie('name', $one['name']);
         my_set_cookie('email',  $one['email']);
+        my_set_cookie('PHPSESSID',session_id());
+
         splash('success','');
     }
 
@@ -148,15 +166,14 @@ class user extends MY_Controller  {
 
         $time = $param['time'];
         if(time() - $time > 24*3600){
-            parent::error_msg('链接已失效');
+            parent::error_msg('链接已失效，请联系'.EMAIL_NUMBER .'重新发送');
         }
         $user_id = intval($param['user_id']);
-        if(empty($user_id)){
-            parent::error_msg('');
-        }
+        if(empty($user_id)) parent::error_msg();
+
         $user_info = $this->model_users->get_user_by_user_id($user_id);
         if(empty($user_info) || $user_info['email'] != $param['email']){
-            $this->native_display('index.html'); exit;
+            parent::error_msg();
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
             header_index('login');
@@ -170,10 +187,10 @@ class user extends MY_Controller  {
         $id = intval($_REQUEST['id']);
         $name = trim(strip_tags($_REQUEST['name']));
 
-        if(empty($id) || empty($name)) header_index();
+        if(empty($id) || empty($name)) parent::error_msg();
 
         $user_info = $this->model_users->get_user_by_user_id($id);
-        if(empty($user_info)) header_index();
+        if(empty($user_info)) parent::error_msg();
 
         if(!empty($user_info['name']) && !empty($user_info['is_validate'])){
             splash('error','该账号已激活');
@@ -190,9 +207,10 @@ class user extends MY_Controller  {
     }
 
     public function info_save(){
-        if(!is_login()) header_index();
+        //没有登陆直接跳登陆页
+        if(!is_login()) header_index('login');
         $user_id = $_SESSION['user_id'];
-        if(empty($user_id)) header_index();
+        if(empty($user_id)) parent::error_msg();
         $data['mobile'] = trim(strip_tags($_REQUEST['mobile']));
         $data['weixin'] = trim(strip_tags($_REQUEST['weixin']));
         $data['sina'] = trim(strip_tags($_REQUEST['sina']));
@@ -202,6 +220,20 @@ class user extends MY_Controller  {
         if(!empty($data['mobile'])) valid_mobile($data['mobile']);
         $res = $this->model_users->update_user_info($user_id,$data);
         if($res){
+            splash('sucess','保存成功');
+        }else{
+            splash('error','保存失败,请重试');
+        }
+    }
+
+    public function avatar_save(){
+        if(!is_login()) header_index('login');
+        $user_id = $_SESSION['user_id'];
+        $data['avatar'] = trim(strip_tags($_REQUEST['avatar']));
+        if(empty($data['avatar'])) splash('error','请输入图片url');
+        $res = $this->model_users->update_user_info($user_id,$data);
+        if($res){
+            $_SESSION['avatar'] = $data['avatar'];
             splash('sucess','保存成功');
         }else{
             splash('error','保存失败,请重试');

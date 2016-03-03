@@ -60,7 +60,7 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $v['content'] = strip_tags($v['content'],'<br><img>');
+            $v['content'] = strip_tags($v['content'],'<br><img><a>');
             $v['create_time'] = change_time($v['create_time']);
             $v['type'] = $this->type_data[$v['type']];
         }
