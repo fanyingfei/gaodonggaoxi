@@ -30,6 +30,14 @@ class model_reply extends CI_Model{
     }
 
     /*
+     * 点oo或者xx
+     */
+    public function update($click , $id){
+        $sql = 'update '.self::TABLE_NAME ." set $click = $click + 1 where ".self::PRI_KEY ." = $id ";
+        return $this->db->query($sql);
+    }
+
+    /*
      * 删除
      */
     public function delete($ids){

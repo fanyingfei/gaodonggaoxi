@@ -54,4 +54,20 @@ class MY_controller extends CI_Controller {
         exit;
     }
 
+    public function get_user_avatar($list){
+        if(empty($list)) return array();
+
+        $user_column = array_unique(array_column($list , 'user_id'));
+        foreach($user_column as $key=>$v){
+            if(empty($v)) unset($user_column[$key]);
+        }
+        if(empty($user_column)) return array();
+
+        $this->load->model('model_users');
+        $user_res = $this->model_users->get_user_list($user_column);
+        if(empty($user_res))  return array();
+
+        return array_column($user_res,'avatar','user_id');
+    }
+
 }

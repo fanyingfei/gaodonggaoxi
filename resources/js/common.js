@@ -88,16 +88,44 @@ function valid(name,email,content){
     }
     return true;
 }
-$(document).ready(function(){
-    var comment_url = '/record';
 
-    $(".oo").click(function(){
+function show_play(){
+    $(".play").each(function(){
+        width = $(this).prev().width();
+        height = $(this).prev().height();
+        $(this).css("width",width+'px');
+        $(this).css("height",height+'px');
+        $(this).css("line-height",height+'px');
+        $(this).css("margin-top",'-'+parseFloat(height + 4)+'px');
+        $(this).show();
+    });
+}
+
+//资源加载完成
+window.onload=function(){
+    show_play();
+}
+
+//DOM渲染完成
+$(document).ready(function(){
+    var comment_url = '/content/record';
+    var reply_url = '/reply/record'
+
+    $(".oo_xx .oo").click(function(){
         click_good(comment_url,this);
     })
 
-    $(".xx").click(function(){
+    $(".oo_xx .xx").click(function(){
         click_bad(comment_url,this);
     })
+
+    $("body").on("click", '.reply_main .oo', function(){
+        click_good(reply_url,this);
+    });
+
+    $("body").on("click", '.reply_main .xx', function(){
+        click_bad(reply_url,this);
+    });
 
     $("#top").click(function(){
         $('html,body').animate({scrollTop: 0}, 500);
@@ -124,6 +152,17 @@ $(document).ready(function(){
         $.cookie('search', '' ,{ path : '/' });
     })
 
+    $(".sina_show").dblclick(function(){
+        window.open($(this).attr('large-data'));
+    })
+
+    $(".play").click(function(){
+        obj = $(this).prev('img');
+        src = obj.attr('ori-data');
+        obj.attr('src',src);
+        $(this).hide();
+    })
+
     $(".search button").click(function(){
         var search = $("#search").val();
         $.cookie('search', search , {path:'/'});
@@ -145,15 +184,13 @@ $(document).ready(function(){
                     alert(result.msg);
                     return false;
                 }
-                if(obj.parents('.one').next().hasClass('reply_main')){
+                if(obj.parents('.one').next().hasClass('reply_wapper')){
                     obj.text('↓回复');
-                    obj.parents('.one').next('.reply_main').remove();
+                    obj.parents('.one').next('.reply_wapper').remove();
                 }else{
                     obj.text('↑回复');
-                    var html = '<div class="reply_main">';
-
-                    html +='<textarea placeholder="说点什么吧"></textarea>'
-                    html += '</div>';
+                    obj.parent().children('.reply_count').text(result.data.list.length);
+                    var html = reply_list(result);
                     obj.parents('.one').after(html);
                 }
             },
@@ -162,4 +199,56 @@ $(document).ready(function(){
             }
         })
     })
+
+    function reply_list(result){
+        var html = '<div class="reply_wapper"><hr class="hr_replay"><div class="reply_main">';
+        if(result.data.list != ''){
+            var count = result.data.list.length;
+            html += '<div class="reply_title">回复</div>';
+            $.each(result.data.list, function(k, v){
+                html += '<div class="reply_one">';
+                html += '<div class="reply_avatar left"><img src="'+v.avatar+'" /></div>';
+                html += '<div class="reply_content left">';
+                html += '<p"><span  class="r_name">'+v.name+'</span><span class="time right">#'+(count - k)+'</span></p>';
+                html += '<p class="r_comment">'+v.content+'</p>';
+                html += '<p class="click">';
+                html += '<span class="time">'+ v.create_time+'</span>';
+                html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+                html += '<span class="r_ta" data-id="'+ v.user_id+'">@Ta</span>';
+                html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+                html += '<a class="oo" title="支持" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
+                html += '<span>&nbsp;&nbsp;</span>';
+                html += '<a class="xx" title="反对" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
+                html += '<span>&nbsp;&nbsp;</span>';
+                html += '<span class="response"></span></p>';
+                html += '</div>';
+                html += '</div>';
+            });
+        }else{
+            html += '<div class="reply_title">还没有评论</div>';
+        }
+
+        if(result.data.is_login == 1){
+            html += '<div class="reply_comment">';
+            html += '<p>'+result.data.name+'</p>';
+            html += '<div class="reply_avatar left"><img src="'+result.data.avatar+'" /></div>';
+            html += '<div class="textarea-wrapper left">';
+            html += '<textarea placeholder="说点什么吧"></textarea>';
+            html += '<p class="post-toolbar"><button class="ds-post-button">发布</button></p>';
+            html += '</div></div>';
+        }else{
+            html += '<div class="reply_no_login"><span onclick="login()">&nbsp;登录&nbsp;</span>后才能回复</div>';
+        }
+        return html;
+    }
+
+
 })
+function login(){
+    var openUrl = "";//弹出窗口的url
+    var iWidth=600; //弹出窗口的宽度;
+    var iHeight=560; //弹出窗口的高度;
+    var iTop = (window.screen.availHeight-30-iHeight)/2; //获得窗口的垂直位置;
+    var iLeft = (window.screen.availWidth-10-iWidth)/2;; //获得窗口的水平位置;
+    window.open('/login','newwindow','height='+iHeight+',width='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+}

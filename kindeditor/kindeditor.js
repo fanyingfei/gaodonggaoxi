@@ -3174,7 +3174,7 @@ _extend(KCmd, {
 	insertimage : function(url, title, width, height, border, align) {
 		title = _undef(title, '');
 		border = _undef(border, 0);
-		var html = '<p style="text-align: center;"><img style="max-width:96%;" src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		var html = '<p style="text-align: center;"><img src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
 		}

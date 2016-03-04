@@ -2,7 +2,7 @@
 
 class model_black extends CI_Model{
 
-    CONST TABLE_NAME = 'black_ip';
+    CONST TABLE_NAME = 'black';
     CONST PRI_KEY           = 'black_id';
 
     function __construct()
@@ -29,7 +29,7 @@ class model_black extends CI_Model{
     }
 
     /*
-     * 查找某个ip
+     * 查找某个记录
      */
     public function find_one(){
         $ip = get_real_ip();

@@ -37,6 +37,12 @@ ul{
 .cursor{
     cursor:pointer;
 }
+.text-right{
+    text-align: right;
+}
+.text-left{
+    text-align: left;
+}
 .left{
     float:left;
 }
@@ -54,13 +60,18 @@ ul{
     font-size:12px;
 }
 .oo:hover{
-    color:red;
+    color:#d32;
 }
 .xx:hover{
     color:#0000ff;
 }
 .reply:hover{
     text-decoration: underline;
+}
+.hr_replay{
+    float: right;
+    margin: 0 20px 20px;
+    width: 520px;
 }
 button{
     border:1px solid #dedede;
@@ -93,7 +104,32 @@ button{
 }
 .nav ul li{
     float:left;
-    padding:10px 15px;
+    padding:12px 15px;
+}
+.login{
+    padding:12px 20px;
+}
+.login a:hover , .login span:hover{
+    color:#fff;
+}
+.login .user_name{
+    color:#acacac;
+    display: block;
+    float: left;
+    max-width: 200px;
+    overflow: hidden;
+    margin-right:10px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    text-overflow:ellipsis;
+}
+.nav .nav_avatar{
+    float:right;
+}
+.nav .nav_avatar img{
+    width:30px;
+    height:30px;
+    border-radius:2px;
 }
 .nav ul li:hover{
     background:#3c3c3c;
@@ -134,12 +170,15 @@ button{
 }
 .one .user{
     float:left;
-    width:120px;
-    margin-right: 10px;
+    width:100px;
+    margin-right: 40px;
 }
 .one .content{
     float:left;
-    width:520px;
+    width:510px;
+}
+.one .content .avatar_min_height{
+    min-height: 82px;
 }
 .one .user .name{
     font-size:13px;
@@ -148,9 +187,6 @@ button{
     word-wrap: break-word;
     max-height: 20px;
     overflow: hidden;
-}
-.one .content img{
-    margin:5px 0;
 }
 .click{
     text-align: right;
@@ -346,23 +382,6 @@ button:hover{
 .ke-dialog-content .ke-tabs{
     display: none !important;
 }
-.login{
-    padding:10px 20px;
-}
-.login a:hover , .login span:hover{
-    color:#fff;
-}
-.login .user_name{
-    color:#acacac;
-    display: block;
-    float: left;
-    max-width: 200px;
-    overflow: hidden;
-    margin-right:10px;
-    word-break:keep-all;/* 不换行 */
-    white-space:nowrap;/* 不换行 */
-    text-overflow:ellipsis;
-}
 .person_center{
     min-height: 200px;
 }
@@ -422,12 +441,14 @@ button:hover{
     border-bottom: 1px solid #eee;
     border-left: 2px solid #fafafa;
 }
-.user_center .user_menu_left ul li.at,.user_center .user_menu_left ul li:hover {
+.user_center .user_menu_left ul li.at , .user_center .user_menu_left ul li:hover {
     position: relative;
-    border-left: 2px solid;
+    border-left: 2px solid #fff;
     border-right: 1px solid #fff;
-    color: #ff7800;
     background-color: #fff;
+}
+.user_center .user_menu_left ul li.at a , .user_center .user_menu_left ul li:hover a {
+    color: #4285f4;
 }
 .user_center .user_info_right{
     width: 820px;
@@ -453,9 +474,20 @@ button:hover{
     line-height: 20px;
     padding: 10px 0;
 }
-.person_info .u_name{
-    font-size: 24px;
+.person_info .age.left{
+    margin-left:40px;
+}
+.person_info .name_email{
+    margin-top:10px;
+    margin-left:20px;
+    float: left;
+}
+.person_info .name_email .u_name{
+    font-size: 28px;
     color: #333;
+}
+.person_info .name_email .u_email{
+    margin-top:20px;
 }
 .person_info .separate{
     margin-left:5px;
@@ -519,14 +551,8 @@ button:hover{
 .ke-dialog-body .ke-dialog-row:last-child{
     display: none;
 }
-.one .content p:first-child a{
+.one .content .content_body a{
     color:#4285f4;
-}
-.reply_main{
-    height: 100px;
-    border-top:1px solid #dedede;
-    clear:both;
-    margin:0 20px;
 }
 .user_center .avatar_info{
     width:460px;
@@ -541,7 +567,27 @@ button:hover{
     height: 100px;
     border-radius:4px;
     border:1px solid #dedede;
-    padding:0.5px;
+    padding:1px;
+}
+.user_center .person_info .info_avatar_img{
+    float:left;
+    width:70px;
+    height: 70px;
+    border-radius:4px;
+    border:1px solid #dedede;
+    padding:1px;
+}
+.user .avatar_wapper{
+    width:100%;
+    height:70px;
+}
+.user .login_avatar{
+    width:60px;
+    height: 60px;
+    border-radius:4px;
+    border:1px solid #dedede;
+    padding:1px;
+    float: right;
 }
 .user_center .avatar_img img{
     border-radius:4px;
@@ -559,4 +605,129 @@ button:hover{
 }
 .op #show:hover{
     background-color:#4265a4;
+}
+.play{
+    display: none;
+    width:50px;
+    height: 25px;
+    color:#fff;
+    opacity:0.4;
+    text-align: center;
+    background-color: #000000;
+    cursor: pointer;
+}
+.sina_show{
+    cursor: pointer;
+}
+.reply_main {
+    border: 1px solid #ccc;
+    clear: both;
+    float: right;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 520px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.reply_avatar img{
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+    display: block;
+    height: 50px;
+    max-width: none;
+    width: 50px;
+}
+.reply_main .reply_one , .reply_comment{
+    clear:both;
+    overflow: auto;
+    border-bottom: 1px solid #ccc;
+    padding:10px;
+}
+.reply_content p{
+    width:430px;
+    text-align: left;
+}
+.reply_comment p{
+    color:#333;
+    margin-bottom: 5px;
+}
+.textarea-wrapper{
+    border-radius: 3px;
+    border:1px solid #ccc;
+    height: 93px;
+}
+.textarea-wrapper textarea{
+    width:410px;
+    font-size: 12px;
+    height: 50px;
+    padding:5px 10px;
+    resize: none;
+    border:0;
+}
+.textarea-wrapper .post-toolbar{
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    position: relative;
+    width: 100%;
+    background-color: #fafafa;
+    height: 32px;
+    margin:0;
+    border-top: 1px solid #ccc;
+    margin-top:-3px;
+    border-bottom: 1px solid #ccc;
+}
+.ds-post-button{
+    background-color: #e6e6e6;
+    box-shadow: 0 0 1px #fff inset;
+    color: #555;
+    font-family: "微软雅黑";
+    font-size: 14px;
+    font-weight: bold;
+    height: 32px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    top: 0;
+    transition: all 0.15s linear 0s;
+    width: 100px;
+}
+.reply_title{
+    border-bottom:1px solid #ccc ;
+}
+.reply_avatar{
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    float: left;
+    position: relative;
+    margin-right:10px;
+    margin-top: 3px;
+}
+.reply_title{
+    font-size: 18px;
+    padding:5px 10px;
+    background-color: #fafafa;
+}
+.reply_title_no_list{
+    text-align: center;
+}
+.r_name{
+    color:#d32;
+}
+.r_comment{
+    margin: 2px 0;
+}
+.r_ta{
+    cursor:pointer;
+}
+.r_ta:hover{
+    color:#3c3c3c;
+}
+.reply_no_login{
+    text-align: center;
+    padding:10px;
+}
+.reply_no_login span{
+    color:#4285f4;
+    cursor: pointer;
 }

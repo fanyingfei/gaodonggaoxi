@@ -31,6 +31,7 @@ class user extends MY_Controller  {
         }
         $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
         if(empty($user)) parent::error_msg();
+        $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
 
         $sex = array('M'=>'男','W'=>'女','U'=>'未知');
         $age = array('');
@@ -50,9 +51,8 @@ class user extends MY_Controller  {
         if(!is_login()){
             header_index('login');
         }
-        $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
-        if(empty($user)) parent::error_msg();
-        $avatar = empty($user['avatar']) ? '' : $user['avatar'];
+
+        $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'];
 
         $this->assign('select',2);
         $this->assign('avatar',$avatar);
@@ -90,7 +90,7 @@ class user extends MY_Controller  {
         $email = trim(strip_tags($_REQUEST['email']));
         $password = trim(strip_tags($_REQUEST['password']));
         $one = $this->model_users->get_user_by_email($email);
-        if(empty($one)) splash('error','邮箱不存在');
+        if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
         if(empty($one['is_validate']) || empty($one['name'])){
             splash('error','请先激活账号');

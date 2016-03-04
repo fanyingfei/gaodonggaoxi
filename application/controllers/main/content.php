@@ -114,7 +114,9 @@ class content extends MY_Controller  {
         $this->display('detail.html');
     }
 
-
+    /*
+     * 列表
+     */
     public function index($p = 1)
     {
         $limit = 10;
@@ -129,15 +131,22 @@ class content extends MY_Controller  {
 
         //得到数据
         $list  = $this->model_content->data_list($p,$limit,$where);
+        //得到头像
+         $user_avatar =  parent::get_user_avatar($list);
+
         foreach($list as &$v){
+            $v['avatar'] = '';
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             $v['create_time'] = change_time($v['create_time']);
+            if(!empty($v['user_id'])) $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
+            $v['content'] = $this->filter_content_br($v['content']);
             if($flag == 1){
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
                 $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];
             }else{
                 $v['content'] = strip_tags($v['content'],'<br><img><a>');
-            //    if($res_content = $this->gif_static($v['content'])) $v['content'] = $res_content;
+                //gif图转成静态
+                if($res_content = $this->gif_static($v['content'])) $v['content'] = $res_content;
             }
         }
         //得到总数
@@ -156,6 +165,9 @@ class content extends MY_Controller  {
         }
     }
 
+    /*
+     * 用户提交内容
+     */
     public function save(){
         //是否拉入黑名单
         $this->load->model('model_black');
@@ -166,7 +178,7 @@ class content extends MY_Controller  {
         $content = trim($_REQUEST['content']);
         $data['type'] = intval($_REQUEST['type']);
         //结尾多的<br>去掉 , 保存时要把图片和换行符也保存
-        $data['content'] = preg_replace('/(<br\s*?\/?>)+$/i','',strip_tags($content,'<br><img><a>'));
+        $data['content'] = $this->filter_content_br(strip_tags($content,'<br><img><a>'));
         //验证时只保留图片和链接
         $content = strip_tags($content,'<img><a>');
 
@@ -177,6 +189,7 @@ class content extends MY_Controller  {
             $data['email'] = $user_info['email'];
             if(empty($content)) splash('error','请填写内容');
         }else{
+            $data['name'] = strip_tags(trim($_REQUEST['name']));
             //已经注册过的昵称不能用
             $res_by_name = $this->model_users->get_user_by_name($data['name']);
             if(!empty($res_by_name)) splash('error','该昵称已被注册，只限登陆后使用');
@@ -195,31 +208,10 @@ class content extends MY_Controller  {
         }
     }
 
-    public function reply_list(){
-        $con_id = intval($_REQUEST['id']);
-        if(empty($con_id)) splash('error','打开失败，请刷新重试');
-        $this->load->model('model_reply');
-        $res = $this->model_reply->data_list();
-        foreach($res as &$v){
-            $v['create_time'] = change_time($v['create_time']);
-        }
-        $data['list'] = empty($res) ? '' : $res;
-        splash('success' , '' , $data);
-    }
-
-    public function reply_save(){
-        if(!is_login()) splash('error','回复请先登陆');
-        //是否拉入黑名单
-        $this->load->model('model_black');
-        $this->load->model('model_users');
-        $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单');
-    }
-
     /*
-     * 点赞
+     * 主要内容点赞
      */
-    public function record(){
+    public function content_record(){
         $id = intval($_REQUEST['id']);
         $click = $_REQUEST['click'];
         if(!in_array($click,array('good','bad'))) splash('error','Try again');
@@ -240,7 +232,9 @@ class content extends MY_Controller  {
         }
     }
 
-
+    /*
+     * 得到详情
+     */
     public function get_detail($id){
         if(empty($id)) parent::error_msg('你要找的内容不见啦！');
         $detail = $this->model_content->detail($id);
@@ -250,25 +244,52 @@ class content extends MY_Controller  {
         return $detail;
     }
 
+    /*
+     * 处理新浪上传GIF图
+     */
     public function gif_static($content){
         $img_preg = "/<img (.*?) src=\"(.+?)\".*?>/";
-        if(!preg_match($img_preg , $content , $img_data)) return false;
+        if(!preg_match_all($img_preg , $content , $img_data)) return false;
 
-        $original = $new_url = array();
-        foreach($img_data as $key=>$v){
-            $separate = explode('/' , $v);
-            if($key == 2 && strpos($v,'http://ww1.sinaimg.cn') !== false && strpos(end($separate),'.gif')){
-                $original[] = ' src="'.$v;
-                $new_url[] = ' src="http://ww1.sinaimg.cn/small/'.end($separate);
+        foreach($img_data[2] as $key=>$v){
+            $result[$key]['src_url'] = $v;
+            $result[$key]['total_img'] = $img_data[0][$key];
+        }
+
+        $original = $new_img = array();
+        foreach($result as $v){
+            $src_url = $v['src_url'];  //图片URL
+            $total_img = $v['total_img'];  //全部img标签信息
+            $separate = explode('/' , $src_url);
+            $img_name = end($separate);  //图处名称，无路径
+            $img_domain = 'http://'.$separate[2];  //域名
+            //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
+            if(strpos($src_url,'.sinaimg.cn') !== false && strpos($img_name,'.gif')){
+                $original[] = $total_img;
+                $large_url = $img_domain.'/large/'.$img_name;
+                $small_url = $img_domain.'/small/'.$img_name;
+                $src = '<img class="sina_show" title="双击图片查看原图" src="'.$small_url.'" large-data="'.$large_url.'" ori-data="'.$src_url.'"  />';
+                if(strpos($img_name,'.gif')) $src .= '<div class="play">PLAY</div>';
+                $new_img[] = $src;
             }
         }
 
         if(!empty($original)){
-            return str_replace($original , $new_url , $content);
+            return str_replace($original , $new_img , $content);
         }else{
             return false;
         }
     }
+
+    /*
+     * 处理内容，去掉多余<br>
+     */
+    public function filter_content_br($str){
+        $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
+        $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
+        return preg_replace('/(<br\s*\/?>){2,}/i','<br><br>',$str);
+    }
+
 
 }
 

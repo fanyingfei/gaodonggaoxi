@@ -61,12 +61,13 @@ $route['zzs/detail'] = "main/content/zzs";
 $route['zzs/(:num)'] = "main/content/zzs/$1";
 $route['zzs/detail/(:num)'] = "main/content/zzs_detail/$1";
 //回复列表，回复
-$route['reply'] = "main/content/reply_list";
-$route['reply/save'] = "main/content/reply_save";
+$route['reply'] = "main/reply/reply_list";
+$route['reply/save'] = "main/reply/reply_save";
 //保存
 $route['content/save'] = "main/content/save";
 //点赞记录
-$route['record'] = "main/content/record";
+$route['content/record'] = "main/content/content_record";
+$route['reply/record'] = "main/reply/reply_record";
 //登录
 $route['login'] = "main/user/login_index";
 $route['login/login_in'] = "main/user/login_in";

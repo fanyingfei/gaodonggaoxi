@@ -2,13 +2,15 @@
         <h3>个人资料</h3>
         <div class="person_info">
             <div>
-                <span class="u_name">{$user.name}</span>
+                <div class="info_avatar_img">
+                    {if $avatar != '' }<img src="{$avatar}" /> {/if}
+                </div>
+                <div class="name_email">
+                    <p class="u_name">{$user.name}</p>
+                    <p class="u_email">{$user.email}</p>
+                </div>
             </div>
-            <div>
-                <label class="label">邮箱</label>
-                <span class="separate"></span>
-                <label class="label">{$user.email}</label>
-            </div>
+            <p class="clear"><br></p>
             <div>
                 <label class="label">手机</label>
                 <span class="separate"></span>
@@ -29,7 +31,7 @@
                 <span class="separate"></span>
                 <input name="qq"  id="qq" type="text" maxlength="16" value="{$user.qq}">
             </div>
-            <div>
+            <div class="left">
                 <label class="label">性别</label>
                 <span class="separate"></span>
                 <label class="label">
@@ -40,7 +42,7 @@
                     </select>
                 </label>
             </div>
-            <div>
+            <div class="left age">
                 <label class="label">年龄</label>
                 <span class="separate"></span>
                 <label class="label">
@@ -51,7 +53,7 @@
                     </select>
                 </label>
             </div>
-            <p id="submit" class="c_subbutton">保&nbsp;存</p>
+            <div class="op"><p id="submit" class="c_subbutton">保&nbsp;存</p></div>
         </div>
     </div>
 </div>
