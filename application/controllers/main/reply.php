@@ -29,14 +29,16 @@ class reply extends MY_Controller  {
         $res = $this->model_reply->data_list($con_id);
         $user_avatar = parent::get_user_avatar($res);
 
-        $parent_res = array_column($res,'content','user_id');
+        $parent_res = array_column($res,'content','rep_id');
 
         foreach($res as &$v){
             $v['reply_content'] = '';
             $v['create_time'] = change_time($v['create_time']);
             $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/avatar_error.jpg' : $user_avatar[$v['user_id']];
             $v['content'] = filter_content_br( $v['content'] );
-            if($v['parent_id'] > 0) $v['reply_content'] = str_replace("<br>",' ',mb_substr($v['content'], 0, 30, 'utf-8') );
+            if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']])){
+                $v['reply_content'] = strip_tags($parent_res[$v['parent_id']]);
+            }
         }
         $data['list'] = empty($res) ? '' : $res;
         $data['con_id'] = $con_id;
@@ -63,7 +65,7 @@ class reply extends MY_Controller  {
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','提交失败，请刷新重试');
         $parent_id = intval($_REQUEST['parent_id']);
-        if($_SESSION['user_id'] == $parent_id) splash('error','不能自己@自己');
+       if($_SESSION['user_id'] == $parent_id) splash('error','不能自己@自己');
         $parent_name = strip_tags(trim($_REQUEST['parent_name']));
         $content = trim($_REQUEST['content']);
         $data = $this->content_is_at($parent_id,$parent_name,$content);

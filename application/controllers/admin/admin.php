@@ -31,6 +31,7 @@ class admin extends MY_Controller  {
         $this->load->model('model_content');
         $this->load->model('model_black');
         $this->load->model('model_users');
+        $this->load->model('model_reply');
     }
 
     public function index(){
@@ -209,6 +210,42 @@ class admin extends MY_Controller  {
         }
     }
 
+    public function reply()
+    {
+        $this->native_display('admin/reply.html');
+    }
+
+    public function reply_list(){
+        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
+        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
+        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
+        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+        $where = $order_by = '';
+
+        if(!empty($sort) && !empty($sort_by)){
+            $order_by = " order by $sort $sort_by ";
+        }
+        //得到数据
+        $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
+
+        $total = $this->model_reply->data_count($where);
+
+        $result = array(
+            'total'=>$total,
+            'rows'=>$list,
+        );
+        echo json_encode($result);
+    }
+
+    public function reply_delete(){
+        $ids = explode(',',$_REQUEST['ids']);
+        $res = $this->model_reply->delete($ids);
+        if($res){
+            splash('success','删除成功');
+        }else{
+            splash('error','删除失败,请重试');
+        }
+    }
 }
 
 /* End of file welcome.php */

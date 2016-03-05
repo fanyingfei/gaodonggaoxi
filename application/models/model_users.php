@@ -45,6 +45,14 @@ class model_users extends CI_Model{
     }
 
     /*
+   * 通过手机号查用户
+   */
+    public function get_user_by_mobile($mobile){
+        $sql = 'select * from '.self::TABLE_NAME ." where mobile = '$mobile'";
+        return $this->db->query($sql)->first_row('array');
+    }
+
+    /*
     * 通过user_id查一个用户
     */
     public function get_user_by_user_id($user_id){

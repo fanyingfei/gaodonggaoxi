@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/resources/css/admin/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/admin/bootstrap-table.min.css">
+<link rel="stylesheet" href="/resources/css/admin/iframe.css">
+<div class="container">
+    <div class="table-toolbar">
+        <button class="btn" id="remove" data-url="/admin/reply_delete">Delete</button>
+    </div>
+    <table id="table"
+           data-toggle="table"
+           data-url="/admin/reply_list"
+           data-show-columns="true"
+           data-search="false"
+           data-show-refresh="true"
+           data-show-toggle="false"
+           data-pagination="true"
+           data-side-pagination="server"
+           data-height="600">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-sortable="true" data-sortable="true" data-field="rep_id">ID</th>
+            <th data-sortable="true" data-field="con_id">CON_ID</th>
+            <th data-field="name">昵称</th>
+            <th data-field="content">内容</th>
+            <th data-sortable="true" data-field="parent_id">@REP_ID</th>
+            <th data-field="parent_name">@名字</th>
+            <th data-sortable="true" data-field="good">OO</th>
+            <th data-sortable="true" data-field="bad">XX</th>
+            <th data-sortable="true" data-field="ip">IP</th>
+            <th data-sortable="true" data-field="create_time">回复时间</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/admin/admin.js"></script>
+<script src="/resources/js/admin/bootstrap.min.js"></script>
+<script src="/resources/js/admin/bootstrap-table.js"></script>
+{/literal}

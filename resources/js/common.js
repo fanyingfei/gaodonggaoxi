@@ -102,8 +102,12 @@ function show_play(){
     });
 }
 
-//新窗口打开登陆页面
 function login(){
+    window.location.href='/login';
+}
+
+//新窗口打开登陆页面
+function login_new(){
     var openUrl = "";//弹出窗口的url
     var iWidth=600; //弹出窗口的宽度;
     var iHeight=560; //弹出窗口的高度;
@@ -157,55 +161,22 @@ $(document).ready(function(){
         });
     });
 
-    //监听评论提交点击事件
-    $('body').on('click', '.reply-submit', function(){
-        var obj = $(this);
-        var id = obj.attr('data-id');
-        var parent_id = 0;
-        var parent_name = '';
-        if(obj.parents('.reply_main').find('.at').length > 0){
-            parent_id = obj.parents('.reply_main').find('.at').attr('data-id');
-            parent_name = obj.parents('.reply_main').find('.at').attr('data-name');
-        }
-
-        var content = $.trim(obj.parents('.textarea-wrapper').children('textarea').val()) ;
-        if(content == ''){
-            alert('请填写评论');
-            return false;
-        }
-        content = content.replace(/\n/g,"<br/>");
-        $.ajax({
-            type:'POST',
-            data:{
-                "id":id,'content':content,'parent_id':parent_id,'parent_name':parent_name
-            },
-            url:'/reply/save',
-            dataType:'json',
-            success:function(result){
-                if(result.status == 'error'){
-                    alert(result.msg);
-                    return false;
-                }
-
-            },
-            error:function (){
-                alert('提交失败,请刷新重试');
-            }
-        })
-    });
     //监听到顶部点击事件
     $("#top").click(function(){
         $('html,body').animate({scrollTop: 0}, 500);
     })
+
     //监听到底部点击事件
     $(".mao").click(function(){
         var height = $(document).height();
         $('html,body').animate({scrollTop: height}, 500);
     })
+
     //监听验证码的点击事件
     $("#checkpic").click(function(){
         $(this).attr('src','/code.php?'+Math.random());
     })
+
     //监听滚动条滚动事件
     $(window).scroll(function(){
         if($(window).scrollTop() >$(window).height()/2){
@@ -214,6 +185,7 @@ $(document).ready(function(){
             $("#top").hide();
         }
     });
+
     //监听头部导航点击事件
     $(".nav li a").click(function(){
         $.cookie('search', '' ,{ path : '/' });
@@ -275,7 +247,6 @@ $(document).ready(function(){
                     obj.parents('.one').next('.reply_wapper').hide(500,function(){
                         obj.parents('.one').next('.reply_wapper').remove();
                     });
-
                 }else{
                     obj.text('↑回复');
                     obj.parent().children('.reply_count').text(result.data.list.length);
@@ -289,6 +260,43 @@ $(document).ready(function(){
             }
         })
     })
+
+    //监听评论提交点击事件
+    $('body').on('click', '.reply-submit', function(){
+        var obj = $(this);
+        var id = obj.attr('data-id');
+        var parent_id = 0;
+        var parent_name = '';
+        if(obj.parents('.reply_main').find('.at').length > 0){
+            parent_id = obj.parents('.reply_main').find('.at').attr('data-id');
+            parent_name = obj.parents('.reply_main').find('.at').attr('data-name');
+        }
+
+        var content = $.trim(obj.parents('.textarea-wrapper').children('textarea').val()) ;
+        if(content == ''){
+            alert('请填写评论');
+            return false;
+        }
+        content = content.replace(/\n/g,"<br/>");
+        $.ajax({
+            type:'POST',
+            data:{
+                "id":id,'content':content,'parent_id':parent_id,'parent_name':parent_name
+            },
+            url:'/reply/save',
+            dataType:'json',
+            success:function(result){
+                alert(result.msg);
+                if(result.status == 'error'){
+                    return false;
+                }
+                window.location.href=window.location.href;
+            },
+            error:function (){
+                alert('提交失败,请刷新重试');
+            }
+        })
+    });
 
     function reply_list(result){
         var html = '<div class="reply_wapper"><hr class="hr_reply"><div class="reply_main">';
@@ -314,7 +322,7 @@ $(document).ready(function(){
                 html += '<p class="click">';
                 html += '<span class="time">'+ v.create_time+'</span>';
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-                html += '<span class="r_ta" data-id="'+ v.user_id+'" data-name="'+ v.name+'">@Ta</span>';
+                html += '<span class="r_ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
                 html += '<a class="oo" title="支持" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
@@ -330,7 +338,7 @@ $(document).ready(function(){
 
         if(result.data.is_login == 1){
             html += '<div class="reply_comment">';
-            html += '<p>'+result.data.name+'<span>&nbsp;&nbsp;</span><span></span></p>';
+            html += '<p>'+result.data.name+'</p>';
             html += '<div class="reply_avatar left"><img src="'+result.data.avatar+'" /></div>';
             html += '<div class="textarea-wrapper left">';
             html += '<textarea placeholder="说点什么吧"></textarea>';

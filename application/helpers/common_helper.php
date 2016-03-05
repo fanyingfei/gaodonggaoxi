@@ -49,12 +49,26 @@ function get_real_ip(){
 function valid_name($name){
     if(empty($name)) splash('error','请填写昵称');
     if(utf8_strlen($name) > 20 || utf8_strlen($name) < 3) splash('error','昵称长度3-20个字符');
+    if(is_numeric($name)) splash('error','昵称不能全为数字');
+}
+
+function is_email($email){
+    if(empty($email)) return false;
+    $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+    if ( !preg_match( $pattern, $email ) ) return false;
+    return true;
 }
 
 function valid_email($email){
     if(empty($email)) splash('error','请填写email');
     $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
     if ( !preg_match( $pattern, $email ) ) splash('error','email格式不正确');
+}
+
+function is_mobile($mobile){
+    if(empty($mobile)) return false;
+    if(!preg_match("/1[34578]{1}\d{9}$/",$mobile)) return false;
+    return true;
 }
 
 function valid_mobile($mobile){

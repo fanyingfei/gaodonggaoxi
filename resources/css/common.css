@@ -731,10 +731,6 @@ ul {
         width: 100px;
     }
 
-    .reply_title {
-        border-bottom: 1px solid #ccc;
-    }
-
     .reply_avatar {
         background-color: #fff;
         border-radius: 3px;
@@ -749,6 +745,7 @@ ul {
         font-size: 18px;
         padding: 5px 10px;
         background-color: #fafafa;
+        border-bottom: 1px solid #ccc;
     }
 
     .reply_title_no_list {
@@ -782,7 +779,7 @@ ul {
     }
 
     .reply_at_content {
-        max-height: 20px;
+        max-height: 15px;
         overflow: hidden;
         word-wrap: break-word;
         max-width: 360px;
@@ -900,8 +897,8 @@ ul {
 
 
 @media screen and (max-width: 660px) {
-    .user .login_avatar , .main .sub , #top , .right-container , .nav .login , .total , .depict ,
-    .title , .content_body.desc {
+    .user .login_avatar , .main .sub , #top , .right-container ,  .total , .depict ,
+    .title , .content_body.desc , .hr_reply{
         display:none !important;
     }
 
@@ -932,7 +929,7 @@ ul {
 
     .nav ul li {
         float: left;
-        padding: 12px 10px;
+        padding: 12px 8px;
     }
 
     .nav ul li:hover {
@@ -945,6 +942,11 @@ ul {
 
     .nav ul li:hover a {
         color: #cccccc;
+    }
+
+    .nav .login{
+        float:right;
+        padding: 12px 8px;
     }
 
     .one {
@@ -992,4 +994,142 @@ ul {
         color:#4285f4;
     }
 
+    .reply_wapper {
+        display: none;
+        overflow: auto;
+    }
+
+    .reply_main {
+        border: 1px solid #ccc;
+        clear: both;
+        margin:10px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .reply_title{
+        font-size: 14px;
+        padding: 5px 10px;
+        background-color: #fafafa;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .one .content .content_body a {
+        color: #4285f4;
+    }
+
+    .reply_avatar {
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        float: left;
+        position: relative;
+        margin-right: 10px;
+        margin-top: 3px;
+    }
+
+    .reply_avatar img {
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+        display: block;
+        height: 50px;
+        max-width: none;
+        width: 50px;
+    }
+
+    .reply_main .reply_one {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .reply_main .reply_one, .reply_comment {
+        clear: both;
+        overflow: auto;
+        padding: 10px;
+    }
+
+    .reply_content{
+        margin-left:60px;
+    }
+
+    .r_ta{
+        cursor: pointer;
+    }
+
+    .reply_content p .right{
+        float:right;
+    }
+
+    .reply_one .click{
+        text-align: left;
+    }
+
+    .reply_comment p {
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .textarea-wrapper {
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        height: 93px;
+        border-bottom: 0;
+        margin-left: 60px;
+    }
+
+    .textarea-wrapper textarea {
+        font-size: 12px;
+        height: 50px;
+        padding: 5px 10px;
+        resize: none;
+        border: 0;
+    }
+
+    .textarea-wrapper .post-toolbar {
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+        position: relative;
+        width: 100%;
+        background-color: #fafafa;
+        height: 32px;
+        margin: 0;
+        border-top: 1px solid #ccc;
+        margin-top: -3px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .ds-post-button {
+        background-color: #e6e6e6;
+        box-shadow: 0 0 1px #fff inset;
+        color: #555;
+        font-family: "微软雅黑";
+        font-size: 14px;
+        font-weight: bold;
+        height: 32px;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        text-shadow: 0 1px 0 #fff;
+        top: 0;
+        transition: all 0.15s linear 0s;
+        width: 100px;
+        cursor: pointer;
+    }
+
+    .close_reply {
+        clear: both;
+        color: #999;
+        cursor: pointer;
+        float: right;
+        font-size: 12px;
+        padding: 0 20px 5px 0;
+        text-align: right;
+    }
+
+    .reply_no_login{
+        text-align: center;
+        padding:10px 0;
+    }
+
+    .reply_no_login span {
+        color:#4285f4;
+    }
 }

@@ -12,12 +12,21 @@ class model_reply extends CI_Model{
     }
 
     /*
-    * 查找反有回复
+    * 通过ID查找回复列表
     */
     public function data_list( $con_id = '' ,$order_by = ''){
         if(empty($con_id)) return array();
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
         $sql = 'select * from '.self::TABLE_NAME." where con_id = $con_id $order_by ";
+        return $this->db->query($sql)->result_array();
+    }
+
+    /*
+     * 列表
+     */
+    public function admin_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
+        if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
+        $sql = 'select * from '.self::TABLE_NAME." $where $order_by limit ".($p-1)*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 

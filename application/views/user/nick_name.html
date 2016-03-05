@@ -27,7 +27,7 @@
 <script src="/resources/js/common.js"></script>
 <script type="text/javascript">
     var sub_cfg = {};
-    sub_cfg.requestUrl = '/nick/save';
+    sub_cfg.requestUrl = '/user/nick/save';
     sub_cfg.success = function(result){
         if(result.data != '' && result.data.op == 1){
             if(confirm(result.msg)){

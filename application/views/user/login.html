@@ -13,9 +13,10 @@
 <body>
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
-    <input type="text" name="email" id="email" placeholder="邮箱账号" value="{$email}"/>
+    <input type="text" name="account" id="account" placeholder="邮箱账号/昵称" value="{$email}"/>
     <input type="password" name="password" id="password" placeholder="密码"/>
     <div class="sub" id="sub">立即登录</div>
+    <input type="hidden" id="referer_url" value="{$url}" />
     <div class="bottom-item"><a href="/login">忘记密码？</a></div>
     <div>
         <div  class="login-third">
@@ -40,39 +41,28 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/login/login_in';
     sub_cfg.success = function(result){
-        width = $(document).width();
-        height = $(document).height();
-        if(width == 600 && height == 560){
-            opener.location.reload();
-            window.close();
-        }else{
-            window.location.href='/';
-        }
+        window.location.href=result.data.url;
     };
 
     $("#sub").click(function(){
-        var email = $.trim($("#email").val());
+        var account = $.trim($("#account").val());
         var password = $.trim($("#password").val());
+        var referer_url = $.trim($("#referer_url").val());
 
-        if(!login_valid(email,password)){
+        if(!login_valid(account,password)){
             return false;
         }
         sub_cfg.data = {
-            "email":email,'password':password
+            "account":account,'password':password,'referer_url':referer_url
         };
         ajax_res(sub_cfg);
     })
 
-    function login_valid(email,password){
-        if(email == ''){
-            alert('请填写email');
+    function login_valid(account,password){
+        if(account == ''){
+            alert('请填写账号');
             return false;
         }
-        if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-            alert('email格式不正确');
-            return false;
-        }
-
         if(password == ''){
             alert('请填写密码');
             return false;

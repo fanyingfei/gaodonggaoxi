@@ -78,6 +78,10 @@ class user extends MY_Controller  {
         if(is_login()){
             header_index();
         }
+        $url = $_SERVER['HTTP_REFERER'];
+        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '';
+
+        $this->assign('url',$url);
         $this->assign('title','登录');
         $this->native_display('user/login.html');
     }
@@ -87,9 +91,17 @@ class user extends MY_Controller  {
      */
     public function login_in(){
         if(is_login()) splash('success','');
-        $email = trim(strip_tags($_REQUEST['email']));
+        $account = trim(strip_tags($_REQUEST['account']));
         $password = trim(strip_tags($_REQUEST['password']));
-        $one = $this->model_users->get_user_by_email($email);
+
+        if(empty($account)) splash('error','账号不存在');
+
+        if(is_email($account)){
+            $one = $this->model_users->get_user_by_email($account);
+        }else{
+            $one = $this->model_users->get_user_by_name($account);
+        }
+
         if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
         if(empty($one['is_validate']) || empty($one['name'])){
@@ -107,7 +119,8 @@ class user extends MY_Controller  {
         my_set_cookie('email',  $one['email']);
         my_set_cookie('PHPSESSID',session_id());
 
-        splash('success','');
+        $url = trim($_REQUEST['referer_url']);
+        splash('success','',array('url'=>empty($url) ? '/' : $url));
     }
 
     public function login_out(){
@@ -115,8 +128,6 @@ class user extends MY_Controller  {
         $_SESSION['name']    = '';
         $_SESSION['email']    = '';
         expire_cookie('is_login');
-        expire_cookie('name');
-        expire_cookie('email');
         header_index();
     }
 
@@ -187,10 +198,11 @@ class user extends MY_Controller  {
         $id = intval($_REQUEST['id']);
         $name = trim(strip_tags($_REQUEST['name']));
 
-        if(empty($id) || empty($name)) parent::error_msg();
+        if(empty($id)) splash('error','激活失败，请刷新重试');
+        valid_name($name);
 
         $user_info = $this->model_users->get_user_by_user_id($id);
-        if(empty($user_info)) parent::error_msg();
+        if(empty($user_info)) splash('error','激活失败，请刷新重试');
 
         if(!empty($user_info['name']) && !empty($user_info['is_validate'])){
             splash('error','该账号已激活');
@@ -210,7 +222,7 @@ class user extends MY_Controller  {
         //没有登陆直接跳登陆页
         if(!is_login()) header_index('login');
         $user_id = $_SESSION['user_id'];
-        if(empty($user_id)) parent::error_msg();
+        if(empty($user_id)) splash('error','保存失败,请重试');
         $data['mobile'] = trim(strip_tags($_REQUEST['mobile']));
         $data['weixin'] = trim(strip_tags($_REQUEST['weixin']));
         $data['sina'] = trim(strip_tags($_REQUEST['sina']));

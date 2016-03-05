@@ -272,6 +272,11 @@ class content extends MY_Controller  {
                     $src .= '<div class="play">PLAY</div>';
                 }
                 $new_img[] = $src;
+            }else{
+                if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
+                    $original[] = $total_img;
+                    $new_img[] = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
+                }
             }
         }
 

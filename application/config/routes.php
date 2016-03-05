@@ -81,8 +81,8 @@ $route['user/news'] = "main/user/user_news";
 $route['user/avatar'] = "main/user/user_avatar";
 $route['user/validate'] = "main/user/user_validate";
 $route['user/save'] = "main/user/info_save";
-$route['nick/save'] = "main/user/nick_save";
-$route['avatar/save'] = "main/user/avatar_save";
+$route['user/nick/save'] = "main/user/nick_save";
+$route['user/avatar/save'] = "main/user/avatar_save";
 
 $route['default_controller'] = "main/content/xian";
 $route['404_override'] = '';
@@ -103,6 +103,10 @@ $route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
 $route['admin/black'] = "admin/admin/black";
 $route['admin/black_list'] = "admin/admin/black_list";
 $route['admin/black_delete'] = "admin/admin/black_delete";
+
+$route['admin/reply'] = "admin/admin/reply";
+$route['admin/reply_list'] = "admin/admin/reply_list";
+$route['admin/reply_delete'] = "admin/admin/reply_delete";
 
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */
