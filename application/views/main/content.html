@@ -14,7 +14,7 @@
                 {if $one.avatar != ''}
                 <div class="avatar_wapper">
                     <div class="login_avatar">
-                       <img src="{$one.avatar}" />
+                       <img title="{$one.name}" src="{$one.avatar}" />
                     </div>
                 </div>
                 {/if}
@@ -22,7 +22,12 @@
                 <p class="time text-right">{$one.create_time}</p>
             </div>
             <div class="content">
-                <div class="content_body{if $one.avatar != ''} avatar_min_height{/if}">{$one.content}</div>
+                {if $one.is_detail == 1}
+                    <p><a class="detail_title" href="/myth/detail/{$one.con_id}">{$one.title}</a></p>
+                    <div class="content_body desc">{$one.content}</div>
+                {else}
+                    <div class="content_body{if $one.avatar != ''} avatar_min_height{/if}">{$one.content}</div>
+                {/if}
                 <p class="right clear click oo_xx">
                     <span class="response"></span>
                     <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]

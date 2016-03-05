@@ -205,16 +205,7 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
-$complete_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-if(strrpos($complete_url,'?') !== false){
-    $complete_url = substr($complete_url,0,strrpos($complete_url,'?'));
-}
-if(substr($complete_url,-4,4) == '.php'){
-    $url_array = explode('/',$complete_url);
-    $current_url = end($url_array);
-    require_once dirname(__FILE__).'/application/controllers/tools/' .$current_url;
-    exit;
-}
+
 require_once BASEPATH.'core/CodeIgniter.php';
 
 /* End of file index.php */

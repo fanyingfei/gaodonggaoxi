@@ -38,6 +38,17 @@ class model_reply extends CI_Model{
     }
 
     /*
+    * 保存用户提交内容
+    */
+    public function save($data){
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['ip'] = get_real_ip();
+        $data['user_id'] = empty($_SESSION['user_id']) ? 0 : $_SESSION['user_id'];
+        $data['name'] = empty($_SESSION['name']) ? '' : $_SESSION['name'];
+        return $this->db->insert(self::TABLE_NAME ,$data);
+    }
+
+    /*
      * 删除
      */
     public function delete($ids){

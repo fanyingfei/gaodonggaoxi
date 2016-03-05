@@ -40,7 +40,14 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/login/login_in';
     sub_cfg.success = function(result){
-        window.location.href='/';
+        width = $(document).width();
+        height = $(document).height();
+        if(width == 600 && height == 560){
+            opener.location.reload();
+            window.close();
+        }else{
+            window.location.href='/';
+        }
     };
 
     $("#sub").click(function(){

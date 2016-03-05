@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 session_start();
 //随机生成的字符串
 $_SESSION["code"] = $str=random(4);

@@ -136,11 +136,13 @@ class content extends MY_Controller  {
 
         foreach($list as &$v){
             $v['avatar'] = '';
+            $v['is_detail'] = 0;
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             $v['create_time'] = change_time($v['create_time']);
             if(!empty($v['user_id'])) $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
-            $v['content'] = $this->filter_content_br($v['content']);
+            $v['content'] = filter_content_br($v['content']);
             if($flag == 1){
+                $v['is_detail'] = 1;
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
                 $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];
             }else{
@@ -158,11 +160,8 @@ class content extends MY_Controller  {
         $this->assign('count',$count);
         $this->assign('page',$page);
         $this->assign('type',$this->type);
-        if($flag == 1){
-            $this->display('article.html');
-        }else{
-            $this->display('content.html');
-        }
+
+        $this->display('content.html');
     }
 
     /*
@@ -178,7 +177,7 @@ class content extends MY_Controller  {
         $content = trim($_REQUEST['content']);
         $data['type'] = intval($_REQUEST['type']);
         //结尾多的<br>去掉 , 保存时要把图片和换行符也保存
-        $data['content'] = $this->filter_content_br(strip_tags($content,'<br><img><a>'));
+        $data['content'] = filter_content_br(strip_tags($content,'<br><img><a>'));
         //验证时只保留图片和链接
         $content = strip_tags($content,'<img><a>');
 
@@ -248,12 +247,12 @@ class content extends MY_Controller  {
      * 处理新浪上传GIF图
      */
     public function gif_static($content){
-        $img_preg = "/<img (.*?) src=\"(.+?)\".*?>/";
+        $img_preg = "/<img([^>]*)\s*src=('|\")([^'\"]+)('|\")/";
         if(!preg_match_all($img_preg , $content , $img_data)) return false;
 
-        foreach($img_data[2] as $key=>$v){
+        foreach($img_data[3] as $key=>$v){
             $result[$key]['src_url'] = $v;
-            $result[$key]['total_img'] = $img_data[0][$key];
+            $result[$key]['total_img'] = $img_data[0][$key].'>';
         }
 
         $original = $new_img = array();
@@ -264,12 +263,14 @@ class content extends MY_Controller  {
             $img_name = end($separate);  //图处名称，无路径
             $img_domain = 'http://'.$separate[2];  //域名
             //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
-            if(strpos($src_url,'.sinaimg.cn') !== false && strpos($img_name,'.gif')){
+            if(strpos($src_url,'.sinaimg.cn') !== false ){
                 $original[] = $total_img;
-                $large_url = $img_domain.'/large/'.$img_name;
                 $small_url = $img_domain.'/small/'.$img_name;
-                $src = '<img class="sina_show" title="双击图片查看原图" src="'.$small_url.'" large-data="'.$large_url.'" ori-data="'.$src_url.'"  />';
-                if(strpos($img_name,'.gif')) $src .= '<div class="play">PLAY</div>';
+                $src = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
+                if(substr($img_name , -4 , 4) == '.gif'){
+                    $src = '<img class="sina_show" title="双击图片查看原图" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                    $src .= '<div class="play">PLAY</div>';
+                }
                 $new_img[] = $src;
             }
         }
@@ -279,15 +280,6 @@ class content extends MY_Controller  {
         }else{
             return false;
         }
-    }
-
-    /*
-     * 处理内容，去掉多余<br>
-     */
-    public function filter_content_br($str){
-        $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
-        $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
-        return preg_replace('/(<br\s*\/?>){2,}/i','<br><br>',$str);
     }
 
 

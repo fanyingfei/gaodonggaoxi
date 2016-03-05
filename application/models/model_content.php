@@ -64,6 +64,15 @@ class model_content extends CI_Model{
     }
 
     /*
+     * 更新回复数
+     */
+    public function update_reply($id){
+        if(empty($id)) return false;
+        $sql = 'update '.self::TABLE_NAME ." set reply = reply + 1 where ".self::PRI_KEY ." = $id";
+        return $this->db->query($sql);
+    }
+
+    /*
      * 删除
      */
     public function delete($ids){

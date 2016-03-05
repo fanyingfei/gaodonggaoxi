@@ -180,3 +180,12 @@ function header_index($url = ''){
     header("Location: /".$url);
     exit;
 }
+
+/*
+ * 处理内容，去掉多余<br>
+ */
+function filter_content_br($str){
+    $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
+    $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
+    return preg_replace('/(<br\s*\/?>){2,}/i','<br><br>',$str);
+}

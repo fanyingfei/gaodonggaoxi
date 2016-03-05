@@ -28,13 +28,21 @@ class reply extends MY_Controller  {
         $this->load->model('model_reply');
         $res = $this->model_reply->data_list($con_id);
         $user_avatar = parent::get_user_avatar($res);
+
+        $parent_res = array_column($res,'content','user_id');
+
         foreach($res as &$v){
+            $v['reply_content'] = '';
             $v['create_time'] = change_time($v['create_time']);
             $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/avatar_error.jpg' : $user_avatar[$v['user_id']];
+            $v['content'] = filter_content_br( $v['content'] );
+            if($v['parent_id'] > 0) $v['reply_content'] = str_replace("<br>",' ',mb_substr($v['content'], 0, 30, 'utf-8') );
         }
         $data['list'] = empty($res) ? '' : $res;
+        $data['con_id'] = $con_id;
         if(is_login()){
             $data['is_login'] = 1;
+            $data['user_id'] = $_SESSION['user_id'];
             $data['name'] = $_SESSION['name'];
             $data['avatar'] = empty($_SESSION['avatar']) ? '/resources/images/avatar_error.jpg' : $_SESSION['avatar'];
         }else{
@@ -48,8 +56,26 @@ class reply extends MY_Controller  {
         //是否拉入黑名单
         $this->load->model('model_black');
         $this->load->model('model_users');
+        $this->load->model('model_content');
         $res = $this->model_black->find_one();
         if($res) splash('error','你已被拉入黑名单');
+
+        $id = intval($_REQUEST['id']);
+        if(empty($id)) splash('error','提交失败，请刷新重试');
+        $parent_id = intval($_REQUEST['parent_id']);
+        if($_SESSION['user_id'] == $parent_id) splash('error','不能自己@自己');
+        $parent_name = strip_tags(trim($_REQUEST['parent_name']));
+        $content = trim($_REQUEST['content']);
+        $data = $this->content_is_at($parent_id,$parent_name,$content);
+
+        $data['con_id'] = $id;
+        $res  = $this->model_reply->save($data);
+        if($res){
+            $this->model_content->update_reply($id);
+            splash('success','提交成功');
+        }else{
+            splash('error','提交失败');
+        }
     }
 
     /*
@@ -73,6 +99,25 @@ class reply extends MY_Controller  {
             splash('success','Think you');
         }else{
             splash('error','Try again');
+        }
+    }
+
+    public function content_is_at($parent_id,$parent_name,$content){
+        $data = array('parent_id'=>$parent_id,'parent_name'=>$parent_name);
+        $content = filter_content_br(strip_tags($content,'<br>'));
+        $data['content'] = $content;
+        if(empty($content)) splash('error','请填写评论');
+        if(empty($parent_id)) return $data;
+        $str = '@'.$parent_name.' ';
+        if(strpos( substr( $content , 0 , strlen($str) +1 ) , $str ) !== false){
+            $data['content'] = filter_content_br(trim(str_replace($str,'',$content)));
+            return $data;
+        }elseif(strpos(substr($content,0,1),'@') !== false){
+            splash('error','点击 @Ta 来@人，请不要自己填写');
+        }else{
+            $data['parent_id'] = 0;
+            $data['parent_name'] = '';
+            return $data;
         }
     }
 
