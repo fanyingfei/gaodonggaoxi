@@ -204,18 +204,34 @@ $(document).ready(function(){
             $(this).css("max-height","600px");
             if(img_height > 1000){
                 height = $(this).offset().top;
-                $('html,body').animate({scrollTop: height + 500}, 500);
+                $('html,body').animate({scrollTop: height - 50}, 500);
             }
         }else{
             $(this).css("max-height","none");
         }
     })
 
+    //监听图片双击事件
+    $(".sina_show_gif").dblclick(function(){
+        window.open($(this).attr('src'));
+    })
+
+    //监听图片单击事件
+    $(".sina_show_gif").click(function(){
+        src = $(this).attr('src');
+        ori_src = $(this).attr('ori-data');
+        obj.attr('src',ori_src);
+        obj.attr('ori-data',src);
+        $(this).next('.play').show();
+    })
+
     //监听图片播放事件
     $(".play").click(function(){
         obj = $(this).prev('img');
         src = obj.attr('ori-data');
+        ori_src = obj.attr('src');
         obj.attr('src',src);
+        obj.attr('ori-data',ori_src);
         $(this).hide();
     })
 

@@ -44,9 +44,6 @@ $route['xian/(:num)'] = "main/content/xian/$1";
 //小知识
 $route['know'] = "main/content/know";
 $route['know/(:num)'] = "main/content/know/$1";
-//美文
-$route['wen'] = "main/content/wen";
-$route['wen/(:num)'] = "main/content/wen/$1";
 //妹子
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";

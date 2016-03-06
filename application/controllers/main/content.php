@@ -3,7 +3,7 @@
 class content extends MY_Controller  {
     private $type = 1; //默认为1
     private $detail_data = array(4,6); //需要展示详情的
-    private $total_type_data = array('xian'=>1 ,'know'=>2 ,'wen'=>3,'zzs'=>4,'meizi'=>5,'myth'=>6);
+    private $total_type_data = array('xian'=>1 ,'know'=>2 ,'zzs'=>4,'meizi'=>5,'myth'=>6);
 	/**
 	 * Index Page for this controller.
 	 *
@@ -44,17 +44,6 @@ class content extends MY_Controller  {
         $this->assign('description','小知士');
         $this->index($p);
     }
-
-    public function wen($p = 1){
-        $this->type = 3;
-        $this->assign('body','wen');
-        $this->assign('title','美文');
-        $this->assign('info','美文');
-        $this->assign('keywords','美文');
-        $this->assign('description','美文');
-        $this->index($p);
-    }
-
 
     public function zzs($p = 1){
         $this->type = 4;
@@ -268,7 +257,7 @@ class content extends MY_Controller  {
                 $small_url = $img_domain.'/small/'.$img_name;
                 $src = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
                 if(substr($img_name , -4 , 4) == '.gif'){
-                    $src = '<img class="sina_show" title="双击图片查看原图" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                    $src = '<img class="sina_show_gif" title="双击图片查看原图" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                     $src .= '<div class="play">PLAY</div>';
                 }
                 $new_img[] = $src;

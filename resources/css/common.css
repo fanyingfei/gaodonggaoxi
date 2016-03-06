@@ -625,18 +625,11 @@ ul {
         background-color: #4265a4;
     }
 
-    .play {
-        display: none;
-        width: 50px;
-        height: 25px;
-        color: #fff;
-        opacity: 0.4;
-        text-align: center;
-        background-color: #000000;
+    .sina_show {
         cursor: pointer;
     }
 
-    .sina_show {
+    .sina_show_gif{
         cursor: pointer;
     }
 
@@ -817,6 +810,14 @@ ul {
         background-position: center center;
     }
 
+    .sub .textarea_prompt{
+        color:#999;
+        position: absolute;
+        margin:0;
+        padding-left:10px;
+        padding-top:5px;
+    }
+
 }
 
 .pagination a, .pagination .page-cur, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-break, .pagination .page-skip {
@@ -895,6 +896,14 @@ ul {
     color: #333;
 }
 
+.play {
+    display: none;
+    color: #fff;
+    opacity: 0.4;
+    text-align: center;
+    background-color: #000000;
+    cursor: pointer;
+}
 
 @media screen and (max-width: 660px) {
     .user .login_avatar , .main .sub , #top , .right-container ,  .total , .depict ,
@@ -958,9 +967,13 @@ ul {
         border-top:0;
     }
 
-    .one .content_body img.sina_show {
+    .sina_show {
         cursor: pointer;
         max-height: 400px;
+    }
+
+    .sina_show_gif{
+        cursor: pointer;
     }
 
     .one .content{
