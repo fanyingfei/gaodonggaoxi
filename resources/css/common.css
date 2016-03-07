@@ -905,6 +905,180 @@ ul {
     cursor: pointer;
 }
 
+.alert_msg{
+    height: 52px;
+    position: fixed;
+    top: 30%;
+    display: none;
+    text-align: center;
+    z-index: 999;
+    font-weight: bold;
+    font-size: 14px;
+    color: #606060;
+    background-image: url("/resources/images/alert.png");
+    background-position: 0 -161px;
+    background-repeat: repeat-x;
+    border-left:2px solid #dedede;
+    border-right:2px solid #dedede;
+    border-radius: 4px;
+}
+
+.alert_msg span{
+    float:left;
+    display: block;
+}
+
+.alert_msg .icon{
+    width:29px;
+    height: 29px;
+    border-radius: 14px;
+    background-image: url("/resources/images/alert.png");
+    background-repeat: no-repeat;
+    margin-top:10px;
+    margin-left:10px;
+}
+
+.alert_msg .info{
+     background-position: -21px -66px;
+ }
+
+.alert_msg .success{
+    background-position: -21px -12px;
+}
+
+.alert_msg .msg_info{
+    line-height: 45px;
+    margin-left: 30px;
+    margin-right: 50px;
+}
+
+.layout{
+    width: 360px;
+    margin: 80px auto 0;
+}
+.layout input{
+    width:100%;
+    height: 45px;
+    line-height: 45px;
+    font-family: 微软雅黑;
+    outline: 0 none;
+    padding: 6px 12px 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #585858;
+    margin-top:15px;
+    box-shadow: .5px 1px 1px #f0f0f0 inset;
+}
+.layout #code{
+    width:80%;
+}
+.layout #checkpic{
+    float: right;
+    margin-top:20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.layout .sub{
+    margin-top: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 45px;
+    color: #fff;
+    line-height: 45px;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url("../images/login/login_btn.png");
+}
+.layout .sub:hover{
+    background-image: url("../images/login/login_btn_hover.png");
+}
+.layout .bottom-item{
+    overflow: auto;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.layout .bottom-item a{
+    float:right;
+    font-size: 12px;
+    color: #4896ff;
+    text-decoration: none;
+}
+.layout .login-register{
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    color: #585858;
+    cursor: pointer;
+    float: right;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    width: 80px;
+}
+.layout .login-register:hover{
+    background:#136dfb;
+    color:#fff;
+    border:1px solid #136dfb;
+}
+.layout .login-third{
+    float:left;
+    margin-top:-10px;
+}
+.layout .login-third p{
+    width:100px;
+    color:#6c6c6c;
+    font-size:12px;
+    margin:0;
+    padding:0;
+    margin-bottom: 2px;
+}
+.layout .third-icon {
+    background-image: url("../images/login/icon.png");
+    background-repeat: no-repeat;
+    float: left;
+    height: 30px;
+    margin-right: 15px;
+    width: 30px;
+}
+.layout .login-item .third-icon.moretv {
+    background-position: -101px -68px;
+}
+.layout .qq {
+    background-position: -173px 0;
+}
+.layout .sina {
+    background-position: -139px 0;
+}
+.layout .douban {
+    background-position: -244px 0;
+}
+.layout .weixin {
+    background-position: -209px 0;
+}
+.layout .logo{
+    height: 100px;
+    width:100px;
+    margin:0 auto;
+    border-radius: 50px;
+    background-image: url("../images/login/logo.jpg");
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+    margin-bottom: 20px;
+}
+.layout .info_one{
+    font-size: 13px;
+    color: #9D9D9D;
+}
+.layout .info_two{
+    font-size: 13px;
+    color: #F0752F;
+}
+
 @media screen and (max-width: 660px) {
     .user .login_avatar , .main .sub , #top , .right-container ,  .total , .depict ,
     .title , .content_body.desc , .hr_reply{

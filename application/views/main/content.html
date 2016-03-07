@@ -66,8 +66,10 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/content/save';
     sub_cfg.success = function(result){
-        alert(result.msg);
-        window.location.href=window.location.href;
+        alert_msg(result.msg,'success');
+        setTimeout(function(){
+            window.location.href=window.location.href;
+        },1000);
     };
 
     $("#submit").click(function(){

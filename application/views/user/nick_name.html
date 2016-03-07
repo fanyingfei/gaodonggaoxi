@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="all" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/resources/css/login.css"/>
-    <script src="/resources/js/jquery.js"></script>
-    <meta name="keywords" content="{$keywords}" />
-    <meta name="description" content="{$description}" />
-    <title>{$title}</title>
-</head>
-<body>
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
     <div>请完善如下资料</div>
@@ -29,15 +16,10 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/user/nick/save';
     sub_cfg.success = function(result){
-        if(result.data != '' && result.data.op == 1){
-            if(confirm(result.msg)){
-                window.location.href='/login';
-                return true;
-            }
-        }else{
-            alert(result.msg);
-        }
-        window.location.href='/';
+        alert_msg(result.msg,'success');
+        setTimeout(function(){
+            window.location.href='/';
+        },2000);
     };
 
     $("#sub").click(function(){
@@ -54,11 +36,11 @@
 
     function nick_valid(name){
         if(name == ''){
-            alert('请填写昵称');
+            alert_msg('请填写昵称');
             return false;
         }
         if((name.length < 3) || (name.length > 30)){
-            alert('昵称长度3-30个字符');
+            alert_msg('昵称长度3-30个字符');
             return false;
         }
         return true;

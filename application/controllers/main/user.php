@@ -83,6 +83,7 @@ class user extends MY_Controller  {
 
         $this->assign('url',$url);
         $this->assign('title','登录');
+        $this->native_display('user/header.html');
         $this->native_display('user/login.html');
     }
 
@@ -90,7 +91,7 @@ class user extends MY_Controller  {
      * 登陆
      */
     public function login_in(){
-        if(is_login()) splash('success','');
+        if(is_login()) splash('success','登陆成功');
         $account = trim(strip_tags($_REQUEST['account']));
         $password = trim(strip_tags($_REQUEST['password']));
 
@@ -120,19 +121,18 @@ class user extends MY_Controller  {
         my_set_cookie('PHPSESSID',session_id());
 
         $url = trim($_REQUEST['referer_url']);
-        splash('success','',array('url'=>empty($url) ? '/' : $url));
+        splash('success','登陆成功',array('url'=>empty($url) ? '/' : $url));
     }
 
     public function login_out(){
-        $_SESSION['user_id'] = '';
-        $_SESSION['name']    = '';
-        $_SESSION['email']    = '';
+        session_destroy();
         expire_cookie('is_login');
         header_index();
     }
 
     public function register($param=''){
         $this->assign('title','注册');
+        $this->native_display('user/header.html');
         $this->native_display('user/register.html');
     }
 
@@ -152,10 +152,19 @@ class user extends MY_Controller  {
         unset($data['confirm']);
         unset($data['code']);
         $res_by_email = $this->model_users->get_user_by_email($data['email']);
-        if(!empty($res_by_email)) splash('error','该邮箱已被注册，不可使用');
+        if(!empty($res_by_email) && $res_by_email['is_validate'] == 1){
+            //邮箱已被注册并激活了
+            splash('error','该邮箱已被注册，不可使用');
+        }elseif(!empty($res_by_email) && $res_by_email['is_validate'] == 0){
+            //邮箱已被注册但没有激活
+            $data = $res_by_email;
+        }elseif(empty($res_by_email)){
+            $data['password'] = md5($data['password'].ENCRYPTION);
+            $data['user_id'] = $this->model_users->save($data);
+        }else{
+            splash('error','注册失败，请刷新重试');
+        }
 
-        $data['password'] = md5($data['password'].ENCRYPTION);
-        $data['user_id'] = $this->model_users->save($data);
         if($data['user_id']){
             $email_content = get_email_content($data['user_id'],$data['email']);
             $res = my_send_email($data['email'],'账号激活',$email_content);
@@ -180,17 +189,18 @@ class user extends MY_Controller  {
             parent::error_msg('链接已失效，请联系'.EMAIL_NUMBER .'重新发送');
         }
         $user_id = intval($param['user_id']);
-        if(empty($user_id)) parent::error_msg();
+        if(empty($user_id)) parent::error_msg('出错啦');
 
         $user_info = $this->model_users->get_user_by_user_id($user_id);
         if(empty($user_info) || $user_info['email'] != $param['email']){
-            parent::error_msg();
+            parent::error_msg('出错啦');
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
             header_index('login');
         }
         $this->assign('title','昵称');
         $this->assign('unique_id',$user_id);
+        $this->native_display('user/header.html');
         $this->native_display('user/nick_name.html');
     }
 
@@ -212,7 +222,7 @@ class user extends MY_Controller  {
         if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
         $res = $this->model_users->user_validate($id,$name);
         if($res){
-            splash('sucess','激活成功，立即登录',array('op'=>1));
+            splash('sucess','激活成功，立即登录');
         }else{
             splash('error','激活失败,请重试');
         }

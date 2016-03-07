@@ -129,7 +129,6 @@ class content extends MY_Controller  {
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             $v['create_time'] = change_time($v['create_time']);
             if(!empty($v['user_id'])) $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
-            $v['content'] = filter_content_br($v['content']);
             if($flag == 1){
                 $v['is_detail'] = 1;
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
@@ -139,6 +138,7 @@ class content extends MY_Controller  {
                 //gif图转成静态
                 if($res_content = $this->gif_static($v['content'])) $v['content'] = $res_content;
             }
+            $v['content'] = filter_content_br($v['content']);
         }
         //得到总数
         $count = $this->model_content->data_count($where);
@@ -257,14 +257,14 @@ class content extends MY_Controller  {
                 $small_url = $img_domain.'/small/'.$img_name;
                 $src = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
                 if(substr($img_name , -4 , 4) == '.gif'){
-                    $src = '<img class="sina_show_gif" title="双击图片查看原图" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                    $src = '<br><img class="sina_show_gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                     $src .= '<div class="play">PLAY</div>';
                 }
                 $new_img[] = $src;
             }else{
                 if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
                     $original[] = $total_img;
-                    $new_img[] = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
+                    $new_img[] = '<br><img class="sina_show" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
                 }
             }
         }

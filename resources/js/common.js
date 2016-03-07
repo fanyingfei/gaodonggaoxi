@@ -9,13 +9,13 @@ function ajax_res(obj){
         dataType:'json',
         success:function(result){
             if(result.status == 'error'){
-                alert(result.msg);
+                alert_msg(result.msg);
                 return false;
             }
             obj.success(result);
         },
         error:function (){
-            alert('提交失败,请刷新重试');
+            alert_msg('提交失败,请刷新重试');
         }
     })
 }
@@ -32,7 +32,7 @@ function click_good(url , thi){
         dataType:'json',
         success:function(result){
             if(result.status == 'error'){
-                alert(result.msg);
+                alert_msg(result.msg);
                 return false;
             }
             var val = $(thi).parent().children('.good').text();
@@ -55,7 +55,7 @@ function click_bad(url , thi){
         dataType:'json',
         success:function(result){
             if(result.status == 'error'){
-                alert(result.msg);
+                alert_msg(result.msg);
                 return false;
             }
             var val = $(thi).parent().children('.bad').text();
@@ -68,23 +68,23 @@ function click_bad(url , thi){
 //字段是否有效
 function valid(name,email,content){
     if(name == ''){
-        alert('请填写昵称');
+        alert_msg('请填写昵称');
         return false;
     }
     if(name.length > max_name_len || name.length < min_name_len){
-        alert('昵称长度3-30个字符');
+        alert_msg('昵称长度3-30个字符');
         return false;
     }
     if(email == ''){
-        alert('请填写email');
+        alert_msg('请填写email');
         return false;
     }
     if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-        alert('email格式不正确');
+        alert_msg('email格式不正确');
         return false;
     }
     if(content == '' || content == '<br>'){
-        alert('请填写内容');
+        alert_msg('请填写内容');
         return false;
     }
     return true;
@@ -102,6 +102,25 @@ function show_play(){
     });
 }
 
+function alert_msg(msg,type){
+    if($('.alert_msg').length > 0){
+        $('.alert_msg').remove();
+    }
+    if(type == undefined){
+        type = 'info';
+    }
+    var html = '<div class="alert_msg"><span class="msg_info"><span class="icon '+type+'"></span>&nbsp;&nbsp;'+msg+'</span></div>';
+    $('body').append(html);
+    width = $('.alert_msg').width();
+    $('.alert_msg').css('left',$(document).width()/2 - width/2);
+    $('.alert_msg').fadeIn(500);
+     setTimeout(function(){
+         $('.alert_msg').fadeOut(500,function(){
+             $('.alert_msg').remove();
+         });
+     },2000);
+}
+
 function login(){
     window.location.href='/login';
 }
@@ -112,7 +131,7 @@ function login_new(){
     var iWidth=600; //弹出窗口的宽度;
     var iHeight=560; //弹出窗口的高度;
     var iTop = (window.screen.availHeight-30-iHeight)/2; //获得窗口的垂直位置;
-    var iLeft = (window.screen.availWidth-10-iWidth)/2;; //获得窗口的水平位置;
+    var iLeft = (window.screen.availWidth-10-iWidth)/2; //获得窗口的水平位置;
     window.open('/login','newwindow','height='+iHeight+',width='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 }
 
@@ -122,7 +141,7 @@ window.onload=function(){
 
     //监听图片双击事件
     $(".sina_show").dblclick(function(){
-        window.open($(this).attr('src'));
+    //    window.open($(this).attr('src'));
     })
 
     //监听图片单击事件
@@ -140,32 +159,36 @@ window.onload=function(){
         }
     })
 
-    //监听图片双击事件
-    $(".sina_show_gif").dblclick(function(){
-        window.open($(this).attr('src'));
-    })
-
     //监听图片单击事件
     $(".sina_show_gif").click(function(){
         src = $(this).attr('src');
         ori_src = $(this).attr('ori-data');
         $(this).attr('src',ori_src);
         $(this).attr('ori-data',src);
-        $(this).next('.play').show();
+        $(this).next('div.play').show();
     })
 
     //监听图片播放事件
     $(".play").click(function(){
+        play_obj = $(this);
         pre_img_obj = $(this).prev('img');
-        src = pre_img_obj.attr('ori-data');
+        src_url = pre_img_obj.attr('ori-data');
         ori_src = pre_img_obj.attr('src');
-        pre_img_obj.attr('src',src);
+        pre_img_obj.attr('src',src_url);
         pre_img_obj.attr('ori-data',ori_src);
         $(this).text('loading...');
-        pre_img_obj.load(function(){
-           $(this).next('.play').hide(); //对象变成了图片
-        });
 
+        var img = new Image(); //创建一个Image对象，实现图片的预下载
+        img.src = src_url;
+        if(img.complete) {
+            play_obj.hide();
+            play_obj.text('PLAY');
+            return; // 直接返回，不用再处理onload事件
+        }
+        img.onload = function () {
+            play_obj.hide();
+            play_obj.text('PLAY');
+        };
     })
 }
 
@@ -195,6 +218,12 @@ $(document).ready(function(){
     //监听评论OO点击事件
     $('body').on('click', '.reply_main .oo', function(){
         click_good(reply_url,this);
+    });
+
+    $('body').on('click', '.alert_msg', function(){
+        $(this).fadeOut(500,function(){
+            $(this).remove();
+        });
     });
 
     //监听评论XX点击事件
@@ -259,7 +288,7 @@ $(document).ready(function(){
             dataType:'json',
             success:function(result){
                 if(result.status == 'error'){
-                    alert(result.msg);
+                    alert_msg(result.msg);
                     return false;
                 }
                 if(obj.parents('.one').next().hasClass('reply_wapper')){
@@ -276,7 +305,7 @@ $(document).ready(function(){
                 }
             },
             error:function (){
-                alert('提交失败,请刷新重试');
+                alert_msg('提交失败,请刷新重试');
             }
         })
     })
@@ -294,7 +323,7 @@ $(document).ready(function(){
 
         var content = $.trim(obj.parents('.textarea-wrapper').children('textarea').val()) ;
         if(content == ''){
-            alert('请填写评论');
+            alert_msg('请填写评论');
             return false;
         }
         content = content.replace(/\n/g,"<br/>");
@@ -306,14 +335,17 @@ $(document).ready(function(){
             url:'/reply/save',
             dataType:'json',
             success:function(result){
-                alert(result.msg);
                 if(result.status == 'error'){
+                    alert_msg(result.msg);
                     return false;
                 }
-                window.location.href=window.location.href;
+                alert_msg(result.msg , 'success');
+                setTimeout(function(){
+                    window.location.href=window.location.href;
+                },1000);
             },
             error:function (){
-                alert('提交失败,请刷新重试');
+                alert_msg('提交失败,请刷新重试');
             }
         })
     });

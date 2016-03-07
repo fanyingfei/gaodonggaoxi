@@ -13,7 +13,7 @@ $(".table-toolbar .btn").click(function(){
     sub_cfg.data = {"ids":ids};
     sub_cfg.requestUrl = $(this).attr('data-url');
 
-    ajax_res(sub_cfg);
+    admin_ajax_res(sub_cfg);
 })
 
 function get_selected(){
@@ -27,7 +27,7 @@ function get_selected(){
     return str;
 }
 
-function ajax_res(obj){
+function admin_ajax_res(obj){
     $.ajax({
         type:'POST',
         data:obj.data,

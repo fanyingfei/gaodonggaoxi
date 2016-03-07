@@ -128,7 +128,7 @@ function change_time($time) {
  * 是否登陆
  */
 function is_login(){
-    if(empty($_SESSION['user_id'])) return false;
+    if(empty($_SESSION['user_id']) || empty($_SESSION['email']) || empty($_SESSION['name'])) return false;
     if(!empty($_COOKIE['is_login']) && $_COOKIE['is_login'] == 1){
        return true;
     }

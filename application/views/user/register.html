@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="all" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/resources/css/login.css"/>
-    <script src="/resources/js/jquery.js"></script>
-    <meta name="keywords" content="{$keywords}" />
-    <meta name="description" content="{$description}" />
-    <title>{$title}</title>
-</head>
-<body>
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
     <input type="text" name="email" id="email" placeholder="邮箱（收到邮件后验证激活账号）" value=""/>
@@ -31,8 +18,10 @@
     var sub_cfg = {};
     sub_cfg.requestUrl = '/register/save';
     sub_cfg.success = function(result){
-        alert(result.msg);
-        window.location.href='/';
+        alert_msg(result.msg,'success');
+        setTimeout(function(){
+            window.location.href='/';
+        },2000);
     };
 
     $("#sub").click(function(){
@@ -52,27 +41,27 @@
 
     function reg_valid(email,password,confirm){
         if(email == ''){
-            alert('请填写email');
+            alert_msg('请填写email');
             return false;
         }
         if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-            alert('email格式不正确');
+            alert_msg('email格式不正确');
             return false;
         }
         if(password == ''){
-            alert('请填写密码');
+            alert_msg('请填写密码');
             return false;
         }
         if((password.length < 6) || (password.length > 30)){
-            alert('密码长度6-30个字符');
+            alert_msg('密码长度6-30个字符');
             return false;
         }
         if(confirm == ''){
-            alert('请确认密码');
+            alert_msg('请确认密码');
             return false;
         }
         if(password != confirm){
-            alert('前后密码不一致');
+            alert_msg('前后密码不一致');
             return false;
         }
         return true;
