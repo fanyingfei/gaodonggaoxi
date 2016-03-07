@@ -2,7 +2,7 @@
 
 class MY_controller extends CI_Controller {
     public function __construct() {
-        session_start();
+		if(!isset($_SESSION)) session_start();
         parent::__construct();
     }
     public function assign($key,$val)

@@ -119,6 +119,54 @@ function login_new(){
 //资源加载完成
 window.onload=function(){
     show_play();
+
+    //监听图片双击事件
+    $(".sina_show").dblclick(function(){
+        window.open($(this).attr('src'));
+    })
+
+    //监听图片单击事件
+    $(".sina_show").click(function(){
+        max_height = $(this).css("max-height");
+        img_height = $(this).height();
+        if(max_height == 'none'){
+            $(this).css("max-height","600px");
+            if(img_height > 1000){
+                height = $(this).offset().top;
+                $('html,body').animate({scrollTop: height - 50}, 500);
+            }
+        }else{
+            $(this).css("max-height","none");
+        }
+    })
+
+    //监听图片双击事件
+    $(".sina_show_gif").dblclick(function(){
+        window.open($(this).attr('src'));
+    })
+
+    //监听图片单击事件
+    $(".sina_show_gif").click(function(){
+        src = $(this).attr('src');
+        ori_src = $(this).attr('ori-data');
+        $(this).attr('src',ori_src);
+        $(this).attr('ori-data',src);
+        $(this).next('.play').show();
+    })
+
+    //监听图片播放事件
+    $(".play").click(function(){
+        pre_img_obj = $(this).prev('img');
+        src = pre_img_obj.attr('ori-data');
+        ori_src = pre_img_obj.attr('src');
+        pre_img_obj.attr('src',src);
+        pre_img_obj.attr('ori-data',ori_src);
+        $(this).text('loading...');
+        pre_img_obj.load(function(){
+           $(this).next('.play').hide(); //对象变成了图片
+        });
+
+    })
 }
 
 //DOM渲染完成
@@ -189,50 +237,6 @@ $(document).ready(function(){
     //监听头部导航点击事件
     $(".nav li a").click(function(){
         $.cookie('search', '' ,{ path : '/' });
-    })
-
-    //监听图片双击事件
-    $(".sina_show").dblclick(function(){
-        window.open($(this).attr('src'));
-    })
-
-    //监听图片单击事件
-    $(".sina_show").click(function(){
-        max_height = $(this).css("max-height");
-        img_height = $(this).height();
-        if(max_height == 'none'){
-            $(this).css("max-height","600px");
-            if(img_height > 1000){
-                height = $(this).offset().top;
-                $('html,body').animate({scrollTop: height - 50}, 500);
-            }
-        }else{
-            $(this).css("max-height","none");
-        }
-    })
-
-    //监听图片双击事件
-    $(".sina_show_gif").dblclick(function(){
-        window.open($(this).attr('src'));
-    })
-
-    //监听图片单击事件
-    $(".sina_show_gif").click(function(){
-        src = $(this).attr('src');
-        ori_src = $(this).attr('ori-data');
-        obj.attr('src',ori_src);
-        obj.attr('ori-data',src);
-        $(this).next('.play').show();
-    })
-
-    //监听图片播放事件
-    $(".play").click(function(){
-        obj = $(this).prev('img');
-        src = obj.attr('ori-data');
-        ori_src = obj.attr('src');
-        obj.attr('src',src);
-        obj.attr('ori-data',ori_src);
-        $(this).hide();
     })
 
     //监听搜索事件
