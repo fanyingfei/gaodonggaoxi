@@ -51,7 +51,9 @@
             <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}
-        <p class="textarea_prompt">图片请点击右侧添加，不要直接粘贴URL到编辑框</p>
+        <p class="textarea_prompt">
+            图片请上传到<a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>，通过右侧粘贴URL
+        </p>
         <p><textarea name="content" id="content"></textarea></p>
         <p><button id="submit" class="clear">submit</button></p>
     </div>
@@ -89,5 +91,6 @@
         };
         ajax_res(sub_cfg);
     })
+
 </script>
 {/literal}

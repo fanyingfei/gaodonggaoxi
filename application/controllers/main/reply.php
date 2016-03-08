@@ -35,9 +35,10 @@ class reply extends MY_Controller  {
             $v['reply_content'] = '';
             $v['create_time'] = change_time($v['create_time']);
             $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/avatar_error.jpg' : $user_avatar[$v['user_id']];
-            $v['content'] = filter_content_br( $v['content'] );
+            $v['content'] = filter_content_br( strip_tags($v['content'] , '<img><br>' ));
             if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']])){
-                $v['reply_content'] = strip_tags($parent_res[$v['parent_id']]);
+                //回复时只显示一行太短了所以过滤过<br>标签，只留图片和文字
+                $v['reply_content'] =strip_tags($parent_res[$v['parent_id']] , '<img>');
             }
         }
         $data['list'] = empty($res) ? '' : $res;
@@ -65,7 +66,7 @@ class reply extends MY_Controller  {
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','提交失败，请刷新重试');
         $parent_id = intval($_REQUEST['parent_id']);
-       if($_SESSION['user_id'] == $parent_id) splash('error','不能自己@自己');
+        if($_SESSION['user_id'] == $parent_id) splash('error','不能自己回复自己');
         $parent_name = strip_tags(trim($_REQUEST['parent_name']));
         $content = trim($_REQUEST['content']);
         $data = $this->content_is_at($parent_id,$parent_name,$content);
@@ -104,18 +105,22 @@ class reply extends MY_Controller  {
         }
     }
 
+    /*
+     * 回复是否@别人
+     */
     public function content_is_at($parent_id,$parent_name,$content){
+        $content = str_replace('&nbsp;','',$content);
         $data = array('parent_id'=>$parent_id,'parent_name'=>$parent_name);
-        $content = filter_content_br(strip_tags($content,'<br>'));
+        $content = filter_content_br(strip_tags($content,'<img><br>'));
         $data['content'] = $content;
         if(empty($content)) splash('error','请填写评论');
         if(empty($parent_id)) return $data;
-        $str = '@'.$parent_name.' ';
-        if(strpos( substr( $content , 0 , strlen($str) +1 ) , $str ) !== false){
+        $str = '@'.$parent_name;
+        if(strpos( substr( $content , 0 , strlen($str) ) , $str ) !== false){
             $data['content'] = filter_content_br(trim(str_replace($str,'',$content)));
             return $data;
         }elseif(strpos(substr($content,0,1),'@') !== false){
-            splash('error','点击 @Ta 来@人，请不要自己填写');
+            splash('error','请点击 @Ta 来回复评论');
         }else{
             $data['parent_id'] = 0;
             $data['parent_name'] = '';

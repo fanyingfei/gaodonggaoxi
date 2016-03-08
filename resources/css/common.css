@@ -1,4 +1,4 @@
-p, ul, h3, ul {
+p, ul, h3, ul,pre {
     margin: 0;
     padding: 0;
 }
@@ -682,17 +682,28 @@ ul {
     .textarea-wrapper {
         border-radius: 3px;
         border: 1px solid #ccc;
-        height: 93px;
+        height: 99px;
         border-bottom: 0;
     }
 
-    .textarea-wrapper textarea {
-        width: 410px;
+    .textarea-wrapper .edit_p {
+        border: 0 none;
         font-size: 12px;
-        height: 50px;
+        height: 60px;
         padding: 5px 10px;
         resize: none;
-        border: 0;
+        width: 410px;
+        word-break: break-all;
+        word-wrap:break-word;
+        margin:0;
+        line-height: 32px;
+        max-height: 60px;
+        overflow: auto;
+    }
+
+    .reply_aite_p{
+        overflow: auto;
+        line-height: 25px;
     }
 
     .textarea-wrapper .post-toolbar {
@@ -772,9 +783,11 @@ ul {
     }
 
     .reply_at_content {
-        max-height: 15px;
+        max-height: 25px;
+        line-height: 25px;
         overflow: hidden;
-        word-wrap: break-word;
+        word-break: break-all;
+        word-wrap:break-word;
         max-width: 360px;
         color: #999;
         font-size: 12px;
@@ -818,6 +831,10 @@ ul {
         padding-top:5px;
     }
 
+    .textarea_prompt a{
+        color:#498B31;
+    }
+
 }
 
 .pagination a, .pagination .page-cur, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-break, .pagination .page-skip {
@@ -845,6 +862,8 @@ ul {
 
 .pagination a, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-cur, .pagination .page-break {
     color: #498B31;
+    border:1px solid  #498B31;
+    margin-left:10px;
 }
 
 .pagination a:hover {
@@ -885,9 +904,9 @@ ul {
 }
 
 .pagination .page-cur {
-    text-decoration: underline;
     font-weight: bold;
-    color: #545454
+    color: #545454;
+    background-color: #f0f0f0;
 }
 
 .pagination .page-break {
@@ -1077,6 +1096,51 @@ ul {
 .layout .info_two{
     font-size: 13px;
     color: #F0752F;
+}
+
+/* QQ表情支持*/
+.facebox{
+    width:350px;
+    height: 150px;
+    background-image:url("/resources/images/face.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 335px 144px;
+    position: absolute;
+    display: none;
+    border: 1px solid #ccc;
+    border-radius:5px;
+    background-color: #fff;
+}
+
+.facebox ul{
+    overflow:auto;
+    margin-left: 8px;
+    margin-top: 5px;
+}
+
+.facebox ul li{
+    width:22px;
+    height:22px;
+    padding:2px;
+    border:1px solid #f8f8f8;
+    float:left;
+    cursor:pointer;
+}
+
+.facebox ul li:hover{
+    border-color:#6C3;
+}
+
+.qq_face{
+    float:right;
+    background:url("/resources/images/facebg.png") no-repeat scroll 0 -100px;
+    padding: 10px 18px 10px 10px;
+    cursor: pointer;
+}
+
+.qq_face:hover{
+    background-position: 0 -120px;
 }
 
 @media screen and (max-width: 660px) {

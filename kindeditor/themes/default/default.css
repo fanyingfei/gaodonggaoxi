@@ -819,7 +819,7 @@
 	*display: inline;
 }
 .ke-button {
-	background-position: right -25px;
+	/*background-position: right -25px;*/
 	padding: 0 12px;
 	margin: 0;
 	font-family: "sans serif",tahoma,verdana,helvetica;
@@ -828,6 +828,11 @@
 	font-size: 12px;
 	left: 2px;
 	text-decoration: none;
+    background-color: #fafafa;
+    border:1px solid #dedede;
+    border-radius: 5px;
+    font-family: 微软雅黑;
+    background-position: left 25px;
 }
 /* inputbox */
 .ke-input-text {

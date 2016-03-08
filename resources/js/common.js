@@ -210,8 +210,8 @@ $(document).ready(function(){
     //监听评论@点击事件
     $('body').on('click', '.r_ta', function(){
         $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
-        $(this).parents('.reply_main').find('.textarea-wrapper textarea').val('@'+$(this).data('name')+'  ');
-        height = $(this).parents('.reply_main').find('.textarea-wrapper textarea').offset().top;
+        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('@'+$(this).data('name')+'&nbsp;&nbsp;&nbsp;&nbsp;');
+        height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
         $('html,body').animate({scrollTop: height -34}, 500);
     });
 
@@ -238,6 +238,33 @@ $(document).ready(function(){
         });
     });
 
+    $('body').on('click', '.qq_face', function(){
+        if($(this).parents('.reply_wapper').find('.facebox').length > 0 ){
+            $(this).parents('.reply_wapper').find('.facebox').remove();
+            return false;
+        }
+        $('.facebox').remove();
+        var faceimg = '<div class="facebox"><ul>';
+        for(i=1;i<61;i++){  //通过循环创建60个表情，可扩展
+            faceimg+='<li data-id="'+i+'"></li>';
+        };
+        faceimg+='</ul></div>';
+        $(this).parents('.reply_wapper').append(faceimg);
+        var qq_height = $(this).offset().top;
+        var qq_wight = $(this).offset().left + 30;
+        $('.facebox').css('top',qq_height);
+        $('.facebox').css('left',qq_wight);
+        $('.facebox').fadeIn(300);
+        return false;
+    });
+
+    //添加表情
+    $('body').on('click', '.facebox ul li', function(){
+        var id = $(this).attr('data-id');
+        var img = '<img src="/resources/images/face/'+id+'.gif"> ';
+        $(this).parents('.reply_wapper').find('.edit_p').append(img);
+    });
+
     //监听到顶部点击事件
     $("#top").click(function(){
         $('html,body').animate({scrollTop: 0}, 500);
@@ -248,6 +275,11 @@ $(document).ready(function(){
         var height = $(document).height();
         $('html,body').animate({scrollTop: height}, 500);
     })
+
+    $(document).click(function() {
+        $('.facebox').fadeOut(300);
+        $('.facebox').remove();
+    });
 
     //监听验证码的点击事件
     $("#checkpic").click(function(){
@@ -321,12 +353,12 @@ $(document).ready(function(){
             parent_name = obj.parents('.reply_main').find('.at').attr('data-name');
         }
 
-        var content = $.trim(obj.parents('.textarea-wrapper').children('textarea').val()) ;
+        var content = $.trim(obj.parents('.textarea-wrapper').children('.edit_p').html()) ;
         if(content == ''){
             alert_msg('请填写评论');
             return false;
         }
-        content = content.replace(/\n/g,"<br/>");
+
         $.ajax({
             type:'POST',
             data:{
@@ -366,7 +398,7 @@ $(document).ready(function(){
                 }
                 html += '<span class="time right">'+(count - k)+'L</span></p>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
-                    html += '<p><span class="time left">回复</span><span class="qy left"></span>';
+                    html += '<p class="reply_aite_p"><span class="time left">回复</span><span class="qy left"></span>';
                     html += '<span class="reply_at_content left">'+v['reply_content']+'</span>';
                     html += '<span class="hy left"></span></p>';
                 }
@@ -390,10 +422,10 @@ $(document).ready(function(){
 
         if(result.data.is_login == 1){
             html += '<div class="reply_comment">';
-            html += '<p>'+result.data.name+'</p>';
+            html += '<p><span>'+result.data.name+'</span><span class="qq_face"></span></p>';
             html += '<div class="reply_avatar left"><img src="'+result.data.avatar+'" /></div>';
             html += '<div class="textarea-wrapper left">';
-            html += '<textarea placeholder="说点什么吧"></textarea>';
+            html += '<p class="edit_p" contenteditable="true" placeholder="说点什么吧"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
             html += '</div></div><p class="close_reply">[X]关闭回复</p></div>';
         }else{
