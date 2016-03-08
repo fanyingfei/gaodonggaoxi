@@ -212,7 +212,7 @@ $(document).ready(function(){
         $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
         $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('@'+$(this).data('name')+'&nbsp;&nbsp;&nbsp;&nbsp;');
         height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
-        $('html,body').animate({scrollTop: height -34}, 500);
+        $('html,body').animate({scrollTop: height -200}, 500);
     });
 
     //监听评论OO点击事件
@@ -234,7 +234,10 @@ $(document).ready(function(){
     //关闭回复
     $('body').on('click', '.close_reply', function(){
         $(this).parents('.reply_wapper').hide(500,function(){
-            $(this).parents('.reply_wapper').remove();
+            $(this).prev('.one').find('.reply').text('↓回复');
+            var height = $(this).prev('.one').offset().top;
+            $('html,body').animate({scrollTop: height}, 500);
+            $(this).remove();
         });
     });
 
@@ -244,16 +247,16 @@ $(document).ready(function(){
             return false;
         }
         $('.facebox').remove();
-        var faceimg = '<div class="facebox"><ul>';
-        for(i=1;i<61;i++){  //通过循环创建60个表情，可扩展
+        var faceimg = '<div class="facebox"><div class="qq_bg"><img src="/resources/images/face_qq.png"></div><ul>';
+        for(i=0;i<84;i++){  //通过循环创建60个表情，可扩展
             faceimg+='<li data-id="'+i+'"></li>';
         };
         faceimg+='</ul></div>';
         $(this).parents('.reply_wapper').append(faceimg);
         var qq_height = $(this).offset().top;
-        var qq_wight = $(this).offset().left + 30;
-        $('.facebox').css('top',qq_height);
-        $('.facebox').css('left',qq_wight);
+        var qq_wight = $(this).offset().left;
+        $('.facebox').css('top',qq_height - 150);
+        $('.facebox').css('left',qq_wight - 150);
         $('.facebox').fadeIn(300);
         return false;
     });
@@ -263,6 +266,7 @@ $(document).ready(function(){
         var id = $(this).attr('data-id');
         var img = '<img src="/resources/images/face/'+id+'.gif"> ';
         $(this).parents('.reply_wapper').find('.edit_p').append(img);
+        return false;
     });
 
     //监听到顶部点击事件
@@ -311,6 +315,15 @@ $(document).ready(function(){
     $("a.reply").click(function(){
         var obj = $(this);
         var id = obj.attr('data-id');
+
+        if(obj.parents('.one').next().hasClass('reply_wapper')){
+            obj.text('↓回复');
+            obj.parents('.one').next('.reply_wapper').hide(500,function(){
+                obj.parents('.one').next('.reply_wapper').remove();
+            });
+            return false;
+        }
+
         $.ajax({
             type:'POST',
             data:{
@@ -323,18 +336,12 @@ $(document).ready(function(){
                     alert_msg(result.msg);
                     return false;
                 }
-                if(obj.parents('.one').next().hasClass('reply_wapper')){
-                    obj.text('↓回复');
-                    obj.parents('.one').next('.reply_wapper').hide(500,function(){
-                        obj.parents('.one').next('.reply_wapper').remove();
-                    });
-                }else{
-                    obj.text('↑回复');
-                    obj.parent().children('.reply_count').text(result.data.list.length);
-                    var html = reply_list(result);
-                    obj.parents('.one').after(html);
-                    obj.parents('.one').next('.reply_wapper').show(500);
-                }
+
+                obj.text('↑回复');
+                obj.parent().children('.reply_count').text(result.data.list.length);
+                var html = reply_list(result);
+                obj.parents('.one').after(html);
+                obj.parents('.one').next('.reply_wapper').show(500);
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
