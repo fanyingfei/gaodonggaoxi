@@ -1105,17 +1105,22 @@ ul {
 }
 
 .facebox .qq_bg{
-    border: 1px solid #ccc;
+    border: 1px solid #aaa;
     border-radius: 4px;
     height: 170px;
     overflow: hidden;
     width: 390px;
+    padding:10px;
+    background-color: #fff;
+    -webkit-box-shadow:0 0 10px #0CC;
+    -moz-box-shadow:0 0 10px #0CC;
+    box-shadow:0 0 5px #0CC;
 }
 
 .facebox ul{
     width:390px;
-    margin-left: 2px;
-    margin-top: -168.5px;
+    margin-left: 12px;
+    margin-top: -178.5px;
     overflow: auto;
     position: relative;
 }
@@ -1330,12 +1335,18 @@ ul {
         margin-left: 60px;
     }
 
-    .textarea-wrapper textarea {
+    .textarea-wrapper .edit_p {
+        border: 0 none;
         font-size: 12px;
-        height: 50px;
+        height: 60px;
         padding: 5px 10px;
         resize: none;
-        border: 0;
+        word-break: break-all;
+        word-wrap:break-word;
+        margin:0;
+        line-height: 20px;
+        max-height: 60px;
+        overflow: auto;
     }
 
     .textarea-wrapper .post-toolbar {
@@ -1385,5 +1396,11 @@ ul {
 
     .reply_no_login span {
         color:#4285f4;
+    }
+
+    .facebox{
+        margin-left:10px;
+        margin-right:10px;
+        left:0 !important;
     }
 }

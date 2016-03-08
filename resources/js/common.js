@@ -183,12 +183,13 @@ window.onload=function(){
         if(img.complete) {
             play_obj.hide();
             play_obj.text('PLAY');
-            return; // 直接返回，不用再处理onload事件
+            return false; // 直接返回，不用再处理onload事件
         }
         img.onload = function () {
             play_obj.hide();
             play_obj.text('PLAY');
         };
+
     })
 }
 
@@ -255,7 +256,7 @@ $(document).ready(function(){
         $(this).parents('.reply_wapper').append(faceimg);
         var qq_height = $(this).offset().top;
         var qq_wight = $(this).offset().left;
-        $('.facebox').css('top',qq_height - 150);
+        $('.facebox').css('top',qq_height - 170);
         $('.facebox').css('left',qq_wight - 150);
         $('.facebox').fadeIn(300);
         return false;
