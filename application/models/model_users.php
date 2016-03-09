@@ -65,7 +65,7 @@ class model_users extends CI_Model{
    */
     public function get_user_list($user_array){
         if(empty($user_array)) return array();
-        $sql = 'select user_id , avatar from '.self::TABLE_NAME ." where user_id in ( ".implode(',' , $user_array)." )";
+        $sql = 'select * from '.self::TABLE_NAME ." where user_id in ( ".implode(',' , $user_array)." )";
         return $this->db->query($sql)->result_array();
     }
 

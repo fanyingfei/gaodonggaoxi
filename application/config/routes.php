@@ -72,6 +72,9 @@ $route['login/login_out'] = "main/user/login_out";
 //注册
 $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
+//查看某人发表的全部内容
+$route['member/(:any)'] = "main/content/member/$1";
+$route['member/(:any)/(:num)'] = "main/content/member/$1/$2";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 $route['user/news'] = "main/user/user_news";
@@ -80,10 +83,7 @@ $route['user/validate'] = "main/user/user_validate";
 $route['user/save'] = "main/user/info_save";
 $route['user/nick/save'] = "main/user/nick_save";
 $route['user/avatar/save'] = "main/user/avatar_save";
-
-$route['default_controller'] = "main/content/xian";
-$route['404_override'] = '';
-
+//admin后台
 $route['admin'] = "admin/admin/index";
 $route['admin/content'] = "admin/admin/content";
 $route['admin/content_list'] = "admin/admin/content_list";
@@ -104,6 +104,11 @@ $route['admin/black_delete'] = "admin/admin/black_delete";
 $route['admin/reply'] = "admin/admin/reply";
 $route['admin/reply_list'] = "admin/admin/reply_list";
 $route['admin/reply_delete'] = "admin/admin/reply_delete";
+
+$route['error'] = 'main/content/error';
+
+$route['default_controller'] = "main/content/xian";
+$route['404_override'] = '';
 
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */

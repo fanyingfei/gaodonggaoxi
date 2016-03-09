@@ -50,12 +50,14 @@ class MY_controller extends CI_Controller {
         $this->assign('body','error');
         $this->assign('title','出错啦');
         $this->assign('msg',empty($msg) ? '出错啦' : $msg);
+        $this->assign('keywords','');
+        $this->assign('description','');
         $this->ci_smarty->display('main/header.html');
         $this->ci_smarty->display('error.html');
         exit;
     }
 
-    public function get_user_avatar($list){
+    public function get_user_avatar($list , $col = ''){
         if(empty($list)) return array();
 
         $user_column = array_unique(array_column($list , 'user_id'));
@@ -68,7 +70,8 @@ class MY_controller extends CI_Controller {
         $user_res = $this->model_users->get_user_list($user_column);
         if(empty($user_res))  return array();
 
-        return array_column($user_res,'avatar','user_id');
+        if($col == '') return $user_res;
+        return array_column($user_res,$col,'user_id');
     }
 
 }

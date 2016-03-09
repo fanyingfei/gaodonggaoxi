@@ -118,7 +118,7 @@ function alert_msg(msg,type){
          $('.alert_msg').fadeOut(500,function(){
              $('.alert_msg').remove();
          });
-     },2000);
+     },1000);
 }
 
 function login(){
@@ -230,6 +230,12 @@ $(document).ready(function(){
     //监听评论XX点击事件
     $('body').on('click', '.reply_main .xx', function(){
         click_bad(reply_url,this);
+    });
+
+    $('body').on('click', '.reply_to_reply', function(){
+        rep_id = $(this).attr('rep-id');
+        to_height = $(this).parents('.reply_main').find('.rep_id_'+rep_id).offset().top;
+        $('html,body').animate({scrollTop: to_height}, 500);
     });
 
     //关闭回复
@@ -396,18 +402,18 @@ $(document).ready(function(){
             var count = result.data.list.length;
             html += '<div class="reply_title">回复</div>';
             $.each(result.data.list, function(k, v){
-                html += '<div class="reply_one">';
+                html += '<div class="reply_one rep_id_'+v.rep_id+'">';
                 html += '<div class="reply_avatar left"><img src="'+v.avatar+'" /></div>';
                 html += '<div class="reply_content left">';
                 html += '<p><span  class="r_name">'+v.name+'</span>';
                 if(v.parent_id != 0 && v.parent_name != ''){
                     html += '<span class="time">&nbsp;&nbsp;@&nbsp;&nbsp;</span>';
-                    html += '<span  class="r_name">'+v.parent_name+'</span>';
+                    html += '<a  class="r_name reply_to_reply" rep-id="'+ v.parent_id+'">'+v.parent_name+'</a>';
                 }
                 html += '<span class="time right">'+(count - k)+'L</span></p>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
                     html += '<p class="reply_aite_p"><span class="time left">回复</span><span class="qy left"></span>';
-                    html += '<span class="reply_at_content left">'+v['reply_content']+'</span>';
+                    html += '<span  class="reply_at_content left">'+ v.reply_content+'</span>';
                     html += '<span class="hy left"></span></p>';
                 }
                 html += '<p class="r_comment">'+v.content+'</p>';

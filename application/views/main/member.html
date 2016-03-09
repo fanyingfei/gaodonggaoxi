@@ -1,0 +1,48 @@
+<div class="main left">
+    <div class="title">{$title}</div>
+    <div class="depict">{$info}</div>
+    {if $count > 0}
+        <div class="total">
+            <span class="left">TOTAL：{$count}</span>
+        </div>
+        {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
+
+        {foreach from=$list key=key item=one}
+        <div class="one{if $key == 0 } first{/if}">
+            <div class="user">
+                {if $one.avatar != ''}
+                <div class="avatar_wapper">
+                    <div class="login_avatar">
+                       <img title="{$one.name}" src="{$one.avatar}" />
+                    </div>
+                </div>
+                {/if}
+                <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
+                <p class="time text-right">{$one.create_time}</p>
+            </div>
+            <div class="content">
+                {if $one.is_detail == 1}
+                    <p><a class="detail_title" href="/myth/detail/{$one.con_id}">{$one.title}</a></p>
+                    <div class="content_body desc">{$one.content}</div>
+                {else}
+                    <div class="content_body{if $one.avatar != ''} avatar_min_height{/if}">{$one.content}</div>
+                {/if}
+                <p class="right clear click oo_xx">
+                    <span class="response"></span>
+                    <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
+                    <a class="xx" title="反对" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                    <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
+                </p>
+            </div>
+        </div>
+        {/foreach}
+        {if $count > 10}<div class="pagination">{$page}</div>{/if}
+    {else}
+        <div class="empty"><h1 class="center">你要找的东西不见了</h1></div>
+    {/if}
+</div>
+<div class="right-container left">
+    <div class="info">
+        <h3>留言</h3>
+    </div>
+</div>

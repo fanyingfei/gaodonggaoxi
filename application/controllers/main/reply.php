@@ -27,7 +27,7 @@ class reply extends MY_Controller  {
         if(empty($con_id)) splash('error','打开失败，请刷新重试');
         $this->load->model('model_reply');
         $res = $this->model_reply->data_list($con_id);
-        $user_avatar = parent::get_user_avatar($res);
+        $user_avatar = parent::get_user_avatar($res , 'avatar');
 
         $parent_res = array_column($res,'content','rep_id');
 

@@ -3,10 +3,10 @@
     <div class="depict">{$info}</div>
     {if $count > 0}
         <div class="total">
-            <span class="left">总数：{$count}</span>
+            <span class="left">TOTAL：{$count}</span>
             <span class="mao right cursor time">{if $name}{$name}，想说些什么呢？{else}来说些什么吧{/if}</span>
         </div>
-        {if $list|count > 2}<div class="pagination page-top">{$page}</div>{/if}
+        {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
 
         {foreach from=$list key=key item=one}
         <div class="one{if $key == 0 } first{/if}">
@@ -14,11 +14,15 @@
                 {if $one.avatar != ''}
                 <div class="avatar_wapper">
                     <div class="login_avatar">
-                       <img title="{$one.name}" src="{$one.avatar}" />
+                       <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
                     </div>
                 </div>
                 {/if}
+                {if $one.user_sn != ''}
+                <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}">{$one.name}</p></a>
+                {else}
                 <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
+                {/if}
                 <p class="time text-right">{$one.create_time}</p>
             </div>
             <div class="content">
@@ -71,7 +75,7 @@
         alert_msg(result.msg,'success');
         setTimeout(function(){
             window.location.href=window.location.href;
-        },1000);
+        },500);
     };
 
     $("#submit").click(function(){

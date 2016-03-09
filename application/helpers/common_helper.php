@@ -203,3 +203,47 @@ function filter_content_br($str){
     $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
     return preg_replace('/(<br\s*\/?>){2,}/i','<br><br>',$str);
 }
+
+/*
+    * 处理新浪上传GIF图
+    */
+function gif_static_gif($content){
+    $img_preg = "/<img([^>]*)\s*src=('|\")([^'\"]+)('|\")/";
+    if(!preg_match_all($img_preg , $content , $img_data)) return false;
+
+    foreach($img_data[3] as $key=>$v){
+        $result[$key]['src_url'] = $v;
+        $result[$key]['total_img'] = $img_data[0][$key].'>';
+    }
+
+    $original = $new_img = array();
+    foreach($result as $v){
+        $src_url = $v['src_url'];  //图片URL
+        $total_img = $v['total_img'];  //全部img标签信息
+        $separate = explode('/' , $src_url);
+        $img_name = end($separate);  //图处名称，无路径
+        $img_domain = 'http://'.$separate[2];  //域名
+        //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
+        if(strpos($src_url,'.sinaimg.cn') !== false ){
+            $original[] = $total_img;
+            $small_url = $img_domain.'/small/'.$img_name;
+            $src = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
+            if(substr($img_name , -4 , 4) == '.gif'){
+                $src = '<div><img class="sina_show_gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                $src .= '<div class="play">PLAY</div></div>';
+            }
+            $new_img[] = $src;
+        }else{
+            if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
+                $original[] = $total_img;
+                $new_img[] = '<div><img class="sina_show" src="'.$src_url.'"  ori-data="'.$src_url.'"  /></div>';
+            }
+        }
+    }
+
+    if(!empty($original)){
+        return str_replace($original , $new_img , $content);
+    }else{
+        return false;
+    }
+}

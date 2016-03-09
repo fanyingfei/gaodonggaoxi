@@ -59,7 +59,7 @@ class CI_Page {
      */
     private function generatePageList(){
         $pageList = array();
-        if($this->pageCount <= 9){
+        if($this->pageCount <= 4){
             for($i=0;$i<$this->pageCount;$i++){
                 array_push($pageList,$i+1);
             }
@@ -68,7 +68,7 @@ class CI_Page {
                 for($i=0;$i<5;$i++){
                     array_push($pageList,$i+1);
                 }
-            //    array_push($pageList,-1);
+                array_push($pageList,-1);
             //    array_push($pageList,$this->pageCount);
 
             }else if($this->pageNo > $this->pageCount - 2){
@@ -86,7 +86,7 @@ class CI_Page {
                 array_push($pageList,$this->pageNo);
                 array_push($pageList,$this->pageNo + 1);
 
-             //   array_push($pageList,-1);
+                array_push($pageList,-1);
              //   array_push($pageList,$this->pageCount);
 
             }

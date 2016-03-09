@@ -121,22 +121,29 @@ class content extends MY_Controller  {
         //得到数据
         $list  = $this->model_content->data_list($p,$limit,$where);
         //得到头像
-         $user_avatar =  parent::get_user_avatar($list);
+        $user_res =  parent::get_user_avatar($list);
+        if(!empty($user_res)){
+            $user_avatar = array_column($user_res , 'avatar' , 'user_id');
+            $user_time = array_column($user_res , 'create_time' , 'user_id');
+        }
 
         foreach($list as &$v){
-            $v['avatar'] = '';
-            $v['is_detail'] = 0;
-            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            $v['is_detail'] = $flag;
+            $v['user_sn'] = $v['avatar'] = '';
             $v['create_time'] = change_time($v['create_time']);
-            if(!empty($v['user_id'])) $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            if(!empty($v['user_id'])){
+                $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
+                $c_time = empty($user_time[$v['user_id']]) ? date('Ymd') : date('Ymd',strtotime($user_time[$v['user_id']]));
+                $v['user_sn'] = str_replace(array('-',' ',':'),'',$c_time).$v['user_id'];
+            }
             if($flag == 1){
-                $v['is_detail'] = 1;
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
                 $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];
             }else{
                 $v['content'] = strip_tags($v['content'],'<br><img><a>');
                 //gif图转成静态
-                if($res_content = $this->gif_static($v['content'])) $v['content'] = $res_content;
+                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
             }
             $v['content'] = filter_content_br($v['content']);
         }
@@ -151,6 +158,79 @@ class content extends MY_Controller  {
         $this->assign('type',$this->type);
 
         $this->display('content.html');
+    }
+
+    /*
+    * 查看某用户发表的全部内容
+    */
+    public function member($user_sn = '' , $p = 1){
+        $limit = 10;
+        $p = intval($p);
+        $user_id = substr($user_sn , 8 );
+        $user_time = substr($user_sn , 0 , 8);
+        if(empty($user_sn) || empty($user_id)){
+            parent::error_msg('该用户不存在');
+        }
+
+        $this->load->model('model_users');
+        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        if(empty($user_info)) parent::error_msg('该用户不存在');
+        if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
+            parent::error_msg('该用户不存在');
+        }
+
+        $this->load->library('page');
+        $where = 'where status = 1 and user_id = '.$user_id;
+
+        //得到数据
+        $list  = $this->model_content->data_list($p,$limit,$where);
+        //得到头像
+        $user_res =  parent::get_user_avatar($list);
+        if(!empty($user_res)){
+            $user_avatar = array_column($user_res , 'avatar' , 'user_id');
+            $user_time = array_column($user_res , 'create_time' , 'user_id');
+        }
+
+        foreach($list as &$v){
+            $v['user_sn'] = $v['avatar'] = '';
+            $v['create_time'] = change_time($v['create_time']);
+            //1是特殊的需要看详情的
+            $v['is_detail'] = in_array($v['type'],$this->detail_data) ? 1 : 0;
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            if(!empty($v['user_id'])){
+                $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
+                $c_time = empty($user_time[$v['user_id']]) ? date('Ymd') : substr($user_time[$v['user_id']] , 0 , 10);
+                $v['user_sn'] = str_replace(array('-',' ',':'),'',$c_time).$v['user_id'];
+            }
+            if($v['is_detail'] == 1){
+                $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
+                $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];
+            }else{
+                $v['content'] = strip_tags($v['content'],'<br><img><a>');
+                //gif图转成静态
+                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+            }
+            $v['content'] = filter_content_br($v['content']);
+        }
+        //得到总数
+        $count = $this->model_content->data_count($where);
+        //生成页码
+        $page = get_page($count,$limit,$p,'/member/'.$user_sn);
+
+        $this->assign('body','member');
+        $this->assign('title',$user_info['name']);
+        $this->assign('info',$user_info['name']);
+        $this->assign('keywords',$user_info['name']);
+        $this->assign('description',$user_info['name']);
+
+        $this->assign('list',$list);
+        $this->assign('count',$count);
+        $this->assign('page',$page);
+        $this->assign('page',$page);
+
+        $this->native_display('main/header.html');
+        $this->native_display('main/member.html');
+        $this->native_display('main/footer.html');
     }
 
     /*
@@ -232,50 +312,10 @@ class content extends MY_Controller  {
         return $detail;
     }
 
-    /*
-     * 处理新浪上传GIF图
-     */
-    public function gif_static($content){
-        $img_preg = "/<img([^>]*)\s*src=('|\")([^'\"]+)('|\")/";
-        if(!preg_match_all($img_preg , $content , $img_data)) return false;
 
-        foreach($img_data[3] as $key=>$v){
-            $result[$key]['src_url'] = $v;
-            $result[$key]['total_img'] = $img_data[0][$key].'>';
-        }
-
-        $original = $new_img = array();
-        foreach($result as $v){
-            $src_url = $v['src_url'];  //图片URL
-            $total_img = $v['total_img'];  //全部img标签信息
-            $separate = explode('/' , $src_url);
-            $img_name = end($separate);  //图处名称，无路径
-            $img_domain = 'http://'.$separate[2];  //域名
-            //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
-            if(strpos($src_url,'.sinaimg.cn') !== false ){
-                $original[] = $total_img;
-                $small_url = $img_domain.'/small/'.$img_name;
-                $src = '<img class="sina_show" title="双击图片查看原图" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
-                if(substr($img_name , -4 , 4) == '.gif'){
-                    $src = '<br><img class="sina_show_gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
-                    $src .= '<div class="play">PLAY</div>';
-                }
-                $new_img[] = $src;
-            }else{
-                if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
-                    $original[] = $total_img;
-                    $new_img[] = '<br><img class="sina_show" src="'.$src_url.'"  ori-data="'.$src_url.'"  />';
-                }
-            }
-        }
-
-        if(!empty($original)){
-            return str_replace($original , $new_img , $content);
-        }else{
-            return false;
-        }
+    public function error(){
+        parent::error_msg();
     }
-
 
 }
 
