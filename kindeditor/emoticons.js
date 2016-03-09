@@ -6,7 +6,7 @@
 
 KindEditor.plugin('emoticons', function (K) {
     var self = this, name = 'emoticons',
-		path = (self.emoticonsPath || self.pluginsPath + 'emoticons/images/'),
+		path = ( '/kindeditor/plugins/emoticons/images/'),
 		allowPreview = self.allowPreviewEmoticons === undefined ? true : self.allowPreviewEmoticons;
     self.clickToolbar(name, function () {
         var elements = [],

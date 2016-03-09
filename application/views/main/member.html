@@ -68,6 +68,9 @@ function ajax_page(page){
             }
             $('.content_list').html('');
             $("#content_list").tmpl(result.data).appendTo('.content_list');
+            window.onload=function() {
+                show_play();
+            }
         },
         error:function(e){
             alert_msg('请求失败，请刷新重试');

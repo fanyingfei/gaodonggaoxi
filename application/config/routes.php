@@ -38,12 +38,12 @@
 |
 */
 
-//闲话
-$route['xian'] = "main/content/xian";
-$route['xian/(:num)'] = "main/content/xian/$1";
-//小知识
-$route['know'] = "main/content/know";
-$route['know/(:num)'] = "main/content/know/$1";
+//搞笑
+$route['gx'] = "main/content/xian";
+$route['gx/(:num)'] = "main/content/xian/$1";
+//语录
+$route['yl'] = "main/content/know";
+$route['yl/(:num)'] = "main/content/know/$1";
 //妹子
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";

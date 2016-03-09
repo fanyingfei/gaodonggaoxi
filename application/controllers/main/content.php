@@ -28,20 +28,20 @@ class content extends MY_Controller  {
     public function xian($p = 1){
         $this->type = 1;
         $this->assign('body','xian');
-        $this->assign('title','闲话');
-        $this->assign('info','闲话，段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
+        $this->assign('title','搞笑');
+        $this->assign('info','段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
-        $this->assign('description','闲话');
+        $this->assign('description','搞笑');
         $this->index($p);
     }
 
     public function know($p = 1){
         $this->type = 2;
         $this->assign('body','know');
-        $this->assign('title','小知士');
-        $this->assign('info','介绍一些生活小常识');
-        $this->assign('keywords','小知士');
-        $this->assign('description','小知士');
+        $this->assign('title','语录');
+        $this->assign('info','经典语录');
+        $this->assign('keywords','语录');
+        $this->assign('description','语录');
         $this->index($p);
     }
 
@@ -155,6 +155,7 @@ class content extends MY_Controller  {
         $this->assign('list',$list);
         $this->assign('count',$count);
         $this->assign('page',$page);
+        $this->assign('type',$this->type);
 
         $this->display('content.html');
     }

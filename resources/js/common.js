@@ -143,7 +143,7 @@ window.onload=function(){
     })
 
     //监听图片单击事件
-    $(".sina_show").click(function(){
+    $('body').on('click', '.sina_show', function(){
         max_height = $(this).css("max-height");
         img_height = $(this).height();
         if(max_height == 'none'){
@@ -158,7 +158,7 @@ window.onload=function(){
     })
 
     //监听图片单击事件
-    $(".sina_show_gif").click(function(){
+    $('body').on('click', '.sina_show_gif', function(){
         src = $(this).attr('src');
         ori_src = $(this).attr('ori-data');
         $(this).attr('src',ori_src);
@@ -167,7 +167,7 @@ window.onload=function(){
     })
 
     //监听图片播放事件
-    $(".play").click(function(){
+    $('body').on('click', '.play', function(){
         play_obj = $(this);
         pre_img_obj = $(this).prev('img');
         src_url = pre_img_obj.attr('ori-data');
