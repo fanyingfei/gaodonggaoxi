@@ -487,6 +487,10 @@ ul {
         margin-top: 20px;
     }
 
+    .content_list{
+        min-height: 100px;
+    }
+
     .person_info .separate {
         margin-left: 5px;
     }

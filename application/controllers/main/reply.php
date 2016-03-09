@@ -91,11 +91,11 @@ class reply extends MY_Controller  {
         if(empty($id) || empty($click)) splash('error','Try again');
         $this->load->model('model_record');
         $this->load->model('model_reply');
-        $res = $this->model_record->is_has($id,-1);
+        $res = $this->model_record->is_has($id,1);
         if(!$res){
             splash('error','You are voted');
         }
-        $data = array('type'=>-1,'row_id'=>$id);
+        $data = array('type'=>1,'row_id'=>$id);
         $list  = $this->model_record->save($data);
         $res  = $this->model_reply->update($click,$id);
         if($res){

@@ -22,11 +22,10 @@ function ajax_res(obj){
 //主体内容点oo
 function click_good(url , thi){
     var id = $(thi).attr('data-id');
-    var type = $("#type").val();
     $.ajax({
         type:'POST',
         data:{
-            "id":id,"click":'good','type':type
+            "id":id,"click":'good'
         },
         url:url,
         dataType:'json',
@@ -45,11 +44,10 @@ function click_good(url , thi){
 //主体内容点xx
 function click_bad(url , thi){
     var id = $(thi).attr('data-id');
-    var type = $("#type").val();
     $.ajax({
         type:'POST',
         data:{
-            "id":id,"click":'bad','type':type
+            "id":id,"click":'bad'
         },
         url:url,
         dataType:'json',
@@ -199,17 +197,21 @@ $(document).ready(function(){
     var reply_url = '/reply/record'
 
     //监听主体OO点击事件
-    $(".oo_xx .oo").click(function(){
+    $('body').on('click', '.oo_xx .oo', function(){
         click_good(comment_url,this);
     })
 
     //监听主体XX点击事件
-    $(".oo_xx .xx").click(function(){
+    $('body').on('click', '.oo_xx .xx', function(){
         click_bad(comment_url,this);
     })
 
     //监听评论@点击事件
     $('body').on('click', '.r_ta', function(){
+        if($(this).parents('.reply_main').find('.textarea-wrapper .edit_p').length <= 0){
+            alert_msg('你还没有登陆哦');
+            return false;
+        }
         $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
         $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('@'+$(this).data('name')+'&nbsp;&nbsp;&nbsp;&nbsp;');
         height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
@@ -319,7 +321,7 @@ $(document).ready(function(){
     })
 
     //得到全部回复列表
-    $("a.reply").click(function(){
+    $('body').on('click', 'a.reply', function(){
         var obj = $(this);
         var id = obj.attr('data-id');
 

@@ -74,7 +74,7 @@ $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
 //查看某人发表的全部内容
 $route['member/(:any)'] = "main/content/member/$1";
-$route['member/(:any)/(:num)'] = "main/content/member/$1/$2";
+$route['member_list'] = "main/content/member_list";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 $route['user/news'] = "main/user/user_news";

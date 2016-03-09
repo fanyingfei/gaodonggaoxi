@@ -155,29 +155,45 @@ class content extends MY_Controller  {
         $this->assign('list',$list);
         $this->assign('count',$count);
         $this->assign('page',$page);
-        $this->assign('type',$this->type);
 
         $this->display('content.html');
     }
 
     /*
-    * 查看某用户发表的全部内容
-    */
-    public function member($user_sn = '' , $p = 1){
-        $limit = 10;
-        $p = intval($p);
+   * 查看某用户发表的全部内容
+   */
+    public function member($user_sn){
         $user_id = substr($user_sn , 8 );
         $user_time = substr($user_sn , 0 , 8);
         if(empty($user_sn) || empty($user_id)){
             parent::error_msg('该用户不存在');
         }
-
         $this->load->model('model_users');
         $user_info = $this->model_users->get_user_by_user_id($user_id);
         if(empty($user_info)) parent::error_msg('该用户不存在');
         if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
             parent::error_msg('该用户不存在');
         }
+
+        $this->assign('body','member');
+        $this->assign('title',$user_info['name']);
+        $this->assign('info',$user_info['name']);
+        $this->assign('keywords',$user_info['name']);
+        $this->assign('description',$user_info['name']);
+        $this->assign('user_id',$user_id);
+
+        $this->native_display('main/header.html');
+        $this->native_display('main/member.html');
+        $this->native_display('main/footer.html');
+    }
+
+    /*
+    * 查看某用户发表的全部内容
+    */
+    public function member_list(){
+        $limit = 10;
+        $p = intval($_REQUEST['page']);
+        $user_id = intval($_REQUEST['id']);
 
         $this->load->library('page');
         $where = 'where status = 1 and user_id = '.$user_id;
@@ -215,22 +231,10 @@ class content extends MY_Controller  {
         //得到总数
         $count = $this->model_content->data_count($where);
         //生成页码
-        $page = get_page($count,$limit,$p,'/member/'.$user_sn);
+        $page = get_page($count,$limit,$p,'ajax_page');
 
-        $this->assign('body','member');
-        $this->assign('title',$user_info['name']);
-        $this->assign('info',$user_info['name']);
-        $this->assign('keywords',$user_info['name']);
-        $this->assign('description',$user_info['name']);
-
-        $this->assign('list',$list);
-        $this->assign('count',$count);
-        $this->assign('page',$page);
-        $this->assign('page',$page);
-
-        $this->native_display('main/header.html');
-        $this->native_display('main/member.html');
-        $this->native_display('main/footer.html');
+        $out = array('list'=>$list,'count'=>$count,'page'=>$page);
+        splash('success','',$out);
     }
 
     /*
@@ -283,14 +287,13 @@ class content extends MY_Controller  {
         $id = intval($_REQUEST['id']);
         $click = $_REQUEST['click'];
         if(!in_array($click,array('good','bad'))) splash('error','Try again');
-        $type = intval($_REQUEST['type']);
         if(empty($id) || empty($click)) splash('error','Try again');
         $this->load->model('model_record');
-        $res = $this->model_record->is_has($id,$type);
+        $res = $this->model_record->is_has($id,0);
         if(!$res){
             splash('error','You are voted');
         }
-        $data = array('type'=>$type,'row_id'=>$id);
+        $data = array('type'=>0,'row_id'=>$id);
         $list  = $this->model_record->save($data);
         $res  = $this->model_content->update($click,$id);
         if($res){

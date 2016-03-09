@@ -108,7 +108,7 @@ class CI_Page {
             if($this->pageCount >1){
                 if($this->jsFunction != 'href'){
                     if($this->hasPrePage){
-                        $pageString = $pageString ."<a class='page-next' href='" .$this->jsFunction . "/" . ($this->pageNo-1) . "'>«</a>";
+                        $pageString = $pageString ."<a class='page-next' onclick='" .$this->jsFunction . "(" . ($this->pageNo-1) . ")'>«</a>";
                     }
                     foreach ($pageList as $k=>$p){
                         if($this->pageNo == $p){
@@ -119,11 +119,11 @@ class CI_Page {
                             $pageString = $pageString ."<span class='page-break'>...</span>";
                             continue;
                         }
-                        $pageString = $pageString ."<a href='" .$this->jsFunction . "/" . $p . "'>" . $p . "</a>";
+                        $pageString = $pageString ."<a onclick='" .$this->jsFunction . "(" . $p . ")'>" . $p . "</a>";
                     }
 
                     if($this->hasNextPage){
-                        $pageString = $pageString ."<a class='page-next' href='" .$this->jsFunction . "/" . ($this->pageNo+1) . "'>»</a>";
+                        $pageString = $pageString ."<a class='page-next' onclick='" .$this->jsFunction . "(" . ($this->pageNo+1) . ")'>»</a>";
                     }
                 }else{
                     $total_url = explode('/',$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
