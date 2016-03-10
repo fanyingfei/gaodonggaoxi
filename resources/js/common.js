@@ -92,6 +92,9 @@ function show_play(){
     $(".play").each(function(){
         width = $(this).prev().width();
         height = $(this).prev().height();
+        if(width <=2 || height <= 2){
+            return false;
+        }
         $(this).css("width",width+'px');
         $(this).css("height",height+'px');
         $(this).css("line-height",height+'px');
@@ -159,11 +162,17 @@ window.onload=function(){
 
     //监听图片单击事件
     $('body').on('click', '.sina_show_gif', function(){
-        src = $(this).attr('src');
-        ori_src = $(this).attr('ori-data');
-        $(this).attr('src',ori_src);
-        $(this).attr('ori-data',src);
-        $(this).next('div.play').show();
+        src_url = $(this).attr('ori-data');
+        ori_src = $(this).attr('src');
+        $(this).attr('src',src_url);
+        $(this).attr('ori-data',ori_src);
+        if($(this).hasClass('valid')){
+            $(this).removeClass('valid');
+            $(this).next('div.play').show();
+        }else{
+            $(this).addClass('valid');
+        }
+
     })
 
     //监听图片播放事件
@@ -175,7 +184,7 @@ window.onload=function(){
         pre_img_obj.attr('src',src_url);
         pre_img_obj.attr('ori-data',ori_src);
         $(this).text('loading...');
-
+        pre_img_obj.addClass('valid');
         var img = new Image(); //创建一个Image对象，实现图片的预下载
         img.src = src_url;
         if(img.complete) {

@@ -926,6 +926,8 @@ ul {
     text-align: center;
     background-color: #000000;
     cursor: pointer;
+    width:0;
+    overflow: hidden;
 }
 
 .alert_msg{
