@@ -64,21 +64,14 @@ class CI_Page {
                 array_push($pageList,$i+1);
             }
         }else{
-            if($this->pageNo <= 4){
-                for($i=0;$i<5;$i++){
+            if($this->pageNo <= 2){
+                for($i=0;$i<3;$i++){
                     array_push($pageList,$i+1);
                 }
                 array_push($pageList,-1);
-            //    array_push($pageList,$this->pageCount);
+               array_push($pageList,$this->pageCount);
 
-            }else if($this->pageNo > $this->pageCount - 2){
-                array_push($pageList,1);
-
-                array_push($pageList,-1);
-                for($i=3;$i>0;$i--){
-                    array_push($pageList,$this->pageCount - $i+1);
-                }
-            }else if($this->pageNo > 4 && $this->pageNo <= $this->pageCount - 2){
+            }else if($this->pageNo > 2 && $this->pageNo <= $this->pageCount - 2){
                 array_push($pageList,1);
                 array_push($pageList,-1);
 
@@ -87,8 +80,14 @@ class CI_Page {
                 array_push($pageList,$this->pageNo + 1);
 
                 array_push($pageList,-1);
-             //   array_push($pageList,$this->pageCount);
+                array_push($pageList,$this->pageCount);
+            }else if($this->pageNo > $this->pageCount - 2){
+                array_push($pageList,1);
 
+                array_push($pageList,-1);
+                for($i=3;$i>0;$i--){
+                    array_push($pageList,$this->pageCount - $i+1);
+                }
             }
         }
         return $pageList;
