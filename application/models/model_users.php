@@ -117,11 +117,12 @@ class model_users extends CI_Model{
     }
 
     /*
-     * 更新登陆时间
+     * 更新登陆时间和SESSION_ID
      */
     public function update_login_time($id){
-        $sql = 'update '.self::TABLE_NAME ." set last_login = '".date('Y-m-d H:i:s')."'  where ".self::PRI_KEY ." = $id";
-        $this->db->query($sql);
+        $data['last_login'] = date('Y-m-d H:i:s');
+        $data['session_id'] = session_id();
+        return $this->db->update(self::TABLE_NAME , $data, array(self::PRI_KEY =>$id));
     }
 }
 ?>

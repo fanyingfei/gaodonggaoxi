@@ -2,9 +2,9 @@
         <h3>个人资料</h3>
         <div class="person_info">
             <div>
-                <div class="info_avatar_img">
-                    {if $avatar != '' }<img src="{$avatar}" /> {/if}
-                </div>
+                {if $avatar != '' }
+                <div class="info_avatar_img"><img src="{$avatar}" /></div>
+                {/if}
                 <div class="name_email">
                     <p class="u_name">{$user.name}</p>
                     <p class="u_email">{$user.email}</p>

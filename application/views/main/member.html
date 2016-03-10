@@ -3,7 +3,7 @@
     <div class="depict">{$info}</div>
 
     <div class="content_list"></div>
-    <input type="hidden" id="unique_id" value="{$user_id}" />
+    <input type="hidden" id="unique_id" value="{$user.user_id}" />
 
     <script src="/resources/js/tmpl.js"></script>
     <script id="content_list" type="text/x-dot-template">
@@ -38,14 +38,14 @@
         {{/each}}
         {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
     {{else}}
-        <div class="empty"><h1 class="center">你要找的东西不见了</h1></div>
+        <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
     {{/if}}
     {/literal}
     </script>
 </div>
 <div class="right-container left">
-    <div class="info">
-        <h3>留言</h3>
+    <div class="member_user_info">
+        {if $user.avatar != ''}<div class="reply_avatar"><img src="{$user.avatar}" /></div>{/if}
     </div>
 </div>
 <script type="text/javascript">
@@ -63,7 +63,7 @@ function ajax_page(page){
         type: "POST",
         dataType:'json',
         beforeSend: function() {
-            $('.content_list').html('<p class="center">数据加载中...</p>');
+            $('.content_list').html('<h2 class="center">数据加载中...</h2>');
         },
         success:function(result){
             if(result.status == "error"){

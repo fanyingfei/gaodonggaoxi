@@ -118,7 +118,7 @@ class content extends MY_Controller  {
         //得到总数
         $count = $this->model_content->data_count($where);
         $total_page = ceil($count/$limit);
-        $p = empty($p) ? $total_page : intval($p);
+        if(empty($p) || $p > $total_page) $p = $total_page;
 
         //1是特殊的需要看详情的
         $flag = in_array($this->type,$this->detail_data) ? 1 : 0;
@@ -139,7 +139,8 @@ class content extends MY_Controller  {
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             if(!empty($v['user_id'])){
                 $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
-                $v['user_sn'] = get_user_sn($v['user_id'] , $user_time[$v['user_id']]);
+                $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
+                $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
             if($flag == 1){
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
@@ -184,7 +185,7 @@ class content extends MY_Controller  {
         $this->assign('info',$user_info['name']);
         $this->assign('keywords',$user_info['name']);
         $this->assign('description',$user_info['name']);
-        $this->assign('user_id',$user_id);
+        $this->assign('user',$user_info);
 
         $this->native_display('main/header.html');
         $this->native_display('main/member.html');
@@ -205,7 +206,7 @@ class content extends MY_Controller  {
         //得到总数
         $count = $this->model_content->data_count($where);
         $total_page = ceil($count/$limit);
-        $p = empty($p) ? $total_page : intval($p);
+        if(empty($p) || $p > $total_page) $p = $total_page;
 
         //得到数据
         $list  = $this->model_content->data_list($total_page - $p,$limit,$where);
@@ -266,7 +267,7 @@ class content extends MY_Controller  {
             $data['name'] = strip_tags(trim($_REQUEST['name']));
             //已经注册过的昵称不能用
             $res_by_name = $this->model_users->get_user_by_name($data['name']);
-            if(!empty($res_by_name)) splash('error','该昵称已被注册，只限登陆后使用');
+            if(!empty($res_by_name)) splash('error','该昵称已被注册，仅本人登陆后可用');
 
             $data['name'] = strip_tags(trim($_REQUEST['name']));
             $data['email'] = strip_tags(trim($_REQUEST['email']));
