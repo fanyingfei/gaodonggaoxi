@@ -16,7 +16,7 @@ class model_content extends CI_Model{
      */
     public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
-        $sql = 'select * from '.self::TABLE_NAME." $where $order_by limit ".($p-1)*$limit.', '.$limit;
+        $sql = 'select * from '.self::TABLE_NAME." $where $order_by limit ".$p*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 

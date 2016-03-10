@@ -25,7 +25,7 @@ class content extends MY_Controller  {
         $this->load->model('model_content');
     }
 
-    public function xian($p = 1){
+    public function xian($p = 0){
         $this->type = 1;
         $this->assign('body','xian');
         $this->assign('title','搞笑');
@@ -35,7 +35,7 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function know($p = 1){
+    public function know($p = 0){
         $this->type = 2;
         $this->assign('body','know');
         $this->assign('title','语录');
@@ -45,7 +45,7 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function zzs($p = 1){
+    public function zzs($p = 0){
         $this->type = 4;
         $this->assign('body','zzs');
         $this->assign('title','渣渣说');
@@ -55,7 +55,7 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function meizi($p = 1){
+    public function meizi($p = 0){
         $this->type = 5;
         $this->assign('body','meizi');
         $this->assign('title','妹子');
@@ -65,7 +65,7 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function myth($p = 1){
+    public function myth($p = 0){
         $this->type = 6;
         $this->assign('body','myth');
         $this->assign('title','神话');
@@ -106,7 +106,7 @@ class content extends MY_Controller  {
     /*
      * 列表
      */
-    public function index($p = 1)
+    public function index($p = 0)
     {
         $limit = 10;
         $p = intval($p);
@@ -115,11 +115,16 @@ class content extends MY_Controller  {
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
 
+        //得到总数
+        $count = $this->model_content->data_count($where);
+        $total_page = ceil($count/$limit);
+        $p = empty($p) ? $total_page : intval($p);
+
         //1是特殊的需要看详情的
         $flag = in_array($this->type,$this->detail_data) ? 1 : 0;
 
         //得到数据
-        $list  = $this->model_content->data_list($p,$limit,$where);
+        $list  = $this->model_content->data_list($total_page - $p,$limit,$where);
         //得到头像
         $user_res =  parent::get_user_avatar($list);
         if(!empty($user_res)){
@@ -146,10 +151,9 @@ class content extends MY_Controller  {
             }
             $v['content'] = filter_content_br($v['content']);
         }
-        //得到总数
-        $count = $this->model_content->data_count($where);
+
         //生成页码
-        $page = get_page($count,$limit,$p);
+        $page = get_page($count,$limit,$total_page - $p + 1);
 
         $this->assign('list',$list);
         $this->assign('count',$count);
@@ -198,8 +202,13 @@ class content extends MY_Controller  {
         $this->load->library('page');
         $where = 'where status = 1 and user_id = '.$user_id;
 
+        //得到总数
+        $count = $this->model_content->data_count($where);
+        $total_page = ceil($count/$limit);
+        $p = empty($p) ? $total_page : intval($p);
+
         //得到数据
-        $list  = $this->model_content->data_list($p,$limit,$where);
+        $list  = $this->model_content->data_list($total_page - $p,$limit,$where);
         //得到头像
         $user_res =  parent::get_user_avatar($list);
         if(!empty($user_res)){
@@ -222,10 +231,9 @@ class content extends MY_Controller  {
             }
             $v['content'] = filter_content_br($v['content']);
         }
-        //得到总数
-        $count = $this->model_content->data_count($where);
+
         //生成页码
-        $page = get_page($count,$limit,$p,'ajax_page');
+        $page = get_page($count,$limit,$total_page - $p + 1,'ajax_page');
 
         $out = array('list'=>$list,'count'=>$count,'page'=>$page);
         splash('success','',$out);

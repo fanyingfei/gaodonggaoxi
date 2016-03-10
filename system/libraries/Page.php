@@ -68,9 +68,8 @@ class CI_Page {
                 for($i=0;$i<3;$i++){
                     array_push($pageList,$i+1);
                 }
-                array_push($pageList,-1);
-               array_push($pageList,$this->pageCount);
-
+             //   array_push($pageList,-1);
+             //  array_push($pageList,$this->pageCount);
             }else if($this->pageNo > 2 && $this->pageNo <= $this->pageCount - 2){
                 array_push($pageList,1);
                 array_push($pageList,-1);
@@ -79,8 +78,8 @@ class CI_Page {
                 array_push($pageList,$this->pageNo);
                 array_push($pageList,$this->pageNo + 1);
 
-                array_push($pageList,-1);
-                array_push($pageList,$this->pageCount);
+            //    array_push($pageList,-1);
+            //    array_push($pageList,$this->pageCount);
             }else if($this->pageNo > $this->pageCount - 2){
                 array_push($pageList,1);
 
@@ -94,11 +93,69 @@ class CI_Page {
     }
 
     /***
-     * 创建分页控件
+     * 创建分页控件倒序
      * @param
      * @return String
      */
     public function echoPageAsDiv(){
+        $pageList = $this->generatePageList();
+
+        $pageString ="<div class='page-bottom'>";
+
+        if(!empty($pageList)){
+            if($this->pageCount >1){
+                if($this->jsFunction != 'href'){
+                    if($this->hasPrePage){
+                        $pageString = $pageString ."<a class='page-next' onclick='" .$this->jsFunction . "(" . ($this->pageCount-$this->pageNo + 2) . ")'>«</a>";
+                    }
+                    foreach ($pageList as $k=>$p){
+                        if($this->pageNo == $p){
+                            $pageString = $pageString ."<span class='page-cur'>[" . ($this->pageCount-$this->pageNo + 1) . "]</span>";
+                            continue;
+                        }
+                        if($p == -1){
+                            $pageString = $pageString ."<span class='page-break page-desc'>...</span>";
+                            continue;
+                        }
+                        $pageString = $pageString ."<a onclick='" .$this->jsFunction . "(" . ($this->pageCount-$p + 1) . ")'>" . ($this->pageCount-$p + 1) . "</a>";
+                    }
+
+                    if($this->hasNextPage){
+                        $pageString = $pageString ."<a class='page-next' onclick='" .$this->jsFunction . "(" . ($this->pageCount-$this->pageNo ) . ")'>»</a>";
+                    }
+                }else{
+                    $total_url = explode('/',$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+                    $url = empty($total_url[1]) ? '/gx/' : '/'.$total_url[1].'/';
+                    if($this->hasPrePage){
+                        $pageString = $pageString ."<a class='page-next' href='" .$url . ($this->pageCount-$this->pageNo + 2) . "'>«</a>";
+                    }
+                    foreach ($pageList as $k=>$p){
+                        if($this->pageNo == $p){
+                            $pageString = $pageString ."<span class='page-cur'>[" . ($this->pageCount-$this->pageNo + 1) . "]</span>";
+                            continue;
+                        }
+                        if($p == -1){
+                            $pageString = $pageString ."<span class='page-break  page-desc'>...</span>";
+                            continue;
+                        }
+                        $pageString = $pageString ."<a href='" .$url  . ($this->pageCount-$p + 1) . "'>" . ($this->pageCount-$p + 1) . "</a>";
+                    }
+
+                    if($this->hasNextPage){
+                        $pageString = $pageString ."<a class='page-next' href='" .$url . ($this->pageCount-$this->pageNo ) . "'>»</a>";
+                    }
+                }
+
+            }
+        }
+        $pageString = $pageString .("</div>");
+        return $pageString;
+    }
+
+    /*
+     *创建页码正序
+     */
+    public function echoPageAsDiv_asc(){
         $pageList = $this->generatePageList();
 
         $pageString ="<div class='page-bottom'>";

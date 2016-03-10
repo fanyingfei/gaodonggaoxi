@@ -885,14 +885,13 @@ ul {
 }
 
 .pagination a, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-cur, .pagination .page-break {
-    color: #498B31;
-    border:1px solid  #498B31;
+    color: #fff;
     margin-left:10px;
+    background-color: #ccc;
 }
 
 .pagination a:hover {
-    text-decoration: underline;
-    color: #545454;
+    background-color: #444;
 }
 
 .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g {
@@ -928,15 +927,20 @@ ul {
 }
 
 .pagination .page-cur {
-    font-weight: bold;
-    color: #545454;
-    background-color: #f0f0f0;
+    border: 1px solid #EEE;
+    color: #AAA;
+    background-color: #fff;
+    line-height: 20px;
 }
 
 .pagination .page-break {
     border: medium none;
     background: none transparent;
     color: #333;
+}
+
+.pagination .page-desc {
+    margin: 0 -10px 0 0;
 }
 
 .play {
