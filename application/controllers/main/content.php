@@ -134,8 +134,7 @@ class content extends MY_Controller  {
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             if(!empty($v['user_id'])){
                 $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
-                $c_time = empty($user_time[$v['user_id']]) ? date('Ymd') : date('Ymd',strtotime($user_time[$v['user_id']]));
-                $v['user_sn'] = $c_time.$v['user_id'];
+                $v['user_sn'] = get_user_sn($v['user_id'] , $user_time[$v['user_id']]);
             }
             if($flag == 1){
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
@@ -209,16 +208,10 @@ class content extends MY_Controller  {
         }
 
         foreach($list as &$v){
-            $v['user_sn'] = $v['avatar'] = '';
             $v['create_time'] = change_time($v['create_time']);
             //1是特殊的需要看详情的
             $v['is_detail'] = in_array($v['type'],$this->detail_data) ? 1 : 0;
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
-            if(!empty($v['user_id'])){
-                $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
-                $c_time = empty($user_time[$v['user_id']]) ? date('Ymd') : substr($user_time[$v['user_id']] , 0 , 10);
-                $v['user_sn'] = str_replace(array('-',' ',':'),'',$c_time).$v['user_id'];
-            }
             if($v['is_detail'] == 1){
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';
                 $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8').'...' : $v['title'];

@@ -474,6 +474,7 @@ ul {
     .user_center .person_info > div {
         line-height: 20px;
         padding: 10px 0;
+        overflow: auto;
     }
 
     .person_info .age.left {
@@ -493,6 +494,17 @@ ul {
 
     .person_info .name_email .u_email {
         margin-top: 20px;
+    }
+
+    .my_sub a{
+        float: left;
+        margin-left: 20px;
+        margin-top: 8px;
+        cursor: pointer;
+    }
+
+    .my_sub a:hover{
+        color:#4285f4;
     }
 
     .content_list{

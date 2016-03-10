@@ -205,6 +205,14 @@ function filter_content_br($str){
 }
 
 /*
+ * 得到用户user_sn
+ */
+function get_user_sn($user_id,$time){
+    $c_time = empty($time) ? date('Ymd') : date('Ymd',strtotime($time));
+    return $c_time.$user_id;
+}
+
+/*
     * 处理新浪上传GIF图
     */
 function gif_static_gif($content){

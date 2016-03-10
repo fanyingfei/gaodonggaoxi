@@ -63,7 +63,7 @@ function ajax_page(page){
         type: "POST",
         dataType:'json',
         beforeSend: function() {
-            $('.content_list').text('数据加载中...');
+            $('.content_list').html('<p class="center">数据加载中...</p>');
         },
         success:function(result){
             if(result.status == "error"){

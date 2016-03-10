@@ -32,6 +32,12 @@ class user extends MY_Controller  {
         $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
         if(empty($user)) parent::error_msg();
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
+        $user['user_sn'] = get_user_sn($user['user_id'] , $user['create_time']);
+
+        $this->load->model('model_content');
+        $where = 'where status = 1 and user_id = '.$_SESSION['user_id'];
+        $count = $this->model_content->data_count($where);
+        $user['content_count'] = $count;
 
         $sex = array('M'=>'男','W'=>'女','U'=>'未知');
         $age = array('');
@@ -59,19 +65,6 @@ class user extends MY_Controller  {
         $this->assign('title','用户中心-修改头像');
         $this->assign('body','person_center');
         $this->user_display('user/user_avatar.html');
-    }
-
-    public function user_news(){
-        if(!is_login()){
-            header_index('login');
-        }
-        $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
-        if(empty($user)) parent::error_msg();
-
-        $this->assign('select',3);
-        $this->assign('title','用户中心-我的消息');
-        $this->assign('body','person_center');
-        $this->user_display('user/user_news.html');
     }
 
     public function login_index($param=''){
