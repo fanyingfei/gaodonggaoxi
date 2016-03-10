@@ -197,12 +197,20 @@ ul {
     .one .user {
         float: left;
         width: 100px;
-        margin-right: 40px;
+        margin-right: 30px;
     }
 
     .one .content {
         float: left;
-        width: 510px;
+        width: 528px;
+    }
+
+    .vip{
+        background-image: url('/resources/images/vip.png');
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size:12px 12px;
+        padding:1px 8px;
     }
 
     .one .content .avatar_min_height {
@@ -1408,5 +1416,10 @@ ul {
         margin-left:10px;
         margin-right:10px;
         left:0 !important;
+    }
+
+    .one .member p{
+        float:left;
+        margin: 0 5px 0 0;
     }
 }

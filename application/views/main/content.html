@@ -19,7 +19,7 @@
                 </div>
                 {/if}
                 {if $one.user_sn != ''}
-                <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}">{$one.name}</p></a>
+                <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
                 {else}
                 <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
                 {/if}

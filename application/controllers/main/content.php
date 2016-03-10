@@ -135,7 +135,7 @@ class content extends MY_Controller  {
             if(!empty($v['user_id'])){
                 $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
                 $c_time = empty($user_time[$v['user_id']]) ? date('Ymd') : date('Ymd',strtotime($user_time[$v['user_id']]));
-                $v['user_sn'] = str_replace(array('-',' ',':'),'',$c_time).$v['user_id'];
+                $v['user_sn'] = $c_time.$v['user_id'];
             }
             if($flag == 1){
                 $v['content'] = mb_substr(strip_tags($v['content']), 0, 150, 'utf-8').'...';

@@ -1,6 +1,7 @@
 <div class="main left">
     <div class="title">{$title}</div>
     <div class="depict">{$info}</div>
+
     <div class="content_list"></div>
     <input type="hidden" id="unique_id" value="{$user_id}" />
 
@@ -15,7 +16,7 @@
 
     {{each(key,one) list}}
         <div class="one{{if key == 0 }} first{{/if}}">
-            <div class="user">
+            <div class="user member">
                 <p class="time text-right" title="${one.u_name}">${one.name}</p>
                 <p class="time text-right">发表于 ${one.create_time}</p>
             </div>
@@ -61,6 +62,9 @@ function ajax_page(page){
         },
         type: "POST",
         dataType:'json',
+        beforeSend: function() {
+            $('.content_list').text('数据加载中...');
+        },
         success:function(result){
             if(result.status == "error"){
                 alert_msg(result.msg);
