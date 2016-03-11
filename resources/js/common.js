@@ -251,8 +251,10 @@ $(document).ready(function(){
 
     //关闭回复
     $('body').on('click', '.close_reply', function(){
-        $(this).parents('.reply_wapper').hide(500,function(){
+        $(this).parents('.reply_wapper').fadeOut(500,function(){
+            var len = $(this).find('.reply_one').length;
             $(this).prev('.one').find('.reply').text('↓回复');
+            $(this).prev('.one').find('.reply_count').text(len);
             var height = $(this).prev('.one').offset().top;
             $('html,body').animate({scrollTop: height}, 500);
             $(this).remove();
@@ -397,9 +399,9 @@ $(document).ready(function(){
                     return false;
                 }
                 alert_msg(result.msg , 'success');
-                setTimeout(function(){
-                    window.location.href=window.location.href;
-                },1000);
+                //回复成功加一个DIV，点击close_reply时会统计reply_one的数量
+                obj.parents('.reply_main').before('<div class="reply_one display"></div>');
+                obj.parents('.reply_main').find('.close_reply').trigger("click");
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
@@ -410,7 +412,6 @@ $(document).ready(function(){
     function reply_list(result){
         var html = '<div class="reply_wapper"><hr class="hr_reply"><div class="reply_main">';
         if(result.data.list != ''){
-            var count = result.data.list.length;
             html += '<div class="reply_title">回复</div>';
             $.each(result.data.list, function(k, v){
                 html += '<div class="reply_one rep_id_'+v.rep_id+'">';
@@ -421,7 +422,7 @@ $(document).ready(function(){
                     html += '<span class="time">&nbsp;&nbsp;@&nbsp;&nbsp;</span>';
                     html += '<a  class="r_name reply_to_reply" rep-id="'+ v.parent_id+'">'+v.parent_name+'</a>';
                 }
-                html += '<span class="time right">'+(count - k)+'L</span></p>';
+                html += '<span class="time right">'+(k+1)+'L</span></p>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
                     html += '<p class="reply_aite_p"><span class="time left">回复</span><span class="qy left"></span>';
                     html += '<span  class="reply_at_content left">'+ v.reply_content+'</span>';

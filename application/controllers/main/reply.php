@@ -58,7 +58,6 @@ class reply extends MY_Controller  {
         if(!is_login()) splash('error','回复请先登陆');
         //是否拉入黑名单
         $this->load->model('model_black');
-        $this->load->model('model_users');
         $this->load->model('model_content');
         $res = $this->model_black->find_one();
         if($res) splash('error','你已被拉入黑名单');

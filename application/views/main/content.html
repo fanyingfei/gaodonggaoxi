@@ -14,12 +14,12 @@
                 {if $one.avatar != ''}
                 <div class="avatar_wapper">
                     <div class="login_avatar">
-                        <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
+                        <a target="_blank" href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
                     </div>
                 </div>
                 {/if}
                 {if $one.user_sn != ''}
-                <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
+                <a target="_blank" href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
                 {else}
                 <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
                 {/if}
