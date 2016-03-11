@@ -7,9 +7,8 @@
 Icon?
 ehthumbs.db
 Thumbs.db
-
+application/config/database.php
 .idea/
 *.iml
-application/config/database.php
 application/template/*
 *-map.json
