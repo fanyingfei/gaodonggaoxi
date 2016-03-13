@@ -5,7 +5,7 @@ class admin extends MY_Controller  {
     private $status_fail   = 2;
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
     private $status_data = array(0=>'审核中',1=>'通过',2=>'没通过');
-    private $type_data = array(1=>'搞笑' ,2=>'语录' ,3=>'语录',4=>'渣渣说',5=>'妹子',6=>'神话');
+    private $type_name ;
 	/**
 	 * Index Page for this controller.
 	 *
@@ -28,6 +28,7 @@ class admin extends MY_Controller  {
             header("Location: /");
             exit;
         }
+        $this->type_name = parent::$all_type_name;
         $this->load->model('model_content');
         $this->load->model('model_black');
         $this->load->model('model_users');
@@ -41,7 +42,7 @@ class admin extends MY_Controller  {
 
     public function content()
 	{
-        $this->assign('type_list',$this->type_data);
+        $this->assign('type_list',$this->type_name);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/content.html');
     }
@@ -63,7 +64,7 @@ class admin extends MY_Controller  {
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
             $v['content'] = strip_tags($v['content'],'<br><img><a>');
             $v['create_time'] = change_time($v['create_time']);
-            $v['type'] = $this->type_data[$v['type']];
+            $v['type'] = $this->type_name[$v['type']];
         }
 
         $total = $this->model_content->data_count($where);

@@ -108,7 +108,7 @@ ul {
         border-bottom: 1px solid #dedede;;
     }
 
-    .total {
+    .total , .member_total{
         padding: 10px 20px;
         overflow: auto;
         background: #f9f9f9;
@@ -1202,6 +1202,20 @@ ul {
     vertical-align:bottom;
 }
 
+.group_count{
+    float:left;
+    margin-right: 10px;
+}
+
+.group_count span{
+    color:#6c6c6c;
+}
+
+.group_count .group_count_value{
+    color: #ff0000;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 660px) {
     .user .login_avatar ,  #top , .right-container ,  .total , .depict ,
     .title , .content_body.desc , .hr_reply{
@@ -1213,10 +1227,6 @@ ul {
         font-size: 13px;
         font-family: 微软雅黑;
         margin:0;
-    }
-
-    .wapper{
-        margin: 0 10px;
     }
 
     .footer{
@@ -1329,6 +1339,13 @@ ul {
 
     .one .content .content_body a {
         color: #4285f4;
+    }
+
+    .member_total{
+        padding: 10px 20px;
+        overflow: auto;
+        background: #f9f9f9;
+        border-bottom: 1px solid #dedede;
     }
 
     .reply_avatar {

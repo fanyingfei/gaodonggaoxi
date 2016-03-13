@@ -29,6 +29,14 @@ class model_content extends CI_Model{
     }
 
     /*
+     * 得到分类数量
+     */
+    public function group_count_by_type($where){
+        $sql = 'select type , count(* ) as num from '.self::TABLE_NAME ." $where group by type";
+        return $this->db->query($sql)->result_array();
+    }
+
+    /*
   * 得到单条记录
   */
     public function detail($id = 1){

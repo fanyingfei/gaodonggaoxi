@@ -2,18 +2,23 @@
     <div class="title">{$title}</div>
     <div class="depict">{$info}</div>
 
+    <div class="member_total">
+        {foreach from=$group_count key=key item=one}
+            <span class="group_count">{$one.type_name}
+                <span data-type="{$one.type}" class="{if $one.type !=0}group_count_value{/if}">[{$one.num}]</span>
+            </span>
+        {/foreach}
+    </div>
+
     <div class="content_list"></div>
     <input type="hidden" id="unique_id" value="{$user.user_id}" />
+    <input type="hidden" id="type" value="0" />
 
     <script src="/resources/js/tmpl.js"></script>
     <script id="content_list" type="text/x-dot-template">
     {literal}
     {{if count > 0}}
-        <div class="total">
-            <span class="left">TOTAL：${count}</span>
-        </div>
         {{if count > 10}}<div class="pagination page-top">{{html page}}</div>{{/if}}
-
         <div class="main-list">
             {{each(key,one) list}}
             <div class="one{{if key == 0 }} first{{/if}}">
@@ -55,11 +60,13 @@ $(function(){
     ajax_page(0);
 })
 function ajax_page(page){
+    var type = $('#type').val();
     var user_id = $('#unique_id').val();
     $.ajax({
         url: "/member_list",
         data:{
             "id" : user_id,
+            "type" : type,
             "page":page
         },
         type: "POST",
@@ -81,4 +88,13 @@ function ajax_page(page){
         }
     });
 }
+
+$('body').on('click', '.group_count_value', function(){
+    if(!$(this).hasClass("group_count_value")){
+        return false;
+    }
+    $('#type').val($(this).attr('data-type'));
+    $(this).removeClass("group_count_value").parent().siblings().children().addClass('group_count_value');
+    ajax_page(0);
+})
 </script>

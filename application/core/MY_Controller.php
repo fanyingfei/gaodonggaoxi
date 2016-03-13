@@ -1,6 +1,10 @@
 <?php
 
 class MY_controller extends CI_Controller {
+    static $detail_data = array(4,6); //需要展示详情的
+    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'myth'=>6);
+    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'神话');
+
     public function __construct() {
 		if(!isset($_SESSION)) session_start();
         parent::__construct();
