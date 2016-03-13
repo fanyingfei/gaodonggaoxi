@@ -235,7 +235,6 @@ function gif_static_gif($content){
         if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
             //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
             if(strpos($src_url,'.sinaimg.cn') !== false ){
-                $original[] = $total_img;
                 $small_url = $img_domain.'/small/'.$img_name;
             }else{
                 $small_url = '/resources/images/gray.png';

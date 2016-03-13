@@ -14,28 +14,30 @@
         </div>
         {{if count > 10}}<div class="pagination page-top">{{html page}}</div>{{/if}}
 
-    {{each(key,one) list}}
-        <div class="one{{if key == 0 }} first{{/if}}">
-            <div class="user member">
-                <p class="time text-right" title="${one.u_name}">${one.name}</p>
-                <p class="time text-right">发表于 ${one.create_time}</p>
+        <div class="main-list">
+            {{each(key,one) list}}
+            <div class="one{{if key == 0 }} first{{/if}}">
+                <div class="user member">
+                    <p class="time text-right" title="${one.u_name}">${one.name}</p>
+                    <p class="time text-right">发表于 ${one.create_time}</p>
+                </div>
+                <div class="content">
+                    {{if one.is_detail == 1}}
+                        <p><a class="detail_title" href="/myth/detail/${one.con_id}">${one.title}</a></p>
+                        <div class="content_body desc">${one.content}</div>
+                    {{else}}
+                        <div class="content_body{{if one.avatar != ''}} avatar_min_height{{/if}}">{{html one.content}}</div>
+                    {{/if}}
+                    <p class="right clear click oo_xx">
+                        <span class="response"></span>
+                        <a class="oo" title="支持" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
+                        <a class="xx" title="反对" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
+                        <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply_count">${one.reply}</span>]
+                    </p>
+                </div>
             </div>
-            <div class="content">
-                {{if one.is_detail == 1}}
-                    <p><a class="detail_title" href="/myth/detail/${one.con_id}">${one.title}</a></p>
-                    <div class="content_body desc">${one.content}</div>
-                {{else}}
-                    <div class="content_body{{if one.avatar != ''}} avatar_min_height{{/if}}">{{html one.content}}</div>
-                {{/if}}
-                <p class="right clear click oo_xx">
-                    <span class="response"></span>
-                    <a class="oo" title="支持" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
-                    <a class="xx" title="反对" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                    <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply_count">${one.reply}</span>]
-                </p>
-            </div>
+            {{/each}}
         </div>
-        {{/each}}
         {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
     {{else}}
         <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
@@ -72,13 +74,7 @@ function ajax_page(page){
             }
             $('.content_list').html('');
             $("#content_list").tmpl(result.data).appendTo('.content_list');
-            var imgNum=$('img').length;
-            $('img').load(function(){
-                if(!--imgNum){
-                    // 加载完成
-                    show_play();
-                }
-            });
+            show_play();
         },
         error:function(e){
             alert_msg('请求失败，请刷新重试');

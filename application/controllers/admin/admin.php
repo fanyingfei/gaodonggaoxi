@@ -5,7 +5,7 @@ class admin extends MY_Controller  {
     private $status_fail   = 2;
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
     private $status_data = array(0=>'审核中',1=>'通过',2=>'没通过');
-    private $type_data = array(1=>'闲话' ,2=>'小知识' ,3=>'美文',4=>'渣渣说',5=>'妹子',6=>'神话');
+    private $type_data = array(1=>'搞笑' ,2=>'语录' ,3=>'语录',4=>'渣渣说',5=>'妹子',6=>'神话');
 	/**
 	 * Index Page for this controller.
 	 *
@@ -57,7 +57,7 @@ class admin extends MY_Controller  {
             $order_by = " order by $sort $sort_by ";
         }
         //得到数据
-        $list  = $this->model_content->data_list($p+1,$limit , $where , $order_by);
+        $list  = $this->model_content->data_list($p,$limit , $where , $order_by);
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';

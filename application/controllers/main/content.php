@@ -3,7 +3,7 @@
 class content extends MY_Controller  {
     private $type = 1; //默认为1
     private $detail_data = array(4,6); //需要展示详情的
-    private $total_type_data = array('xian'=>1 ,'know'=>2 ,'zzs'=>4,'meizi'=>5,'myth'=>6);
+    private $total_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'myth'=>6);
 	/**
 	 * Index Page for this controller.
 	 *
@@ -25,9 +25,9 @@ class content extends MY_Controller  {
         $this->load->model('model_content');
     }
 
-    public function xian($p = 0){
+    public function xiao($p = 0){
         $this->type = 1;
-        $this->assign('body','xian');
+        $this->assign('body','xiao');
         $this->assign('title','搞笑');
         $this->assign('info','段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
@@ -35,11 +35,11 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function know($p = 0){
+    public function hua($p = 0){
         $this->type = 2;
-        $this->assign('body','know');
-        $this->assign('title','语录');
-        $this->assign('info','经典语录');
+        $this->assign('body','hua');
+        $this->assign('title','那些话');
+        $this->assign('info','那些曾经感动你我的话');
         $this->assign('keywords','语录');
         $this->assign('description','语录');
         $this->index($p);

@@ -422,7 +422,6 @@
 	margin: 0;
 	padding: 0;
     max-width: 660px;
-    min-width: 660px;
     max-height: 1000px;
 }
 /* toolbar */
@@ -1163,4 +1162,9 @@
 }
 .ke-dialog-default{
     top:250px;
+}
+@media screen and (max-width: 660px) {
+    .ke-container-default{
+        width:auto !important;
+    }
 }

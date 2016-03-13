@@ -39,11 +39,11 @@
 */
 
 //搞笑
-$route['gx'] = "main/content/xian";
-$route['gx/(:num)'] = "main/content/xian/$1";
+$route['xiao'] = "main/content/xiao";
+$route['xiao/(:num)'] = "main/content/xiao/$1";
 //语录
-$route['yl'] = "main/content/know";
-$route['yl/(:num)'] = "main/content/know/$1";
+$route['hua'] = "main/content/hua";
+$route['hua/(:num)'] = "main/content/hua/$1";
 //妹子
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";
@@ -106,7 +106,7 @@ $route['admin/reply_delete'] = "admin/admin/reply_delete";
 
 $route['error'] = 'main/content/error';
 
-$route['default_controller'] = "main/content/xian";
+$route['default_controller'] = "main/content/xiao";
 $route['404_override'] = '';
 
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";

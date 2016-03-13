@@ -176,6 +176,10 @@ ul {
         width: 700px;
     }
 
+    .main-list{
+        background-color: #fefefe;
+    }
+
     .main .depict {
         font-size: 14px;
         color: #8c8c8c;
@@ -205,6 +209,7 @@ ul {
     .one .content {
         float: left;
         width: 528px;
+        background-color: #fff;
     }
 
     .vip{
@@ -341,35 +346,6 @@ ul {
 
     .pagination-tab {
         margin-bottom: 20px;
-    }
-
-    .ke-dialog-default .ke-dialog-body ul.ke-tabs-ul li:last-child {
-        display: none;
-    }
-
-    .ke-dialog-content .tab1 div ~ div {
-        display: none;
-    }
-
-    .ke-dialog-content .ke-dialog-body {
-        height: auto !important;
-    }
-
-    .ke-dialog-default {
-        height: auto !important;
-    }
-
-    #remoteUrl {
-        width: 320px !important;
-    }
-
-    .ke-dialog-content .ke-dialog-footer {
-        text-align: center !important;
-        margin-top: -15px;
-    }
-
-    .ke-dialog-content .ke-tabs {
-        display: none !important;
     }
 
     .person_center {
@@ -860,21 +836,18 @@ ul {
         background-image: url('/resources/images/hy.gif');
         background-position: center center;
     }
-
-    .sub .textarea_prompt{
-        color:#999;
-        position: absolute;
-        margin:0;
-        padding-left:10px;
-        padding-top:5px;
-    }
-
-    .textarea_prompt a{
-        color:#498B31;
-    }
-
+}
+.sub .textarea_prompt{
+    color:#999;
+    position: absolute;
+    margin:0;
+    padding-left:10px;
+    padding-top:5px;
 }
 
+.textarea_prompt a{
+    color:#498B31;
+}
 .pagination a, .pagination .page-cur, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-break, .pagination .page-skip {
     text-decoration: none;
     margin-right: 2px;
@@ -1147,6 +1120,35 @@ ul {
     color: #F0752F;
 }
 
+.ke-dialog-default .ke-dialog-body ul.ke-tabs-ul li:last-child {
+    display: none;
+}
+
+.ke-dialog-content .tab1 div ~ div {
+    display: none;
+}
+
+.ke-dialog-content .ke-dialog-body {
+    height: auto !important;
+}
+
+.ke-dialog-default {
+    height: auto !important;
+}
+
+#remoteUrl {
+    width: 320px !important;
+}
+
+.ke-dialog-content .ke-dialog-footer {
+    text-align: center !important;
+    margin-top: -15px;
+}
+
+.ke-dialog-content .ke-tabs {
+    display: none !important;
+}
+
 /* QQ表情支持*/
 .facebox{
     position: absolute;
@@ -1201,7 +1203,7 @@ ul {
 }
 
 @media screen and (max-width: 660px) {
-    .user .login_avatar , .main .sub , #top , .right-container ,  .total , .depict ,
+    .user .login_avatar ,  #top , .right-container ,  .total , .depict ,
     .title , .content_body.desc , .hr_reply{
         display:none !important;
     }
@@ -1210,13 +1212,16 @@ ul {
         color: #000;
         font-size: 13px;
         font-family: 微软雅黑;
-        margin: 0px;
+        margin:0;
+    }
+
+    .wapper{
+        margin: 0 10px;
     }
 
     .footer{
         text-align: center;
-        background-color: black;
-        color:#ccc;
+        color:#3c3c3c;
         padding:10px 0;
     }
 
@@ -1456,5 +1461,9 @@ ul {
     .one .member p{
         float:left;
         margin: 0 5px 0 0;
+    }
+
+    .ke-outline[data-name='emoticons']{
+        display:none !important;
     }
 }
