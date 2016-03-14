@@ -248,7 +248,7 @@ K.options = {
 	indentChar : '\t',
 	cssPath : '',
 	cssData : '',
-	minWidth : 650,
+	minWidth : 660,
 	minHeight : 100,
 	minChangeSize : 50,
 	zIndex : 811213,
@@ -6507,7 +6507,7 @@ KindEditor.plugin('filemanager', function(K) {
 		}
 	}
 	self.plugin.filemanagerDialog = function(options) {
-		var width = K.undef(options.width, 650),
+		var width = K.undef(options.width, 660),
 			height = K.undef(options.height, 510),
 			dirName = K.undef(options.dirName, ''),
 			viewType = K.undef(options.viewType, 'VIEW').toUpperCase(), // "LIST" or "VIEW"
@@ -7918,7 +7918,7 @@ KindEditor.plugin('multiimage', function(K) {
 		].join('');
 		var dialog = self.createDialog({
 			name : name,
-			width : 650,
+			width : 660,
 			height : 510,
 			title : self.lang(name),
 			body : html,

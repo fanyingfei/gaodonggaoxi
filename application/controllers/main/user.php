@@ -255,8 +255,106 @@ class user extends MY_Controller  {
         }
     }
 
-    public function user_send_email(){
+    /*
+      * 查看某用户发表的全部内容
+      */
+    public function member($user_sn){
+        $user_id = substr($user_sn , 8 );
+        $user_time = substr($user_sn , 0 , 8);
+        if(empty($user_sn) || empty($user_id)){
+            parent :: error_msg('该用户不存在');
+        }
 
+        $this->load->model('model_article');
+        $this->load->model('model_content');
+        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        if(empty($user_info)) parent :: error_msg('该用户不存在');
+        if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
+            parent :: error_msg('该用户不存在');
+        }
+
+        $count = 0;
+        $where = 'where status = 1 and user_id = '.$user_id;
+        $group_article_count = $this->model_article->group_count_by_type($where);
+        $group_content_count = $this->model_content->group_count_by_type($where);
+        $group_count = array_merge($group_content_count,$group_article_count);
+        foreach($group_count as &$value){
+            $value['type_name'] = parent :: $all_type_name[$value['type']];
+        }
+
+        $group_num = array();
+        foreach ($group_count as $group) {
+            $group_num[] = $group['num'];
+        }
+        array_multisort($group_num, SORT_DESC , $group_count);
+
+        $this->assign('body','member');
+        $this->assign('title',$user_info['name']);
+        $this->assign('info',$user_info['name']);
+        $this->assign('keywords',$user_info['name']);
+        $this->assign('description',$user_info['name']);
+        $this->assign('type',$group_count[0]['type']); //最多的一类
+        $this->assign('user',$user_info);
+        $this->assign('group_count',$group_count);
+
+        $this->native_display('main/header.html');
+        $this->native_display('main/member.html');
+        $this->native_display('main/footer.html');
+    }
+
+    /*
+    * 查看某用户发表的全部内容
+    */
+    public function member_list(){
+        $limit = 10;
+        $p = intval($_REQUEST['page']);
+        $type = intval($_REQUEST['type']);
+        $user_id = intval($_REQUEST['id']);
+
+        $this->load->library('page');
+        $where = 'where status = 1 and user_id = '.$user_id;
+        if(!empty($type)) $where .= ' and type = '.$type;
+
+        if(in_array($type,parent :: $detail_data)){
+            $is_detail = 1;
+            $model_table_name = 'model_article';
+        }else{
+            $is_detail = 0;
+            $model_table_name = 'model_content';
+        }
+        $this->load->model($model_table_name);
+        //得到总数
+        $count = $this->$model_table_name->data_count($where);
+
+        $total_page = ceil($count/$limit);
+        if(empty($p) || $p > $total_page) $p = $total_page;
+
+        //得到数据
+        $list  = $this->$model_table_name->data_list($total_page - $p,$limit,$where);
+        //得到头像
+        $user_res =  parent :: get_user_avatar($list);
+        if(!empty($user_res)){
+            $user_avatar = array_column($user_res , 'avatar' , 'user_id');
+            $user_time = array_column($user_res , 'create_time' , 'user_id');
+        }
+
+        $detail_url_data = array_flip(parent :: $all_type_data);
+        foreach($list as &$v){
+            $v['is_detail'] = $is_detail;
+            if($is_detail == 1) $v['detail_url'] =  '/'.$detail_url_data[$v['type']].'/detail/'.$v['art_id'];
+            $v['create_time'] = change_time($v['create_time']);
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            $v['content'] = strip_tags($v['content'],'<br><img><a>');
+            //gif图转成静态
+            if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+            $v['content'] = filter_content_br($v['content']);
+        }
+
+        //生成页码
+        $page = get_page($count,$limit,$total_page - $p + 1,'ajax_page');
+
+        $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail);
+        splash('success','',$out);
     }
 
 }

@@ -78,12 +78,6 @@ function valid_mobile($mobile){
     }
 }
 
-function valid($name = '' ,$email='' ,$content = ''){
-    valid_name($name);
-    valid_email($email);
-    if(empty($content)) splash('error','请填写内容');
-}
-
 function register_valid($data){
     $email = $data['email'];
     $code  = $data['code'];

@@ -2,8 +2,8 @@
 
 class MY_controller extends CI_Controller {
     static $detail_data = array(4,6); //需要展示详情的
-    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'myth'=>6);
-    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'神话');
+    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6);
+    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事');
 
     public function __construct() {
 		if(!isset($_SESSION)) session_start();
@@ -76,6 +76,29 @@ class MY_controller extends CI_Controller {
 
         if($col == '') return $user_res;
         return array_column($user_res,$col,'user_id');
+    }
+
+    public function record($table_name){
+        $id = intval($_REQUEST['id']);
+        $click = $_REQUEST['click'];
+        if(!in_array($click,array('good','bad'))) splash('error','Try again');
+        if(empty($id) || empty($click)) splash('error','Try again');
+        $this->load->model('model_record');
+        $type = intval($_REQUEST['type']);
+        $res = $this->model_record->is_has($id, $type);
+        if(!$res){
+            splash('error','You are voted');
+        }
+        $data = array('type'=>$type ,'row_id'=>$id);
+        $list  = $this->model_record->save($data);
+
+        $model_name = 'model_'.$table_name;
+        $res  = $this->$model_name->update($click,$id);
+        if($res){
+            splash('success','Think you');
+        }else{
+            splash('error','Try again');
+        }
     }
 
 }

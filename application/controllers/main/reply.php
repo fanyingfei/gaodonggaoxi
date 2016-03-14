@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class reply extends MY_Controller  {
+    const table_name = 'reply';
 	/**
 	 * Index Page for this controller.
 	 *
@@ -58,7 +59,6 @@ class reply extends MY_Controller  {
         if(!is_login()) splash('error','回复请先登陆');
         //是否拉入黑名单
         $this->load->model('model_black');
-        $this->load->model('model_content');
         $res = $this->model_black->find_one();
         if($res) splash('error','你已被拉入黑名单');
 
@@ -71,9 +71,16 @@ class reply extends MY_Controller  {
         $data = $this->content_is_at($parent_id,$parent_name,$content);
 
         $data['con_id'] = $id;
+        $data['type'] = intval($_REQUEST['type']);
         $res  = $this->model_reply->save($data);
         if($res){
-            $this->model_content->update_reply($id);
+            if(in_array($data['type'], parent::$detail_data)){
+                $this->load->model('model_article');
+                $this->model_article->update_reply($id);
+            }else{
+                $this->load->model('model_content');
+                $this->model_content->update_reply($id);
+            }
             splash('success','提交成功');
         }else{
             splash('error','提交失败');
@@ -84,24 +91,7 @@ class reply extends MY_Controller  {
      * 评论点赞
      */
     public function reply_record(){
-        $id = intval($_REQUEST['id']);
-        $click = $_REQUEST['click'];
-        if(!in_array($click,array('good','bad'))) splash('error','Try again');
-        if(empty($id) || empty($click)) splash('error','Try again');
-        $this->load->model('model_record');
-        $this->load->model('model_reply');
-        $res = $this->model_record->is_has($id,1);
-        if(!$res){
-            splash('error','You are voted');
-        }
-        $data = array('type'=>1,'row_id'=>$id);
-        $list  = $this->model_record->save($data);
-        $res  = $this->model_reply->update($click,$id);
-        if($res){
-            splash('success','Think you');
-        }else{
-            splash('error','Try again');
-        }
+        parent :: record(self::table_name);
     }
 
     /*

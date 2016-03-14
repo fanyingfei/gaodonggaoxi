@@ -248,7 +248,7 @@ K.options = {
 	indentChar : '\t',
 	cssPath : '',
 	cssData : '',
-	minWidth : 650,
+	minWidth : 660,
 	minHeight : 150,
 	minChangeSize : 50,
 	zIndex : 811213,
@@ -4921,19 +4921,24 @@ KEditor.prototype = {
 			}
 		}
 		var htmlList = [];
+        var items_name = self.itemsName;
 		K.each(self.items, function(i, name) {
-            if(name == 'image' || name == 'emoticons' || name == 'link'){
+            /*	if(name == 'image' || name == 'emoticons' || name == 'link'){
                 htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
                 htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span><span class="ke-outline-name ke-toolbar-icon">'+self.lang(name)+'</span></span>');
-            }
-		/*	if (name == '|') {
+            }*/
+		    if (name == '|') {
 				htmlList.push('<span class="ke-inline-block ke-separator"></span>');
 			} else if (name == '/') {
 				htmlList.push('<div class="ke-hr"></div>');
 			} else {
                 htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
-				htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
-             }*/
+                if(items_name){
+                    htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span><span class="ke-outline-name ke-toolbar-icon">'+self.lang(name)+'</span></span>');
+                }else{
+                    htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
+                }
+             }
 		});
 		var toolbar = self.toolbar = _toolbar({
 			src : toolbarDiv,

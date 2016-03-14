@@ -11,30 +11,22 @@
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
-                <div class="user">
-                    {if $one.avatar != ''}
-                    <div class="avatar_wapper">
-                        <div class="login_avatar">
-                            <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
-                        </div>
-                    </div>
-                    {/if}
-                    {if $one.user_sn != ''}
-                    <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
-                    {else}
-                    <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
-                    {/if}
-                    <p class="time text-right">{$one.create_time}</p>
-                </div>
-                <div class="content">
-                    <div class="content_body{if $one.avatar != ''} avatar_min_height{/if}">{$one.content}</div>
-                    <p class="right clear click oo_xx">
-                        <span class="response"></span>
-                        <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
-                        <a class="xx" title="反对" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                        <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
-                    </p>
-                </div>
+                <p class="detail_wapper">
+                    <a class="detail_title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
+                    <span title="{$one.u_name}" class="right time">
+                        {if $one.user_sn != ''}
+                            <a href="/member/{$one.user_sn}">{$one.name}</a>
+                        {else}
+                            {$one.name}
+                        {/if}
+                    </span>
+                </p>
+                <p class="right clear click oo_xx">
+                    <span class="response"></span>
+                    <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
+                    <a class="xx" title="反对" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                    <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
+                </p>
             </div>
             {/foreach}
         </div>
@@ -52,6 +44,7 @@
             <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}
+        <p>标题：<input type="text" name="title" id="title" value="" /></p>
         <p class="textarea_prompt">
             图片请上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>
         </p>
@@ -59,7 +52,7 @@
         <p><button id="submit" class="clear">submit</button></p>
     </div>
     <input type="hidden" id="type" value="{$type}" />
-    <input type="hidden" id="comment_url" value="/content/record" />
+    <input type="hidden" id="comment_url" value="/article/record" />
 </div>
 {literal}
 <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
@@ -70,13 +63,13 @@
         window.editor = K.create('#content', {
             newlineTag : "p" ,
             itemsName : true,
-            items : [ 'image' , 'link' ,'emoticons']}
+            items : ['link' , 'emoticons', 'image']}
         );
     });
 </script>
 <script>
     var sub_cfg = {};
-    sub_cfg.requestUrl = '/content/save';
+    sub_cfg.requestUrl = '/article/save';
     sub_cfg.success = function(result){
         alert_msg(result.msg,'success');
         setTimeout(function(){
@@ -87,6 +80,7 @@
     $("#submit").click(function(){
         var name = $.trim($("#name").val());
         var email = $.trim($("#email").val());
+        var title = $.trim($("#title").val());
         var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
         var re=new RegExp("</p>","g");
         content = content.replace(re,"</p><br>");
@@ -97,7 +91,7 @@
         $.cookie('name', name ,  { path:'/', expires: 365 });
         $.cookie('email', email ,  { path:'/', expires: 365 });
         sub_cfg.data = {
-            "name":name,"email":email,'content':content,'type':type
+            "name":name,"email":email,'title':title ,'content':content,'type':type
         };
         ajax_res(sub_cfg);
     })

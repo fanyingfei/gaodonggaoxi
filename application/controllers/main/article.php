@@ -1,8 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class content extends MY_Controller  {
-    private $type = 1; //默认为1
-    const table_name = 'content';
+class article extends MY_Controller  {
+    private $type = 6; //默认为6
+    const table_name = 'article';
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -21,30 +22,12 @@ class content extends MY_Controller  {
 
     public function __construct() {
         parent :: __construct();
-        $this->assign('body','body-content');
-        $this->load->model('model_content');
-    }
-
-    public function xiao($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('title','搞笑');
-        $this->assign('info','段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
-        $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
-        $this->assign('description','搞笑');
-        $this->index($p);
-    }
-
-    public function hua($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('title','那些话');
-        $this->assign('info','那些曾经感动你我的话');
-        $this->assign('keywords','语录');
-        $this->assign('description','语录');
-        $this->index($p);
+        $this->load->model('model_article');
     }
 
     public function zzs($p = 0){
         $this->set_type_value(__FUNCTION__);
+        $this->assign('body','body-article');
         $this->assign('title','渣渣说');
         $this->assign('info','渣渣说');
         $this->assign('keywords','渣渣说');
@@ -52,24 +35,42 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function meizi($p = 0){
+    public function tale($p = 0){
         $this->set_type_value(__FUNCTION__);
-        $this->assign('body','meizi');
-        $this->assign('title','妹子');
-        $this->assign('info','快来养养眼吧，大把大把的妹子');
-        $this->assign('keywords','妹子');
-        $this->assign('description','妹子');
+        $this->assign('body','body-article');
+        $this->assign('title','故事');
+        $this->assign('info','故事');
+        $this->assign('keywords','故事');
+        $this->assign('description','故事');
         $this->index($p);
     }
 
-    public function myth($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('body','myth');
-        $this->assign('title','神话');
-        $this->assign('info','神话');
-        $this->assign('keywords','神话');
-        $this->assign('description','神话');
-        $this->index($p);
+    /*
+    * 神话详情
+    */
+    public function tale_detail($id){
+        $detail = $this->get_detail(intval($id));
+        $this->assign('data',$detail);
+        $this->assign('body','body-article-detail');
+        $this->assign('title','故事详情');
+        $this->assign('info','故事详情');
+        $this->assign('keywords','故事详情');
+        $this->assign('description','故事详情');
+        $this->display('detail.html');
+    }
+
+    /*
+     * 渣渣说详情
+     */
+    public function zzs_detail($id){
+        $detail = $this->get_detail(intval($id));
+        $this->assign('data',$detail);
+        $this->assign('body','body-article-detail');
+        $this->assign('title','渣渣说详情');
+        $this->assign('info','渣渣说详情');
+        $this->assign('keywords','渣渣说详情');
+        $this->assign('description','渣渣说详情');
+        $this->display('detail.html');
     }
 
     /*
@@ -85,12 +86,12 @@ class content extends MY_Controller  {
         if(!empty($search)) $where .= " and name like '%$search%' ";
 
         //得到总数
-        $count = $this->model_content->data_count($where);
+        $count = $this->model_article->data_count($where);
         $total_page = ceil($count/$limit);
         if(empty($p) || $p > $total_page) $p = $total_page;
-
+        
         //得到数据
-        $list  = $this->model_content->data_list($total_page - $p,$limit,$where);
+        $list  = $this->model_article->data_list($total_page - $p,$limit,$where);
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
@@ -98,20 +99,17 @@ class content extends MY_Controller  {
             $user_time = array_column($user_res , 'create_time' , 'user_id');
         }
 
+        $detail_url_data = array_flip(parent :: $all_type_data);
         foreach($list as &$v){
-            $v['user_sn'] = $v['avatar'] = '';
-            $v['create_time'] = change_time($v['create_time']);
+            $v['user_sn'] = '';
+            $v['con_id'] = $v['art_id'];
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             if(!empty($v['user_id'])){
-                $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
                 $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
-
-            $v['content'] = strip_tags($v['content'],'<br><img><a>');
-                //gif图转成静态
-            if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-            $v['content'] = filter_content_br($v['content']);
+            $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8') : $v['title'];
+            $v['detail_url'] = '/'.$detail_url_data[$v['type']].'/detail/'.$v['art_id'];
         }
 
         //生成页码
@@ -122,7 +120,7 @@ class content extends MY_Controller  {
         $this->assign('page',$page);
         $this->assign('type',$this->type);
 
-        $this->display('content.html');
+        $this->display('article.html');
     }
 
     /*
@@ -143,6 +141,10 @@ class content extends MY_Controller  {
         $content = strip_tags($content,'<img><a>');
         if(empty($content)) splash('error','请填写内容');
 
+        $title = trim(strip_tags($_REQUEST['title']));
+        if(empty($title)) splash('error','请填写标题');
+        $data['title'] = $title;
+
         if(is_login()){
             //已登陆用户
             $data['user_id'] = $_SESSION['user_id'];
@@ -160,7 +162,7 @@ class content extends MY_Controller  {
             valid_email($data['email']);
         }
 
-        $res  = $this->model_content->save($data);
+        $res  = $this->model_article->save($data);
         if($res){
             splash('success','提交成功，审核后自动发布');
         }else{
@@ -169,9 +171,9 @@ class content extends MY_Controller  {
     }
 
     /*
-     * 主要内容点赞
+     * 文章内容点赞
      */
-    public function content_record(){
+    public function article_record(){
         parent :: record(self::table_name);
     }
 
@@ -180,7 +182,7 @@ class content extends MY_Controller  {
      */
     public function get_detail($id){
         if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
-        $detail = $this->model_content->detail($id);
+        $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
         $detail['content'] = strip_tags($detail['content'],'<img><p><br><a>');
         $detail['title'] = empty($detail['title']) ? mb_substr(strip_tags($detail['content']), 0, 20, 'utf-8').'...' : $detail['title'];

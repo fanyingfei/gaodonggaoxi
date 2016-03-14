@@ -22,10 +22,11 @@ function ajax_res(obj){
 //主体内容点oo
 function click_good(url , thi){
     var id = $(thi).attr('data-id');
+    var type = $('#type').val();
     $.ajax({
         type:'POST',
         data:{
-            "id":id,"click":'good'
+            "id":id,"click":'good',"type":type
         },
         url:url,
         dataType:'json',
@@ -44,10 +45,11 @@ function click_good(url , thi){
 //主体内容点xx
 function click_bad(url , thi){
     var id = $(thi).attr('data-id');
+    var type = $('#type').val();
     $.ajax({
         type:'POST',
         data:{
-            "id":id,"click":'bad'
+            "id":id,"click":'bad',"type":type
         },
         url:url,
         dataType:'json',
@@ -202,7 +204,7 @@ window.onload=function(){
 
 //DOM渲染完成
 $(document).ready(function(){
-    var comment_url = '/content/record';
+    var comment_url =$('#comment_url').val();
     var reply_url = '/reply/record'
 
     //监听主体OO点击事件
@@ -373,6 +375,7 @@ $(document).ready(function(){
     $('body').on('click', '.reply-submit', function(){
         var obj = $(this);
         var id = obj.attr('data-id');
+        var type = $("#type").val();
         var parent_id = 0;
         var parent_name = '';
         if(obj.parents('.reply_main').find('.at').length > 0){
@@ -389,7 +392,7 @@ $(document).ready(function(){
         $.ajax({
             type:'POST',
             data:{
-                "id":id,'content':content,'parent_id':parent_id,'parent_name':parent_name
+                "id":id,'content':content,'parent_id':parent_id,'parent_name':parent_name,'type':type
             },
             url:'/reply/save',
             dataType:'json',

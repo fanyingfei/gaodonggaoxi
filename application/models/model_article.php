@@ -1,9 +1,9 @@
 <?php
 
-class model_content extends CI_Model{
+class model_article extends CI_Model{
 
-    CONST TABLE_NAME = 'content';
-    CONST PRI_KEY           = 'con_id';
+    CONST TABLE_NAME = 'article';
+    CONST PRI_KEY           = 'art_id';
 
     function __construct()
     {
@@ -16,7 +16,7 @@ class model_content extends CI_Model{
      */
     public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
-        $sql = 'select * from '.self::TABLE_NAME." $where $order_by limit ".$p*$limit.', '.$limit;
+        $sql = "select * from ".self::TABLE_NAME." $where $order_by limit ".$p*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 

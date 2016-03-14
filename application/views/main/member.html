@@ -5,14 +5,14 @@
     <div class="member_total">
         {foreach from=$group_count key=key item=one}
             <span class="group_count">{$one.type_name}
-                <span data-type="{$one.type}" class="{if $one.type !=0}group_count_value{/if}">[{$one.num}]</span>
+                <span data-type="{$one.type}" class="{if $key !=0}group_count_value{/if}">[{$one.num}]</span>
             </span>
         {/foreach}
     </div>
 
     <div class="content_list"></div>
     <input type="hidden" id="unique_id" value="{$user.user_id}" />
-    <input type="hidden" id="type" value="0" />
+    <input type="hidden" id="type" value="{$type}" />
 
     <script src="/resources/js/tmpl.js"></script>
     <script id="content_list" type="text/x-dot-template">
@@ -28,8 +28,7 @@
                 </div>
                 <div class="content">
                     {{if one.is_detail == 1}}
-                        <p><a class="detail_title" href="/myth/detail/${one.con_id}">${one.title}</a></p>
-                        <div class="content_body desc">${one.content}</div>
+                        <p><a class="detail_title" target="_blank" href="${one.detail_url}">${one.title}</a></p>
                     {{else}}
                         <div class="content_body{{if one.avatar != ''}} avatar_min_height{{/if}}">{{html one.content}}</div>
                     {{/if}}
