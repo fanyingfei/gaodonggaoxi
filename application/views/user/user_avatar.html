@@ -1,22 +1,22 @@
-    <div class="user_info_right">
+    <div class="user-info-right">
         <h3>修改头像</h3>
-        <div class="person_info">
-            <div class="avatar_info">
+        <div class="person-info">
+            <div class="avatar-info">
                 <p>请输入新的头像url
                     <span class="time">&nbsp;&nbsp;头像上传&nbsp;[<a target="_blank" href="http://photo.weibo.com/photos/upload">微博相册</a>]</span>
                 </p>
                 <br>
                 <p>
                     <input name="avatar" id="avatar" type="text" value="{$avatar}">
-                    <span class="select_all time cursor">&nbsp;全选</span>
+                    <span class="select-all time cursor">&nbsp;全选</span>
                 </p>
             </div>
-            <div class="avatar_img">
+            <div class="avatar-img">
                 {if $avatar != '' }<img src="{$avatar}" /> {/if}
             </div>
             <div  class='op'>
-                <p id="submit" class="c_subbutton">保&nbsp;存</p>
-                <p id="show" class="c_subbutton">预&nbsp;览</p>
+                <p id="submit" class="c-subbutton">保&nbsp;存</p>
+                <p id="show" class="c-subbutton">预&nbsp;览</p>
             </div>
         </div>
     </div>
@@ -43,10 +43,10 @@
 
     $("#show").click(function(){
         var avatar = $.trim($("#avatar").val());
-        $('.avatar_img').html('<img src="'+avatar+'" />');
+        $('.avatar-img').html('<img src="'+avatar+'" />');
     })
 
-    $(".select_all").click(function(){
+    $(".select-all").click(function(){
         $("#avatar").select();
     })
     </script>

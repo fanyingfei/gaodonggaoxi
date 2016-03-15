@@ -13,8 +13,8 @@
             <div class="one{if $key == 0 } first{/if}">
                 <div class="user">
                     {if $one.avatar != ''}
-                    <div class="avatar_wapper">
-                        <div class="login_avatar">
+                    <div class="avatar-wapper">
+                        <div class="login-avatar">
                             <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
                         </div>
                     </div>
@@ -27,12 +27,12 @@
                     <p class="time text-right">{$one.create_time}</p>
                 </div>
                 <div class="content">
-                    <div class="content_body{if $one.avatar != ''} avatar_min_height{/if}">{$one.content}</div>
-                    <p class="right clear click oo_xx">
+                    <div class="content-body{if $one.avatar != ''} avatar-min-height{/if}">{$one.content}</div>
+                    <p class="right clear click oo-xx">
                         <span class="response"></span>
                         <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
                         <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                        <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
+                        <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply-count">{$one.reply}</span>]
                     </p>
                 </div>
             </div>
@@ -52,14 +52,14 @@
             <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}
-        <p class="textarea_prompt">
+        <p class="textarea-prompt">
             图片请上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>
         </p>
         <p><textarea name="content" id="content"></textarea></p>
         <p><button id="submit" class="clear">submit</button></p>
     </div>
     <input type="hidden" id="type" value="{$type}" />
-    <input type="hidden" id="comment_url" value="/content/record" />
+    <input type="hidden" id="comment-url" value="/content/record" />
 </div>
 {literal}
 <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>

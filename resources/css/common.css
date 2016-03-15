@@ -82,7 +82,7 @@ ul {
         text-decoration: underline;
     }
 
-    .hr_reply {
+    .hr-reply {
         float: right;
         margin: 0 20px 20px;
         width: 520px;
@@ -104,7 +104,7 @@ ul {
         border-bottom: 1px solid #dedede;;
     }
 
-    .total , .member_total{
+    .total , .member-total{
         padding: 10px 20px;
         overflow: auto;
         background: #f9f9f9;
@@ -134,7 +134,7 @@ ul {
         color: #fff;
     }
 
-    .login .user_name {
+    .login .user-name {
         color: #acacac;
         display: block;
         float: left;
@@ -192,7 +192,7 @@ ul {
         margin: 0 20px;
     }
 
-    .one.first , .list_one.first{
+    .one.first , .list-one.first{
         border-top: 0;
     }
 
@@ -216,7 +216,7 @@ ul {
         padding:1px 8px;
     }
 
-    .one .content .avatar_min_height {
+    .one .content .avatar-min-height {
         min-height: 82px;
     }
 
@@ -229,7 +229,7 @@ ul {
         overflow: hidden;
     }
 
-    .one .content_body img.sina_show {
+    .one .content-body img.sina-show {
         cursor: pointer;
         max-height: 600px;
     }
@@ -258,11 +258,11 @@ ul {
         padding: 2px 10px;
     }
 
-    .detail_wapper{
+    .detail-wapper{
         overflow: auto;
     }
 
-    .one .detail_title {
+    .one .detail-title {
         font-size: 18px;
         max-width: 460px;
         display: block;
@@ -272,7 +272,7 @@ ul {
         overflow: hidden;
     }
 
-    .detail_wapper span{
+    .detail-wapper span{
         width:120px;
         overflow: hidden;
         text-align: right;
@@ -301,11 +301,11 @@ ul {
         border-bottom: 1px solid #dedede;
     }
 
-    .sub_user_login {
+    .sub-user-login {
         margin-top: 5px;
     }
 
-    .sub_user_login .item {
+    .sub-user-login .item {
         margin-top: 5px;
     }
 
@@ -354,11 +354,11 @@ ul {
         margin-bottom: 20px;
     }
 
-    .person_center {
+    .person-center {
         min-height: 200px;
     }
 
-    .wapper.person_center {
+    .wapper.person-center {
         border: 0;
     }
 
@@ -382,11 +382,11 @@ ul {
         color: #afafaf;
     }
 
-    .user_center {
+    .user-center {
         margin-top: 35px;
     }
 
-    .user_center .user_menu_left {
+    .user-center .user-menu-left {
         float: left;
         width: 188px;
         overflow: hidden;
@@ -396,7 +396,7 @@ ul {
         border-right: none;
     }
 
-    .user_center .user_menu_left h3 {
+    .user-center .user-menu-left h3 {
         padding-left: 20px;
         font-size: 20px;
         line-height: 60px;
@@ -406,7 +406,7 @@ ul {
         margin-bottom: 10px;
     }
 
-    .user_center .user_menu_left ul li {
+    .user-center .user-menu-left ul li {
         float: left;
         width: 167px;
         overflow: hidden;
@@ -421,18 +421,18 @@ ul {
         border-left: 2px solid #fafafa;
     }
 
-    .user_center .user_menu_left ul li.at, .user_center .user_menu_left ul li:hover {
+    .user-center .user-menu-left ul li.at, .user-center .user-menu-left ul li:hover {
         position: relative;
         border-left: 2px solid #fff;
         border-right: 1px solid #fff;
         background-color: #fff;
     }
 
-    .user_center .user_menu_left ul li.at a, .user_center .user_menu_left ul li:hover a {
+    .user-center .user-menu-left ul li.at a, .user-center .user-menu-left ul li:hover a {
         color: #4285f4;
     }
 
-    .user_center .user_info_right {
+    .user-center .user-info-right {
         width: 820px;
         float: left;
         margin-left: 40px;
@@ -442,7 +442,7 @@ ul {
         margin-bottom: 20px;
     }
 
-    .user_center .user_info_right h3 {
+    .user-center .user-info-right h3 {
         font-size: 20px;
         font-weight: normal;
         padding-bottom: 6px;
@@ -450,54 +450,54 @@ ul {
         border-bottom: 2px solid #eee;
     }
 
-    .user_center .person_info {
+    .user-center .person-info {
         margin-top: 20px;
         margin-left: 20px;
     }
 
-    .user_center .person_info > div {
+    .user-center .person-info > div {
         line-height: 20px;
         padding: 10px 0;
     }
 
-    .person_info .age.left {
+    .person-info .age.left {
         margin-left: 40px;
     }
 
-    .person_info .name_email {
+    .person-info .name-email {
         margin-top: 10px;
         float: left;
     }
 
-    .person_info .name_email .u_name {
+    .person-info .name-email .u-name {
         font-size: 28px;
         color: #333;
     }
 
-    .person_info .name_email .u_email {
+    .person-info .name-email .u-email {
         margin-top: 20px;
     }
 
-    .my_sub a{
+    .my-sub a{
         float: left;
         margin-left: 20px;
         margin-top: 8px;
         cursor: pointer;
     }
 
-    .my_sub a:hover{
+    .my-sub a:hover{
         color:#4285f4;
     }
 
-    .content_list{
+    .content-list{
         min-height: 100px;
     }
 
-    .person_info .separate {
+    .person-info .separate {
         margin-left: 5px;
     }
 
-    .user_center input[type="text"] {
+    .user-center input[type="text"] {
         border: 1px solid #ddd;
         height: 28px;
         line-height: 28px;
@@ -513,15 +513,15 @@ ul {
         font-family: 微软雅黑;
     }
 
-    .person_info .qq {
+    .person-info .qq {
         margin-left: 1px;
     }
 
-    .user_center input:focus {
+    .user-center input:focus {
         border: 1px solid #8297b0;
     }
 
-    .user_center select {
+    .user-center select {
         background-color: #fff;
         background-image: none;
         border: 1px solid #ccc;
@@ -536,11 +536,11 @@ ul {
         transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     }
 
-    .c_subbutton:hover {
+    .c-subbutton:hover {
         background-color: #ff6600;
     }
 
-    .c_subbutton {
+    .c-subbutton {
         background-color: #ff7800;
         color: #fff;
         cursor: pointer;
@@ -564,20 +564,20 @@ ul {
         display: none;
     }
 
-    .one .content .content_body a {
+    .one .content .content-body a {
         color: #4285f4;
     }
 
-    .user_center .avatar_info {
+    .user-center .avatar-info {
         width: 460px;
         float: left;
     }
 
-    .user_center .avatar_info input {
+    .user-center .avatar-info input {
         width: 380px;
     }
 
-    .user_center .person_info .avatar_img {
+    .user-center .person-info .avatar-img {
         float: left;
         width: 100px;
         height: 100px;
@@ -586,7 +586,7 @@ ul {
         padding: 1px;
     }
 
-    .user_center .person_info .info_avatar_img {
+    .user-center .person-info .info-avatar-img {
         float: left;
         width: 70px;
         height: 70px;
@@ -596,12 +596,12 @@ ul {
         margin-right:20px;
     }
 
-    .user .avatar_wapper {
+    .user .avatar-wapper {
         width: 100%;
         height: 70px;
     }
 
-    .user .login_avatar {
+    .user .login-avatar {
         width: 60px;
         height: 60px;
         border-radius: 4px;
@@ -610,17 +610,17 @@ ul {
         float: right;
     }
 
-    .user_center .avatar_img img {
+    .user-center .avatar-img img {
         border-radius: 4px;
         width: 100%;
         height: 100%;
     }
 
-    .user_center .person_info .op {
+    .user-center .person-info .op {
         clear: both;
     }
 
-    .user_center .op .c_subbutton {
+    .user-center .op .c-subbutton {
         margin-right: 20px;
     }
 
@@ -632,20 +632,20 @@ ul {
         background-color: #4265a4;
     }
 
-    .sina_show {
+    .sina-show {
         cursor: pointer;
     }
 
-    .sina_show_gif{
+    .sina-show-gif{
         cursor: pointer;
     }
 
-    .reply_wapper {
+    .reply-wapper {
         display: none;
         overflow: auto;
     }
 
-    .reply_main {
+    .reply-main {
         border: 1px solid #ccc;
         clear: both;
         float: right;
@@ -656,7 +656,7 @@ ul {
         overflow: hidden;
     }
 
-    .reply_avatar img {
+    .reply-avatar img {
         border-radius: 3px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
         display: block;
@@ -665,36 +665,36 @@ ul {
         width: 50px;
     }
 
-    .member_user_info{
+    .member-user-info{
         margin-top:20px;
     }
 
-    .member_user_info  .reply_avatar {
+    .member-user-info  .reply-avatar {
         margin-left:50px;
     }
 
-    .member_user_info  .reply_avatar img {
+    .member-user-info  .reply-avatar img {
         width:100px;
         height:100px;
     }
 
-    .reply_main .reply_one {
+    .reply-main .reply-one {
         border-bottom: 1px solid #ccc;
     }
 
-    .reply_main .reply_one, .reply_comment {
+    .reply-main .reply-one, .reply-comment {
         clear: both;
         overflow: auto;
         padding: 10px;
     }
 
-    .reply_content p {
+    .reply-content p {
         width: 430px;
         text-align: left;
         clear: both;
     }
 
-    .reply_comment p {
+    .reply-comment p {
         color: #333;
         margin-bottom: 5px;
     }
@@ -706,7 +706,7 @@ ul {
         border-bottom: 0;
     }
 
-    .textarea-wrapper .edit_p {
+    .textarea-wrapper .edit-p {
         border: 0 none;
         font-size: 12px;
         height: 60px;
@@ -721,7 +721,7 @@ ul {
         overflow: auto;
     }
 
-    .reply_content p.reply_aite_p{
+    .reply-content p.reply-aite-p{
         overflow: auto;
         line-height: 25px;
         background-color: #fbfbfb;
@@ -758,7 +758,7 @@ ul {
         width: 100px;
     }
 
-    .reply_avatar {
+    .reply-avatar {
         background-color: #fff;
         border-radius: 3px;
         box-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
@@ -768,44 +768,44 @@ ul {
         margin-top: 3px;
     }
 
-    .reply_title {
+    .reply-title {
         font-size: 18px;
         padding: 5px 10px;
         background-color: #fafafa;
         border-bottom: 1px solid #ccc;
     }
 
-    .reply_title_no_list {
+    .reply-title-no-list {
         text-align: center;
     }
 
-    .r_name {
+    .r-name {
         color: #ee6583;
     }
 
-    .r_comment {
+    .r-comment {
         margin: 2px 0;
     }
 
-    .r_ta {
+    .r-ta {
         cursor: pointer;
     }
 
-    .r_ta:hover {
+    .r-ta:hover {
         color: #3c3c3c;
     }
 
-    .reply_no_login {
+    .reply-no-login {
         text-align: center;
         padding: 10px;
     }
 
-    .reply_no_login span {
+    .reply-no-login span {
         color: #4285f4;
         cursor: pointer;
     }
 
-    .reply_at_content {
+    .reply-at-content {
         max-height: 25px;
         line-height: 25px;
         overflow: hidden;
@@ -816,7 +816,7 @@ ul {
         font-size: 12px;
     }
 
-    .close_reply {
+    .close-reply {
         float: right;
         clear: both;
         text-align: right;
@@ -826,7 +826,7 @@ ul {
         cursor: pointer;
     }
 
-    .reply_no_login .close_reply {
+    .reply-no-login .close-reply {
         margin-top: 2px;
     }
 
@@ -846,13 +846,13 @@ ul {
         background-position: center center;
     }
 
-    .body-article .sub .textarea_prompt{
+    .body-article .sub .textarea-prompt{
         margin-top: 21px;
         right: 30px;
     }
 }
 
-.sub .textarea_prompt{
+.sub .textarea-prompt{
     color:#999;
     position: absolute;
     margin:0;
@@ -881,10 +881,10 @@ ul {
     margin-top:-1px;
 }
 
-.textarea_prompt a{
+.textarea-prompt a{
     color:#498B31;
 }
-.pagination a, .pagination .page-cur, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-break, .pagination .page-skip {
+.pagination a, .pagination .page-cur, .pagination .page-prev-g, .pagination .page-prev, .pagination .page-next, .pagination .page-next-g, .pagination .page-break, .pagination .page-skip {
     text-decoration: none;
     margin-right: 2px;
     display: inline-block;
@@ -907,7 +907,7 @@ ul {
     text-align: center;
 }
 
-.pagination a, .pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g, .pagination .page-cur, .pagination .page-break {
+.pagination a, .pagination .page-prev-g, .pagination .page-prev, .pagination .page-next, .pagination .page-next-g, .pagination .page-cur, .pagination .page-break {
     color: #fff;
     margin-left:10px;
     background-color: #ccc;
@@ -917,7 +917,7 @@ ul {
     background-color: #444;
 }
 
-.pagination .page-prev_g, .pagination .page-prev, .pagination .page-next, .pagination .page-next_g {
+.pagination .page-prev-g, .pagination .page-prev, .pagination .page-next, .pagination .page-next-g {
     /*width: 36px;*/
 }
 
@@ -931,7 +931,7 @@ ul {
     border-top:0;
 }
 
-.pagination .page-prev_g {
+.pagination .page-prev-g {
     background-position: 0px -59px;
     padding-left: 6px;
     color: #cbcbcb;
@@ -944,7 +944,7 @@ ul {
     font-weight: normal;
 }
 
-.pagination .page-next_g {
+.pagination .page-next-g {
     background-position: -0px -19px;
     padding-right: 6px;
     color: #cbcbcb;
@@ -981,11 +981,11 @@ ul {
     width:0;
     overflow: hidden;
 }
-.one .content_body{
+.one .content-body{
     word-wrap: break-word;
     word-break: normal;
 }
-.alert_msg{
+.alert-msg{
     height: 52px;
     position: fixed;
     top: 30%;
@@ -1003,12 +1003,12 @@ ul {
     border-radius: 4px;
 }
 
-.alert_msg span{
+.alert-msg span{
     float:left;
     display: block;
 }
 
-.alert_msg .icon{
+.alert-msg .icon{
     width:29px;
     height: 29px;
     border-radius: 14px;
@@ -1018,15 +1018,15 @@ ul {
     margin-left:10px;
 }
 
-.alert_msg .info{
+.alert-msg .info{
      background-position: -21px -66px;
  }
 
-.alert_msg .success{
+.alert-msg .success{
     background-position: -21px -12px;
 }
 
-.alert_msg .msg_info{
+.alert-msg .msg-info{
     line-height: 45px;
     margin-left: 30px;
     margin-right: 50px;
@@ -1150,11 +1150,11 @@ ul {
     background-size: 100% 100%;
     margin-bottom: 20px;
 }
-.layout .info_one{
+.layout .info-one{
     font-size: 13px;
     color: #9D9D9D;
 }
-.layout .info_two{
+.layout .info-two{
     font-size: 13px;
     color: #F0752F;
 }
@@ -1196,7 +1196,7 @@ ul {
     display: none;
 }
 
-.facebox .qq_bg{
+.facebox .qq-bg{
     border: 1px solid #aaa;
     border-radius: 4px;
     height: 170px;
@@ -1216,7 +1216,7 @@ ul {
     overflow: auto;
     position: relative;
 }
-.detail-title{
+.detail-title-top{
     font-size: 18px;
     background: #f9f9f9 none repeat scroll 0 0;
     border-bottom: 1px solid #dedede;
@@ -1233,47 +1233,47 @@ ul {
     border:1px solid #4ca0d9;
 }
 
-.qq_face{
+.qq-face{
     float:right;
     background:url("/resources/images/facebg.png") no-repeat scroll 0 -100px;
     padding: 10px 18px 10px 10px;
     cursor: pointer;
 }
 
-.qq_face:hover{
+.qq-face:hover{
     background-position: 0 -120px;
 }
 
-.edit_p img , .reply_at_content img , .r_comment img{
+.edit-p img , .reply-at-content img , .r-comment img{
     vertical-align:bottom;
 }
 
-.group_count{
+.group-count{
     float:left;
     margin-right: 10px;
 }
 
-.group_count span{
+.group-count span{
     color:#6c6c6c;
 }
 
-.group_count .group_count_value{
+.group-count .group-count-value{
     color: #ff0000;
     cursor: pointer;
 }
 
-.detail_title{
+.detail-title{
     color:#526673;
 }
 
-.detail_title:hover{
+.detail-title:hover{
     color:#3c3c3c;
 }
-.tag_wapper{
+.tag-wapper{
     clear:both;
     overflow: auto;
 }
-.tag , .add_tag , .add_tag_nav{
+.tag , .add-tag , .add-tag-nav{
     border: 1px solid #dedede;
     cursor: pointer;
     font-size: 12px;
@@ -1323,8 +1323,8 @@ ul {
 }
 
 @media screen and (max-width: 660px) {
-    .user .login_avatar ,  #top , .right-container ,  .total , .depict ,
-    .title , .hr_reply , .body-article .sub .textarea_prompt{
+    .user .login-avatar ,  #top , .right-container ,  .total , .depict ,
+    .title , .hr-reply , .body-article .sub .textarea-prompt{
         display:none !important;
     }
 
@@ -1383,16 +1383,16 @@ ul {
         border-top:0;
     }
 
-    .detail_title{
+    .detail-title{
         font-size: 16px;
     }
 
-    .sina_show {
+    .sina-show {
         cursor: pointer;
         max-height: 400px;
     }
 
-    .sina_show_gif{
+    .sina-show-gif{
         cursor: pointer;
     }
 
@@ -1418,12 +1418,12 @@ ul {
         font-size: 12px;
     }
 
-    .reply_wapper {
+    .reply-wapper {
         display: none;
         overflow: auto;
     }
 
-    .reply_main {
+    .reply-main {
         border: 1px solid #ccc;
         clear: both;
         margin:10px;
@@ -1431,25 +1431,25 @@ ul {
         overflow: hidden;
     }
 
-    .reply_title{
+    .reply-title{
         font-size: 14px;
         padding: 5px 10px;
         background-color: #fafafa;
         border-bottom: 1px solid #ccc;
     }
 
-    .one .content .content_body a {
+    .one .content .content-body a {
         color: #4285f4;
     }
 
-    .member_total{
+    .member-total{
         padding: 10px 20px;
         overflow: auto;
         background: #f9f9f9;
         border-bottom: 1px solid #dedede;
     }
 
-    .reply_avatar {
+    .reply-avatar {
         background-color: #fff;
         border-radius: 3px;
         box-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
@@ -1459,7 +1459,7 @@ ul {
         margin-top: 3px;
     }
 
-    .reply_avatar img {
+    .reply-avatar img {
         border-radius: 3px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
         display: block;
@@ -1468,33 +1468,33 @@ ul {
         width: 50px;
     }
 
-    .reply_main .reply_one {
+    .reply-main .reply-one {
         border-bottom: 1px solid #ccc;
     }
 
-    .reply_main .reply_one, .reply_comment {
+    .reply-main .reply-one, .reply-comment {
         clear: both;
         overflow: auto;
         padding: 10px;
     }
 
-    .reply_content{
+    .reply-content{
         margin-left:60px;
     }
 
-    .r_ta{
+    .r-ta{
         cursor: pointer;
     }
 
-    .reply_content p .right{
+    .reply-content p .right{
         float:right;
     }
 
-    .reply_one .click{
+    .reply-one .click{
         text-align: left;
     }
 
-    .reply_comment p {
+    .reply-comment p {
         color: #333;
         margin-bottom: 5px;
     }
@@ -1507,7 +1507,7 @@ ul {
         margin-left: 60px;
     }
 
-    .textarea-wrapper .edit_p {
+    .textarea-wrapper .edit-p {
         border: 0 none;
         font-size: 12px;
         height: 60px;
@@ -1551,7 +1551,7 @@ ul {
         cursor: pointer;
     }
 
-    .close_reply {
+    .close-reply {
         clear: both;
         color: #999;
         cursor: pointer;
@@ -1561,12 +1561,12 @@ ul {
         text-align: right;
     }
 
-    .reply_no_login{
+    .reply-no-login{
         text-align: center;
         padding:10px 0;
     }
 
-    .reply_no_login span {
+    .reply-no-login span {
         color:#4285f4;
     }
 

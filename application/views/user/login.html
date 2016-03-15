@@ -3,17 +3,17 @@
     <input type="text" name="account" id="account" placeholder="邮箱账号/昵称" value="{$email}"/>
     <input type="password" name="password" id="password" placeholder="密码"/>
     <div class="sub" id="sub">立即登录</div>
-    <input type="hidden" id="referer_url" value="{$url}" />
+    <input type="hidden" id="referer-url" value="{$url}" />
     <div class="bottom-item"><a href="/login">忘记密码？</a></div>
     <div>
         <div  class="login-third">
             <p>第三方帐号登录</p>
             <div class="login-item">
                 <div class="third-icon-box">
-                    <a href="/sns/login/preauth?action=login&amp;type=qq&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_qq"><div class="third-icon qq"></div></a>
-                    <a href="/sns/login/preauth?action=login&amp;type=wb&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_wb"> <div class="third-icon sina"></div></a>
-                    <a href="/sns/login/preauth?action=login&amp;type=db&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_db"><div class="third-icon douban"></div></a>
-                    <a href="/sns/login/preauth?action=login&amp;type=wx&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third_link_wx"> <div class="third-icon weixin"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=qq&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-qq"><div class="third-icon qq"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=wb&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-wb"> <div class="third-icon sina"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=db&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-db"><div class="third-icon douban"></div></a>
+                    <a href="/sns/login/preauth?action=login&amp;type=wx&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-wx"> <div class="third-icon weixin"></div></a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
     $("#sub").click(function(){
         var account = $.trim($("#account").val());
         var password = $.trim($("#password").val());
-        var referer_url = $.trim($("#referer_url").val());
+        var referer_url = $.trim($("#referer-url").val());
 
         if(!login_valid(account,password)){
             return false;

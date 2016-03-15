@@ -2,20 +2,20 @@
     <div class="title">{$title}</div>
     <div class="depict">{$info}</div>
 
-    <div class="member_total">
+    <div class="member-total">
         {foreach from=$group_count key=key item=one}
-            <span class="group_count">{$one.type_name}
-                <span data-type="{$one.type}" class="{if $key !=0}group_count_value{/if}">[{$one.num}]</span>
+            <span class="group-count">{$one.type_name}
+                <span data-type="{$one.type}" class="{if $key !=0}group-count-value{/if}">[{$one.num}]</span>
             </span>
         {/foreach}
     </div>
 
-    <div class="content_list"></div>
-    <input type="hidden" id="unique_id" value="{$user.user_id}" />
+    <div class="content-list"></div>
+    <input type="hidden" id="unique-id" value="{$user.user_id}" />
     <input type="hidden" id="type" value="{$type}" />
 
     <script src="/resources/js/tmpl.js"></script>
-    <script id="content_list" type="text/x-dot-template">
+    <script id="content-list" type="text/x-dot-template">
     {literal}
     {{if count > 0}}
         {{if count > 10}}<div class="pagination page-top">{{html page}}</div>{{/if}}
@@ -29,18 +29,18 @@
                 <div class="content">
                     {{if one.is_detail == 1}}
                         <p>
-                            <a class="detail_title" target="_blank" href="${one.detail_url}">${one.title}</a>
+                            <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
                             <span class="scan time">浏览[${one.scan}]</span>
                         </p>
                     {{else}}
-                        <div class="content_body{{if one.avatar != ''}} avatar_min_height{{/if}}">{{html one.content}}</div>
+                        <div class="content-body{{if one.avatar != ''}} avatar-min-height{{/if}}">{{html one.content}}</div>
                     {{/if}}
-                    <p class="right clear click oo_xx">
+                    <p class="right clear click oo-xx">
                         {{if one.tags != '' && one.is_detail == 1}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}
                         <span class="response"></span>
                         <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
                         <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                        <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply_count">${one.reply}</span>]
+                        <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply-count">${one.reply}</span>]
                     </p>
                 </div>
             </div>
@@ -54,8 +54,8 @@
     </script>
 </div>
 <div class="right-container left">
-    <div class="member_user_info">
-        {if $user.avatar != ''}<div class="reply_avatar"><img src="{$user.avatar}" /></div>{/if}
+    <div class="member-user-info">
+        {if $user.avatar != ''}<div class="reply-avatar"><img src="{$user.avatar}" /></div>{/if}
     </div>
 </div>
 <script type="text/javascript">
@@ -64,7 +64,7 @@ $(function(){
 })
 function ajax_page(page){
     var type = $('#type').val();
-    var user_id = $('#unique_id').val();
+    var user_id = $('#unique-id').val();
     $.ajax({
         url: "/member_list",
         data:{
@@ -75,15 +75,15 @@ function ajax_page(page){
         type: "POST",
         dataType:'json',
         beforeSend: function() {
-        //    $('.content_list').html('<h2 class="center">数据加载中...</h2>');
+        //    $('.content-list').html('<h2 class="center">数据加载中...</h2>');
         },
         success:function(result){
             if(result.status == "error"){
                 alert_msg(result.msg);
                 return false;
             }
-            $('.content_list').html('');
-            $("#content_list").tmpl(result.data).appendTo('.content_list');
+            $('.content-list').html('');
+            $("#content-list").tmpl(result.data).appendTo('.content-list');
             show_play();
         },
         error:function(e){
@@ -92,12 +92,12 @@ function ajax_page(page){
     });
 }
 
-$('body').on('click', '.group_count_value', function(){
-    if(!$(this).hasClass("group_count_value")){
+$('body').on('click', '.group-count-value', function(){
+    if(!$(this).hasClass("group-count-value")){
         return false;
     }
     $('#type').val($(this).attr('data-type'));
-    $(this).removeClass("group_count_value").parent().siblings().children().addClass('group_count_value');
+    $(this).removeClass("group-count-value").parent().siblings().children().addClass('group-count-value');
     ajax_page(0);
 })
 </script>

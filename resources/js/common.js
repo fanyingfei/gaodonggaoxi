@@ -106,21 +106,21 @@ function show_play(){
 }
 
 function alert_msg(msg,type){
-    if($('.alert_msg').length > 0){
-        $('.alert_msg').remove();
+    if($('.alert-msg').length > 0){
+        $('.alert-msg').remove();
     }
     if(type == undefined){
         type = 'info';
     }
-    var html = '<div class="alert_msg"><span class="msg_info">';
+    var html = '<div class="alert-msg"><span class="msg-info">';
     html += '<span class="icon '+type+'"></span>&nbsp;&nbsp;'+msg+'</span></div>';
     $('body').append(html);
-    width = $('.alert_msg').width();
-    $('.alert_msg').css('left',$(document).width()/2 - width/2);
-    $('.alert_msg').fadeIn(500);
+    width = $('.alert-msg').width();
+    $('.alert-msg').css('left',$(document).width()/2 - width/2);
+    $('.alert-msg').fadeIn(500);
      setTimeout(function(){
-         $('.alert_msg').fadeOut(500,function(){
-             $('.alert_msg').remove();
+         $('.alert-msg').fadeOut(500,function(){
+             $('.alert-msg').remove();
          });
      },1000);
 }
@@ -146,12 +146,12 @@ window.onload=function(){
     show_play();
 
     //监听图片双击事件
-    $(".sina_show").dblclick(function(){
+    $(".sina-show").dblclick(function(){
     //    window.open($(this).attr('src'));
     })
 
     //监听图片单击事件
-    $('body').on('click', '.sina_show', function(){
+    $('body').on('click', '.sina-show', function(){
         max_height = $(this).css("max-height");
         img_height = $(this).height();
         if(max_height == 'none'){
@@ -166,7 +166,7 @@ window.onload=function(){
     })
 
     //监听图片单击事件
-    $('body').on('click', '.sina_show_gif', function(){
+    $('body').on('click', '.sina-show-gif', function(){
         src_url = $(this).attr('ori-data');
         ori_src = $(this).attr('src');
         $(this).attr('src',src_url);
@@ -207,7 +207,7 @@ window.onload=function(){
 
 //DOM渲染完成
 $(document).ready(function(){
-    var comment_url =$('#comment_url').val();
+    var comment_url =$('#comment-url').val();
     var reply_url = '/reply/record'
 
     //贴标签
@@ -220,12 +220,12 @@ $(document).ready(function(){
     })
 
     //添加标签
-    $('body').on('click', '.add_tag', function(){
-        if($(this).parent().children('.my_tag').length >= 3){
+    $('body').on('click', '.add-tag', function(){
+        if($(this).parent().children('.my-tag').length >= 3){
             alert_msg('自己添加的标签不能超过3个');
             return false;
         }
-        var tag_html = '<span class="tag my_tag"><input placeholder="请输入" value=""/></span>';
+        var tag_html = '<span class="tag my-tag"><input placeholder="请输入" value=""/></span>';
         $(this).before(tag_html);
     })
 
@@ -238,74 +238,74 @@ $(document).ready(function(){
     })
 
     //监听主体OO点击事件
-    $('body').on('click', '.oo_xx .oo', function(){
+    $('body').on('click', '.oo-xx .oo', function(){
         click_good(comment_url,this);
     })
 
     //监听主体XX点击事件
-    $('body').on('click', '.oo_xx .xx', function(){
+    $('body').on('click', '.oo-xx .xx', function(){
         click_bad(comment_url,this);
     })
 
     //监听评论@点击事件
-    $('body').on('click', '.r_ta', function(){
-        if($(this).parents('.reply_main').find('.textarea-wrapper .edit_p').length <= 0){
+    $('body').on('click', '.r-ta', function(){
+        if($(this).parents('.reply-main').find('.textarea-wrapper .edit-p').length <= 0){
             alert_msg('你还没有登陆哦');
             return false;
         }
-        $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
-        var html_name = '<span class="r_name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
-        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html(html_name);
-        height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
+        $(this).addClass("at").parents('.reply-one').siblings().find(".r-ta").removeClass('at');
+        var html_name = '<span class="r-name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $(this).parents('.reply-main').find('.textarea-wrapper .edit-p').html(html_name);
+        height = $(this).parents('.reply-main').find('.textarea-wrapper .edit-p').offset().top;
         $('html,body').animate({scrollTop: height -200}, 500);
     });
 
     //监听评论OO点击事件
-    $('body').on('click', '.reply_main .oo', function(){
+    $('body').on('click', '.reply-main .oo', function(){
         click_good(reply_url,this);
     });
 
-    $('body').on('click', '.alert_msg', function(){
+    $('body').on('click', '.alert-msg', function(){
         $(this).fadeOut(500,function(){
             $(this).remove();
         });
     });
 
     //监听评论XX点击事件
-    $('body').on('click', '.reply_main .xx', function(){
+    $('body').on('click', '.reply-main .xx', function(){
         click_bad(reply_url,this);
     });
 
-    $('body').on('click', '.reply_to_reply', function(){
+    $('body').on('click', '.reply-to-reply', function(){
         rep_id = $(this).attr('rep-id');
-        to_height = $(this).parents('.reply_main').find('.rep_id_'+rep_id).offset().top;
+        to_height = $(this).parents('.reply-main').find('.rep-id-'+rep_id).offset().top;
         $('html,body').animate({scrollTop: to_height}, 500);
     });
 
     //关闭回复
-    $('body').on('click', '.close_reply', function(){
-        $(this).parents('.reply_wapper').fadeOut(500,function(){
-            var len = $(this).find('.reply_one').length;
+    $('body').on('click', '.close-reply', function(){
+        $(this).parents('.reply-wapper').fadeOut(500,function(){
+            var len = $(this).find('.reply-one').length;
             $(this).prev('.one').find('.reply').text('↓回复');
-            $(this).prev('.one').find('.reply_count').text(len);
+            $(this).prev('.one').find('.reply-count').text(len);
             var height = $(this).prev('.one').offset().top;
             $('html,body').animate({scrollTop: height}, 500);
             $(this).remove();
         });
     });
 
-    $('body').on('click', '.qq_face', function(){
-        if($(this).parents('.reply_wapper').find('.facebox').length > 0 ){
-            $(this).parents('.reply_wapper').find('.facebox').remove();
+    $('body').on('click', '.qq-face', function(){
+        if($(this).parents('.reply-wapper').find('.facebox').length > 0 ){
+            $(this).parents('.reply-wapper').find('.facebox').remove();
             return false;
         }
         $('.facebox').remove();
-        var faceimg = '<div class="facebox"><div class="qq_bg"><img src="/resources/images/face_qq.png"></div><ul>';
+        var faceimg = '<div class="facebox"><div class="qq-bg"><img src="/resources/images/face_qq.png"></div><ul>';
         for(i=0;i<84;i++){  //通过循环创建60个表情，可扩展
             faceimg+='<li data-id="'+i+'"></li>';
         };
         faceimg+='</ul></div>';
-        $(this).parents('.reply_wapper').append(faceimg);
+        $(this).parents('.reply-wapper').append(faceimg);
         var qq_height = $(this).offset().top;
         var qq_wight = $(this).offset().left;
         $('.facebox').css('top',qq_height - 170);
@@ -318,7 +318,7 @@ $(document).ready(function(){
     $('body').on('click', '.facebox ul li', function(){
         var id = $(this).attr('data-id');
         var img = '<img src="/resources/images/face/'+id+'.gif"> ';
-        $(this).parents('.reply_wapper').find('.edit_p').append(img);
+        $(this).parents('.reply-wapper').find('.edit-p').append(img);
         return false;
     });
 
@@ -370,10 +370,10 @@ $(document).ready(function(){
         var obj = $(this);
         var id = obj.attr('data-id');
 
-        if(obj.parents('.one').next().hasClass('reply_wapper')){
+        if(obj.parents('.one').next().hasClass('reply-wapper')){
             obj.text('↓回复');
-            obj.parents('.one').next('.reply_wapper').hide(500,function(){
-                obj.parents('.one').next('.reply_wapper').remove();
+            obj.parents('.one').next('.reply-wapper').hide(500,function(){
+                obj.parents('.one').next('.reply-wapper').remove();
             });
             return false;
         }
@@ -392,10 +392,10 @@ $(document).ready(function(){
                 }
 
                 obj.text('↑回复');
-                obj.parent().children('.reply_count').text(result.data.list.length);
+                obj.parent().children('.reply-count').text(result.data.list.length);
                 var html = reply_list(result);
                 obj.parents('.one').after(html);
-                obj.parents('.one').next('.reply_wapper').show(500);
+                obj.parents('.one').next('.reply-wapper').show(500);
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
@@ -410,12 +410,12 @@ $(document).ready(function(){
         var type = $("#type").val();
         var parent_id = 0;
         var parent_name = '';
-        if(obj.parents('.reply_main').find('.at').length > 0){
-            parent_id = obj.parents('.reply_main').find('.at').attr('data-id');
-            parent_name = obj.parents('.reply_main').find('.at').attr('data-name');
+        if(obj.parents('.reply-main').find('.at').length > 0){
+            parent_id = obj.parents('.reply-main').find('.at').attr('data-id');
+            parent_name = obj.parents('.reply-main').find('.at').attr('data-name');
         }
 
-        var content = $.trim(obj.parents('.textarea-wrapper').children('.edit_p').html()) ;
+        var content = $.trim(obj.parents('.textarea-wrapper').children('.edit-p').html()) ;
         if(content == ''){
             alert_msg('请填写评论');
             return false;
@@ -434,9 +434,9 @@ $(document).ready(function(){
                     return false;
                 }
                 alert_msg(result.msg , 'success');
-                //回复成功加一个DIV，点击close_reply时会统计reply_one的数量
-                obj.parents('.reply_main').before('<div class="reply_one display"></div>');
-                obj.parents('.reply_main').find('.close_reply').trigger("click");
+                //回复成功加一个DIV，点击close-reply时会统计reply-one的数量
+                obj.parents('.reply-main').before('<div class="reply-one display"></div>');
+                obj.parents('.reply-main').find('.close-reply').trigger("click");
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
@@ -445,29 +445,29 @@ $(document).ready(function(){
     });
 
     function reply_list(result){
-        var html = '<div class="reply_wapper"><hr class="hr_reply"><div class="reply_main">';
+        var html = '<div class="reply-wapper"><hr class="hr-reply"><div class="reply-main">';
         if(result.data.list != ''){
-            html += '<div class="reply_title">回复</div>';
+            html += '<div class="reply-title">回复</div>';
             $.each(result.data.list, function(k, v){
-                html += '<div class="reply_one rep_id_'+v.rep_id+'">';
-                html += '<div class="reply_avatar left"><img src="'+v.avatar+'" /></div>';
-                html += '<div class="reply_content left">';
-                html += '<p><span  class="r_name">'+v.name+'</span>';
+                html += '<div class="reply-one rep-id-'+v.rep_id+'">';
+                html += '<div class="reply-avatar left"><img src="'+v.avatar+'" /></div>';
+                html += '<div class="reply-content left">';
+                html += '<p><span  class="r-name">'+v.name+'</span>';
                 if(v.parent_id != 0 && v.parent_name != ''){
                     html += '<span class="time">&nbsp;&nbsp;@&nbsp;&nbsp;</span>';
-                    html += '<a  class="r_name reply_to_reply" rep-id="'+ v.parent_id+'">'+v.parent_name+'</a>';
+                    html += '<a  class="r-name reply-to-reply" rep-id="'+ v.parent_id+'">'+v.parent_name+'</a>';
                 }
                 html += '<span class="time right">'+(k+1)+'L</span></p>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
-                    html += '<p class="reply_aite_p"><span class="time left">回复</span><span class="qy left"></span>';
-                    html += '<span  class="reply_at_content left">'+ v.reply_content+'</span>';
+                    html += '<p class="reply-aite-p"><span class="time left">回复</span><span class="qy left"></span>';
+                    html += '<span  class="reply-at-content left">'+ v.reply_content+'</span>';
                     html += '<span class="hy left"></span></p>';
                 }
-                html += '<p class="r_comment">'+v.content+'</p>';
+                html += '<p class="r-comment">'+v.content+'</p>';
                 html += '<p class="click">';
                 html += '<span class="time">'+ v.create_time+'</span>';
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-                html += '<span class="r_ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
+                html += '<span class="r-ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
                 html += '<a class="oo" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
@@ -478,21 +478,21 @@ $(document).ready(function(){
                 html += '</div>';
             });
         }else{
-            html += '<div class="reply_title">还没有评论</div>';
+            html += '<div class="reply-title">还没有评论</div>';
         }
 
         if(result.data.is_login == 1){
-            html += '<div class="reply_comment">';
-            html += '<p><span>'+result.data.name+'</span><span class="qq_face"></span></p>';
-            html += '<div class="reply_avatar left"><img src="'+result.data.avatar+'" /></div>';
+            html += '<div class="reply-comment">';
+            html += '<p><span>'+result.data.name+'</span><span class="qq-face"></span></p>';
+            html += '<div class="reply-avatar left"><img src="'+result.data.avatar+'" /></div>';
             html += '<div class="textarea-wrapper left">';
-            html += '<p class="edit_p" contenteditable="true" placeholder="说点什么吧"></p>';
+            html += '<p class="edit-p" contenteditable="true" placeholder="说点什么吧"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
-            html += '</div></div><p class="close_reply">[X]关闭回复</p></div>';
+            html += '</div></div><p class="close-reply">[X]关闭回复</p></div>';
         }else{
-            html += '<div class="reply_no_login">';
+            html += '<div class="reply-no-login">';
             html += '<span onclick="login()">&nbsp;登录&nbsp;</span>后才能回复';
-            html += '<p class="close_reply">[X]关闭回复</p></div>';
+            html += '<p class="close-reply">[X]关闭回复</p></div>';
         }
         return html;
     }

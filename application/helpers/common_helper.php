@@ -235,10 +235,10 @@ function gif_static_gif($content){
             }
             $original[] = $total_img;
             if(substr($img_name , -4 , 4) == '.gif'){
-                $src = '<div class="peripheral"><img class="sina_show_gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                $src = '<div class="peripheral"><img class="sina-show-gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                 $src .= '<div class="play">PLAY</div></div>';
             }else{
-                $src = '<div class="peripheral"><img class="sina_show" src="'.$src_url.'"  ori-data="'.$src_url.'"  /></div>';
+                $src = '<div class="peripheral"><img class="sina-show" src="'.$src_url.'"  ori-data="'.$src_url.'"  /></div>';
             }
             $new_img[] = $src;
         }
