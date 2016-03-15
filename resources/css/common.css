@@ -74,12 +74,8 @@ ul {
         float: right;
     }
 
-    .oo:hover {
-        color: #d32;
-    }
-
-    .xx:hover {
-        color: #0000ff;
+    .oo:hover , .xx:hover{
+        color: #3c3c3c;
     }
 
     .reply:hover {
@@ -128,7 +124,6 @@ ul {
 
     .nav ul li {
         float: left;
-        padding: 12px 15px;
     }
 
     .login {
@@ -157,6 +152,8 @@ ul {
 
     .nav ul li a {
         color: #acacac;
+        display: block;
+        padding: 12px 15px;
     }
 
     .nav ul li:hover a {
@@ -252,7 +249,7 @@ ul {
     }
 
     .sub p {
-        margin: 10px 0;
+        margin: 5px 0 10px 0;
     }
 
     .sub p input {
@@ -262,21 +259,17 @@ ul {
     }
 
     .detail_wapper{
-        line-height: 25px;
+        overflow: auto;
     }
 
     .one .detail_title {
-        font-size: 24px;
-        color: #3c3c3c;
-        max-width: 520px;
+        font-size: 18px;
+        max-width: 460px;
         display: block;
         float:left;
         white-space: nowrap;
         text-overflow:ellipsis;
-    }
-
-    .one .detail_title:hover {
-        color: #4285F4;
+        overflow: hidden;
     }
 
     .detail_wapper span{
@@ -292,6 +285,7 @@ ul {
         min-height: 200px;
         word-wrap: break-word;
         word-break: normal;
+        overflow: hidden;
     }
 
     .detail img {
@@ -1222,7 +1216,12 @@ ul {
     overflow: auto;
     position: relative;
 }
-
+.detail-title{
+    font-size: 18px;
+    background: #f9f9f9 none repeat scroll 0 0;
+    border-bottom: 1px solid #dedede;
+    padding: 12px 20px;
+}
 .facebox ul li{
     cursor: pointer;
     float: left;
@@ -1263,9 +1262,69 @@ ul {
     cursor: pointer;
 }
 
+.detail_title{
+    color:#526673;
+}
+
+.detail_title:hover{
+    color:#3c3c3c;
+}
+.tag_wapper{
+    clear:both;
+    overflow: auto;
+}
+.tag , .add_tag , .add_tag_nav{
+    border: 1px solid #dedede;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px 10px;
+    display: block;
+    float:left;
+    margin-right: 10px;
+    margin-top:5px;
+}
+
+.tag input{
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    width:40px !important;
+    cursor: pointer;
+    text-align: center;
+}
+.tag-nav{
+    background-color:#444;
+    color:#acacac;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.tag-select{
+    border: 1px solid #20cd55;
+    background-size: 9px 9px;
+    background-image: repeating-linear-gradient(315deg,#20cd55 0,#20cd55 50%,transparent 50%,transparent 100%);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+.detail-tags{
+    float:left;
+}
+.detail a{
+    color:#4285f4 !important;
+
+}
+.scan{
+    float:right;
+    margin-top:2px;
+}
+.oo{
+ /*   background-image: url('/resources/images/dc_icon.gif');
+    background-position: left center;*/
+}
+
 @media screen and (max-width: 660px) {
     .user .login_avatar ,  #top , .right-container ,  .total , .depict ,
-    .title , .hr_reply , .detail_wapper span,.body-article .sub .textarea_prompt{
+    .title , .hr_reply , .body-article .sub .textarea_prompt{
         display:none !important;
     }
 
@@ -1324,6 +1383,10 @@ ul {
         border-top:0;
     }
 
+    .detail_title{
+        font-size: 16px;
+    }
+
     .sina_show {
         cursor: pointer;
         max-height: 400px;
@@ -1353,15 +1416,6 @@ ul {
         color:#8c8c8c;
         text-align: right;
         font-size: 12px;
-    }
-
-    .detail_title{
-        color:#3c3c3c;
-        font-size: 18px;
-    }
-
-    .detail_title:hover{
-        color:#4285f4;
     }
 
     .reply_wapper {

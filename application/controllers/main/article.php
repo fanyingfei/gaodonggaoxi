@@ -3,6 +3,11 @@
 class article extends MY_Controller  {
     private $type = 6; //默认为6
     const table_name = 'article';
+    private $tags_data = array(
+                                            4=>array(),
+                                            6=>array(),
+                                            7=>array('web前端','php','ios','mysql','linux','c/c++','java','android')
+                                        );
 
 	/**
 	 * Index Page for this controller.
@@ -27,8 +32,9 @@ class article extends MY_Controller  {
 
     public function zzs($p = 0){
         $this->set_type_value(__FUNCTION__);
+        $tags =$this->get_cookie_tags();
         $this->assign('body','body-article');
-        $this->assign('title','渣渣说');
+        $this->assign('title','渣渣说 '.$tags);
         $this->assign('info','渣渣说');
         $this->assign('keywords','渣渣说');
         $this->assign('description','渣渣说');
@@ -37,39 +43,42 @@ class article extends MY_Controller  {
 
     public function tale($p = 0){
         $this->set_type_value(__FUNCTION__);
+        $tags =$this->get_cookie_tags();
         $this->assign('body','body-article');
-        $this->assign('title','故事');
+        $this->assign('title','故事 '.$tags);
         $this->assign('info','故事');
         $this->assign('keywords','故事');
         $this->assign('description','故事');
         $this->index($p);
     }
 
-    /*
-    * 神话详情
-    */
-    public function tale_detail($id){
-        $detail = $this->get_detail(intval($id));
-        $this->assign('data',$detail);
-        $this->assign('body','body-article-detail');
-        $this->assign('title','故事详情');
-        $this->assign('info','故事详情');
-        $this->assign('keywords','故事详情');
-        $this->assign('description','故事详情');
-        $this->display('detail.html');
+    public function cxy($p = 0){
+        $this->set_type_value(__FUNCTION__);
+        $tags =$this->get_cookie_tags();
+        $this->assign('body','body-article');
+        $this->assign('title','程序员 '.$tags);
+        $this->assign('info','程序员');
+        $this->assign('keywords','程序员');
+        $this->assign('description','程序员');
+        $this->index($p);
     }
 
     /*
-     * 渣渣说详情
-     */
-    public function zzs_detail($id){
-        $detail = $this->get_detail(intval($id));
+    * 神话详情
+    */
+    public function detail($time,$param){
+        $id = intval(get_detail_id($param));
+        if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
+        $detail = $this->model_article->detail($id);
+        if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
+        $this->model_article->update_scan($id);
+
         $this->assign('data',$detail);
-        $this->assign('body','body-article-detail');
-        $this->assign('title','渣渣说详情');
-        $this->assign('info','渣渣说详情');
-        $this->assign('keywords','渣渣说详情');
-        $this->assign('description','渣渣说详情');
+        $this->assign('body','body-detail');
+        $this->assign('title','详情');
+        $this->assign('info','详情');
+        $this->assign('keywords','详情');
+        $this->assign('description','详情');
         $this->display('detail.html');
     }
 
@@ -82,8 +91,11 @@ class article extends MY_Controller  {
         $p = intval($p);
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$this->type;
+        $tags = empty($_COOKIE['tags']) ? '' : $_COOKIE['tags'] ;
+        if(!empty($tags)) $where .= " and tags like '%$tags%' ";
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
+
 
         //得到总数
         $count = $this->model_article->data_count($where);
@@ -99,7 +111,6 @@ class article extends MY_Controller  {
             $user_time = array_column($user_res , 'create_time' , 'user_id');
         }
 
-        $detail_url_data = array_flip(parent :: $all_type_data);
         foreach($list as &$v){
             $v['user_sn'] = '';
             $v['con_id'] = $v['art_id'];
@@ -108,8 +119,8 @@ class article extends MY_Controller  {
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
                 $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
-            $v['title'] = empty($v['title']) ? mb_substr($v['content'], 0, 20, 'utf-8') : $v['title'];
-            $v['detail_url'] = '/'.$detail_url_data[$v['type']].'/detail/'.$v['art_id'];
+            $v['detail_url'] = get_detail_url($v['art_id'],$v['create_time']);
+            $v['create_time'] = change_time($v['create_time']);
         }
 
         //生成页码
@@ -119,6 +130,7 @@ class article extends MY_Controller  {
         $this->assign('count',$count);
         $this->assign('page',$page);
         $this->assign('type',$this->type);
+        $this->assign('tags',$this->tags_data[$this->type]);
 
         $this->display('article.html');
     }
@@ -135,6 +147,8 @@ class article extends MY_Controller  {
 
         $content = trim($_REQUEST['content']);
         $data['type'] = intval($_REQUEST['type']);
+        $data['tags'] = trim(strip_tags($_REQUEST['tags']));
+        if(empty($data['tags'])) splash('error','请添加标签');
         //保存时保存原提交内容
         $data['content'] = trim($content);
         //验证时只保留图片和链接
@@ -177,24 +191,16 @@ class article extends MY_Controller  {
         parent :: record(self::table_name);
     }
 
-    /*
-     * 得到详情
-     */
-    public function get_detail($id){
-        if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
-        $detail = $this->model_article->detail($id);
-        if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
-        $detail['title'] = empty($detail['title']) ? mb_substr(strip_tags($detail['content']), 0, 20, 'utf-8').'...' : $detail['title'];
-        return $detail;
-    }
-
-
     public function error(){
         parent :: error_msg();
     }
 
     public function set_type_value($fun){
         $this->type = parent :: $all_type_data[$fun];
+    }
+
+    public function get_cookie_tags(){
+        return empty($_COOKIE['tags']) ? '' : '[ '. $_COOKIE['tags'].' ]' ;
     }
 
 }

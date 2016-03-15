@@ -112,7 +112,8 @@ function alert_msg(msg,type){
     if(type == undefined){
         type = 'info';
     }
-    var html = '<div class="alert_msg"><span class="msg_info"><span class="icon '+type+'"></span>&nbsp;&nbsp;'+msg+'</span></div>';
+    var html = '<div class="alert_msg"><span class="msg_info">';
+    html += '<span class="icon '+type+'"></span>&nbsp;&nbsp;'+msg+'</span></div>';
     $('body').append(html);
     width = $('.alert_msg').width();
     $('.alert_msg').css('left',$(document).width()/2 - width/2);
@@ -135,7 +136,9 @@ function login_new(){
     var iHeight=560; //弹出窗口的高度;
     var iTop = (window.screen.availHeight-30-iHeight)/2; //获得窗口的垂直位置;
     var iLeft = (window.screen.availWidth-10-iWidth)/2; //获得窗口的水平位置;
-    window.open('/login','newwindow','height='+iHeight+',width='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+    window.open('/login','newwindow','height='+iHeight+',' +
+    'width='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,' +
+    'scrollbars=no, resizable=no,location=no, status=no');
 }
 
 //资源加载完成
@@ -207,6 +210,33 @@ $(document).ready(function(){
     var comment_url =$('#comment_url').val();
     var reply_url = '/reply/record'
 
+    //贴标签
+    $('body').on('click', '.tag', function(){
+        if($(this).hasClass('tag-select')){
+            $(this).removeClass('tag-select');
+        }else{
+            $(this).addClass('tag-select');
+        }
+    })
+
+    //添加标签
+    $('body').on('click', '.add_tag', function(){
+        if($(this).parent().children('.my_tag').length >= 3){
+            alert_msg('自己添加的标签不能超过3个');
+            return false;
+        }
+        var tag_html = '<span class="tag my_tag"><input placeholder="请输入" value=""/></span>';
+        $(this).before(tag_html);
+    })
+
+    //标签链接
+    $('body').on('click', '.tag-nav', function(){
+        $.cookie('tags', $(this).text() ,{ path : '/' });
+        var url = window.location.href;
+        url = url.replace(/[0-9]+$/gi,'');
+        window.location.href =  url;
+    })
+
     //监听主体OO点击事件
     $('body').on('click', '.oo_xx .oo', function(){
         click_good(comment_url,this);
@@ -224,7 +254,8 @@ $(document).ready(function(){
             return false;
         }
         $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
-        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('<span class="r_name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;');
+        var html_name = '<span class="r_name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html(html_name);
         height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
         $('html,body').animate({scrollTop: height -200}, 500);
     });
@@ -323,6 +354,7 @@ $(document).ready(function(){
 
     //监听头部导航点击事件
     $(".nav li a").click(function(){
+        $.cookie('tags', '' ,{ path : '/' });
         $.cookie('search', '' ,{ path : '/' });
     })
 
@@ -437,9 +469,9 @@ $(document).ready(function(){
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
                 html += '<span class="r_ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
                 html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-                html += '<a class="oo" title="支持" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
+                html += '<a class="oo" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
-                html += '<a class="xx" title="反对" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
+                html += '<a class="xx" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
                 html += '<span class="response"></span></p>';
                 html += '</div>';

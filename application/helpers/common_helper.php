@@ -250,3 +250,11 @@ function gif_static_gif($content){
         return false;
     }
 }
+
+function get_detail_url($id,$time){
+    return '/detail/'.date('Ymd',strtotime($time)).'/content_'.$id.'.html';
+}
+
+function get_detail_id($str){
+    return str_replace(array('content_','.html'),'',$str);
+}

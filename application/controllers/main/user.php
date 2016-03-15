@@ -34,10 +34,12 @@ class user extends MY_Controller  {
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
         $user['user_sn'] = get_user_sn($user['user_id'] , $user['create_time']);
 
+        $this->load->model('model_article');
         $this->load->model('model_content');
         $where = 'where status = 1 and user_id = '.$_SESSION['user_id'];
-        $count = $this->model_content->data_count($where);
-        $user['content_count'] = $count;
+        $count_article = $this->model_article->data_count($where);
+        $count_content = $this->model_content->data_count($where);
+        $user['content_count'] = $count_article + $count_content ;
 
         $sex = array('M'=>'男','W'=>'女','U'=>'未知');
         $age = array('');
@@ -338,16 +340,18 @@ class user extends MY_Controller  {
             $user_time = array_column($user_res , 'create_time' , 'user_id');
         }
 
-        $detail_url_data = array_flip(parent :: $all_type_data);
         foreach($list as &$v){
             $v['is_detail'] = $is_detail;
-            if($is_detail == 1) $v['detail_url'] =  '/'.$detail_url_data[$v['type']].'/detail/'.$v['art_id'];
+            if($is_detail == 1){
+                $v['detail_url'] =  get_detail_url($v['art_id'],$v['create_time']);
+            }else{
+                $v['content'] = strip_tags($v['content'],'<br><img><a>');
+                //gif图转成静态
+                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+                $v['content'] = filter_content_br($v['content']);
+            }
             $v['create_time'] = change_time($v['create_time']);
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
-            $v['content'] = strip_tags($v['content'],'<br><img><a>');
-            //gif图转成静态
-            if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-            $v['content'] = filter_content_br($v['content']);
         }
 
         //生成页码

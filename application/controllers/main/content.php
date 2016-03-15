@@ -21,12 +21,12 @@ class content extends MY_Controller  {
 
     public function __construct() {
         parent :: __construct();
-        $this->assign('body','body-content');
         $this->load->model('model_content');
     }
 
     public function xiao($p = 0){
         $this->set_type_value(__FUNCTION__);
+        $this->assign('body','body-content');
         $this->assign('title','搞笑');
         $this->assign('info','段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
@@ -36,6 +36,7 @@ class content extends MY_Controller  {
 
     public function hua($p = 0){
         $this->set_type_value(__FUNCTION__);
+        $this->assign('body','body-content');
         $this->assign('title','那些话');
         $this->assign('info','那些曾经感动你我的话');
         $this->assign('keywords','语录');
@@ -43,32 +44,13 @@ class content extends MY_Controller  {
         $this->index($p);
     }
 
-    public function zzs($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('title','渣渣说');
-        $this->assign('info','渣渣说');
-        $this->assign('keywords','渣渣说');
-        $this->assign('description','渣渣说');
-        $this->index($p);
-    }
-
     public function meizi($p = 0){
         $this->set_type_value(__FUNCTION__);
-        $this->assign('body','meizi');
+        $this->assign('body','body-content');
         $this->assign('title','妹子');
         $this->assign('info','快来养养眼吧，大把大把的妹子');
         $this->assign('keywords','妹子');
         $this->assign('description','妹子');
-        $this->index($p);
-    }
-
-    public function myth($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('body','myth');
-        $this->assign('title','神话');
-        $this->assign('info','神话');
-        $this->assign('keywords','神话');
-        $this->assign('description','神话');
         $this->index($p);
     }
 

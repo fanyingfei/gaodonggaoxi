@@ -16,7 +16,8 @@ class model_article extends CI_Model{
      */
     public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
-        $sql = "select * from ".self::TABLE_NAME." $where $order_by limit ".$p*$limit.', '.$limit;
+        $sql = "select art_id,user_id,title,good,bad,scan,email,`name`,`type`,reply,tags,create_time from "
+                    .self::TABLE_NAME ." $where $order_by limit ".$p*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 
@@ -68,6 +69,15 @@ class model_article extends CI_Model{
     public function update_status($ids,$status){
         if(empty($ids) || !isset($status)) return false;
         $sql = 'update '.self::TABLE_NAME ." set status = $status where ".self::PRI_KEY ." in ( $ids )";
+        return $this->db->query($sql);
+    }
+
+    /*
+    * 更新状态
+    */
+    public function update_scan($id){
+        if(empty($id)) return false;
+        $sql = 'update '.self::TABLE_NAME ." set scan = scan + 1 where ".self::PRI_KEY ." = $id";
         return $this->db->query($sql);
     }
 

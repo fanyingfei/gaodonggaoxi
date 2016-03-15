@@ -1,9 +1,9 @@
 <?php
 
 class MY_controller extends CI_Controller {
-    static $detail_data = array(4,6); //需要展示详情的
-    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6);
-    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事');
+    static $detail_data = array(4 , 6 , 7); //需要展示详情的
+    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
+    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
 
     public function __construct() {
 		if(!isset($_SESSION)) session_start();

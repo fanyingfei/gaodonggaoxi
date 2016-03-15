@@ -28,14 +28,18 @@
                 </div>
                 <div class="content">
                     {{if one.is_detail == 1}}
-                        <p><a class="detail_title" target="_blank" href="${one.detail_url}">${one.title}</a></p>
+                        <p>
+                            <a class="detail_title" target="_blank" href="${one.detail_url}">${one.title}</a>
+                            <span class="scan time">浏览[${one.scan}]</span>
+                        </p>
                     {{else}}
                         <div class="content_body{{if one.avatar != ''}} avatar_min_height{{/if}}">{{html one.content}}</div>
                     {{/if}}
                     <p class="right clear click oo_xx">
+                        {{if one.tags != '' && one.is_detail == 1}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}
                         <span class="response"></span>
-                        <a class="oo" title="支持" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
-                        <a class="xx" title="反对" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
+                        <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
+                        <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
                         <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply_count">${one.reply}</span>]
                     </p>
                 </div>

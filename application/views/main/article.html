@@ -1,6 +1,11 @@
 <div class="main left">
     <div class="title">{$title}</div>
     <div class="depict">{$info}</div>
+    <div class="depict">
+        {foreach from=$tags key=key item=tag}
+        <span class="tag-nav">{$tag}</span>
+        {/foreach}
+    </div>
     {if $count > 0}
         <div class="total">
             <span class="left">总数：{$count}</span>
@@ -11,22 +16,27 @@
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
-                <p class="detail_wapper">
-                    <a class="detail_title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
-                    <span title="{$one.u_name}" class="right time">
-                        {if $one.user_sn != ''}
-                            <a href="/member/{$one.user_sn}">{$one.name}</a>
-                        {else}
-                            {$one.name}
-                        {/if}
-                    </span>
-                </p>
-                <p class="right clear click oo_xx">
-                    <span class="response"></span>
-                    <a class="oo" title="支持" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
-                    <a class="xx" title="反对" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                    <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
-                </p>
+                <div class="user member">
+                    {if $one.user_sn != ''}
+                    <p class="text-right"><span class="vip"></span><a href="/member/{$one.user_sn}">{$one.name}</a></p>
+                    {else}
+                    <p>{$one.name}</p>
+                    {/if}
+                    <p class="time text-right">{$one.create_time}</p>
+                </div>
+                <div class="content">
+                    <p class="detail_wapper">
+                        <a class="detail_title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
+                        <span class="scan time">浏览[{$one.scan}]</span>
+                    </p>
+                    <p class="right clear click oo_xx">
+                        {if $one.tags != ''}<span class="detail-tags">标签：{$one.tags}</span>{/if}
+                        <span class="response"></span>
+                        <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
+                        <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                        <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply_count">{$one.reply}</span>]
+                    </p>
+                </div>
             </div>
             {/foreach}
         </div>
@@ -37,7 +47,6 @@
 
     <div class="sub">
         {if $is_login == 1}
-            <p>{$name},说些什么吧</p>
             <input type="hidden" name="email" id="email" value="{$email}" />
             <input type="hidden" name="name" id="name" value="{$name}" />
         {else}
@@ -45,6 +54,12 @@
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}
         <p>标题：<input type="text" name="title" id="title" value="" /></p>
+        <p class="tag_wapper">
+            {foreach from=$tags key=key item=tag}
+            <span class="tag">{$tag}</span>
+            {/foreach}
+            <span class="add_tag">+</span>
+        </p>
         <p class="textarea_prompt">
             图片请上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>
         </p>
@@ -91,19 +106,32 @@
         var email = $.trim($("#email").val());
         var title = $.trim($("#title").val());
         var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
-        var re=new RegExp("</p>","g");
-        content = content.replace(re,"</p><br>");
         var type = $("#type").val();
-        if(!valid(name,email,content)){
-            return false;
-        }
+        var tags = get_tags();
+
+        if(tags == '' || !valid(name,email,content))  return false;
+
         $.cookie('name', name ,  { path:'/', expires: 365 });
         $.cookie('email', email ,  { path:'/', expires: 365 });
         sub_cfg.data = {
-            "name":name,"email":email,'title':title ,'content':content,'type':type
+            "name":name,"email":email,'title':title ,'content':content,'type':type, 'tags':tags
         };
         ajax_res(sub_cfg);
     })
+
+    function get_tags(){
+        var tags = '';
+        $('.tag-select').each(function(){
+            if($(this).children('input').length == 1){
+                var cur_tag = $(this).children('input').val();
+            }else{
+                var cur_tag = $(this).text();
+            }
+            if(cur_tag != '') tags += cur_tag+' ';
+        });
+        if(tags == '') alert_msg('请添加标签');
+        return tags;
+    }
 
 </script>
 {/literal}

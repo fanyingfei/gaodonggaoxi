@@ -47,16 +47,18 @@ $route['hua/(:num)'] = "main/content/hua/$1";
 //妹子
 $route['meizi'] = "main/content/meizi";
 $route['meizi/(:num)'] = "main/content/meizi/$1";
-//神话
+//故事
 $route['tale'] = "main/article/tale";
 $route['tale/(:num)'] = "main/article/tale/$1";
-$route['tale/detail'] = "main/article/tale";
-$route['tale/detail/(:num)'] = "main/article/tale_detail/$1";
 //渣渣说
 $route['zzs'] = "main/article/zzs";
-$route['zzs/detail'] = "main/article/zzs";
 $route['zzs/(:num)'] = "main/article/zzs/$1";
-$route['zzs/detail/(:num)'] = "main/article/zzs_detail/$1";
+//程序猿
+$route['cxy'] = "main/article/cxy";
+$route['cxy/(:num)'] = "main/article/cxy/$1";
+//详情
+$route['detail'] = "main/content/xiao"; //没参数时直接跳首页
+$route['detail/(:num)/(:any)'] = "main/article/detail/$1/$2";
 //回复列表，回复
 $route['reply'] = "main/reply/reply_list";
 $route['reply/save'] = "main/reply/reply_save";
