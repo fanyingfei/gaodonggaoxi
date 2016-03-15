@@ -184,7 +184,6 @@ class article extends MY_Controller  {
         if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
         $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
-        $detail['content'] = strip_tags($detail['content'],'<img><p><br><a>');
         $detail['title'] = empty($detail['title']) ? mb_substr(strip_tags($detail['content']), 0, 20, 'utf-8').'...' : $detail['title'];
         return $detail;
     }

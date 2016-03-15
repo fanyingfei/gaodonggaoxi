@@ -224,7 +224,7 @@ $(document).ready(function(){
             return false;
         }
         $(this).addClass("at").parents('.reply_one').siblings().find(".r_ta").removeClass('at');
-        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('@'+$(this).data('name')+'&nbsp;&nbsp;&nbsp;&nbsp;');
+        $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').html('<span class="r_name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;');
         height = $(this).parents('.reply_main').find('.textarea-wrapper .edit_p').offset().top;
         $('html,body').animate({scrollTop: height -200}, 500);
     });

@@ -205,10 +205,6 @@ ul {
         margin-right: 30px;
     }
 
-    .body-content .one .user{
-        margin-top:5px;
-    }
-
     .one .content {
         float: left;
         width: 528px;
@@ -252,6 +248,7 @@ ul {
         padding: 0 20px;
         border-top: 1px solid #dedede;
         margin-bottom: 30px;
+        position: relative;
     }
 
     .sub p {
@@ -272,9 +269,9 @@ ul {
         font-size: 24px;
         color: #3c3c3c;
         max-width: 520px;
-        overflow: hidden;
         display: block;
         float:left;
+        white-space: nowrap;
         text-overflow:ellipsis;
     }
 
@@ -293,17 +290,12 @@ ul {
     .detail {
         padding: 20px;
         min-height: 200px;
+        word-wrap: break-word;
+        word-break: normal;
     }
 
     .detail img {
         text-align: center;
-    }
-
-    .detail p {
-        margin: 10px 0 !important;
-        line-height: 20px !important;
-        font-size: 14px !important;
-        font-family: 宋体 !important;
     }
 
     .right-container {
@@ -794,7 +786,7 @@ ul {
     }
 
     .r_name {
-        color: #d32;
+        color: #ee6583;
     }
 
     .r_comment {
@@ -859,13 +851,40 @@ ul {
         background-image: url('/resources/images/hy.gif');
         background-position: center center;
     }
+
+    .body-article .sub .textarea_prompt{
+        margin-top: 21px;
+        right: 30px;
+    }
 }
+
 .sub .textarea_prompt{
     color:#999;
     position: absolute;
     margin:0;
     padding-left:10px;
     padding-top:5px;
+}
+
+.body-article .ke-toolbar .ke-outline {
+    margin-right: 1.5px;
+}
+.body-content .sub .ke-toolbar .ke-outline{
+     float: right;
+ }
+
+.body-content .sub .ke-toolbar .ke-outline span{
+    float: left;
+}
+
+.body-content .sub .ke-toolbar .ke-outline .ke-outline-name{
+    font-size: 12px;
+    line-height: 14px;
+    margin-left: 2px;
+}
+
+.body-content .sub .ke-toolbar .ke-outline .ke-icon-emoticons{
+    margin-top:-1px;
 }
 
 .textarea_prompt a{
@@ -968,7 +987,10 @@ ul {
     width:0;
     overflow: hidden;
 }
-
+.one .content_body{
+    word-wrap: break-word;
+    word-break: normal;
+}
 .alert_msg{
     height: 52px;
     position: fixed;
@@ -1172,6 +1194,8 @@ ul {
     display: none !important;
 }
 
+
+
 /* QQ表情支持*/
 .facebox{
     position: absolute;
@@ -1241,7 +1265,7 @@ ul {
 
 @media screen and (max-width: 660px) {
     .user .login_avatar ,  #top , .right-container ,  .total , .depict ,
-    .title , .content_body.desc , .hr_reply , .detail_wapper span{
+    .title , .hr_reply , .detail_wapper span,.body-article .sub .textarea_prompt{
         display:none !important;
     }
 
@@ -1510,6 +1534,12 @@ ul {
     .sub{
         border-top: 1px solid #dedede;
         padding:20px 5px;
+    }
+
+    .sub input{
+        width:99%;
+        margin-top:5px;
+        padding:2px;
     }
 
     .sub p{

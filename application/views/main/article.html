@@ -62,9 +62,18 @@
     KindEditor.ready(function(K) {
         window.editor = K.create('#content', {
             newlineTag : "p" ,
-            itemsName : true,
-            items : ['link' , 'emoticons', 'image']}
-        );
+            itemsName : false,
+            filterMode : false,
+            items : [
+                'undo', 'redo', '|',  'print', 'template', 'code', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', 'pagebreak', '|', 'fullscreen', 'preview',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                'table', 'hr', 'emoticons',  'link', 'unlink', 'about','|'
+            ]
+        });
     });
 </script>
 <script>

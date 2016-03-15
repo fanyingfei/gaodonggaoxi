@@ -301,7 +301,7 @@ K.options = {
 		],
 		pre : ['id', 'class'],
 		hr : ['id', 'class', '.page-break-after'],
-		'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del' : ['id', 'class'],
+		'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del,strong' : ['id', 'class'],
 		iframe : ['id', 'class', 'src', 'frameborder', 'width', 'height', '.width', '.height']
 	},
 	layout : '<div class="container"><div class="toolbar"></div><div class="edit"></div><div class="statusbar"></div></div>'
@@ -4932,10 +4932,11 @@ KEditor.prototype = {
 			} else if (name == '/') {
 				htmlList.push('<div class="ke-hr"></div>');
 			} else {
-                htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
                 if(items_name){
+                    htmlList.push('<span class="filter-ke-icon ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
                     htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span><span class="ke-outline-name ke-toolbar-icon">'+self.lang(name)+'</span></span>');
                 }else{
+                    htmlList.push('<span class="ke-outline" data-name="' + name + '" title="' + self.lang(name) + '" unselectable="on">');
                     htmlList.push('<span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-' + name + '" unselectable="on"></span></span>');
                 }
              }
