@@ -741,7 +741,7 @@
     height: 260px;
     font-family: "sans serif",tahoma,verdana,helvetica;
     font-size: 12px;
-    border-color: #848484 #E0E0E0 #E0E0E0 #848484;
+    border-color: #ccc;
     border-style: solid;
     border-width: 1px;
 }

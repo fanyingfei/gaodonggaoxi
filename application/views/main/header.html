@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="robots" content="all" />
+    <title>{$title}</title>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/resources/css/common.css"/>
     <script src="/resources/js/jquery.js"></script>
     <script src="/resources/js/jquery.cookie.js"></script>
     <script src="/resources/js/common.js"></script>
-    <meta name="keywords" content="{$keywords}" />
-    <meta name="description" content="{$description}" />
-    <title>{$title}</title>
     <script>
         var _hmt = _hmt || [];
         (function() {
@@ -22,29 +22,31 @@
     </script>
 </head>
 <body>
-<div class="nav clear">
-    <ul class="left">
-        <li><a href="/xiao">搞笑</a></li>
-        <li><a href="/meizi">妹子</a></li>
-        <li><a href="/hua">那些话</a></li>
-        <li><a href="/zzs">渣渣说</a></li>
-        <li><a href="/tale">故事</a></li>
-        <li><a href="/cxy">程序猿</a></li>
-    </ul>
-    <div class="right login">
-        {if $is_login == 0}
-            <a href="/login">登录</a>
-            <span>|</span>
-            <a href="/register">注册</a>
-        {else}
-            <a href="/user/info"><span class="user_name">{$name}</span></a>
-            <span>|</span>
-            <span class="login_out"><a href="/login/login_out">退出</a></span>
-            {if $is_admin == 1}
+<div class="menu">
+    <div class="nav clear">
+        <ul class="left">
+            <li><a href="/xiao">搞笑</a></li>
+            <li><a href="/meizi">妹子</a></li>
+            <li><a href="/hua">那些话</a></li>
+            <li><a href="/zzs">渣渣说</a></li>
+            <li><a href="/tale">故事</a></li>
+            <li><a href="/cxy">程序猿</a></li>
+        </ul>
+        <div class="right login">
+            {if $is_login == 0}
+                <a href="/login">登录</a>
                 <span>|</span>
-                <span><a href="/admin">后台管理</a></span>
+                <a href="/register">注册</a>
+            {else}
+                <a href="/user/info"><span class="user_name">{$name}</span></a>
+                <span>|</span>
+                <span class="login_out"><a href="/login/login_out">退出</a></span>
+                {if $is_admin == 1}
+                    <span>|</span>
+                    <span><a href="/admin">后台管理</a></span>
+                {/if}
             {/if}
-        {/if}
+        </div>
     </div>
 </div>
 <div class="wapper {$body}">

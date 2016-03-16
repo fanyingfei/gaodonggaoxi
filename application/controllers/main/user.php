@@ -20,9 +20,9 @@ class user extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
+        $this->assign('keywords','用户中心');
+        $this->assign('description','用户中心');
         $this->load->model('model_users');
-        $this->assign('keywords','闲话');
-        $this->assign('description','闲话');
     }
 
     public function user_info(){
@@ -51,7 +51,7 @@ class user extends MY_Controller  {
         $this->assign('age',$age);
         $this->assign('select',1);
         $this->assign('title','用户中心-个人资料');
-        $this->assign('body','person_center');
+        $this->assign('body','person-center');
         $this->user_display('user/user_info.html');
     }
 
@@ -65,7 +65,7 @@ class user extends MY_Controller  {
         $this->assign('select',2);
         $this->assign('avatar',$avatar);
         $this->assign('title','用户中心-修改头像');
-        $this->assign('body','person_center');
+        $this->assign('body','person-center');
         $this->user_display('user/user_avatar.html');
     }
 
@@ -217,6 +217,7 @@ class user extends MY_Controller  {
         if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
         $res = $this->model_users->user_validate($id,$name);
         if($res){
+            expire_cookie('is_login');
             splash('sucess','激活成功，立即登录');
         }else{
             splash('error','激活失败,请重试');
@@ -291,7 +292,8 @@ class user extends MY_Controller  {
         array_multisort($group_num, SORT_DESC , $group_count);
 
         $this->assign('body','member');
-        $this->assign('title',$user_info['name']);
+        $this->assign('title',$user_info['name'].'－搞东搞西');
+        $this->assign('menu',$user_info['name']);
         $this->assign('info',$user_info['name']);
         $this->assign('keywords',$user_info['name']);
         $this->assign('description',$user_info['name']);
@@ -347,7 +349,7 @@ class user extends MY_Controller  {
             }else{
                 $v['content'] = strip_tags($v['content'],'<br><img><a>');
                 //gif图转成静态
-                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+                if($res_content = gif_static_gif($v['content']  , 1)) $v['content'] = $res_content;
                 $v['content'] = filter_content_br($v['content']);
             }
             $v['create_time'] = change_time($v['create_time']);

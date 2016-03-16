@@ -1,5 +1,5 @@
 <div class="main left">
-    <div class="title">{$title}</div>
+    <div class="nav-title">{$menu}</div>
     <div class="depict">{$info}</div>
 
     <div class="member-total">
@@ -30,7 +30,6 @@
                     {{if one.is_detail == 1}}
                         <p>
                             <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
-                            <span class="scan time">浏览[${one.scan}]</span>
                         </p>
                     {{else}}
                         <div class="content-body{{if one.avatar != ''}} avatar-min-height{{/if}}">{{html one.content}}</div>
@@ -40,7 +39,7 @@
                         <span class="response"></span>
                         <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
                         <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                        <a class="reply" data-id="${one.con_id}">↓回复</a>[<span class="reply-count">${one.reply}</span>]
+                        {{if one.is_detail == 1}}<span class="scan time">浏览[${one.scan}]</span>{{/if}}
                     </p>
                 </div>
             </div>
@@ -84,7 +83,6 @@ function ajax_page(page){
             }
             $('.content-list').html('');
             $("#content-list").tmpl(result.data).appendTo('.content-list');
-            show_play();
         },
         error:function(e){
             alert_msg('请求失败，请刷新重试');

@@ -48,7 +48,7 @@ function get_real_ip(){
 
 function valid_name($name){
     if(empty($name)) splash('error','请填写昵称');
-    if(utf8_strlen($name) > 20 || utf8_strlen($name) < 3) splash('error','昵称长度3-20个字符');
+    if(utf8_strlen($name) > 20 || utf8_strlen($name) < 2) splash('error','昵称长度2-20个字符');
     if(is_numeric($name)) splash('error','昵称不能全为数字');
 }
 
@@ -209,7 +209,7 @@ function get_user_sn($user_id,$time){
 /*
     * 处理新浪上传GIF图
     */
-function gif_static_gif($content){
+function gif_static_gif($content , $flag = 0){
     $img_preg = "/<img([^>]*)\s*src=('|\")([^'\"]+)('|\")/";
     if(!preg_match_all($img_preg , $content , $img_data)) return false;
 
@@ -234,7 +234,7 @@ function gif_static_gif($content){
                 $small_url = '/resources/images/gray.png';
             }
             $original[] = $total_img;
-            if(substr($img_name , -4 , 4) == '.gif'){
+            if(substr($img_name , -4 , 4) == '.gif' && $flag == 0){
                 $src = '<div class="peripheral"><img class="sina-show-gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                 $src .= '<div class="play">PLAY</div></div>';
             }else{

@@ -4,8 +4,8 @@ class article extends MY_Controller  {
     private $type = 6; //默认为6
     const table_name = 'article';
     private $tags_data = array(
-                                            4=>array(),
-                                            6=>array(),
+                                            4=>array('感言','废话'),
+                                            6=>array('恐怖/惊悚','感动','励志','怪奇'),
                                             7=>array('web前端','php','ios','mysql','linux','c/c++','java','android')
                                         );
 
@@ -32,35 +32,32 @@ class article extends MY_Controller  {
 
     public function zzs($p = 0){
         $this->set_type_value(__FUNCTION__);
-        $tags =$this->get_cookie_tags();
         $this->assign('body','body-article');
-        $this->assign('title','渣渣说 '.$tags);
+        $this->assign('title','渣渣说－搞东搞西');
         $this->assign('info','渣渣说');
         $this->assign('keywords','渣渣说');
         $this->assign('description','渣渣说');
-        $this->index($p);
+        $this->article_list($p);
     }
 
     public function tale($p = 0){
         $this->set_type_value(__FUNCTION__);
-        $tags =$this->get_cookie_tags();
         $this->assign('body','body-article');
-        $this->assign('title','故事 '.$tags);
+        $this->assign('title','故事－搞东搞西');
+        $this->assign('keywords','故事,恐怖,惊悚,情感,励志,怪奇');
+        $this->assign('description','嘘~来看故事啦');
         $this->assign('info','故事');
-        $this->assign('keywords','故事');
-        $this->assign('description','故事');
-        $this->index($p);
+        $this->article_list($p);
     }
 
     public function cxy($p = 0){
         $this->set_type_value(__FUNCTION__);
-        $tags =$this->get_cookie_tags();
         $this->assign('body','body-article');
-        $this->assign('title','程序员 '.$tags);
-        $this->assign('info','程序员');
-        $this->assign('keywords','程序员');
+        $this->assign('title','程序猿－搞东搞西');
+        $this->assign('keywords','程序员,程序猿,码农,代码,博客,php,web,ios');
         $this->assign('description','程序员');
-        $this->index($p);
+        $this->assign('info','程序员');
+        $this->article_list($p);
     }
 
     /*
@@ -72,20 +69,20 @@ class article extends MY_Controller  {
         $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
         $this->model_article->update_scan($id);
-
+        $description = mb_substr(strip_tags($detail['content']), 0, 100, 'utf-8');
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
-        $this->assign('title','详情');
+        $this->assign('title',$detail['title'].'－搞东搞西');
         $this->assign('info','详情');
-        $this->assign('keywords','详情');
-        $this->assign('description','详情');
+        $this->assign('keywords',$detail['tags']);
+        $this->assign('description',$description);
         $this->display('detail.html');
     }
 
     /*
      * 列表
      */
-    public function index($p = 0)
+    public function article_list($p = 0)
     {
         $limit = 10;
         $p = intval($p);
@@ -197,10 +194,8 @@ class article extends MY_Controller  {
 
     public function set_type_value($fun){
         $this->type = parent :: $all_type_data[$fun];
-    }
-
-    public function get_cookie_tags(){
-        return empty($_COOKIE['tags']) ? '' : '[ '. $_COOKIE['tags'].' ]' ;
+        $tags = empty($_COOKIE['tags']) ? '' : '['. $_COOKIE['tags'].']' ;
+        $this->assign('menu',parent :: $all_type_name[$this->type].' '.$tags);
     }
 
 }

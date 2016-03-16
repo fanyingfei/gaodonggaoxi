@@ -9,7 +9,7 @@ img {
 
 hr {
     border: 0;
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .none {
@@ -17,7 +17,7 @@ hr {
 }
 
 input, textarea {
-    border: 1px solid #dedede;
+    border: 1px solid #e8e8e8;
     font-family: 微软雅黑;
 }
 
@@ -50,8 +50,9 @@ ul {
     body {
         color: #4c4c4c;
         font-size: 13px;
-        font-family: 微软雅黑;
+        font-family: '微软雅黑';
         margin: 0px;
+        background-color: #fdfdfd;
     }
 
     .center {
@@ -89,33 +90,32 @@ ul {
     }
 
     button {
-        border: 1px solid #dedede;
+        border: 1px solid #e8e8e8;
         color: #8c8c8c;
         font-size: 12px;
         padding: 2px;
         cursor: pointer;
         font-family: 微软雅黑;
-        background: #f9f9f9;
+        background: #fdfdfd;
     }
 
-    .title {
+    .menu{
+        width:100%;
+        z-index: 999;
+    }
+
+    .total , .member-total, .nav-title{
         padding: 12px 20px;
-        background: #f9f9f9;
-        border-bottom: 1px solid #dedede;;
-    }
-
-    .total , .member-total{
-        padding: 10px 20px;
         overflow: auto;
         background: #f9f9f9;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid #e8e8e8;
     }
 
     .nav {
+        background: black;
         overflow: auto;
         width: 1052px;
         margin: 0 auto;
-        background: black;
     }
 
     .nav ul {
@@ -164,31 +164,28 @@ ul {
         width: 1050px;
         margin: 0 auto;
         overflow: auto;
-        border: 1px solid #dedede;
-        border-top: 0;
+        border: 1px solid #e8e8e8;
+        background-color: #fff;
+        box-shadow: 0 0 0 1px #FFFFFF inset, 0 0 2px 0 #f1f1f1;
     }
 
     .main {
-        border-right: 1px solid #dedede;
+        border-right: 1px solid #e8e8e8;
         width: 700px;
-    }
-
-    .main-list{
-        background-color: #fefefe;
     }
 
     .main .depict {
         font-size: 14px;
         color: #8c8c8c;
         padding: 10px 20px;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid #e8e8e8;
     }
 
     .one {
         clear: both;
         padding: 15px 0px;
         overflow: auto;
-        border-top: 1px solid #dedede;
+        border-top: 1px solid #e8e8e8;
         margin: 0 20px;
     }
 
@@ -241,10 +238,10 @@ ul {
         margin-top: 5px;
     }
 
-    .sub {
-        padding: 0 20px;
-        border-top: 1px solid #dedede;
-        margin-bottom: 30px;
+    .wapper .sub {
+        padding: 10px 20px;
+        border-top: 1px solid #e8e8e8;
+        margin-bottom: 20px;
         position: relative;
     }
 
@@ -264,20 +261,12 @@ ul {
 
     .one .detail-title {
         font-size: 18px;
-        max-width: 460px;
+        max-width: 520px;
         display: block;
         float:left;
         white-space: nowrap;
         text-overflow:ellipsis;
         overflow: hidden;
-    }
-
-    .detail-wapper span{
-        width:120px;
-        overflow: hidden;
-        text-align: right;
-        text-overflow:ellipsis;
-        white-space:nowrap;
     }
 
     .detail {
@@ -296,11 +285,6 @@ ul {
         width: 348px;
     }
 
-    .right-container .search {
-        padding: 9px 20px 9px 10px;
-        border-bottom: 1px solid #dedede;
-    }
-
     .sub-user-login {
         margin-top: 5px;
     }
@@ -312,7 +296,7 @@ ul {
     .avatar {
         width: 40px;
         height: 40px;
-        border: 1px solid #dedede;
+        border: 1px solid #e8e8e8;
         border-radius: 4px;
         padding: 0.5px;
         margin-bottom: 5px;
@@ -328,13 +312,18 @@ ul {
 
     .right-container .info {
         padding: 10px;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid #e8e8e8;
         color: #8c8c8c;
     }
 
     .right-container .info a {
         color: #8c8c8c;
         border-bottom: 1px solid red;
+    }
+
+    .right-container .search {
+        padding: 9px 20px 8.5px 10px;
+        border-bottom: 1px solid #e8e8e8;
     }
 
     .right-container .search input {
@@ -344,7 +333,7 @@ ul {
     }
 
     .footer {
-        border-top: 1px solid #dedede;
+        border-top: 1px solid #e8e8e8;
         clear: both;
         text-align: center;
         padding: 20px 0;
@@ -356,10 +345,9 @@ ul {
 
     .person-center {
         min-height: 200px;
-    }
-
-    .wapper.person-center {
-        border: 0;
+        box-shadow:none;
+        background-color: #fdfdfd;
+        border:0;
     }
 
     #top {
@@ -367,19 +355,15 @@ ul {
         margin-left: 1060px;
         margin-bottom: 30px;
         position: fixed;
-        width: 50px;
-        height: 48px;
-        line-height: 48px;
+        width: 60px;
+        height: 60px;
         display: none;
-        text-align: center;
-        background-color: #dedede;
         cursor: pointer;
-        border-radius: 60px;
+        background: url(/resources/images/gobacktop.png) no-repeat;
     }
 
     #top:hover {
         background-color: #6c6c6c;
-        color: #afafaf;
     }
 
     .user-center {
@@ -393,14 +377,12 @@ ul {
         border: 1px solid #eee;
         background-color: #fafafa;
         font-size: 14px;
-        border-right: none;
     }
 
     .user-center .user-menu-left h3 {
         padding-left: 20px;
         font-size: 20px;
         line-height: 60px;
-        border-right: 1px solid #eee;
         color: #333;
         font-weight: normal;
         margin-bottom: 10px;
@@ -582,7 +564,7 @@ ul {
         width: 100px;
         height: 100px;
         border-radius: 4px;
-        border: 1px solid #dedede;
+        border: 1px solid #e8e8e8;
         padding: 1px;
     }
 
@@ -591,7 +573,7 @@ ul {
         width: 70px;
         height: 70px;
         border-radius: 4px;
-        border: 1px solid #dedede;
+        border: 1px solid #e8e8e8;
         padding: 1px;
         margin-right:20px;
     }
@@ -605,7 +587,7 @@ ul {
         width: 60px;
         height: 60px;
         border-radius: 4px;
-        border: 1px solid #dedede;
+        border: 1px solid #e8e8e8;
         padding: 1px;
         float: right;
     }
@@ -859,7 +841,9 @@ ul {
     padding-left:10px;
     padding-top:5px;
 }
-
+.ke-container .ke-toolbar , .ke-container .ke-statusbar {
+    background-color: #fdfdfd;
+}
 .body-article .ke-toolbar .ke-outline {
     margin-right: 1.5px;
 }
@@ -884,11 +868,10 @@ ul {
 .textarea-prompt a{
     color:#498B31;
 }
-.pagination a, .pagination .page-cur, .pagination .page-prev-g, .pagination .page-prev, .pagination .page-next, .pagination .page-next-g, .pagination .page-break, .pagination .page-skip {
+.pagination a, .pagination .page-cur,  .pagination .page-prev, .pagination .page-next, .pagination .page-break {
     text-decoration: none;
     margin-right: 2px;
     display: inline-block;
-    font-family: '微软雅黑';
     height: 22px;
     line-height: 22px;
     margin: 0;
@@ -896,21 +879,19 @@ ul {
     padding: 0 5px;
     text-align: center;
     vertical-align: top;
-    white-space: nowrap;
 }
 
 .pagination {
-    font-family: '微软雅黑';
     overflow: hidden;
     padding: 12px 0;
     border-top: 1px solid #dedede;
     text-align: center;
 }
 
-.pagination a, .pagination .page-prev-g, .pagination .page-prev, .pagination .page-next, .pagination .page-next-g, .pagination .page-cur, .pagination .page-break {
+.pagination a, .pagination .page-prev, .pagination .page-next, .pagination .page-cur,.pagination .page-break {
     color: #fff;
     margin-left:10px;
-    background-color: #ccc;
+    background-color: #aaa;
 }
 
 .pagination a:hover {
@@ -998,8 +979,8 @@ ul {
     background-image: url("/resources/images/alert.png");
     background-position: 0 -161px;
     background-repeat: repeat-x;
-    border-left:2px solid #dedede;
-    border-right:2px solid #dedede;
+    border-left:2px solid #e8e8e8;
+    border-right:2px solid #e8e8e8;
     border-radius: 4px;
 }
 
@@ -1162,7 +1143,12 @@ ul {
 .ke-dialog-default .ke-dialog-body ul.ke-tabs-ul li:last-child {
     display: none;
 }
-
+.ke-dialog-footer .ke-button{
+    background-position: center 0;
+    border:1px solid #e8e8e8;
+    border-radius: 5px;
+    font-family: '微软雅黑';
+}
 .ke-dialog-content .tab1 div ~ div {
     display: none;
 }
@@ -1170,9 +1156,13 @@ ul {
 .ke-dialog-content .ke-dialog-body {
     height: auto !important;
 }
-
+#tabContent{
+    max-height: 220px;
+    overflow-y: scroll;
+}
 .ke-dialog-default {
     height: auto !important;
+    top:30%;
 }
 
 #remoteUrl {
@@ -1219,7 +1209,7 @@ ul {
 .detail-title-top{
     font-size: 18px;
     background: #f9f9f9 none repeat scroll 0 0;
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px solid #e8e8e8;
     padding: 12px 20px;
 }
 .facebox ul li{
@@ -1273,8 +1263,8 @@ ul {
     clear:both;
     overflow: auto;
 }
-.tag , .add-tag , .add-tag-nav{
-    border: 1px solid #dedede;
+.tag , .add-tag{
+    border: 1px solid #e8e8e8;
     cursor: pointer;
     font-size: 12px;
     padding: 5px 10px;
@@ -1292,12 +1282,21 @@ ul {
     cursor: pointer;
     text-align: center;
 }
+.tag-nav-wapper{
+    overflow: auto;
+    clear:both;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 10px 20px;
+}
 .tag-nav{
     background-color:#444;
     color:#acacac;
     cursor: pointer;
     padding: 5px 10px;
     font-size: 12px;
+    display: block;
+    float:left;
+    margin-right: 10px;
 }
 .tag-select{
     border: 1px solid #20cd55;
@@ -1315,7 +1314,7 @@ ul {
 }
 .scan{
     float:right;
-    margin-top:2px;
+    margin-left:5px;
 }
 .oo{
  /*   background-image: url('/resources/images/dc_icon.gif');
@@ -1333,6 +1332,10 @@ ul {
         font-size: 13px;
         font-family: 微软雅黑;
         margin:0;
+    }
+
+    .wapper{
+        padding:5px;
     }
 
     .footer{
@@ -1375,7 +1378,7 @@ ul {
     }
 
     .one {
-        border-top:1px solid #dedede;
+        border-top:1px solid #e8e8e8;
         padding:10px;
     }
 
@@ -1446,7 +1449,7 @@ ul {
         padding: 10px 20px;
         overflow: auto;
         background: #f9f9f9;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid #e8e8e8;
     }
 
     .reply-avatar {
@@ -1586,7 +1589,7 @@ ul {
     }
 
     .sub{
-        border-top: 1px solid #dedede;
+        border-top: 1px solid #e8e8e8;
         padding:20px 5px;
     }
 

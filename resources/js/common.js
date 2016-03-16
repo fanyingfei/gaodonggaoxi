@@ -1,5 +1,5 @@
 var max_name_len = 30;
-var min_name_len = 3;
+var min_name_len = 2;
 //通用AJAX
 function ajax_res(obj){
     $.ajax({
@@ -72,7 +72,7 @@ function valid(name,email,content){
         return false;
     }
     if(name.length > max_name_len || name.length < min_name_len){
-        alert_msg('昵称长度3-30个字符');
+        alert_msg('昵称长度2-30个字符');
         return false;
     }
     if(email == ''){
