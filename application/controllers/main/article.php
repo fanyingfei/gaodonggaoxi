@@ -69,14 +69,17 @@ class article extends MY_Controller  {
         $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
         $this->model_article->update_scan($id);
-        $description = mb_substr(strip_tags($detail['content']), 0, 100, 'utf-8');
+        $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
         $this->assign('title',$detail['title'].'－搞东搞西');
         $this->assign('info','详情');
         $this->assign('keywords',$detail['tags']);
         $this->assign('description',$description);
-        $this->display('detail.html');
+
+        $this->native_display('main/header.html');
+        $this->native_display('main/detail.html');
+        $this->native_display('main/footer.html');
     }
 
     /*
@@ -142,15 +145,13 @@ class article extends MY_Controller  {
         $res = $this->model_black->find_one();
         if($res) splash('error','你已被拉入黑名单');
 
-        $content = trim($_REQUEST['content']);
         $data['type'] = intval($_REQUEST['type']);
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
-        //保存时保存原提交内容
-        $data['content'] = trim($content);
-        //验证时只保留图片和链接
-        $content = strip_tags($content,'<img><a>');
+
+        $content = trim(strip_tags($_REQUEST['content']));
         if(empty($content)) splash('error','请填写内容');
+        $data['content'] = $content;
 
         $title = trim(strip_tags($_REQUEST['title']));
         if(empty($title)) splash('error','请填写标题');

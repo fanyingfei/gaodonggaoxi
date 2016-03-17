@@ -25,9 +25,10 @@ class reply extends MY_Controller  {
 
     public function reply_list(){
         $con_id = intval($_REQUEST['id']);
+        $type = intval($_REQUEST['type']);
         if(empty($con_id)) splash('error','打开失败，请刷新重试');
         $this->load->model('model_reply');
-        $res = $this->model_reply->data_list($con_id);
+        $res = $this->model_reply->data_list($con_id,$type);
         $user_avatar = parent::get_user_avatar($res , 'avatar');
 
         $parent_res = array_column($res,'content','rep_id');
@@ -44,13 +45,12 @@ class reply extends MY_Controller  {
         }
         $data['list'] = empty($res) ? '' : $res;
         $data['con_id'] = $con_id;
+        $data['is_login'] = 0;
         if(is_login()){
             $data['is_login'] = 1;
             $data['user_id'] = $_SESSION['user_id'];
             $data['name'] = $_SESSION['name'];
             $data['avatar'] = empty($_SESSION['avatar']) ? '/resources/images/avatar_error.jpg' : $_SESSION['avatar'];
-        }else{
-            $data['is_login'] = 0;
         }
         splash('success' , '' , $data);
     }

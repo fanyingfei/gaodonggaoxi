@@ -12,7 +12,7 @@
 
     <div class="content-list"></div>
     <input type="hidden" id="unique-id" value="{$user.user_id}" />
-    <input type="hidden" id="type" value="{$type}" />
+    <input type="hidden" id="initial_type" value="{$initial_type}" />
 
     <script src="/resources/js/tmpl.js"></script>
     <script id="content-list" type="text/x-dot-template">
@@ -27,7 +27,7 @@
                     <p class="time text-right">发表于 ${one.create_time}</p>
                 </div>
                 <div class="content">
-                    {{if one.is_detail == 1}}
+                    {{if is_detail == 1}}
                         <p>
                             <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
                         </p>
@@ -35,11 +35,15 @@
                         <div class="content-body{{if one.avatar != ''}} avatar-min-height{{/if}}">{{html one.content}}</div>
                     {{/if}}
                     <p class="right clear click oo-xx">
-                        {{if one.tags != '' && one.is_detail == 1}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}
+                        {{if is_detail == 1 && one.tags != ''}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}
                         <span class="response"></span>
                         <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
                         <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                        {{if one.is_detail == 1}}<span class="scan time">浏览[${one.scan}]</span>{{/if}}
+                        {{if is_detail == 1}}
+                            <span class="scan time">浏览[${one.scan}]</span>
+                        {{else}}
+                            <a class="reply" data-id="${one.con_id}">↓评论</a>[<span class="reply-count">${one.reply}</span>]
+                        {{/if}}
                     </p>
                 </div>
             </div>
@@ -48,6 +52,12 @@
         {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
     {{else}}
         <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
+    {{/if}}
+    <input type="hidden" id="type" value="${type}" />
+    {{if is_detail == 1}}
+        <input type="hidden" id="comment-url" value="/article/record" />
+    {{else}}
+        <input type="hidden" id="comment-url" value="/content/record" />
     {{/if}}
     {/literal}
     </script>
@@ -62,8 +72,12 @@ $(function(){
     ajax_page(0);
 })
 function ajax_page(page){
-    var type = $('#type').val();
     var user_id = $('#unique-id').val();
+    if($("#type").length > 0){
+        var type = $('#type').val();
+    }else{
+        var type = $('#initial_type').val();
+    }
     $.ajax({
         url: "/member_list",
         data:{

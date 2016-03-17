@@ -184,8 +184,9 @@ function get_email_content($user_id,$email){
     return '<p>请点击以下链接激活账号，24小时有效</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
 }
 
-function header_index($url = ''){
-    header("Location: /".$url);
+function header_index($url = '/'){
+    if(empty($url)) $url = '/';
+    header("Location: ".$url);
     exit;
 }
 

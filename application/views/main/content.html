@@ -1,11 +1,8 @@
 <div class="main left">
-    <div class="nav-title">{$menu}</div>
+    <div class="nav-title">{$menu}<span class="mao edit-info"></span></div>
     <div class="depict">{$info}</div>
     {if $count > 0}
-        <div class="total">
-            <span class="left">总数：{$count}</span>
-            <span class="mao right cursor time">{if $name}{$name}，想说些什么呢？{else}来说些什么吧{/if}</span>
-        </div>
+
         {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
 
         <div class="main-list">
@@ -32,7 +29,7 @@
                         <span class="response"></span>
                         <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
                         <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                        <a class="reply" data-id="{$one.con_id}">↓回复</a>[<span class="reply-count">{$one.reply}</span>]
+                        <a class="reply" data-id="{$one.con_id}">↓评论</a>[<span class="reply-count">{$one.reply}</span>]
                     </p>
                 </div>
             </div>
@@ -49,6 +46,7 @@
             <input type="hidden" name="email" id="email" value="{$email}" />
             <input type="hidden" name="name" id="name" value="{$name}" />
         {else}
+            <p>&nbsp;</p>
             <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}
@@ -88,8 +86,6 @@
         var name = $.trim($("#name").val());
         var email = $.trim($("#email").val());
         var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
-        var re=new RegExp("</p>","g");
-        content = content.replace(re,"</p><br>");
         var type = $("#type").val();
         if(!valid(name,email,content)){
             return false;

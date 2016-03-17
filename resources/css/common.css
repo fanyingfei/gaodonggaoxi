@@ -86,7 +86,7 @@ ul {
     .hr-reply {
         float: right;
         margin: 0 20px 20px;
-        width: 520px;
+        width: 530px;
     }
 
     button {
@@ -104,7 +104,7 @@ ul {
         z-index: 999;
     }
 
-    .total , .member-total, .nav-title{
+     .member-total, .nav-title{
         padding: 12px 20px;
         overflow: auto;
         background: #f9f9f9;
@@ -239,14 +239,18 @@ ul {
     }
 
     .wapper .sub {
-        padding: 10px 20px;
-        border-top: 1px solid #e8e8e8;
-        margin-bottom: 20px;
+        padding: 0 20px;
+        margin-bottom: 30px;
         position: relative;
     }
 
     .sub p {
         margin: 5px 0 10px 0;
+    }
+
+    .sub p:first-child {
+        background-color: #fafafa;
+        font-size: 14px;
     }
 
     .sub p input {
@@ -257,6 +261,17 @@ ul {
 
     .detail-wapper{
         overflow: auto;
+    }
+
+    .edit-info{
+        background-image: url('/resources/images/edit.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100% 100%;
+        float:right;
+        cursor: pointer;
+        padding:8px;
+        opacity: 0.4;
     }
 
     .one .detail-title {
@@ -359,6 +374,7 @@ ul {
         height: 60px;
         display: none;
         cursor: pointer;
+        opacity: 0.6;
         background: url(/resources/images/gobacktop.png) no-repeat;
     }
 
@@ -633,8 +649,7 @@ ul {
         float: right;
         margin-right: 20px;
         margin-bottom: 20px;
-        width: 520px;
-        border-radius: 4px;
+        width: 530px;
         overflow: hidden;
     }
 
@@ -671,9 +686,11 @@ ul {
     }
 
     .reply-content p {
-        width: 430px;
+        width: 450px;
         text-align: left;
         clear: both;
+        word-wrap: break-word;
+        word-break: normal;
     }
 
     .reply-comment p {
@@ -694,7 +711,7 @@ ul {
         height: 60px;
         padding: 5px 10px;
         resize: none;
-        width: 410px;
+        width: 425px;
         word-break: break-all;
         word-wrap:break-word;
         margin:0;
@@ -708,7 +725,7 @@ ul {
         line-height: 25px;
         background-color: #fbfbfb;
         padding: 5px;
-        width: 420px;
+        width: 440px;
     }
 
     .textarea-wrapper .post-toolbar {
@@ -754,7 +771,7 @@ ul {
         font-size: 18px;
         padding: 5px 10px;
         background-color: #fafafa;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 2px solid #88abc3;
     }
 
     .reply-title-no-list {
@@ -779,7 +796,7 @@ ul {
 
     .reply-no-login {
         text-align: center;
-        padding: 10px;
+        padding: 10px 0;
     }
 
     .reply-no-login span {
@@ -796,13 +813,15 @@ ul {
         max-width: 360px;
         color: #999;
         font-size: 12px;
+        white-space:nowrap;
+        text-overflow:ellipsis;
     }
 
     .close-reply {
         float: right;
         clear: both;
         text-align: right;
-        padding: 0 20px 5px 0;
+        padding: 0 15px 5px 0;
         color: #999;
         font-size: 12px;
         cursor: pointer;
@@ -812,6 +831,57 @@ ul {
         margin-top: 2px;
     }
 
+    .detail-reply .reply-wapper{
+        display: block;
+    }
+
+    .detail-reply .reply-main{
+        border:0;
+        width:660px;
+    }
+
+    .detail-reply .reply-main .reply-one{
+        padding-left: 0;
+        padding-right:0;
+        border-bottom: 1px solid #dfdfdf;
+    }
+
+    .detail-reply .reply-comment{
+        padding-left: 0;
+        padding-right:0;
+    }
+
+    .detail-reply .textarea-wrapper .edit-p {
+        width:575px;
+    }
+
+    .detail-reply .qq-face{
+        padding-right : 10px;
+    }
+
+
+    .detail-reply .reply-content p {
+        width:600px;
+    }
+
+    .detail-reply .reply-content p.reply-aite-p {
+        width:590px;
+    }
+
+    .reply-time{
+        display: block;
+        margin-right: 10px;
+        float:left;
+    }
+
+    .detail-reply .edit-info{
+        margin-top:5px;
+    }
+
+    .detail-reply .reply-at-content {
+       max-width:535px;
+    }
+    
     .qy, .hy {
         height: 15px;
         width: 15px;
@@ -884,6 +954,7 @@ ul {
 .pagination {
     overflow: hidden;
     padding: 12px 0;
+    margin:0 20px;
     border-top: 1px solid #dedede;
     text-align: center;
 }
@@ -910,6 +981,7 @@ ul {
 .page-top {
     border-bottom: 1px solid #dedede;
     border-top:0;
+    margin-top: 20px;
 }
 
 .pagination .page-prev-g {
@@ -1226,7 +1298,7 @@ ul {
 .qq-face{
     float:right;
     background:url("/resources/images/facebg.png") no-repeat scroll 0 -100px;
-    padding: 10px 18px 10px 10px;
+    padding: 10px;
     cursor: pointer;
 }
 
@@ -1322,7 +1394,7 @@ ul {
 }
 
 @media screen and (max-width: 660px) {
-    .user .login-avatar ,  #top , .right-container ,  .total , .depict ,
+    .user .login-avatar ,  #top , .right-container , .depict ,
     .title , .hr-reply , .body-article .sub .textarea-prompt{
         display:none !important;
     }
@@ -1443,13 +1515,6 @@ ul {
 
     .one .content .content-body a {
         color: #4285f4;
-    }
-
-    .member-total{
-        padding: 10px 20px;
-        overflow: auto;
-        background: #f9f9f9;
-        border-bottom: 1px solid #e8e8e8;
     }
 
     .reply-avatar {

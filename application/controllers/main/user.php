@@ -122,7 +122,9 @@ class user extends MY_Controller  {
     public function login_out(){
         session_destroy();
         expire_cookie('is_login');
-        header_index();
+        $url = $_SERVER['HTTP_REFERER'];
+        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
+        header_index($url);
     }
 
     public function register($param=''){
@@ -297,9 +299,9 @@ class user extends MY_Controller  {
         $this->assign('info',$user_info['name']);
         $this->assign('keywords',$user_info['name']);
         $this->assign('description',$user_info['name']);
-        $this->assign('type',$group_count[0]['type']); //最多的一类
         $this->assign('user',$user_info);
         $this->assign('group_count',$group_count);
+        $this->assign('initial_type',$group_count[0]['type']); //最多的一类
 
         $this->native_display('main/header.html');
         $this->native_display('main/member.html');
@@ -343,7 +345,6 @@ class user extends MY_Controller  {
         }
 
         foreach($list as &$v){
-            $v['is_detail'] = $is_detail;
             if($is_detail == 1){
                 $v['detail_url'] =  get_detail_url($v['art_id'],$v['create_time']);
             }else{
@@ -359,7 +360,7 @@ class user extends MY_Controller  {
         //生成页码
         $page = get_page($count,$limit,$total_page - $p + 1,'ajax_page');
 
-        $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail);
+        $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail , 'type'=>$type);
         splash('success','',$out);
     }
 

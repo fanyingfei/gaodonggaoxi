@@ -93,11 +93,11 @@ class content extends MY_Controller  {
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
                 $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
-
-            $v['content'] = strip_tags($v['content'],'<br><img><a>');
-                //gif图转成静态
-            if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-            $v['content'] = filter_content_br($v['content']);
+             //gif图转成静态，145条后在保存时就已经转化过了
+            if($v['con_id'] < 145){
+                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+                $v['content'] = filter_content_br($v['content']);
+            }
         }
 
         //生成页码
@@ -121,13 +121,8 @@ class content extends MY_Controller  {
         $res = $this->model_black->find_one();
         if($res) splash('error','你已被拉入黑名单');
 
-        $content = trim($_REQUEST['content']);
         $data['type'] = intval($_REQUEST['type']);
-        //保存时保存原提交内容
-        $data['content'] = trim($content);
-        //验证时只保留图片和链接
-        $content = strip_tags($content,'<img><a>');
-        if(empty($content)) splash('error','请填写内容');
+        $data['content'] = $this->deal_content($_REQUEST['content']);
 
         if(is_login()){
             //已登陆用户
@@ -162,15 +157,15 @@ class content extends MY_Controller  {
     }
 
     /*
-     * 得到详情
+     * 保存时处理内容
      */
-    public function get_detail($id){
-        if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
-        $detail = $this->model_content->detail($id);
-        if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
-        $detail['content'] = strip_tags($detail['content'],'<img><p><br><a>');
-        $detail['title'] = empty($detail['title']) ? mb_substr(strip_tags($detail['content']), 0, 20, 'utf-8').'...' : $detail['title'];
-        return $detail;
+    public function deal_content($content){
+        $content = str_replace('</p>','</p><br>',$content);//把以P标签的换行转化成以<br>的换行
+        $valid_content = trim(strip_tags($content,'<img>'));
+        if(empty($valid_content)) splash('error','请填写内容');
+        $content = filter_content_br(strip_tags($content,'<img><a><br>'));
+        if($res_content = gif_static_gif($content)) $content = $res_content;
+        return $content;
     }
 
 

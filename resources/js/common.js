@@ -122,7 +122,7 @@ function alert_msg(msg,type){
          $('.alert-msg').fadeOut(500,function(){
              $('.alert-msg').remove();
          });
-     },1000);
+     },2000);
 }
 
 function login(){
@@ -207,7 +207,6 @@ window.onload=function(){
 
 //DOM渲染完成
 $(document).ready(function(){
-    var comment_url =$('#comment-url').val();
     var reply_url = '/reply/record'
 
     //贴标签
@@ -239,11 +238,13 @@ $(document).ready(function(){
 
     //监听主体OO点击事件
     $('body').on('click', '.oo-xx .oo', function(){
+        var comment_url =$('#comment-url').val();
         click_good(comment_url,this);
     })
 
     //监听主体XX点击事件
     $('body').on('click', '.oo-xx .xx', function(){
+        var comment_url =$('#comment-url').val();
         click_bad(comment_url,this);
     })
 
@@ -282,11 +283,11 @@ $(document).ready(function(){
         $('html,body').animate({scrollTop: to_height}, 500);
     });
 
-    //关闭回复
+    //关闭评论
     $('body').on('click', '.close-reply', function(){
         $(this).parents('.reply-wapper').fadeOut(500,function(){
             var len = $(this).find('.reply-one').length;
-            $(this).prev('.one').find('.reply').text('↓回复');
+            $(this).prev('.one').find('.reply').text('↓评论');
             $(this).prev('.one').find('.reply-count').text(len);
             var height = $(this).prev('.one').offset().top;
             $('html,body').animate({scrollTop: height}, 500);
@@ -300,7 +301,7 @@ $(document).ready(function(){
             return false;
         }
         $('.facebox').remove();
-        var faceimg = '<div class="facebox"><div class="qq-bg"><img src="/resources/images/face_qq.png"></div><ul>';
+        var faceimg = '<div class="facebox"><div class="qq-bg"><img src="/resources/images/face_qq.png" /></div><ul>';
         for(i=0;i<84;i++){  //通过循环创建60个表情，可扩展
             faceimg+='<li data-id="'+i+'"></li>';
         };
@@ -317,20 +318,20 @@ $(document).ready(function(){
     //添加表情
     $('body').on('click', '.facebox ul li', function(){
         var id = $(this).attr('data-id');
-        var img = '<img src="/resources/images/face/'+id+'.gif"> ';
+        var img = '<img src="/resources/images/face/'+id+'.gif" /> ';
         $(this).parents('.reply-wapper').find('.edit-p').append(img);
         return false;
     });
 
+    //监听到底部点击事件
+    $('body').on('click', '.mao', function(){
+        var height = $(document).height();
+        $('html,body').animate({scrollTop: height}, 500);
+    })
+
     //监听到顶部点击事件
     $("#top").click(function(){
         $('html,body').animate({scrollTop: 0}, 500);
-    })
-
-    //监听到底部点击事件
-    $(".mao").click(function(){
-        var height = $(document).height();
-        $('html,body').animate({scrollTop: height}, 500);
     })
 
     $(document).click(function() {
@@ -365,13 +366,14 @@ $(document).ready(function(){
         window.location.href=window.location.href;
     })
 
-    //得到全部回复列表
+    //得到全部评论列表
     $('body').on('click', 'a.reply', function(){
         var obj = $(this);
         var id = obj.attr('data-id');
+        var type = $("#type").val();
 
         if(obj.parents('.one').next().hasClass('reply-wapper')){
-            obj.text('↓回复');
+            obj.text('↓评论');
             obj.parents('.one').next('.reply-wapper').hide(500,function(){
                 obj.parents('.one').next('.reply-wapper').remove();
             });
@@ -381,7 +383,7 @@ $(document).ready(function(){
         $.ajax({
             type:'POST',
             data:{
-                "id":id
+                "id":id,"type":type
             },
             url:'/reply',
             dataType:'json',
@@ -391,7 +393,7 @@ $(document).ready(function(){
                     return false;
                 }
 
-                obj.text('↑回复');
+                obj.text('↑评论');
                 obj.parent().children('.reply-count').text(result.data.list.length);
                 var html = reply_list(result);
                 obj.parents('.one').after(html);
@@ -434,9 +436,14 @@ $(document).ready(function(){
                     return false;
                 }
                 alert_msg(result.msg , 'success');
-                //回复成功加一个DIV，点击close-reply时会统计reply-one的数量
-                obj.parents('.reply-main').before('<div class="reply-one display"></div>');
-                obj.parents('.reply-main').find('.close-reply').trigger("click");
+                if($('.detail-reply').length > 0){
+                    //详情页的评论
+                    get_detail_reply_list();
+                }else{
+                    //普通列表页的评论，评论成功加一个DIV，点击close-reply时会统计reply-one的数量
+                    obj.parents('.reply-main').before('<div class="reply-one display"></div>');
+                    obj.parents('.reply-main').find('.close-reply').trigger("click");
+                }
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
@@ -447,7 +454,7 @@ $(document).ready(function(){
     function reply_list(result){
         var html = '<div class="reply-wapper"><hr class="hr-reply"><div class="reply-main">';
         if(result.data.list != ''){
-            html += '<div class="reply-title">回复</div>';
+            html += '<div class="reply-title">评论</div>';
             $.each(result.data.list, function(k, v){
                 html += '<div class="reply-one rep-id-'+v.rep_id+'">';
                 html += '<div class="reply-avatar left"><img src="'+v.avatar+'" /></div>';
@@ -459,16 +466,15 @@ $(document).ready(function(){
                 }
                 html += '<span class="time right">'+(k+1)+'L</span></p>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
-                    html += '<p class="reply-aite-p"><span class="time left">回复</span><span class="qy left"></span>';
+                    html += '<p class="reply-aite-p"><span class="time left">评论</span><span class="qy left"></span>';
                     html += '<span  class="reply-at-content left">'+ v.reply_content+'</span>';
                     html += '<span class="hy left"></span></p>';
                 }
                 html += '<p class="r-comment">'+v.content+'</p>';
                 html += '<p class="click">';
-                html += '<span class="time">'+ v.create_time+'</span>';
-                html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+                html += '<span class="time reply-time">'+ v.create_time+'</span>';
                 html += '<span class="r-ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
-                html += '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+                html += '<span>&nbsp;&nbsp;</span>';
                 html += '<a class="oo" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
                 html += '<a class="xx" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
@@ -488,11 +494,11 @@ $(document).ready(function(){
             html += '<div class="textarea-wrapper left">';
             html += '<p class="edit-p" contenteditable="true" placeholder="说点什么吧"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
-            html += '</div></div><p class="close-reply">[X]关闭回复</p></div>';
+            html += '</div></div><p class="close-reply">[X]关闭评论</p></div>';
         }else{
             html += '<div class="reply-no-login">';
-            html += '<span onclick="login()">&nbsp;登录&nbsp;</span>后才能回复';
-            html += '<p class="close-reply">[X]关闭回复</p></div>';
+            html += '<span onclick="login()">&nbsp;登录&nbsp;</span>后才能评论';
+            html += '<p class="close-reply">[X]关闭评论</p></div>';
         }
         return html;
     }

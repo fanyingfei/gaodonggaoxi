@@ -14,8 +14,8 @@ class model_reply extends CI_Model{
     /*
     * 通过ID查找回复列表
     */
-    public function data_list( $con_id = '' ,$order_by = ''){
-        if(empty($con_id)) return array();
+    public function data_list( $con_id = '',$type ,$order_by = ''){
+        if(empty($con_id) || empty($type)) return array();
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' asc';
         $sql = 'select * from '.self::TABLE_NAME." where con_id = $con_id $order_by ";
         return $this->db->query($sql)->result_array();
