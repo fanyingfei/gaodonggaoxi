@@ -34,7 +34,6 @@ class content extends MY_Controller  {
         $this->assign('title','搞东搞西－搞搞东西');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
         $this->assign('description','搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
-        $this->assign('info','段子，笑话，糗事，搞笑，gif图，工作学习之余，来轻松一下吧');
         $this->content_list($p);
     }
 
@@ -44,7 +43,6 @@ class content extends MY_Controller  {
         $this->assign('title','那些话－搞东搞西');
         $this->assign('keywords','那些话,语录,美文,经典,短文,鸡汤,句子');
         $this->assign('description','总有一句话会让你感动莫名，泪流满面');
-        $this->assign('info','那些曾经感动你我的话');
         $this->content_list($p);
     }
 
@@ -54,7 +52,6 @@ class content extends MY_Controller  {
         $this->assign('title','妹子－搞东搞西');
         $this->assign('keywords','妹子,美女,美女图片,软妹子,清纯美女,性感美女');
         $this->assign('description','清纯甜美、性感火辣、温柔可爱的软妹子都在这捏，走过路过不要错过哦。');
-        $this->assign('info','快来养养眼吧，大把大把的妹子');
         $this->content_list($p);
     }
 

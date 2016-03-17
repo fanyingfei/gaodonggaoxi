@@ -34,7 +34,6 @@ class article extends MY_Controller  {
         $this->set_type_value(__FUNCTION__);
         $this->assign('body','body-article');
         $this->assign('title','渣渣说－搞东搞西');
-        $this->assign('info','渣渣说');
         $this->assign('keywords','渣渣说');
         $this->assign('description','渣渣说');
         $this->article_list($p);
@@ -46,7 +45,6 @@ class article extends MY_Controller  {
         $this->assign('title','故事－搞东搞西');
         $this->assign('keywords','故事,恐怖,惊悚,情感,励志,怪奇');
         $this->assign('description','嘘~来看故事啦');
-        $this->assign('info','故事');
         $this->article_list($p);
     }
 
@@ -55,8 +53,7 @@ class article extends MY_Controller  {
         $this->assign('body','body-article');
         $this->assign('title','程序猿－搞东搞西');
         $this->assign('keywords','程序员,程序猿,码农,代码,博客,php,web,ios');
-        $this->assign('description','程序员');
-        $this->assign('info','程序员');
+        $this->assign('description','这是专属程序员的技术博客');
         $this->article_list($p);
     }
 
@@ -68,12 +65,13 @@ class article extends MY_Controller  {
         if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
         $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
-        $this->model_article->update_scan($id);
+        $this->scan_record($id);
+        $detail['content'] = strip_tags($detail['content'],'<br>');
+        $detail['create_time'] = substr($detail['create_time'] , 0 , 10);
         $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
         $this->assign('title',$detail['title'].'－搞东搞西');
-        $this->assign('info','详情');
         $this->assign('keywords',$detail['tags']);
         $this->assign('description',$description);
 
@@ -179,6 +177,20 @@ class article extends MY_Controller  {
             splash('success','提交成功，审核后自动发布');
         }else{
             splash('error','提交失败');
+        }
+    }
+
+    /*
+     * 记录浏览
+     */
+    public function scan_record($id){
+        $this->load->model('model_record');
+        $type = -1;  //文章详情浏览专用
+        $res = $this->model_record->is_has($id, $type);
+        if($res){
+            $data = array('type'=>$type ,'row_id'=>$id);
+            $list  = $this->model_record->save($data);
+            $this->model_article->update_scan($id);
         }
     }
 

@@ -1,6 +1,5 @@
 <div class="main left">
     <div class="nav-title">{$menu}<span class="mao edit-info"></span></div>
-    <div class="depict">{$info}</div>
     <div class="tag-nav-wapper">
         {foreach from=$tags key=key item=tag}
         <span class="tag-nav">{$tag}</span>
@@ -43,11 +42,12 @@
     {/if}
 
     <div class="sub">
-        <p>&nbsp;</p>
         {if $is_login == 1}
+            <p>{$name},说些什么吧</p>
             <input type="hidden" name="email" id="email" value="{$email}" />
             <input type="hidden" name="name" id="name" value="{$name}" />
         {else}
+            <p>&nbsp;</p>
             <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
             <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
         {/if}

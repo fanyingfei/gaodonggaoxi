@@ -111,6 +111,10 @@ ul {
         border-bottom: 1px solid #e8e8e8;
     }
 
+    .member-total{
+        background-color: #fff;
+    }
+
     .nav {
         background: black;
         overflow: auto;
@@ -172,13 +176,6 @@ ul {
     .main {
         border-right: 1px solid #e8e8e8;
         width: 700px;
-    }
-
-    .main .depict {
-        font-size: 14px;
-        color: #8c8c8c;
-        padding: 10px 20px;
-        border-bottom: 1px solid #e8e8e8;
     }
 
     .one {
@@ -831,10 +828,6 @@ ul {
         margin-top: 2px;
     }
 
-    .detail-reply .reply-wapper{
-        display: block;
-    }
-
     .detail-reply .reply-main{
         border:0;
         width:660px;
@@ -902,8 +895,21 @@ ul {
         margin-top: 21px;
         right: 30px;
     }
+
+    .detail-title-top p:last-child span{
+        margin-left:10px;
+    }
+
+    .detail-title-top p:last-child .edit-info{
+        float:none;
+        padding: 0 8px;
+        margin-right: -6px;
+    }
 }
 
+.detail-reply .reply-wapper{
+    display: block;
+}
 .sub .textarea-prompt{
     color:#999;
     position: absolute;
@@ -1279,10 +1285,12 @@ ul {
     position: relative;
 }
 .detail-title-top{
-    font-size: 18px;
     background: #f9f9f9 none repeat scroll 0 0;
     border-bottom: 1px solid #e8e8e8;
     padding: 12px 20px;
+}
+.detail-title-top p:first-child{
+    font-size: 24px;
 }
 .facebox ul li{
     cursor: pointer;
@@ -1361,14 +1369,17 @@ ul {
     padding: 10px 20px;
 }
 .tag-nav{
-    background-color:#444;
-    color:#acacac;
+    background-color:#f9f9f9;
     cursor: pointer;
     padding: 5px 10px;
     font-size: 12px;
     display: block;
     float:left;
     margin-right: 10px;
+    border-radius: 3px;
+}
+.tag-nav:hover{
+    background-color: #f1f1f1;
 }
 .tag-select{
     border: 1px solid #20cd55;
@@ -1666,5 +1677,16 @@ ul {
 
     .sub p{
         margin-bottom: 10px;
+    }
+
+    .detail {
+        word-wrap: break-word;
+        word-break: normal;
+        overflow: hidden;
+    }
+
+    .detail-title-top p:first-child{
+        word-wrap: break-word;
+        word-break: normal;
     }
 }

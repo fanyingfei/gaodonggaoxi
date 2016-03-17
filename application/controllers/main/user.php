@@ -195,7 +195,7 @@ class user extends MY_Controller  {
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
             header_index('login');
         }
-        $this->assign('title','昵称');
+        $this->assign('title','完善资料');
         $this->assign('unique_id',$user_id);
         $this->native_display('user/header.html');
         $this->native_display('user/nick_name.html');
@@ -296,7 +296,6 @@ class user extends MY_Controller  {
         $this->assign('body','member');
         $this->assign('title',$user_info['name'].'－搞东搞西');
         $this->assign('menu',$user_info['name']);
-        $this->assign('info',$user_info['name']);
         $this->assign('keywords',$user_info['name']);
         $this->assign('description',$user_info['name']);
         $this->assign('user',$user_info);
