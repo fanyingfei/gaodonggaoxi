@@ -260,6 +260,10 @@ ul {
         overflow: auto;
     }
 
+    .member .detail-wapper{
+        margin-top:-3px;
+    }
+
     .edit-info{
         background-image: url('/resources/images/edit.png');
         background-repeat: no-repeat;
@@ -283,7 +287,6 @@ ul {
 
     .detail {
         padding: 20px;
-        min-height: 200px;
         word-wrap: break-word;
         word-break: normal;
         overflow: hidden;
@@ -905,10 +908,40 @@ ul {
         padding: 0 8px;
         margin-right: -6px;
     }
+
+    .detail-title-top p:first-child{
+        word-wrap: break-word;
+        word-break: normal;
+        overflow: hidden;
+    }
 }
 
 .detail-reply .reply-wapper{
     display: block;
+}
+.share{
+    margin:30px;
+}
+.share span{
+    margin-top:12px;
+    float:left;
+}
+.share a{
+    width: 40px !important;
+    height: 28px !important;
+    overflow: hidden !important;
+    padding:0 !important;
+    margin: 6px 6px 6px 0;
+    background-image: url('/resources/images/share_icon.png') !important;
+}
+.share-sina{
+    background-position: -160px 0 !important;
+}
+.share-qzone{
+    background-position: -120px 0 !important;
+}
+.share-weixin{
+    background-position: -80px 0 !important;
 }
 .sub .textarea-prompt{
     color:#999;

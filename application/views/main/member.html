@@ -27,11 +27,9 @@
                 </div>
                 <div class="content">
                     {{if is_detail == 1}}
-                        <p>
-                            <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
-                        </p>
+                        <p class="detail-wapper"><a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a></p>
                     {{else}}
-                        <div class="content-body{{if one.avatar != ''}} avatar-min-height{{/if}}">{{html one.content}}</div>
+                        <div class="content-body">{{html one.content}}</div>
                     {{/if}}
                     <p class="right clear click oo-xx">
                         {{if is_detail == 1 && one.tags != ''}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}

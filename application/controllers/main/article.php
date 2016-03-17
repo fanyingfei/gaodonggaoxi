@@ -71,7 +71,7 @@ class article extends MY_Controller  {
         $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
-        $this->assign('title',$detail['title'].'－搞东搞西');
+        $this->assign('title',$detail['title']);
         $this->assign('keywords',$detail['tags']);
         $this->assign('description',$description);
 
