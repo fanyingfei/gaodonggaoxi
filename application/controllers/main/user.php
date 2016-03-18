@@ -178,8 +178,8 @@ class user extends MY_Controller  {
     /*
      * 激活账号，填昵称页面
      */
-    public function user_validate(){
-        $param = json_decode(base64_decode($_REQUEST['param']),true);
+    public function user_validate($str){
+        $param = json_decode(base64_decode($str),true);
 
         $time = $param['time'];
         if(time() - $time > 24*3600){
@@ -344,13 +344,14 @@ class user extends MY_Controller  {
         }
 
         foreach($list as &$v){
+            if(empty($v['con_id'])) $v['con_id'] = $v['art_id'];
             if($is_detail == 1){
                 $v['detail_url'] =  get_detail_url($v['art_id'],$v['create_time']);
             }else{
-                $v['content'] = strip_tags($v['content'],'<br><img><a>');
-                //gif图转成静态
-                if($res_content = gif_static_gif($v['content']  , 1)) $v['content'] = $res_content;
-                $v['content'] = filter_content_br($v['content']);
+                if($v['con_id'] < 145){
+                    if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
+                    $v['content'] = filter_content_br($v['content']);
+                }
             }
             $v['create_time'] = change_time($v['create_time']);
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];

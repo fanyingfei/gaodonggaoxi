@@ -122,6 +122,7 @@ class model_users extends CI_Model{
     public function update_login_time($id){
         $data['last_login'] = date('Y-m-d H:i:s');
         $data['session_id'] = session_id();
+        $data['ip'] = get_real_ip();
         return $this->db->update(self::TABLE_NAME , $data, array(self::PRI_KEY =>$id));
     }
 }

@@ -82,7 +82,7 @@ $route['member_list'] = "main/user/member_list";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 $route['user/avatar'] = "main/user/user_avatar";
-$route['user/validate'] = "main/user/user_validate";
+$route['user/validate/(:any)'] = "main/user/user_validate/$1";
 $route['user/save'] = "main/user/info_save";
 $route['user/nick/save'] = "main/user/nick_save";
 $route['user/avatar/save'] = "main/user/avatar_save";

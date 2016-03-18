@@ -37,7 +37,7 @@ function get_real_ip(){
         $ips = explode (", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
         if ($ip) { array_unshift($ips, $ip); $ip = FALSE; }
         for ($i = 0; $i < count($ips); $i++) {
-            if (!eregi ("^(10|172\.16|192\.168)\.", $ips[$i])) {
+            if (!preg_match("/^(10|172\.16|192\.168)\./", $ips[$i])) {
                 $ip = $ips[$i];
                 break;
             }
@@ -114,7 +114,7 @@ function change_time($time) {
     }elseif ($int < 2592000){
         $str = sprintf('%d天前', floor($int / 86400));
     }else{
-        $str = date('Y-m-d H:i:s', $time);
+        $str = '';
     }
     return $str;
 }
@@ -180,7 +180,7 @@ function my_send_email($to = '929632454@qq.com',$title = '',$content = '')
 
 function get_email_content($user_id,$email){
     $data = array('user_id'=>$user_id,'email'=>$email,'time'=>time());
-    $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate?param='.base64_encode(json_encode($data));
+    $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate/'.base64_encode(json_encode($data));
     return '<p>请点击以下链接激活账号，24小时有效</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
 }
 
@@ -196,7 +196,7 @@ function header_index($url = '/'){
 function filter_content_br($str){
     $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
     $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
-    return preg_replace('/(<br\s*\/?>){2,}/i','<br><br>',$str);
+    return str_replace('div><br><div','',$str);
 }
 
 /*

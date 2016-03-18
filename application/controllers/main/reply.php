@@ -37,10 +37,9 @@ class reply extends MY_Controller  {
             $v['reply_content'] = '';
             $v['create_time'] = change_time($v['create_time']);
             $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/avatar_error.jpg' : $user_avatar[$v['user_id']];
-            $v['content'] = filter_content_br( strip_tags($v['content'] , '<img><br>' ));
             if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']])){
                 //回复时只显示一行太短了所以过滤过<br>标签，只留图片和文字
-                $v['reply_content'] =strip_tags($parent_res[$v['parent_id']] , '<img>');
+                $v['reply_content'] =str_replace('<br>','',$parent_res[$v['parent_id']]);
             }
         }
         $data['list'] = empty($res) ? '' : $res;
@@ -100,7 +99,7 @@ class reply extends MY_Controller  {
     public function content_is_at($parent_id,$parent_name,$content){
         $content = str_replace('&nbsp;','',$content);
         $data = array('parent_id'=>$parent_id,'parent_name'=>$parent_name);
-        $content = filter_content_br(strip_tags($content,'<img><br>'));
+        $content = strip_tags($content,'<img><br>');
         $data['content'] = $content;
         if(empty($content)) splash('error','请填写评论');
         if(empty($parent_id)) return $data;
@@ -111,6 +110,7 @@ class reply extends MY_Controller  {
         }elseif(strpos(substr($content,0,1),'@') !== false){
             splash('error','请点击 @Ta 来回复评论');
         }else{
+            $content = filter_content_br(trim($content));
             $data['parent_id'] = 0;
             $data['parent_name'] = '';
             return $data;

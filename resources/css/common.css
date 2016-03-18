@@ -104,13 +104,6 @@ ul {
         z-index: 999;
     }
 
-     .member-total, .nav-title{
-        padding: 12px 20px;
-        overflow: auto;
-        background: #f9f9f9;
-        border-bottom: 1px solid #e8e8e8;
-    }
-
     .member-total{
         background-color: #fff;
     }
@@ -243,11 +236,6 @@ ul {
 
     .sub p {
         margin: 5px 0 10px 0;
-    }
-
-    .sub p:first-child {
-        background-color: #fafafa;
-        font-size: 14px;
     }
 
     .sub p input {
@@ -915,7 +903,12 @@ ul {
         overflow: hidden;
     }
 }
-
+.member-total, .nav-title{
+    padding: 12px 20px;
+    overflow: auto;
+    background: #f9f9f9;
+    border-bottom: 1px solid #e8e8e8;
+}
 .detail-reply .reply-wapper{
     display: block;
 }
@@ -1436,7 +1429,10 @@ ul {
  /*   background-image: url('/resources/images/dc_icon.gif');
     background-position: left center;*/
 }
-
+.sub p:first-child {
+    background-color: #fafafa;
+    font-size: 14px;
+}
 @media screen and (max-width: 660px) {
     .user .login-avatar ,  #top , .right-container , .depict ,
     .title , .hr-reply , .body-article .sub .textarea-prompt{
@@ -1445,13 +1441,13 @@ ul {
 
     body {
         color: #000;
-        font-size: 13px;
+        font-size: 10px;
         font-family: 微软雅黑;
         margin:0;
     }
 
-    .wapper{
-        padding:5px;
+    .wapper .main-list{
+        padding: 0 5px;
     }
 
     .footer{
@@ -1520,10 +1516,13 @@ ul {
         clear:both;
     }
 
+    .user{
+        margin-bottom:10px;
+    }
+
     .user .name{
         float:left;
         margin-right: 5px;
-        margin-top: -2px;
     }
 
     .user p~p{
@@ -1534,7 +1533,6 @@ ul {
     .main .click{
         color:#8c8c8c;
         text-align: right;
-        font-size: 12px;
     }
 
     .reply-wapper {
@@ -1668,7 +1666,6 @@ ul {
         color: #999;
         cursor: pointer;
         float: right;
-        font-size: 12px;
         padding: 0 20px 5px 0;
         text-align: right;
     }

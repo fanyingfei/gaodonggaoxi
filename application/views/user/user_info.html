@@ -10,7 +10,11 @@
                     <p class="u-email">{$user.email}</p>
                 </div>
                 <div class="my-sub">
-                    <a href="/member/{$user.user_sn}">我的发布 [{$user.content_count}]</a>
+                    {if $user.content_count > 0}
+                        <a href="/member/{$user.user_sn}">我的发布 [{$user.content_count}]</a>
+                    {else}
+                        <a href="javascript:;">我的发布 [{$user.content_count}]</a>
+                    {/if}
                 </div>
             </div>
             <p class="clear"><br></p>

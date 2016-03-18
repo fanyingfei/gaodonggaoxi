@@ -492,7 +492,7 @@ $(document).ready(function(){
             html += '<p><span>'+result.data.name+'</span><span class="qq-face"></span></p>';
             html += '<div class="reply-avatar left"><img src="'+result.data.avatar+'" /></div>';
             html += '<div class="textarea-wrapper left">';
-            html += '<p class="edit-p" contenteditable="true" placeholder="说点什么吧"></p>';
+            html += '<p class="edit-p" contenteditable="true"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
             html += '</div></div><p class="close-reply">[X]关闭评论</p></div>';
         }else{

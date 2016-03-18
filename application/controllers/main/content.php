@@ -157,12 +157,11 @@ class content extends MY_Controller  {
      * 保存时处理内容
      */
     public function deal_content($content){
-        $content = str_replace('</p>','</p><br>',$content);//把以P标签的换行转化成以<br>的换行
         $valid_content = trim(strip_tags($content,'<img>'));
         if(empty($valid_content)) splash('error','请填写内容');
-        $content = filter_content_br(strip_tags($content,'<img><a><br>'));
+        $content = strip_tags($content,'<img><a><br>');
         if($res_content = gif_static_gif($content)) $content = $res_content;
-        return $content;
+        return filter_content_br($content);
     }
 
 

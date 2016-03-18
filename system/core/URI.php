@@ -143,6 +143,7 @@ class CI_URI {
 		}
 
 		$path = (isset($_SERVER[$uri])) ? $_SERVER[$uri] : @getenv($uri);
+        $path = empty($path) && !empty($_REQUEST['s']) ? $_REQUEST['s'] : $path;
 		$this->_set_uri_string($path);
 	}
 

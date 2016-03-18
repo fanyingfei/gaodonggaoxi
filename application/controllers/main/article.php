@@ -66,7 +66,7 @@ class article extends MY_Controller  {
         $detail = $this->model_article->detail($id);
         if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
         $this->scan_record($id);
-        $detail['content'] = strip_tags($detail['content'],'<br>');
+     //   $detail['content'] = strip_tags($detail['content'],'<img><br>');
         $detail['create_time'] = substr($detail['create_time'] , 0 , 10);
         $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
         $this->assign('data',$detail);
@@ -147,9 +147,8 @@ class article extends MY_Controller  {
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
 
-        $content = trim(strip_tags($_REQUEST['content']));
+        $data['content'] = $content = trim($_REQUEST['content']);
         if(empty($content)) splash('error','请填写内容');
-        $data['content'] = $content;
 
         $title = trim(strip_tags($_REQUEST['title']));
         if(empty($title)) splash('error','请填写标题');
