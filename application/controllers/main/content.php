@@ -77,8 +77,8 @@ class content extends MY_Controller  {
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
-            $user_avatar = array_column($user_res , 'avatar' , 'user_id');
-            $user_time = array_column($user_res , 'create_time' , 'user_id');
+            $user_avatar = my_array_column($user_res , 'avatar' , 'user_id');
+            $user_time = my_array_column($user_res , 'create_time' , 'user_id');
         }
 
         foreach($list as &$v){

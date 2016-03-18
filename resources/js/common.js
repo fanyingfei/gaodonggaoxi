@@ -147,7 +147,7 @@ window.onload=function(){
 
     //监听图片双击事件
     $(".sina-show").dblclick(function(){
-    //    window.open($(this).attr('src'));
+        window.open($(this).attr('src'));
     })
 
     //监听图片单击事件

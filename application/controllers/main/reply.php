@@ -31,7 +31,7 @@ class reply extends MY_Controller  {
         $res = $this->model_reply->data_list($con_id,$type);
         $user_avatar = parent::get_user_avatar($res , 'avatar');
 
-        $parent_res = array_column($res,'content','rep_id');
+        $parent_res = my_array_column($res,'content','rep_id');
 
         foreach($res as &$v){
             $v['reply_content'] = '';

@@ -64,7 +64,7 @@ class MY_controller extends CI_Controller {
     public function get_user_avatar($list , $col = ''){
         if(empty($list)) return array();
 
-        $user_column = array_unique(array_column($list , 'user_id'));
+        $user_column = array_unique(my_array_column($list , 'user_id'));
         foreach($user_column as $key=>$v){
             if(empty($v)) unset($user_column[$key]);
         }
@@ -75,7 +75,7 @@ class MY_controller extends CI_Controller {
         if(empty($user_res))  return array();
 
         if($col == '') return $user_res;
-        return array_column($user_res,$col,'user_id');
+        return my_array_column($user_res,$col,'user_id');
     }
 
     public function record($table_name){
