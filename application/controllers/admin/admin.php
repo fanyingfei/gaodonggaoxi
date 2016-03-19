@@ -30,6 +30,7 @@ class admin extends MY_Controller  {
         }
         $this->type_name = parent::$all_type_name;
         $this->load->model('model_content');
+        $this->load->model('model_article');
         $this->load->model('model_black');
         $this->load->model('model_users');
         $this->load->model('model_reply');
@@ -97,6 +98,72 @@ class admin extends MY_Controller  {
     }
 
     public function content_fail(){
+        $ids = $_REQUEST['ids'];
+        $res = $this->model_content->update_status($ids,$this->status_fail);
+        if($res){
+            splash('success','成功');
+        }else{
+            splash('error','失败,请重试');
+        }
+    }
+
+    public function article()
+    {
+        $this->assign('type_list',$this->type_name);
+        $this->assign('status_list',$this->status_data);
+        $this->native_display('admin/article.html');
+    }
+
+    public function article_list(){
+        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
+        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
+        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
+        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+        $where = $order_by = '';
+
+        if(!empty($sort) && !empty($sort_by)){
+            $order_by = " order by $sort $sort_by ";
+        }
+        //得到数据
+        $list  = $this->model_article->admin_list($p,$limit , $where , $order_by);
+        foreach($list as &$v){
+            $v['status'] = $this->status_data[$v['status']];
+            $v['user_id'] = empty($v['user_id']) ? '否' : '是';
+            $v['content'] = strip_tags($v['content'],'<br><img><a>');
+            $v['create_time'] = change_time($v['create_time']);
+            $v['type'] = $this->type_name[$v['type']];
+        }
+
+        $total = $this->model_article->data_count($where);
+
+        $result = array(
+            'total'=>$total,
+            'rows'=>$list,
+        );
+        echo json_encode($result);
+    }
+
+    public function article_delete(){
+        $ids = explode(',',$_REQUEST['ids']);
+        $res = $this->model_article->delete($ids);
+        if($res){
+            splash('success','删除成功');
+        }else{
+            splash('error','删除失败,请重试');
+        }
+    }
+
+    public function article_pass(){
+        $ids = trim($_REQUEST['ids']);
+        $res = $this->model_article->update_status($ids,$this->status_pass);
+        if($res){
+            splash('success','审核通过');
+        }else{
+            splash('error','审核失败,请重试');
+        }
+    }
+
+    public function article_fail(){
         $ids = $_REQUEST['ids'];
         $res = $this->model_content->update_status($ids,$this->status_fail);
         if($res){

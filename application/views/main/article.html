@@ -13,26 +13,25 @@
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
-                <div class="user member">
-                    {if $one.user_sn != ''}
-                    <p class="text-right"><span class="vip"></span><a href="/member/{$one.user_sn}">{$one.name}</a></p>
-                    {else}
-                    <p class="time text-right">{$one.name}</p>
-                    {/if}
-                    <p class="time text-right">{$one.create_time}</p>
-                </div>
-                <div class="content">
+
+
                     <p class="detail-wapper">
                         <a class="detail-title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
-                    </p>
-                    <p class="right clear click oo-xx">
                         {if $one.tags != ''}<span class="detail-tags">标签：{$one.tags}</span>{/if}
+                    </p>
+                    <div class="right clear click oo-xx">
+                            {if $one.user_sn != ''}
+                            <span class="vip left"></span><a class="left" href="/member/{$one.user_sn}">{$one.name}</a>
+                            {else}
+                            <span class="time left">{$one.name}</span>
+                            {/if}
+                            <span class="time left">{$one.create_time}</span>
                         <span class="response"></span>
                         <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
                         <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
                         <span class="scan time">浏览[{$one.scan}]</span>
-                    </p>
-                </div>
+                    </div>
+
             </div>
             {/foreach}
         </div>
@@ -74,7 +73,7 @@
 <script>
     KindEditor.ready(function(K) {
         window.editor = K.create('#content', {
-            newlineTag : "p" ,
+            newlineTag : "br" ,
             itemsName : false,
             filterMode : false,
             items : [

@@ -93,7 +93,7 @@ class content extends MY_Controller  {
              //gif图转成静态，145条后在保存时就已经转化过了
             if($v['con_id'] < 145){
                 if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-                $v['content'] = filter_content_br($v['content']);
+                $v['content'] = filter_content_br(strip_tags($v['content'],'<div><img><br>'));
             }
         }
 

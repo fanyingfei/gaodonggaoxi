@@ -196,7 +196,7 @@ function header_index($url = '/'){
 function filter_content_br($str){
     $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
     $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
-    return str_replace('div><br><div','',$str);
+    return str_replace('div><br><div','div><div',$str);
 }
 
 /*

@@ -4759,7 +4759,7 @@ function KEditor(options) {
 	setOption('width', _addUnit(self.width));
 	setOption('height', _addUnit(self.height));
 	if (_MOBILE && (!_IOS || _V < 534)) {
-		self.designMode = false;
+	//	self.designMode = false;
 	}
 	self.srcElement = se;
 	self.initContent = '';

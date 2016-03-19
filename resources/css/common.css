@@ -946,6 +946,7 @@ ul {
 .ke-container .ke-toolbar , .ke-container .ke-statusbar {
     background-color: #fdfdfd;
 }
+
 .body-article .ke-toolbar .ke-outline {
     margin-right: 1.5px;
 }
@@ -1282,8 +1283,6 @@ ul {
     display: none !important;
 }
 
-
-
 /* QQ表情支持*/
 .facebox{
     position: absolute;
@@ -1403,31 +1402,33 @@ ul {
     float:left;
     margin-right: 10px;
     border-radius: 3px;
+    margin-bottom: 5px;
 }
 .tag-nav:hover{
     background-color: #f1f1f1;
 }
 .tag-select{
     border: 1px solid #20cd55;
-    background-size: 9px 9px;
+    background-size: 15px 15px;
     background-image: repeating-linear-gradient(315deg,#20cd55 0,#20cd55 50%,transparent 50%,transparent 100%);
     background-repeat: no-repeat;
     background-position: right bottom;
 }
 .detail-tags{
-    float:left;
+    float:right;
 }
 .detail a{
-    color:#4285f4 !important;
-
+    color:#4285f4;
+}
+.detail p{
+    line-height: 30px;
 }
 .scan{
     float:right;
     margin-left:5px;
 }
-.oo{
- /*   background-image: url('/resources/images/dc_icon.gif');
-    background-position: left center;*/
+.sr-bdimgshare{
+    display: none !important;
 }
 .sub p:first-child {
     background-color: #fafafa;
@@ -1518,6 +1519,7 @@ ul {
 
     .user{
         margin-bottom:10px;
+        overflow: auto;
     }
 
     .user .name{
@@ -1719,4 +1721,13 @@ ul {
         word-wrap: break-word;
         word-break: normal;
     }
+
+    .time{
+        font-size:10px;
+    }
+
+    .click{
+        margin-top:10px;
+    }
 }
+

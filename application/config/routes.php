@@ -94,6 +94,12 @@ $route['admin/content_delete'] = "admin/admin/content_delete";
 $route['admin/content_pass'] = "admin/admin/content_pass";
 $route['admin/content_fail'] = "admin/admin/content_fail";
 
+$route['admin/article'] = "admin/admin/article";
+$route['admin/article_list'] = "admin/admin/article_list";
+$route['admin/article_delete'] = "admin/admin/article_delete";
+$route['admin/article_pass'] = "admin/admin/article_pass";
+$route['admin/article_fail'] = "admin/admin/article_fail";
+
 $route['admin/user'] = "admin/admin/user";
 $route['admin/user_list'] = "admin/admin/user_list";
 $route['admin/user_delete'] = "admin/admin/user_delete";

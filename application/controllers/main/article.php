@@ -5,7 +5,7 @@ class article extends MY_Controller  {
     const table_name = 'article';
     private $tags_data = array(
                                             4=>array('感言','废话'),
-                                            6=>array('恐怖/惊悚','感动','励志','怪奇'),
+                                            6=>array('恐怖/惊悚','感动','励志','怪奇','温暖','伤感','人生'),
                                             7=>array('web前端','php','ios','mysql','linux','c/c++','java','android')
                                         );
 
@@ -73,7 +73,7 @@ class article extends MY_Controller  {
         $this->assign('body','body-detail');
         $this->assign('title',$detail['title']);
         $this->assign('keywords',$detail['tags']);
-        $this->assign('description',$description);
+        $this->assign('description',empty($description) ? $detail['title'] : $description);
 
         $this->native_display('main/header.html');
         $this->native_display('main/detail.html');

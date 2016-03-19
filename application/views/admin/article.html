@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn" id="remove" data-url="/admin/content_delete">Delete</button>
-        <button class="btn" id="pass" data-url="/admin/content_pass">Pass</button>
-        <button class="btn" id="fail" data-url="/admin/content_fail">Fail</button>
+        <button class="btn" id="remove" data-url="/admin/article_delete">Delete</button>
+        <button class="btn" id="pass" data-url="/admin/article_pass">Pass</button>
+        <button class="btn" id="fail" data-url="/admin/article_fail">Fail</button>
         <span>审核状态：</span>
         <div class="form-group">
             <select class="form-control" name="search_status" id="search_status">
@@ -27,7 +27,7 @@
     </div>
     <table id="table"
            data-toggle="table"
-           data-url="/admin/content_list"
+           data-url="/admin/article_list"
            data-show-columns="true"
            data-search="false"
            data-show-refresh="true"
@@ -38,14 +38,16 @@
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-sortable="true" data-field="con_id">ID</th>
+            <th data-sortable="true" data-field="art_id">ID</th>
             <th data-field="type">类型</th>
+            <th data-field="title">标题</th>
             <th data-field="content">内容</th>
             <th data-field="email">邮箱</th>
             <th data-field="name">昵称</th>
             <th data-sortable="true" data-field="user_id">是否注册</th>
             <th data-sortable="true" data-field="good">oo</th>
             <th data-sortable="true" data-field="bad">xx</th>
+            <th data-sortable="true" data-field="scan">浏览数</th>
             <th data-sortable="true" data-field="reply">回复数</th>
             <th data-sortable="true" data-field="status">审核状态</th>
             <th data-sortable="true" data-field="ip">ip</th>
