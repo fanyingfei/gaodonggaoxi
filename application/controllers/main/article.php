@@ -27,6 +27,7 @@ class article extends MY_Controller  {
 
     public function __construct() {
         parent :: __construct();
+        $this->assign('is_show',1);
         $this->load->model('model_article');
     }
 
@@ -36,6 +37,9 @@ class article extends MY_Controller  {
         $this->assign('title','渣渣说－搞东搞西');
         $this->assign('keywords','渣渣说');
         $this->assign('description','渣渣说');
+        $is_show = 0;
+        if(!empty($_SESSION['email']) && $_SESSION['email'] == '1602515264@qq.com') $is_show = 1;
+        $this->assign('is_show',$is_show);
         $this->article_list($p);
     }
 

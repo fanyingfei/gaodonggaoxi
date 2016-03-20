@@ -597,6 +597,17 @@ ul {
         padding: 1px;
         float: right;
     }
+    
+    .user .login-avatar a{
+        width: 60px;
+        height: 60px;
+        line-height: 58px;
+        display: block;
+    }
+
+    .user .login-avatar a img{
+        vertical-align: middle;
+    }
 
     .user-center .avatar-img img {
         border-radius: 4px;

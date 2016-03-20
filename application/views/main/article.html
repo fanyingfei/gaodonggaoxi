@@ -7,9 +7,7 @@
     </div>
 
     {if $count > 0}
-
         {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
-
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
@@ -36,13 +34,12 @@
                         <span class="jian-ge">|</span>
                         <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">{$one.bad}</span>)
                         <span class="jian-ge">|</span>
+                        <span class="scan time">评论({$one.reply})</span>
+                        <span class="jian-ge">|</span>
                         <span class="scan time">浏览({$one.scan})</span>
                     </p>
                 </div>
-                <div class="article-one-right">
-                    <strong>{$one.day}</strong>
-                    {$one.year}
-                </div>
+                <div class="article-one-right"><strong>{$one.day}</strong>{$one.year}</div>
             </div>
             {/foreach}
         </div>
@@ -51,6 +48,7 @@
         <div class="empty"><h2 class="center">没有结果哦~去看看别的吧</h2></div>
     {/if}
 
+    {if $is_show == 1}
     <div class="sub">
         {if $is_login == 1}
             <p>{$name},说些什么吧</p>
@@ -74,6 +72,7 @@
         <p><textarea name="content" id="content"></textarea></p>
         <p><button id="submit" class="clear">submit</button></p>
     </div>
+    {/if}
     <input type="hidden" id="type" value="{$type}" />
     <input type="hidden" id="comment-url" value="/article/record" />
 </div>
