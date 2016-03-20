@@ -20,6 +20,7 @@ a{
     height: 100%;
     border:0;
     position: absolute;
+    min-height: 600px;
 }
 .topbar-wrap {
     background: #1a1a1a none repeat scroll 0 0;

@@ -6,7 +6,8 @@
             <span class="mao edit-info"></span>
             <span class="mao cursor">评论[{$data.reply}]</span>
             <span>{$data.name}</span>
-            <span>{$data.create_time}</span> </p>
+            <span>{$data.create_time}</span>
+        </p>
     </div>
     <div class="detail">{$data.content}</div>
     <div class="bdsharebuttonbox share">
@@ -18,6 +19,7 @@
     <div  class="detail-reply"></div>
     <input type="hidden" id="type" value="{$data.type}" />
     <input type="hidden" id="unique-id" value="{$data.art_id}" />
+    <input type="hidden" id="comment-url" value="/content/record" />
 </div>
 <div class="right-container left">
 

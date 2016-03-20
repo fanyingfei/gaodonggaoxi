@@ -347,6 +347,8 @@ class user extends MY_Controller  {
             if(empty($v['con_id'])) $v['con_id'] = $v['art_id'];
             if($is_detail == 1){
                 $v['detail_url'] =  get_detail_url($v['art_id'],$v['create_time']);
+                $v['year'] = substr($v['create_time'], 0 , 7);
+                $v['day'] = substr($v['create_time'], 8 , 2);
             }else{
                 if($v['con_id'] < 145){
                     if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;

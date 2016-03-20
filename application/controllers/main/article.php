@@ -5,7 +5,7 @@ class article extends MY_Controller  {
     const table_name = 'article';
     private $tags_data = array(
                                             4=>array('感言','废话'),
-                                            6=>array('恐怖/惊悚','感动','励志','怪奇','温暖','伤感','人生'),
+                                            6=>array('恐怖/惊悚','感动/伤感','历史','怪奇','人生','温暖','励志'),
                                             7=>array('web前端','php','ios','mysql','linux','c/c++','java','android')
                                         );
 
@@ -113,11 +113,14 @@ class article extends MY_Controller  {
             $v['user_sn'] = '';
             $v['con_id'] = $v['art_id'];
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            $v['tags'] = explode(' ' , $v['tags']);
             if(!empty($v['user_id'])){
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
                 $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
             $v['detail_url'] = get_detail_url($v['art_id'],$v['create_time']);
+            $v['year'] = substr($v['create_time'], 0 , 7);
+            $v['day'] = substr($v['create_time'], 8 , 2);
             $v['create_time'] = change_time($v['create_time']);
         }
 

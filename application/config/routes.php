@@ -90,28 +90,33 @@ $route['user/avatar/save'] = "main/user/avatar_save";
 $route['admin'] = "admin/admin/index";
 $route['admin/content'] = "admin/admin/content";
 $route['admin/content_list'] = "admin/admin/content_list";
+$route['admin/content_list/(:any)'] = "admin/admin/content_list/$1";
 $route['admin/content_delete'] = "admin/admin/content_delete";
 $route['admin/content_pass'] = "admin/admin/content_pass";
 $route['admin/content_fail'] = "admin/admin/content_fail";
 
 $route['admin/article'] = "admin/admin/article";
 $route['admin/article_list'] = "admin/admin/article_list";
+$route['admin/article_list/(:any)'] = "admin/admin/article_list/$1";
 $route['admin/article_delete'] = "admin/admin/article_delete";
 $route['admin/article_pass'] = "admin/admin/article_pass";
 $route['admin/article_fail'] = "admin/admin/article_fail";
 
 $route['admin/user'] = "admin/admin/user";
 $route['admin/user_list'] = "admin/admin/user_list";
+$route['admin/user_list/(:any)'] = "admin/admin/user_list/$1";
 $route['admin/user_delete'] = "admin/admin/user_delete";
 $route['admin/user_add_admin'] = "admin/admin/user_add_admin";
 $route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
 
 $route['admin/black'] = "admin/admin/black";
 $route['admin/black_list'] = "admin/admin/black_list";
+$route['admin/black_list/(:any)'] = "admin/admin/black_list/$1";
 $route['admin/black_delete'] = "admin/admin/black_delete";
 
 $route['admin/reply'] = "admin/admin/reply";
 $route['admin/reply_list'] = "admin/admin/reply_list";
+$route['admin/reply_list/(:any)'] = "admin/admin/reply_list/$1";
 $route['admin/reply_delete'] = "admin/admin/reply_delete";
 
 $route['error'] = 'main/content/error';

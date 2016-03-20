@@ -13,25 +13,36 @@
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
-
-
+                <div class="article-one-left">
                     <p class="detail-wapper">
                         <a class="detail-title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
-                        {if $one.tags != ''}<span class="detail-tags">标签：{$one.tags}</span>{/if}
                     </p>
-                    <div class="right clear click oo-xx">
-                            {if $one.user_sn != ''}
-                            <span class="vip left"></span><a class="left" href="/member/{$one.user_sn}">{$one.name}</a>
-                            {else}
-                            <span class="time left">{$one.name}</span>
-                            {/if}
-                            <span class="time left">{$one.create_time}</span>
+                    <p class="detail-tags">
+                        <span class="left">标签：</span>
+                        {foreach from=$one.tags key=key item=tag}
+                            <span class="tag-nav">{$tag}</span>
+                        {/foreach}
+                    </p>
+                    <p class="article-click oo-xx">
+                        {if $one.user_sn != ''}
+                        <span class="vip"></span><a href="/member/{$one.user_sn}">{$one.name}</a>
+                        {else}
+                        <span class="time text-right">{$one.name}</span>
+                        {/if}
+                        <span class="time text-right"> 发表于{$one.create_time}</span>
                         <span class="response"></span>
-                        <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
-                        <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                        <span class="scan time">浏览[{$one.scan}]</span>
-                    </div>
-
+                        <span class="jian-ge">&nbsp;&nbsp;</span>
+                        <a class="oo" data-id="{$one.con_id}">顶</a>(<span class="good">{$one.good}</span>)
+                        <span class="jian-ge">|</span>
+                        <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">{$one.bad}</span>)
+                        <span class="jian-ge">|</span>
+                        <span class="scan time">浏览({$one.scan})</span>
+                    </p>
+                </div>
+                <div class="article-one-right">
+                    <strong>{$one.day}</strong>
+                    {$one.year}
+                </div>
             </div>
             {/foreach}
         </div>

@@ -48,11 +48,12 @@ class admin extends MY_Controller  {
         $this->native_display('admin/content.html');
     }
 
-    public function content_list(){
-        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
-        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
-        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
-        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+    public function content_list($str = ''){
+        $params = $this->reply_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
         $where = $order_by = '';
 
         if(!empty($sort) && !empty($sort_by)){
@@ -114,11 +115,12 @@ class admin extends MY_Controller  {
         $this->native_display('admin/article.html');
     }
 
-    public function article_list(){
-        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
-        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
-        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
-        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+    public function article_list($str = ''){
+        $params = $this->reply_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
         $where = $order_by = '';
 
         if(!empty($sort) && !empty($sort_by)){
@@ -178,11 +180,12 @@ class admin extends MY_Controller  {
         $this->native_display('admin/user.html');
     }
 
-    public function user_list(){
-        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
-        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
-        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
-        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+    public function user_list($str = ''){
+        $params = $this->reply_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
         $where = $order_by = '';
 
         if(!empty($sort) && !empty($sort_by)){
@@ -246,11 +249,12 @@ class admin extends MY_Controller  {
         $this->native_display('admin/black.html');
     }
 
-    public function black_list(){
-        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
-        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
-        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
-        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+    public function black_list($str = ''){
+        $params = $this->reply_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
         $where = $order_by = '';
 
         if(!empty($sort) && !empty($sort_by)){
@@ -283,11 +287,12 @@ class admin extends MY_Controller  {
         $this->native_display('admin/reply.html');
     }
 
-    public function reply_list(){
-        $p = empty($_REQUEST['offset']) ? 0 : $_REQUEST['offset']/10;
-        $limit = empty($_REQUEST['limit']) ? 10 : $_REQUEST['limit'];
-        $sort = empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'];
-        $sort_by = empty($_REQUEST['order']) ? '' : $_REQUEST['order'];
+    public function reply_list($str = ''){
+        $params = $this->reply_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
         $where = $order_by = '';
 
         if(!empty($sort) && !empty($sort_by)){
@@ -313,6 +318,21 @@ class admin extends MY_Controller  {
         }else{
             splash('error','删除失败,请重试');
         }
+    }
+
+    public function reply_admin_param($str){
+        if(empty($str)) return array();
+        if(strpos($str , '&') === false){
+            $params = explode( '=' , $str);
+            return array($params[0]=>$params[1]);
+        }
+        $data = array();
+        $params = explode( '&' , $str);
+        foreach($params as $p){
+            $row = explode( '=' , $p);
+            $data[$row[0]] = $row[1];
+        }
+        return $data;
     }
 }
 

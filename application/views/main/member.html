@@ -21,28 +21,43 @@
         <div class="main-list">
             {{each(key,one) list}}
             <div class="one{{if key == 0 }} first{{/if}}">
-                <div class="user member">
-                    <p class="time text-right" title="${one.u_name}">${one.name}</p>
-                    <p class="time text-right">发表于 ${one.create_time}</p>
-                </div>
-                <div class="content">
-                    {{if is_detail == 1}}
-                        <p class="detail-wapper"><a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a></p>
-                    {{else}}
+                {{if is_detail == 1}}
+                    <div class="article-one-left">
+                        <p class="detail-wapper">
+                            <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
+                        </p>
+                        <p class="detail-tags">标签：<span>${one.tags}</span></p>
+                        <p class="article-click oo-xx">
+                            <span class="time text-right">${one.name}</span>
+                            <span class="time text-right"> 发表于${one.create_time}</span>
+                            <span class="response"></span>
+                            <span class="jian-ge">&nbsp;&nbsp;</span>
+                            <a class="oo" data-id="{$one.con_id}">顶</a>(<span class="good">${one.good}</span>)
+                            <span class="jian-ge">|</span>
+                            <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">${one.bad}</span>)
+                            <span class="jian-ge">|</span>
+                            <span class="scan time">浏览(${one.scan})</span>
+                        </p>
+                    </div>
+                    <div class="article-one-right">
+                        <strong>${one.day}</strong>
+                        ${one.year}
+                    </div>
+                {{else}}
+                    <div class="user member">
+                        <p class="time text-right" title="${one.u_name}">${one.name}</p>
+                        <p class="time text-right">发表于 ${one.create_time}</p>
+                    </div>
+                    <div class="content">
                         <div class="content-body">{{html one.content}}</div>
-                    {{/if}}
-                    <p class="right clear click oo-xx">
-                        {{if is_detail == 1 && one.tags != ''}}<span class="detail-tags">标签：${one.tags}</span>{{/if}}
-                        <span class="response"></span>
-                        <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
-                        <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                        {{if is_detail == 1}}
-                            <span class="scan time">浏览[${one.scan}]</span>
-                        {{else}}
+                        <p class="right clear click oo-xx">
+                            <span class="response"></span>
+                            <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
+                            <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
                             <a class="reply" data-id="${one.con_id}">↓评论</a>[<span class="reply-count">${one.reply}</span>]
-                        {{/if}}
-                    </p>
-                </div>
+                        </p>
+                    </div>
+                {{/if}}
             </div>
             {{/each}}
         </div>
