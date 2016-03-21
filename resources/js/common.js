@@ -367,7 +367,7 @@ $(document).ready(function(){
     })
 
     //得到全部评论列表
-    $('body').on('click', 'a.reply', function(){
+    $('body').on('click', '.reply', function(){
         var obj = $(this);
         var id = obj.attr('data-id');
         var type = $("#type").val();

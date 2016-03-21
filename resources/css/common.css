@@ -282,10 +282,6 @@ ul {
         overflow: hidden;
     }
 
-    .detail img {
-        text-align: center;
-    }
-
     .right-container {
         width: 348px;
     }
@@ -948,6 +944,7 @@ ul {
     .article-one-right strong{
         font-size: 16pt;
         padding:0 6px;
+        display: block;
     }
 }
 .member-total, .nav-title{
@@ -1806,4 +1803,3 @@ ul {
         display: block;
     }
 }
-
