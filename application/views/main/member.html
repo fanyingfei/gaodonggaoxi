@@ -57,24 +57,24 @@
                             <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
                             <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
                             <a class="reply" data-id="${one.con_id}">↓评论</a>[<span class="reply-count">${one.reply}</span>]
-                        </p>
-                    </div>
-                {{/if}}
+                            </p>
+                        </div>
+                    {{/if}}
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
-        </div>
-        {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
-    {{else}}
-        <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
-    {{/if}}
-    <input type="hidden" id="type" value="${type}" />
-    {{if is_detail == 1}}
-        <input type="hidden" id="comment-url" value="/article/record" />
-    {{else}}
-        <input type="hidden" id="comment-url" value="/content/record" />
-    {{/if}}
-    {/literal}
-    </script>
+            {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
+        {{else}}
+            <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
+        {{/if}}
+        <input type="hidden" id="type" value="${type}" />
+        {{if is_detail == 1}}
+            <input type="hidden" id="comment-url" value="/article/record" />
+        {{else}}
+            <input type="hidden" id="comment-url" value="/content/record" />
+        {{/if}}
+        {/literal}
+        </script>
 </div>
 <div class="right-container left">
     <div class="member-user-info">

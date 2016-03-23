@@ -1114,6 +1114,7 @@ ul {
 .one .content-body{
     word-wrap: break-word;
     word-break: normal;
+    color:#3c3c3c;
 }
 .alert-msg{
     height: 52px;
@@ -1760,6 +1761,7 @@ ul {
         word-wrap: break-word;
         word-break: normal;
         overflow: hidden;
+        padding:0 10px;
     }
 
     .detail-title-top p:first-child{
@@ -1801,5 +1803,9 @@ ul {
     }
     .nav .login a span{
         display: block;
+    }
+
+    .one .user,.one .content-body , .detail p{
+        font-size: 1.3em ;
     }
 }

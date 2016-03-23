@@ -32,6 +32,7 @@ class content extends MY_Controller  {
         $this->set_type_value(__FUNCTION__);
         $this->assign('body','body-content');
         $this->assign('title','搞东搞西－搞搞东西');
+        $this->assign('menu','搞笑－开开心心每一天');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
         $this->assign('description','搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
         $this->content_list($p);
@@ -41,6 +42,7 @@ class content extends MY_Controller  {
         $this->set_type_value(__FUNCTION__);
         $this->assign('body','body-content');
         $this->assign('title','那些话－搞东搞西');
+        $this->assign('menu','那些话－有没有一句话会让你泪流满面');
         $this->assign('keywords','那些话,语录,美文,经典,短文,鸡汤,句子');
         $this->assign('description','总有一句话会让你感动莫名，泪流满面');
         $this->content_list($p);
@@ -50,6 +52,7 @@ class content extends MY_Controller  {
         $this->set_type_value(__FUNCTION__);
         $this->assign('body','body-content');
         $this->assign('title','妹子－搞东搞西');
+        $this->assign('menu','妹子－嘿嘿嘿，你懂的');
         $this->assign('keywords','妹子,美女,美女图片,软妹子,清纯美女,性感美女');
         $this->assign('description','清纯甜美、性感火辣、温柔可爱的软妹子都在这捏，走过路过不要错过哦。');
         $this->content_list($p);
@@ -171,7 +174,6 @@ class content extends MY_Controller  {
 
     public function set_type_value($fun){
         $this->type = parent :: $all_type_data[$fun];
-        $this->assign('menu',parent :: $all_type_name[$this->type]);
     }
 
 }

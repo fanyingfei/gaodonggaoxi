@@ -1,5 +1,6 @@
 var max_name_len = 30;
 var min_name_len = 2;
+
 //通用AJAX
 function ajax_res(obj){
     $.ajax({
@@ -89,20 +90,25 @@ function valid(name,email,content){
     }
     return true;
 }
+
 //定位播放图片按钮
-function show_play(){
+function show_play_all(){
     $(".play").each(function(){
-        width = $(this).prev().width();
-        height = $(this).prev().height();
-        if(width <=2 || height <= 2){
-            return false;
-        }
-        $(this).css("width",width+'px');
-        $(this).css("height",height+'px');
-        $(this).css("line-height",height+'px');
-        $(this).css("margin-top",'-'+parseFloat(height + 4)+'px');
-        $(this).show();
+        show_play_one(this);
     });
+}
+
+function show_play_one(thi){
+    width = $(thi).prev().width();
+    height = $(thi).prev().height();
+    if(width <=2 || height <= 2){
+        return false;
+    }
+    $(thi).css("width",width+'px');
+    $(thi).css("height",height+'px');
+    $(thi).css("line-height",height+'px');
+    $(thi).css("margin-top",'-'+parseFloat(height + 4)+'px');
+    $(thi).show();
 }
 
 function alert_msg(msg,type){
@@ -141,13 +147,35 @@ function login_new(){
     'scrollbars=no, resizable=no,location=no, status=no');
 }
 
+function image_is_gif(str){
+    if(str.indexOf("small")>=0){
+        return false;
+    }
+    return true;
+}
+
+function image_load_event(thi , src_url){
+    var img = new Image(); //创建一个Image对象，实现图片的预下载
+    img.src = src_url;
+    if(img.complete) {
+        $(thi).hide();
+        $(thi).text('PLAY');
+        return false; // 直接返回，不用再处理onload事件
+    }
+    img.onload = function () {
+        $(thi).hide();
+        $(thi).text('PLAY');
+    };
+}
+
 //资源加载完成
 window.onload=function(){
-    show_play();
+    show_play_all();
 
     //监听图片双击事件
     $(".sina-show").dblclick(function(){
         window.open($(this).attr('src'));
+        return false;
     })
 
     //监听图片单击事件
@@ -169,15 +197,15 @@ window.onload=function(){
     $('body').on('click', '.sina-show-gif', function(){
         src_url = $(this).attr('ori-data');
         ori_src = $(this).attr('src');
-        $(this).attr('src',src_url);
-        $(this).attr('ori-data',ori_src);
-        if($(this).hasClass('valid')){
-            $(this).removeClass('valid');
+        if(image_is_gif(ori_src)){
             $(this).next('div.play').show();
         }else{
-            $(this).addClass('valid');
+            show_play_one($(this).next('div.play'));
+            $(this).next('div.play').text('loading...');
+            image_load_event($(this).next('div.play') , src_url);
         }
-
+        $(this).attr('src',src_url);
+        $(this).attr('ori-data',ori_src);
     })
 
     //监听图片播放事件
@@ -189,19 +217,8 @@ window.onload=function(){
         pre_img_obj.attr('src',src_url);
         pre_img_obj.attr('ori-data',ori_src);
         $(this).text('loading...');
-        pre_img_obj.addClass('valid');
-        var img = new Image(); //创建一个Image对象，实现图片的预下载
-        img.src = src_url;
-        if(img.complete) {
-            play_obj.hide();
-            play_obj.text('PLAY');
-            return false; // 直接返回，不用再处理onload事件
-        }
-        img.onload = function () {
-            play_obj.hide();
-            play_obj.text('PLAY');
-        };
-
+        image_load_event(this,src_url);
+        return false;
     })
 }
 
