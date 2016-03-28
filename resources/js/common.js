@@ -171,6 +171,26 @@ function image_load_event(thi , src_url){
 //资源加载完成
 window.onload=function(){
     show_play_all();
+}
+
+//DOM渲染完成
+$(document).ready(function(){
+    var reply_url = '/reply/record';
+
+    display();
+    function display(){
+        if($('.login_out').length <= 0){
+            $('.examine').hide();
+        }
+    }
+
+
+    $(".peripheral img").load(function(){
+        if($(this).hasClass('sina-show-gif') && !image_is_gif($(this).attr('src'))){
+            var play_obj = $(this).parent().children('.play');
+            show_play_one(play_obj);
+        }
+    });
 
     //监听图片双击事件
     $(".sina-show").dblclick(function(){
@@ -220,11 +240,6 @@ window.onload=function(){
         image_load_event(this,src_url);
         return false;
     })
-}
-
-//DOM渲染完成
-$(document).ready(function(){
-    var reply_url = '/reply/record'
 
     //贴标签
     $('body').on('click', '.tag', function(){
@@ -248,9 +263,13 @@ $(document).ready(function(){
     //标签链接
     $('body').on('click', '.tag-nav', function(){
         $.cookie('tags', $(this).text() ,{ path : '/' });
-        var url = window.location.href;
         url = url.replace(/[0-9]+$/gi,'');
-        window.location.href =  url;
+        window.location.href = window.location.href;
+    })
+
+    $('body').on('click', '.nav-order-by li', function(){
+        $.cookie('order_by', $(this).attr('order-by') ,{ path : '/' });
+        window.location.href = window.location.href;
     })
 
     //监听主体OO点击事件
@@ -283,15 +302,15 @@ $(document).ready(function(){
         click_good(reply_url,this);
     });
 
+    //监听评论XX点击事件
+    $('body').on('click', '.reply-main .xx', function(){
+        click_bad(reply_url,this);
+    });
+
     $('body').on('click', '.alert-msg', function(){
         $(this).fadeOut(500,function(){
             $(this).remove();
         });
-    });
-
-    //监听评论XX点击事件
-    $('body').on('click', '.reply-main .xx', function(){
-        click_bad(reply_url,this);
     });
 
     $('body').on('click', '.reply-to-reply', function(){
@@ -374,6 +393,7 @@ $(document).ready(function(){
     $(".nav li a").click(function(){
         $.cookie('tags', '' ,{ path : '/' });
         $.cookie('search', '' ,{ path : '/' });
+        $.cookie('order_by', '' ,{ path : '/' });
     })
 
     //监听搜索事件

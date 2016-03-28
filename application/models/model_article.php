@@ -50,7 +50,9 @@ class model_article extends CI_Model{
   * 得到单条记录
   */
     public function detail($id = 1){
-        $sql = 'select * from '.self::TABLE_NAME .' where status = 1 and '.self::PRI_KEY.' = '.$id;
+        $where = ' status = 1 and ';
+        if(!empty($_SESSION['is_admin'])) $where = '';
+        $sql = 'select * from '.self::TABLE_NAME ." where $where ".self::PRI_KEY.' = '.$id;
         return $this->db->query($sql)->first_row('array');
     }
 

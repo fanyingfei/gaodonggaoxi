@@ -1,9 +1,12 @@
 <div class="main left">
     <div class="nav-title">{$menu}<span class="mao edit-info"></span></div>
+    <ul class="nav-order-by">
+        {foreach from=$order_by key=key item=value}
+        <li {if $order_by_value == $value}class='active'{/if} order-by="{$value}">{$key}</li>
+        {/foreach}
+    </ul>
     {if $count > 0}
-
         {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
-
         <div class="main-list">
             {foreach from=$list key=key item=one}
             <div class="one{if $key == 0 } first{/if}">
@@ -28,7 +31,9 @@
                         <span class="response"></span>
                         <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
                         <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
-                        <a class="reply" data-id="{$one.con_id}">↓评论</a>[<span class="reply-count">{$one.reply}</span>]
+                        <span class="examine">
+                            <a class="reply" data-id="{$one.con_id}">↓评论</a>[<span class="reply-count">{$one.reply}</span>]
+                        </span>
                     </p>
                 </div>
             </div>
@@ -39,7 +44,7 @@
         <div class="empty"><h2 class="center">没有结果哦~去看看别的吧</h2></div>
     {/if}
 
-    <div class="sub">
+    <div class="sub examine">
         {if $is_login == 1}
             <p>{$name},说些什么吧</p>
             <input type="hidden" name="email" id="email" value="{$email}" />

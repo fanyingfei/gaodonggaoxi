@@ -34,6 +34,8 @@ class admin extends MY_Controller  {
         $this->load->model('model_black');
         $this->load->model('model_users');
         $this->load->model('model_reply');
+        $this->load->model('model_access');
+        $this->load->model('model_record');
     }
 
     public function index(){
@@ -49,7 +51,7 @@ class admin extends MY_Controller  {
     }
 
     public function content_list($str = ''){
-        $params = $this->reply_admin_param($str);
+        $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -116,7 +118,7 @@ class admin extends MY_Controller  {
     }
 
     public function article_list($str = ''){
-        $params = $this->reply_admin_param($str);
+        $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -181,7 +183,7 @@ class admin extends MY_Controller  {
     }
 
     public function user_list($str = ''){
-        $params = $this->reply_admin_param($str);
+        $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -250,7 +252,7 @@ class admin extends MY_Controller  {
     }
 
     public function black_list($str = ''){
-        $params = $this->reply_admin_param($str);
+        $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -288,7 +290,7 @@ class admin extends MY_Controller  {
     }
 
     public function reply_list($str = ''){
-        $params = $this->reply_admin_param($str);
+        $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -300,6 +302,9 @@ class admin extends MY_Controller  {
         }
         //得到数据
         $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
+        foreach($list as &$v){
+            $v['type'] = $this->type_name[$v['type']];
+        }
 
         $total = $this->model_reply->data_count($where);
 
@@ -320,7 +325,96 @@ class admin extends MY_Controller  {
         }
     }
 
-    public function reply_admin_param($str){
+    public function record()
+    {
+        $this->native_display('admin/record.html');
+    }
+
+    public function record_list($str = ''){
+        $params = $this->deal_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
+        $where = $order_by = '';
+
+        if(!empty($sort) && !empty($sort_by)){
+            $order_by = " order by $sort $sort_by ";
+        }
+        //得到数据
+        $list  = $this->model_record->admin_list($p+1,$limit , $where , $order_by);
+        foreach($list as &$v){
+            if(empty($v['ip_address'])){
+                $v['ip_address'] = get_ip_local($v['ip']);
+                $this->model_record->update_ip_address($v['rec_id'] , $v['ip_address']);
+            }
+            $v['type'] = $this->type_name[$v['type']];
+        }
+
+        $total = $this->model_record->data_count($where);
+
+        $result = array(
+            'total'=>$total,
+            'rows'=>$list,
+        );
+        echo json_encode($result);
+    }
+
+    public function record_delete(){
+        $ids = explode(',',$_REQUEST['ids']);
+        $res = $this->model_record->delete($ids);
+        if($res){
+            splash('success','删除成功');
+        }else{
+            splash('error','删除失败,请重试');
+        }
+    }
+
+    public function access()
+    {
+        $this->native_display('admin/access.html');
+    }
+
+    public function access_list($str = ''){
+        $params = $this->deal_admin_param($str);
+        $p = empty($params['offset']) ? 0 : $params['offset']/10;
+        $limit = empty($params['limit']) ? 10 : $params['limit'];
+        $sort = empty($params['sort']) ? '' : $params['sort'];
+        $sort_by = empty($params['order']) ? '' : $params['order'];
+        $where = $order_by = '';
+
+        if(!empty($sort) && !empty($sort_by)){
+            $order_by = " order by $sort $sort_by ";
+        }
+        //得到数据
+        $list  = $this->model_access->admin_list($p+1,$limit , $where , $order_by);
+        foreach($list as &$v){
+            if(empty($v['ip_address'])){
+                $v['ip_address'] = get_ip_local($v['ip']);
+                $this->model_access->update_ip_address($v['rec_id'] , $v['ip_address']);
+            }
+        }
+
+        $total = $this->model_access->data_count($where);
+
+        $result = array(
+            'total'=>$total,
+            'rows'=>$list,
+        );
+        echo json_encode($result);
+    }
+
+    public function access_delete(){
+        $ids = explode(',',$_REQUEST['ids']);
+        $res = $this->model_access->delete($ids);
+        if($res){
+            splash('success','删除成功');
+        }else{
+            splash('error','删除失败,请重试');
+        }
+    }
+
+    public function deal_admin_param($str){
         if(empty($str)) return array();
         if(strpos($str , '&') === false){
             $params = explode( '=' , $str);

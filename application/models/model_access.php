@@ -1,8 +1,8 @@
 <?php
 
-class model_record extends CI_Model{
+class model_access extends CI_Model{
 
-    CONST TABLE_NAME = 'record';
+    CONST TABLE_NAME = 'access';
     CONST PRI_KEY           = 'rec_id';
 
     function __construct()
@@ -28,16 +28,6 @@ class model_record extends CI_Model{
         return $this->db->query($sql)->first_row('array')['num'];
     }
 
-    /*
-     * 判断是否存在
-     */
-    public function is_has($id,$type){
-    //    if(!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) return true;
-        $ip = get_real_ip();
-        $sql = 'select rec_id from '.self::TABLE_NAME." where ip = '$ip' and type = $type and row_id = $id";
-        $res = $this->db->query($sql)->first_row('array');
-        return empty($res) ? true : false;
-    }
 
     /*
      * 插入记录
@@ -45,7 +35,6 @@ class model_record extends CI_Model{
     public function save($data){
     //    if(!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) return true;
         $data['ip'] = get_real_ip();
-        $data['ip_address'] = '';
         $data['create_time'] = date('Y-m-d H:i:s');
         return $this->db->insert(self::TABLE_NAME ,$data);
     }

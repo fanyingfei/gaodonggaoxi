@@ -5,7 +5,11 @@
         <span class="tag-nav">{$tag}</span>
         {/foreach}
     </div>
-
+    <ul class="nav-order-by">
+        {foreach from=$order_by key=key item=value}
+        <li {if $order_by_value == $value}class='active'{/if} order-by="{$value}">{$key}</li>
+        {/foreach}
+    </ul>
     {if $count > 0}
         {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
         <div class="main-list">
@@ -33,8 +37,10 @@
                         <a class="oo" data-id="{$one.con_id}">顶</a>(<span class="good">{$one.good}</span>)
                         <span class="jian-ge">|</span>
                         <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">{$one.bad}</span>)
-                        <span class="jian-ge">|</span>
-                           <span class="reply time cursor" data-id="{$one.con_id}">↓评论</span>(<span class="reply-count">{$one.reply}</span>)
+                        <span class="examine">
+                            <span class="jian-ge">|</span>
+                            <span class="reply time cursor" data-id="{$one.con_id}">↓评论</span>(<span class="reply-count">{$one.reply}</span>)
+                        </span>
                         <span class="jian-ge">|</span>
                         <span class="scan time">浏览({$one.scan})</span>
                     </p>
@@ -49,7 +55,7 @@
     {/if}
 
     {if $is_show == 1}
-    <div class="sub">
+    <div class="sub examine">
         {if $is_login == 1}
             <p>{$name},说些什么吧</p>
             <input type="hidden" name="email" id="email" value="{$email}" />

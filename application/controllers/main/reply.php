@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class reply extends MY_Controller  {
-    const table_name = 'reply';
+    private $table_name = 'reply';
 	/**
 	 * Index Page for this controller.
 	 *
@@ -90,7 +90,8 @@ class reply extends MY_Controller  {
      * 评论点赞
      */
     public function reply_record(){
-        parent :: record(self::table_name);
+        $_REQUEST['type'] = 0;
+        parent :: record($this->table_name);
     }
 
     /*

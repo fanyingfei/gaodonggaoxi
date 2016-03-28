@@ -1401,7 +1401,6 @@ ul {
     color: #ff0000;
     cursor: pointer;
 }
-
 .detail-title{
     color:#333333;
 }
@@ -1422,7 +1421,6 @@ ul {
     margin-right: 10px;
     margin-top:5px;
 }
-
 .tag input{
     margin:0 !important;
     padding:0 !important;
@@ -1461,7 +1459,7 @@ ul {
 .detail-tags{
     float:left;
 }
-.detail p{
+.detail p , .detail{
     line-height: 25px;
 }
 .sr-bdimgshare{
@@ -1480,8 +1478,26 @@ ul {
     margin-right:10px;
     border-radius: 0;
 }
+.menu .logo{
+    width: 1052px;
+    margin: 0 auto;
+    display: none;
+}
+.nav-order-by{
+    border-bottom: 1px solid #e8e8e8;
+    overflow: auto;
+}
+.nav-order-by li{
+    float:left;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-right:1px solid #e8e8e8;
+}
+.nav-order-by li.active{
+    background-color: #f9f9f9;
+}
 @media screen and (max-width: 660px) {
-    .user .login-avatar ,  #top , .right-container , .depict ,.article-one-right,
+    .user .login-avatar ,  #top , .right-container , .depict ,.article-one-right,.nav-order-by,
     .title , .hr-reply , .body-article .sub .textarea-prompt{
         display:none !important;
     }
@@ -1808,4 +1824,7 @@ ul {
     .one .user,.one .content-body , .detail p{
         font-size: 1.3em ;
     }
+}
+.examine{
+
 }

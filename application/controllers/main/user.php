@@ -73,8 +73,8 @@ class user extends MY_Controller  {
         if(is_login()){
             header_index();
         }
-        $url = $_SERVER['HTTP_REFERER'];
-        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '';
+        $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
+        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
 
         $this->assign('url',$url);
         $this->assign('title','登录');
@@ -122,7 +122,7 @@ class user extends MY_Controller  {
     public function login_out(){
         session_destroy();
         expire_cookie('is_login');
-        $url = $_SERVER['HTTP_REFERER'];
+        $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
         if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
         header_index($url);
     }

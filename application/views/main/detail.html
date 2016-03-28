@@ -3,8 +3,10 @@
         <p>{$data.title}</p>
         <p class="time text-right">
             <span>浏览[{$data.scan}]</span>
-            <span class="mao edit-info"></span>
-            <span class="mao cursor">评论[{$data.reply}]</span>
+            <span class="examine">
+                <span class="mao edit-info"></span>
+                <span class="mao cursor">评论[{$data.reply}]</span>
+            </span>
             <span>{$data.name}</span>
             <span>{$data.create_time}</span>
         </p>
@@ -16,7 +18,7 @@
         <a href="#" class="bds_tsina share-sina" data-cmd="tsina" title="分享到新浪微博"></a>
         <a href="#" class="bds_weixin share-weixin" data-cmd="weixin" title="分享到微信"></a>
     </div>
-    <div  class="detail-reply"></div>
+    <div  class="detail-reply examine"></div>
     <input type="hidden" id="type" value="{$data.type}" />
     <input type="hidden" id="unique-id" value="{$data.art_id}" />
     <input type="hidden" id="comment-url" value="/content/record" />

@@ -86,6 +86,7 @@ $route['user/validate/(:any)'] = "main/user/user_validate/$1";
 $route['user/save'] = "main/user/info_save";
 $route['user/nick/save'] = "main/user/nick_save";
 $route['user/avatar/save'] = "main/user/avatar_save";
+
 //admin后台
 $route['admin'] = "admin/admin/index";
 $route['admin/content'] = "admin/admin/content";
@@ -118,6 +119,16 @@ $route['admin/reply'] = "admin/admin/reply";
 $route['admin/reply_list'] = "admin/admin/reply_list";
 $route['admin/reply_list/(:any)'] = "admin/admin/reply_list/$1";
 $route['admin/reply_delete'] = "admin/admin/reply_delete";
+
+$route['admin/record'] = "admin/admin/record";
+$route['admin/record_list'] = "admin/admin/record_list";
+$route['admin/record_list/(:any)'] = "admin/admin/record_list/$1";
+$route['admin/record_delete'] = "admin/admin/record_delete";
+
+$route['admin/access'] = "admin/admin/access";
+$route['admin/access_list'] = "admin/admin/access_list";
+$route['admin/access_list/(:any)'] = "admin/admin/access_list/$1";
+$route['admin/access_delete'] = "admin/admin/access_delete";
 
 $route['error'] = 'main/content/error';
 

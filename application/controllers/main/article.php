@@ -2,7 +2,7 @@
 
 class article extends MY_Controller  {
     private $type = 6; //默认为6
-    const table_name = 'article';
+    private $table_name = 'article';
     private $tags_data = array(
                                             4=>array('感言','废话'),
                                             6=>array('恐怖/惊悚','感动/伤感','历史','怪奇','人生','温暖','励志'),
@@ -29,6 +29,8 @@ class article extends MY_Controller  {
         parent :: __construct();
         $this->assign('is_show',1);
         $this->load->model('model_article');
+        parent :: $order_data['最冷'] = 'scan asc';
+        parent :: $order_data['最热'] = 'scan desc';
     }
 
     public function zzs($p = 0){
@@ -75,8 +77,8 @@ class article extends MY_Controller  {
         $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
-        $this->assign('title',$detail['title']);
-        $this->assign('keywords',$detail['tags']);
+        $this->assign('title',$detail['title'].'－搞东搞西');
+        $this->assign('keywords',$detail['tags'].' 搞东搞西');
         $this->assign('description',empty($description) ? $detail['title'] : $description);
 
         $this->native_display('main/header.html');
@@ -97,7 +99,7 @@ class article extends MY_Controller  {
         if(!empty($tags)) $where .= " and tags like '%$tags%' ";
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
-
+        $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
 
         //得到总数
         $count = $this->model_article->data_count($where);
@@ -105,7 +107,7 @@ class article extends MY_Controller  {
         if(empty($p) || $p > $total_page) $p = $total_page;
         
         //得到数据
-        $list  = $this->model_article->data_list($total_page - $p,$limit,$where);
+        $list  = $this->model_article->data_list($total_page - $p,$limit,$where,$order_by);
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
@@ -135,6 +137,7 @@ class article extends MY_Controller  {
         $this->assign('count',$count);
         $this->assign('page',$page);
         $this->assign('type',$this->type);
+        $this->assign('order_by', parent :: $order_data);
         $this->assign('tags',$this->tags_data[$this->type]);
 
         $this->display('article.html');
@@ -204,7 +207,7 @@ class article extends MY_Controller  {
      * 文章内容点赞
      */
     public function article_record(){
-        parent :: record(self::table_name);
+        parent :: record($this->table_name);
     }
 
     public function error(){

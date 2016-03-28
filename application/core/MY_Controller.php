@@ -2,12 +2,14 @@
 
 class MY_controller extends CI_Controller {
     static $detail_data = array(4 , 6 , 7); //需要展示详情的
-    static $all_type_data = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
-    static $all_type_name = array(1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
+    static $all_type_data   = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
+    static $all_type_name = array('-1'=>'浏览',0=>'评论',1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
+    static $order_data = array('最新'=>'create_time desc','最早'=>'create_time asc','最赞'=>'good desc , bad asc','最冷'=>'bad desc , good asc');
 
     public function __construct() {
-		if(!isset($_SESSION)) session_start();
+        if(!isset($_SESSION)) session_start();
         parent::__construct();
+        $this->save_access();
     }
     public function assign($key,$val)
     {
@@ -15,6 +17,7 @@ class MY_controller extends CI_Controller {
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
+        $order_by = empty($_COOKIE['order_by']) ? 'create_time desc' : $_COOKIE['order_by']; //排序
         $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
         $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
 
@@ -24,6 +27,7 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign('is_login',$is_login);
         $this->ci_smarty->assign('is_admin',$is_admin);
+        $this->ci_smarty->assign('order_by_value',$order_by);
         $this->ci_smarty->assign($key,$val);
     }
 
@@ -99,6 +103,19 @@ class MY_controller extends CI_Controller {
         }else{
             splash('error','Try again');
         }
+    }
+
+    public function save_access(){
+        if(isCrawler()) return false;
+        if(!empty($_SESSION['is_admin'])) return false;
+        $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+        $url = str_replace('/index.php?s=/','',$url);
+        $url = str_replace('/index.php?','',$url);
+        if(strpos($url,'reply') !== false) return false;
+        if(empty($url) || $url == '?') $url = 'xiao';
+        $this->load->model('model_access');
+        $data = array('url'=>$url);
+        $this->model_access->save($data);
     }
 
 }

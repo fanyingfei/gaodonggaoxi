@@ -289,3 +289,43 @@ function my_array_column($input, $columnKey, $indexKey=null){
         return array_column($input, $columnKey, $indexKey);
     }
 }
+
+function get_ip_local($queryIP){
+    $url = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip='.$queryIP;
+    $ch = curl_init($url);
+    //curl_setopt($ch,CURLOPT_ENCODING ,'utf8');
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+    $location = curl_exec($ch);
+    $location = json_decode($location);
+    curl_close($ch);
+
+    $loc = "";
+    if($location===FALSE) return "";
+    if (empty($location->desc)) {
+        $loc = $location->province.'&nbsp;'.$location->city.'&nbsp;'.$location->district.'&nbsp;'.$location->isp;
+    }else{
+        $loc = $location->desc;
+    }
+    return $loc;
+}
+
+/*
+ * 是否爬虫
+ */
+function isCrawler(){
+    $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    $spiders   = array(
+        'Googlebot', // Google 爬虫
+        'Baiduspider', // 百度爬虫
+        'Yahoo! Slurp', // 雅虎爬虫
+        'YodaoBot', // 有道爬虫
+        'msnbot' // Bing爬虫
+        // 更多爬虫关键字
+    );
+    foreach($spiders as $spider){
+        $spider = strtolower($spider);
+        if(strpos($userAgent, $spider) !== false) return true;
+    }
+    return false;
+}

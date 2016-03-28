@@ -2,7 +2,7 @@
 
 class content extends MY_Controller  {
     private $type = 1; //默认为1
-    const table_name = 'content';
+    private $table_name = 'content';
 	/**
 	 * Index Page for this controller.
 	 *
@@ -34,7 +34,8 @@ class content extends MY_Controller  {
         $this->assign('title','搞东搞西－搞搞东西');
         $this->assign('menu','搞笑－开开心心每一天');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
-        $this->assign('description','搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
+        $web_info = '搞东搞西，搞搞东西，这里有搞笑的图片，捧腹的段子，诱人的妹子，还有经典的话，好看的故事，还可以把你喜欢的一起分享哦，快来搞搞吧~';
+        $this->assign('description',$web_info.' 搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
         $this->content_list($p);
     }
 
@@ -70,13 +71,15 @@ class content extends MY_Controller  {
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
 
+        $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+
         //得到总数
         $count = $this->model_content->data_count($where);
         $total_page = ceil($count/$limit);
         if(empty($p) || $p > $total_page) $p = $total_page;
 
         //得到数据
-        $list  = $this->model_content->data_list($total_page - $p,$limit,$where);
+        $list  = $this->model_content->data_list($total_page - $p,$limit,$where,$order_by);
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
@@ -107,6 +110,7 @@ class content extends MY_Controller  {
         $this->assign('count',$count);
         $this->assign('page',$page);
         $this->assign('type',$this->type);
+        $this->assign('order_by', parent :: $order_data);
 
         $this->display('content.html');
     }
@@ -153,7 +157,7 @@ class content extends MY_Controller  {
      * 主要内容点赞
      */
     public function content_record(){
-        parent :: record(self::table_name);
+        parent :: record($this->table_name);
     }
 
     /*
