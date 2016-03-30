@@ -25,7 +25,7 @@ class admin extends MY_Controller  {
     public function __construct() {
         parent::__construct();
         if(!is_login() || $_SESSION['is_admin'] != 1){
-            header("Location: /");
+            echo  'you have no permission to do this. ';
             exit;
         }
         $this->type_name = parent::$all_type_name;
@@ -346,7 +346,7 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                $this->model_record->update_ip_address($v['rec_id'] , $v['ip_address']);
+                if(!empty($v['ip_address'])) $this->model_record->update_ip_address($v['rec_id'] , $v['ip_address']);
             }
             $v['type'] = $this->type_name[$v['type']];
         }
@@ -391,7 +391,7 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                $this->model_access->update_ip_address($v['rec_id'] , $v['ip_address']);
+                if(!empty($v['ip_address'])) $this->model_access->update_ip_address($v['rec_id'] , $v['ip_address']);
             }
         }
 

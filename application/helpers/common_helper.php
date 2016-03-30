@@ -307,6 +307,8 @@ function get_ip_local($queryIP){
     }else{
         $loc = $location->desc;
     }
+    $filter_loc = str_replace('&nbsp;','',$loc);
+    if(empty($filter_loc)) return "";
     return $loc;
 }
 

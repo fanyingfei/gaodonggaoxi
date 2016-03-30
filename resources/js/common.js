@@ -263,7 +263,8 @@ $(document).ready(function(){
     //标签链接
     $('body').on('click', '.tag-nav', function(){
         $.cookie('tags', $(this).text() ,{ path : '/' });
-        url = url.replace(/[0-9]+$/gi,'');
+        var cur_url = window.location.href;
+        cur_url = cur_url.replace(/[0-9]+$/gi,'');
         window.location.href = window.location.href;
     })
 
