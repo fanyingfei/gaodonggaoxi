@@ -4,7 +4,7 @@ class article extends MY_Controller  {
     private $type = 6; //默认为6
     private $table_name = 'article';
     private $tags_data = array(
-                                            4=>array('感言','废话'),
+                                            4=>array('感言','废话','童年','微小说','文学'),
                                             6=>array('恐怖/惊悚','感动/伤感','历史','怪奇','人生','温暖','励志'),
                                             7=>array('web前端','php','ios','mysql','linux','c/c++','java','android')
                                         );
@@ -30,7 +30,6 @@ class article extends MY_Controller  {
         $this->assign('is_show',1);
         $this->load->model('model_article');
         parent :: $order_data['最冷'] = 'scan asc';
-        parent :: $order_data['最热'] = 'scan desc';
     }
 
     public function zzs($p = 0){
@@ -93,21 +92,37 @@ class article extends MY_Controller  {
     {
         $limit = 10;
         $p = intval($p);
+        $is_random = 0;
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$this->type;
         $tags = empty($_COOKIE['tags']) ? '' : $_COOKIE['tags'] ;
         if(!empty($tags)) $where .= " and tags like '%$tags%' ";
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
-        $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+        if(!empty($_COOKIE['order_by']) && $_COOKIE['order_by'] == 'random') $is_random = 1;
 
-        //得到总数
-        $count = $this->model_article->data_count($where);
-        $total_page = ceil($count/$limit);
-        if(empty($p) || $p > $total_page) $p = $total_page;
-        
-        //得到数据
-        $list  = $this->model_article->data_list($total_page - $p,$limit,$where,$order_by);
+        if($is_random == 1){
+            $key_res = $this->model_article->data_key($where);
+            $count = count($key_res) - 1;
+            $random_data = array();
+            while(count($random_data)<$limit){
+                $rand =mt_rand(0 , $count);
+                $random_data[] = $key_res[$rand]['id'];
+            }
+            $random_data = array_unique($random_data);
+            $list = $this->model_article->data_random_list($random_data , $limit , $where);
+            $page = '<div onclick="window.location.href=window.location.href"><a>再随一次</a></div>';
+        }else {
+            //得到总数
+            $count = $this->model_article->data_count($where);
+            $total_page = ceil($count/$limit);
+            if(empty($p) || $p > $total_page) $p = $total_page;
+            $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+            //得到数据
+            $list = $this->model_article->data_list($total_page - $p, $limit, $where, $order_by);
+            //生成页码
+            $page = get_page($count,$limit,$total_page - $p + 1);
+        }
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
@@ -130,9 +145,6 @@ class article extends MY_Controller  {
             $v['create_time'] = change_time($v['create_time']);
         }
 
-        //生成页码
-        $page = get_page($count,$limit,$total_page - $p + 1);
-
         $this->assign('list',$list);
         $this->assign('count',$count);
         $this->assign('page',$page);
@@ -154,6 +166,10 @@ class article extends MY_Controller  {
         if($res) splash('error','你已被拉入黑名单');
 
         $data['type'] = intval($_REQUEST['type']);
+        if($data['type'] == 4){
+            //渣渣说
+            $_REQUEST['content'] = strip_tags($_REQUEST['content'],'<p><br>');
+        }
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
 

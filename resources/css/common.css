@@ -52,7 +52,6 @@ ul {
         font-size: 13px;
         font-family: '微软雅黑';
         margin: 0px;
-        background-color: #fdfdfd;
     }
 
     .center {
@@ -946,6 +945,14 @@ ul {
         padding:0 6px;
         display: block;
     }
+    .menu .logo{
+        width: 1052px;
+        margin: 0 auto;
+        margin-top:20px;
+    }
+    .member-user-info-right{
+        margin-top:50px;
+    }
 }
 .member-total, .nav-title{
     padding: 12px 20px;
@@ -1478,11 +1485,6 @@ ul {
     margin-right:10px;
     border-radius: 0;
 }
-.menu .logo{
-    width: 1052px;
-    margin: 0 auto;
-    display: none;
-}
 .nav-order-by{
     border-bottom: 1px solid #e8e8e8;
     overflow: auto;
@@ -1501,7 +1503,9 @@ ul {
     .title , .hr-reply , .body-article .sub .textarea-prompt{
         display:none !important;
     }
-
+    .menu .logo{
+        margin-left:10px;
+    }
     body {
         color: #000;
         font-size: 10px;
@@ -1825,6 +1829,6 @@ ul {
         font-size: 1.3em ;
     }
 }
-.examine{
-
+.login-third{
+    display:none;
 }

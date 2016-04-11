@@ -22,6 +22,14 @@ class model_article extends CI_Model{
     }
 
     /*
+    * 随机
+    */
+    public function data_random_list($random,$limit,$where){
+        $sql = 'select * from '.self::TABLE_NAME." $where  and ".self::PRI_KEY." in (".implode(',',$random).") limit ".$limit;
+        return $this->db->query($sql)->result_array();
+    }
+
+    /*
      * 后台获取数据列表
      */
     public function admin_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
@@ -36,6 +44,14 @@ class model_article extends CI_Model{
     public function data_count($where = ''){
         $sql = 'select count(*) as num from '.self::TABLE_NAME ." $where";
         return $this->db->query($sql)->first_row('array')['num'];
+    }
+
+    /*
+  * 得到全部主键
+  */
+    public function data_key($where = ''){
+        $sql = 'select '.self::PRI_KEY.' as id from '.self::TABLE_NAME ." $where limit 100000";
+        return $this->db->query($sql)->result_array();
     }
 
     /*

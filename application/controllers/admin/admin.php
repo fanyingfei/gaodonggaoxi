@@ -133,9 +133,10 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $v['content'] = strip_tags($v['content'],'<br><img><a>');
             $v['create_time'] = change_time($v['create_time']);
             $v['type'] = $this->type_name[$v['type']];
+            $url = get_detail_url($v['art_id'],$v['create_time']);
+            $v['content'] = '<a target="_blank" href="'.$url.'">查看详情</a>';
         }
 
         $total = $this->model_article->data_count($where);
@@ -197,6 +198,7 @@ class admin extends MY_Controller  {
         $list  = $this->model_users->data_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
             $v['is_admin'] = empty($v['is_admin']) ? '否' : '是';
+            if(empty($v['sex'])) $v['sex'] = 'U';
             $v['sex'] = $this->sex_data[$v['sex']];
             $v['is_validate'] = '否';
             if(!empty($v['is_validate']) && !empty($v['name'])){

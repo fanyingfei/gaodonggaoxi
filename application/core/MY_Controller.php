@@ -4,7 +4,7 @@ class MY_controller extends CI_Controller {
     static $detail_data = array(4 , 6 , 7); //需要展示详情的
     static $all_type_data   = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
     static $all_type_name = array('-1'=>'浏览',0=>'评论',1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
-    static $order_data = array('最新'=>'create_time desc','最早'=>'create_time asc','最赞'=>'good desc , bad asc','最冷'=>'bad desc , good asc');
+    static $order_data = array('最新'=>'create_time desc','最早'=>'create_time asc','最赞'=>'good desc , bad asc','最冷'=>'bad desc , good asc','随机'=>'random');
 
     public function __construct() {
         if(!isset($_SESSION)) session_start();
@@ -27,7 +27,7 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign('is_login',$is_login);
         $this->ci_smarty->assign('is_admin',$is_admin);
-        $this->ci_smarty->assign('order_by_value',$order_by);
+        $this->ci_smarty->assign('cur_order',$order_by);
         $this->ci_smarty->assign($key,$val);
     }
 
@@ -107,6 +107,7 @@ class MY_controller extends CI_Controller {
 
     public function save_access(){
         if(isCrawler()) return false;
+        if(in_array(get_real_ip(),array('101.44.193.72','180.166.221.42'))) return false;
         if(!empty($_SESSION['is_admin'])) return false;
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
         $url = str_replace('/index.php?s=/','',$url);

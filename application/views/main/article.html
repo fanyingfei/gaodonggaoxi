@@ -7,7 +7,7 @@
     </div>
     <ul class="nav-order-by">
         {foreach from=$order_by key=key item=value}
-        <li {if $order_by_value == $value}class='active'{/if} order-by="{$value}">{$key}</li>
+        <li {if $cur_order == $value}class='active'{/if} order-by="{$value}">{$key}</li>
         {/foreach}
     </ul>
     {if $count > 0}

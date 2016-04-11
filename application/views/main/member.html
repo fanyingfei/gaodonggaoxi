@@ -80,6 +80,10 @@
     <div class="member-user-info">
         {if $user.avatar != ''}<div class="reply-avatar"><img src="{$user.avatar}" /></div>{/if}
     </div>
+    <div class="left member-user-info-right">
+        <p>性别：{$user.sex}</p>
+        <p>年龄：{$user.age}</p>
+    </div>
 </div>
 <script type="text/javascript">
 $(function(){

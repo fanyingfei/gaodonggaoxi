@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class user extends MY_Controller  {
-
+    private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
 	/**
 	 * Index Page for this controller.
 	 *
@@ -41,10 +41,10 @@ class user extends MY_Controller  {
         $count_content = $this->model_content->data_count($where);
         $user['content_count'] = $count_article + $count_content ;
 
-        $sex = array('M'=>'男','W'=>'女','U'=>'未知');
-        $age = array('');
+        $sex = $this->sex_data;
+        $age = array('0'=>'不填');
         for($i = 10 ; $i < 90 ; $i++){
-            array_push($age,$i);
+            $age[$i] = $i;
         }
         $this->assign('user',$user);
         $this->assign('sex',$sex);
@@ -273,6 +273,10 @@ class user extends MY_Controller  {
         $this->load->model('model_article');
         $this->load->model('model_content');
         $user_info = $this->model_users->get_user_by_user_id($user_id);
+        if(empty($user_info['sex']))  $user_info['sex'] = 'U';
+        $user_info['sex'] = $this->sex_data[$user_info['sex']];
+        if(empty($user_info['age']))  $user_info['age'] = '未知';
+        if(empty($user_info['avatar'])) $user_info['avatar'] = '/resources/images/login/logo.jpg';
         if(empty($user_info)) parent :: error_msg('该用户不存在');
         if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
             parent :: error_msg('该用户不存在');

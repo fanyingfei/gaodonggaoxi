@@ -133,7 +133,7 @@ $route['admin/access_delete'] = "admin/admin/access_delete";
 $route['error'] = 'main/content/error';
 
 $route['default_controller'] = "main/content/xiao";
-$route['404_override'] = '';
+$route['404_override'] = 'main/content/xiao';
 
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */

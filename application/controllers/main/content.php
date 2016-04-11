@@ -66,20 +66,37 @@ class content extends MY_Controller  {
     {
         $limit = 10;
         $p = intval($p);
+        $is_random = 0;
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$this->type;
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
         if(!empty($search)) $where .= " and name like '%$search%' ";
 
-        $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+        if(!empty($_COOKIE['order_by']) && $_COOKIE['order_by'] == 'random') $is_random = 1;
 
-        //得到总数
-        $count = $this->model_content->data_count($where);
-        $total_page = ceil($count/$limit);
-        if(empty($p) || $p > $total_page) $p = $total_page;
+        if($is_random == 1){
+            $key_res = $this->model_content->data_key($where);
+            $count = count($key_res) - 1;
+            $random_data = array();
+            while(count($random_data)<$limit){
+                $rand =mt_rand(0 , $count);
+                $random_data[] = $key_res[$rand]['id'];
+            }
+            $random_data = array_unique($random_data);
+            $list = $this->model_content->data_random_list($random_data,$limit , $where);
+            $page = '<div onclick="window.location.href=window.location.href"><a>再随一次</a></div>';
+        }else{
+            //得到总数
+            $count = $this->model_content->data_count($where);
+            $total_page = ceil($count/$limit);
+            if(empty($p) || $p > $total_page) $p = $total_page;
+            $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+            //得到数据
+            $list  = $this->model_content->data_list($total_page - $p,$limit,$where,$order_by);
+            //生成页码
+            $page = get_page($count,$limit,$total_page - $p + 1);
+        }
 
-        //得到数据
-        $list  = $this->model_content->data_list($total_page - $p,$limit,$where,$order_by);
         //得到头像
         $user_res =  parent :: get_user_avatar($list);
         if(!empty($user_res)){
@@ -102,9 +119,6 @@ class content extends MY_Controller  {
                 $v['content'] = filter_content_br(strip_tags($v['content'],'<div><img><br>'));
             }
         }
-
-        //生成页码
-        $page = get_page($count,$limit,$total_page - $p + 1);
 
         $this->assign('list',$list);
         $this->assign('count',$count);

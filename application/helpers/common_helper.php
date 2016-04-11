@@ -301,14 +301,15 @@ function get_ip_local($queryIP){
     curl_close($ch);
 
     $loc = "";
-    if($location===FALSE) return "";
-    if (empty($location->desc)) {
+    if($location===FALSE) return "unknow";
+
+    if (empty($location->desc) || empty($location->province)) {
         $loc = $location->province.'&nbsp;'.$location->city.'&nbsp;'.$location->district.'&nbsp;'.$location->isp;
     }else{
         $loc = $location->desc;
     }
     $filter_loc = str_replace('&nbsp;','',$loc);
-    if(empty($filter_loc)) return "";
+    if(empty($filter_loc)) return "unknow";
     return $loc;
 }
 
@@ -317,13 +318,52 @@ function get_ip_local($queryIP){
  */
 function isCrawler(){
     $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    if(empty($userAgent)) return true;
     $spiders   = array(
         'Googlebot', // Google 爬虫
         'Baiduspider', // 百度爬虫
         'Yahoo! Slurp', // 雅虎爬虫
-        'YodaoBot', // 有道爬虫
-        'msnbot' // Bing爬虫
-        // 更多爬虫关键字
+        'YoudaoBot', // 有道爬虫
+        'msnbot', // Bing爬虫
+        "TencentTraveler",
+        "BaiduGame",
+        "msnbot",
+        "Sosospider",
+        "Sogou web spider",
+        "Sogou spider",
+        "360Spider",
+        "ia_archiver",
+        "Yahoo! Slurp",
+        "Yahoo Slurp",
+        "Java (Often spam bot)",
+        "Voila",
+        "Yandex bot",
+        "BSpider",
+        "twiceler",
+        "Sogou Spider",
+        "Speedy Spider",
+        "Google AdSense",
+        "Heritrix",
+        "Python-urllib",
+        "Alexa (IA Archiver)",
+        "Ask",
+        "Exabot",
+        "Custo",
+        "OutfoxBot/YodaoBot",
+        "yacy",
+        "SurveyBot",
+        "legs",
+        "lwp-trivial",
+        "Nutch",
+        "StackRambler",
+        "The web archive (IA Archiver)",
+        "Perl tool",
+        "MJ12bot",
+        "Netcraft",
+        "MSIECrawler",
+        "WGet tools",
+        "larbin",
+        "Fish search"
     );
     foreach($spiders as $spider){
         $spider = strtolower($spider);

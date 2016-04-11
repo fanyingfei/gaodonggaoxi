@@ -177,7 +177,7 @@ window.onload=function(){
 $(document).ready(function(){
     var reply_url = '/reply/record';
 
-    display();
+   // display();
     function display(){
         if($('.login_out').length <= 0){
             $('.examine').hide();
@@ -205,8 +205,8 @@ $(document).ready(function(){
         if(max_height == 'none'){
             $(this).css("max-height","600px");
             if(img_height > 1000){
-                height = $(this).offset().top;
-                $('html,body').animate({scrollTop: height - 50}, 500);
+                height = $(this).offset().top + 600;
+                $('html,body').animate({scrollTop: height - 100}, 200);
             }
         }else{
             $(this).css("max-height","none");
@@ -262,15 +262,19 @@ $(document).ready(function(){
 
     //标签链接
     $('body').on('click', '.tag-nav', function(){
+        $.cookie('search', '' , {path:'/'});
         $.cookie('tags', $(this).text() ,{ path : '/' });
         var cur_url = window.location.href;
-        cur_url = cur_url.replace(/[0-9]+$/gi,'');
-        window.location.href = window.location.href;
+        cur_url = cur_url.replace(/[0-9]+$/g,'');
+        window.location.href = cur_url;
     })
 
     $('body').on('click', '.nav-order-by li', function(){
+        $.cookie('search', '' , {path:'/'});
         $.cookie('order_by', $(this).attr('order-by') ,{ path : '/' });
-        window.location.href = window.location.href;
+        var cur_url = window.location.href;
+        cur_url = cur_url.replace(/[0-9]+$/g,'');
+        window.location.href = cur_url;
     })
 
     //监听主体OO点击事件
@@ -400,6 +404,8 @@ $(document).ready(function(){
     //监听搜索事件
     $(".search button").click(function(){
         var search = $("#search").val();
+        $.cookie('tags', '' ,{ path : '/' });
+        $.cookie('order_by', '' ,{ path : '/' });
         $.cookie('search', search , {path:'/'});
         window.location.href=window.location.href;
     })
