@@ -129,6 +129,32 @@ class content extends MY_Controller  {
         $this->display('content.html');
     }
 
+    public function detail($time,$param){
+        $id = intval(get_detail_id($param));
+        $detail  = $this->model_content->detail($id);
+        $detail['create_time'] = change_time($detail['create_time']);
+        $detail['user_sn'] = $detail['avatar'] = '';
+        $detail['u_name'] = empty($detail['user_id']) ? md5($detail['email']) : $detail['name'];
+        if(!empty($detail['user_id'])){
+            $this->load->model('model_users');
+            $user_res = $this->model_users->get_user_by_user_id($detail['user_id']);
+            $detail['avatar'] = $user_res['avatar'];
+            $detail['user_sn'] = get_user_sn($detail['user_id'] , $user_res['create_time']);
+        }
+        $this->assign('one',$detail);
+        $this->assign('count',1);
+        $this->assign('page','');
+        $this->assign('type',$detail['type']);
+        $this->assign('body','body-content');
+        $this->assign('title','搞东搞西－搞搞东西');
+        $this->assign('menu','搞笑－开开心心每一天');
+        $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
+        $web_info = '搞东搞西，搞搞东西，这里有搞笑的图片，捧腹的段子，诱人的妹子，还有经典的话，好看的故事，还可以把你喜欢的一起分享哦，快来搞搞吧~';
+        $this->assign('description',$web_info.' 搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
+
+        $this->display('single.html');
+    }
+
     /*
      * 用户提交内容
      */

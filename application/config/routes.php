@@ -59,6 +59,7 @@ $route['cxy/(:num)'] = "main/article/cxy/$1";
 //详情
 $route['detail'] = "main/content/xiao"; //没参数时直接跳首页
 $route['detail/(:num)/(:any)'] = "main/article/detail/$1/$2";
+$route['single/(:num)/(:any)'] = "main/content/detail/$1/$2";
 //回复列表，回复
 $route['reply'] = "main/reply/reply_list";
 $route['reply/save'] = "main/reply/reply_save";

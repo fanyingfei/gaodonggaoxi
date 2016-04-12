@@ -9,13 +9,6 @@
 
 require_once 'JSON.php';
 
-$email = $_COOKIE['email'];
-$admin  = array('929632454@qq.com','1602515264@qq.com');
-if(!in_array($email,$admin)){
-    echo 'you can not upload image';
-    exit;
-}
-
 $php_path = dirname(__FILE__) . '/';
 $php_url = dirname($_SERVER['PHP_SELF']) . '/';
 

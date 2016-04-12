@@ -260,6 +260,10 @@ function get_detail_id($str){
     return str_replace(array('content_','.html'),'',$str);
 }
 
+function get_single_url($id,$time){
+    return '/single/'.date('Ymd',strtotime($time)).'/content_'.$id.'.html';
+}
+
 function my_array_column($input, $columnKey, $indexKey=null){
     if(!function_exists('array_column')){
         $columnKeyIsNumber  = (is_numeric($columnKey))?true:false;

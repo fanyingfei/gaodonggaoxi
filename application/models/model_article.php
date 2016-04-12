@@ -16,7 +16,7 @@ class model_article extends CI_Model{
      */
     public function data_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
         if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
-        $sql = "select art_id,user_id,title,good,bad,scan,email,`name`,`type`,reply,tags,create_time from "
+        $sql = "select art_id,user_id,title,good,bad,scan,email,`name`,`type`,reply,tags,create_time,status,ip from "
                     .self::TABLE_NAME ." $where $order_by limit ".$p*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
@@ -26,15 +26,6 @@ class model_article extends CI_Model{
     */
     public function data_random_list($random,$limit,$where){
         $sql = 'select * from '.self::TABLE_NAME." $where  and ".self::PRI_KEY." in (".implode(',',$random).") limit ".$limit;
-        return $this->db->query($sql)->result_array();
-    }
-
-    /*
-     * 后台获取数据列表
-     */
-    public function admin_list( $p = 1 ,$limit = 10  , $where = '' ,$order_by = ''){
-        if(empty($order_by)) $order_by = ' order by '.self::PRI_KEY. ' desc';
-        $sql = "select * from ".self::TABLE_NAME ." $where $order_by limit ".$p*$limit.', '.$limit;
         return $this->db->query($sql)->result_array();
     }
 

@@ -45,6 +45,8 @@ class admin extends MY_Controller  {
 
     public function content()
 	{
+        unset($this->type_name[-1]);
+        unset($this->type_name[0]);
         $this->assign('type_list',$this->type_name);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/content.html');
@@ -66,7 +68,8 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $v['content'] = strip_tags($v['content'],'<br><img><a>');
+            $url = get_single_url($v['con_id'],$v['create_time']);
+            $v['content'] = '<a target="_blank" href="'.$url.'">查看详情</a>';
             $v['create_time'] = change_time($v['create_time']);
             $v['type'] = $this->type_name[$v['type']];
         }
@@ -112,6 +115,8 @@ class admin extends MY_Controller  {
 
     public function article()
     {
+        unset($this->type_name[-1]);
+        unset($this->type_name[0]);
         $this->assign('type_list',$this->type_name);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/article.html');
@@ -129,7 +134,7 @@ class admin extends MY_Controller  {
             $order_by = " order by $sort $sort_by ";
         }
         //得到数据
-        $list  = $this->model_article->admin_list($p,$limit , $where , $order_by);
+        $list  = $this->model_article->data_list($p,$limit , $where , $order_by);
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';

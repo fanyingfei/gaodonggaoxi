@@ -1,0 +1,36 @@
+<div class="main left">
+    <div class="nav-title">{$menu}</div>
+    <div class="main-list">
+        <div class="one first">
+            <div class="user">
+                {if $one.avatar != ''}
+                    <div class="avatar-wapper">
+                        <div class="login-avatar">
+                            <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
+                        </div>
+                    </div>
+                {/if}
+                {if $one.user_sn != ''}
+                    <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
+                {else}
+                    <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
+                {/if}
+                <p class="time text-right">{$one.create_time}</p>
+            </div>
+            <div class="content">
+                <div class="content-body{if $one.avatar != ''} avatar-min-height{/if}">{$one.content}</div>
+                <p class="right clear click oo-xx">
+                    <span class="response"></span>
+                    <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
+                    <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                    <span class="examine">
+                        <a class="reply" data-id="{$one.con_id}">↓评论</a>[<span class="reply-count">{$one.reply}</span>]
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="type" value="{$type}" />
+    <input type="hidden" id="comment-url" value="/content/record" />
+</div>

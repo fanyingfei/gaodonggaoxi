@@ -41,7 +41,7 @@ KindEditor.plugin('image', function(K) {
 			//tabs
 			'<div class="tabs"></div>',
 			//remote image - start
-			'<div class="tab1" style="display:none;">',
+			'<div class="tab1">',
 			//url
 			'<div class="ke-dialog-row">',
 			'<label for="remoteUrl" style="width:60px;">' + lang.remoteUrl + '</label>',

@@ -543,10 +543,6 @@ ul {
         border: 0;
     }
 
-    .ke-dialog-body .ke-dialog-row:last-child {
-        display: none;
-    }
-
     .one .content .content-body a {
         color: #4285f4;
     }
@@ -1174,6 +1170,11 @@ ul {
     width: 360px;
     margin: 80px auto 0;
 }
+.lian{
+	border-bottom:1px solid #f1f1f1;
+	margin:0 20px 10px;
+	padding-bottom:10px;
+}
 .layout input{
     width:100%;
     height: 45px;
@@ -1296,10 +1297,6 @@ ul {
     font-size: 13px;
     color: #F0752F;
 }
-
-.ke-dialog-default .ke-dialog-body ul.ke-tabs-ul li:last-child {
-    display: none;
-}
 .ke-dialog-footer .ke-button{
     background-position: center 0;
     border:1px solid #e8e8e8;
@@ -1330,11 +1327,33 @@ ul {
     text-align: center !important;
     margin-top: -15px;
 }
-
-.ke-dialog-content .ke-tabs {
-    display: none !important;
+.ke-dialog-footer span.ke-button-common{
+    border-radius: 5px;
+    overflow: hidden;
 }
-
+.ke-button-common{
+    background-image: none !important;
+    background-color: #f1f1f1 !important;
+    border-radius: 5px;
+}
+.ke-button-common:hover{
+    background-color: #dedede !important;
+}
+.ke-upload-area .ke-upload-file{
+    cursor:pointer;
+}
+.ke-dialog-body .ke-dialog-row:last-child {
+    /* display: none; */
+}
+.ke-dialog-default .ke-dialog-body ul.ke-tabs-ul li:last-child {
+    /* display: none; */
+}
+.ke-dialog-content .ke-tabs {
+ /*   display: none !important; */
+}
+.ke-dialog-default *{
+    font-family: 微软雅黑 !important;
+}
 /* QQ表情支持*/
 .facebox{
     position: absolute;
