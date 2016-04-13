@@ -1118,6 +1118,7 @@ ul {
     word-wrap: break-word;
     word-break: normal;
     color:#3c3c3c;
+    line-height: 20px;
 }
 .alert-msg{
     height: 52px;
@@ -1174,6 +1175,7 @@ ul {
 	border-bottom:1px solid #f1f1f1;
 	margin:0 20px 10px;
 	padding-bottom:10px;
+    display: none;
 }
 .layout input{
     width:100%;

@@ -102,9 +102,9 @@ class model_article extends CI_Model{
     /*
      * 更新回复数
      */
-    public function update_reply($id){
+    public function update_reply($id , $num = '+1'){
         if(empty($id)) return false;
-        $sql = 'update '.self::TABLE_NAME ." set reply = reply + 1 where ".self::PRI_KEY ." = $id";
+        $sql = 'update '.self::TABLE_NAME ." set reply = reply $num where ".self::PRI_KEY ." = $id";
         return $this->db->query($sql);
     }
 

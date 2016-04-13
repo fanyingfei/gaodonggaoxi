@@ -31,6 +31,15 @@ class model_reply extends CI_Model{
     }
 
     /*
+     * 通过id数组得到数据
+     */
+    public function get_detail_by_ids($ids){
+        if(empty($ids)) return array();
+        $sql = 'select * from '.self::TABLE_NAME." where ".self::PRI_KEY." in ( $ids )";
+        return $this->db->query($sql)->result_array();
+    }
+
+    /*
     * 得到全部数量
     */
     public function data_count($where = ''){

@@ -324,6 +324,15 @@ class admin extends MY_Controller  {
 
     public function reply_delete(){
         $ids = explode(',',$_REQUEST['ids']);
+        $data = $this->model_reply->get_detail_by_ids($_REQUEST['ids']);
+        if(empty($data))  splash('error','数据为空,请重试');
+        foreach($data as $v){
+            if(in_array($v['type'],parent :: $detail_data)){
+                $this->model_article->update_reply($v['con_id'] , '-1');
+            }else{
+                $this->model_content->update_reply($v['con_id'] , '-1');
+            }
+        }
         $res = $this->model_reply->delete($ids);
         if($res){
             splash('success','删除成功');
