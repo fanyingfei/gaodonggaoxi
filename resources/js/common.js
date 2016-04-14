@@ -328,7 +328,6 @@ $(document).ready(function(){
     $('body').on('click', '.close-reply', function(){
         $(this).parents('.reply-wapper').fadeOut(500,function(){
             var len = $(this).find('.reply-one').length;
-            $(this).prev('.one').find('.reply').text('↓评论');
             $(this).prev('.one').find('.reply-count').text(len);
             var height = $(this).prev('.one').offset().top;
             $('html,body').animate({scrollTop: height}, 500);
@@ -342,7 +341,7 @@ $(document).ready(function(){
             return false;
         }
         $('.facebox').remove();
-        var faceimg = '<div class="facebox"><div class="qq-bg"><img src="/resources/images/face_qq.png" /></div><ul>';
+        var faceimg = '<div class="facebox"><div class="qq-bg"><img src="/resources/images/png/face_qq.png" /></div><ul>';
         for(i=0;i<84;i++){  //通过循环创建60个表情，可扩展
             faceimg+='<li data-id="'+i+'"></li>';
         };
@@ -417,7 +416,6 @@ $(document).ready(function(){
         var type = $("#type").val();
 
         if(obj.parents('.one').next().hasClass('reply-wapper')){
-            obj.text('↓评论');
             obj.parents('.one').next('.reply-wapper').hide(500,function(){
                 obj.parents('.one').next('.reply-wapper').remove();
             });
@@ -437,7 +435,6 @@ $(document).ready(function(){
                     return false;
                 }
 
-                obj.text('↑评论');
                 obj.parent().children('.reply-count').text(result.data.list.length);
                 var html = reply_list(result);
                 obj.parents('.one').after(html);
@@ -519,9 +516,9 @@ $(document).ready(function(){
                 html += '<span class="time reply-time">'+ v.create_time+'</span>';
                 html += '<span class="r-ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
                 html += '<span>&nbsp;&nbsp;</span>';
-                html += '<a class="oo" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
+                html += '<a class="oo" data-id="'+v.rep_id+'"></a>[<span class="good">'+v.good+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
-                html += '<a class="xx" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
+                html += '<a class="xx" data-id="'+v.rep_id+'"></a>[<span class="bad">'+v.bad+'</span>]';
                 html += '<span>&nbsp;&nbsp;</span>';
                 html += '<span class="response"></span></p>';
                 html += '</div>';

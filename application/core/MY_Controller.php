@@ -107,7 +107,6 @@ class MY_controller extends CI_Controller {
 
     public function save_access(){
         if(isCrawler()) return false;
-        if(in_array(get_real_ip(),array('101.44.193.72','180.166.221.42'))) return false;
         if(!empty($_SESSION['is_admin'])) return false;
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
         $url = str_replace('/index.php?s=/','',$url);

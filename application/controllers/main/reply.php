@@ -36,7 +36,7 @@ class reply extends MY_Controller  {
         foreach($res as &$v){
             $v['reply_content'] = '';
             $v['create_time'] = change_time($v['create_time']);
-            $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/avatar_error.jpg' : $user_avatar[$v['user_id']];
+            $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/jpg/avatar_error.jpg' : $user_avatar[$v['user_id']];
             if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']])){
                 //回复时只显示一行太短了所以过滤过<br>标签，只留图片和文字
                 $v['reply_content'] =str_replace('<br>','',$parent_res[$v['parent_id']]);
@@ -49,7 +49,7 @@ class reply extends MY_Controller  {
             $data['is_login'] = 1;
             $data['user_id'] = $_SESSION['user_id'];
             $data['name'] = $_SESSION['name'];
-            $data['avatar'] = empty($_SESSION['avatar']) ? '/resources/images/avatar_error.jpg' : $_SESSION['avatar'];
+            $data['avatar'] = empty($_SESSION['avatar']) ? '/resources/images/jpg/avatar_error.jpg' : $_SESSION['avatar'];
         }
         splash('success' , '' , $data);
     }

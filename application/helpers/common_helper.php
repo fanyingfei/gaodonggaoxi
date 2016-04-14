@@ -232,7 +232,7 @@ function gif_static_gif($content , $flag = 0){
             if(strpos($src_url,'.sinaimg.cn') !== false ){
                 $small_url = $img_domain.'/small/'.$img_name;
             }else{
-                $small_url = '/resources/images/gray.png';
+                $small_url = '/resources/images/png/gray.png';
             }
             $original[] = $total_img;
             if(substr($img_name , -4 , 4) == '.gif' && $flag == 0){

@@ -19,9 +19,9 @@
                     </div>
                     {/if}
                     {if $one.user_sn != ''}
-                    <a href="/member/{$one.user_sn}"><p class="name text-right" title="{$one.u_name}"><span class="vip"></span>{$one.name}</p></a>
+                    <a href="/member/{$one.user_sn}"><p class="is_vip name text-right" title="{$one.u_name}">{$one.name}</p></a>
                     {else}
-                    <p class="name text-right" title="{$one.u_name}">{$one.name}</p>
+                    <p class="name text-right" title="防伪码:{$one.u_name}">{$one.name}</p>
                     {/if}
                     <p class="time text-right">{$one.create_time}</p>
                 </div>
@@ -29,10 +29,10 @@
                     <div class="content-body{if $one.avatar != ''} avatar-min-height{/if}">{$one.content}</div>
                     <p class="right clear click oo-xx">
                         <span class="response"></span>
-                        <a class="oo" data-id="{$one.con_id}">OO</a>[<span class="good">{$one.good}</span>]
-                        <a class="xx" data-id="{$one.con_id}">XX</a>[<span class="bad">{$one.bad}</span>]
+                        <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]&nbsp;
+                        <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]&nbsp;
                         <span class="examine">
-                            <a class="reply" data-id="{$one.con_id}">↓评论</a>[<span class="reply-count">{$one.reply}</span>]
+                            <a class="reply" data-id="{$one.con_id}"></a>[<span class="reply-count">{$one.reply}</span>]
                         </span>
                     </p>
                 </div>

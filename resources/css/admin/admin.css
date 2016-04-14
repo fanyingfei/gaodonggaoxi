@@ -3,6 +3,7 @@ html,body{
     padding:0;
     height: 100%;
     font-family: 微软雅黑;
+    min-width:1400px;
 }
 a{
     text-decoration: none;

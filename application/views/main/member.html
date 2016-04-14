@@ -32,13 +32,16 @@
                             <span class="time text-right"> 发表于${one.create_time}</span>
                             <span class="response"></span>
                             <span class="jian-ge">&nbsp;&nbsp;</span>
-                            <a class="oo" data-id="{$one.con_id}">顶</a>(<span class="good">${one.good}</span>)
-                            <span class="jian-ge">|</span>
-                            <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">${one.bad}</span>)
-                            <span class="jian-ge">|</span>
-                            <span class="scan time">评论(${one.reply})</span>
-                            <span class="jian-ge">|</span>
-                            <span class="scan time">浏览(${one.scan})</span>
+                            <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">${one.good}</span>]
+                            <span class="jian-ge">&nbsp;</span>
+                            <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">${one.bad}</span>]
+                            <span class="jian-ge">&nbsp;</span>
+                            <span class="examine">
+                                <span class="jian-ge">&nbsp;</span>
+                                <span class="reply time cursor" data-id="{$one.con_id}"></span>[<span class="reply-count">${one.reply}</span>]
+                            </span>
+                            <span class="jian-ge">&nbsp;</span>
+                            <span class="scan time">浏览[${one.scan}]</span>
                         </p>
                     </div>
                     <div class="article-one-right">
@@ -54,9 +57,9 @@
                         <div class="content-body">{{html one.content}}</div>
                         <p class="right clear click oo-xx">
                             <span class="response"></span>
-                            <a class="oo" data-id="${one.con_id}">OO</a>[<span class="good">${one.good}</span>]
-                            <a class="xx" data-id="${one.con_id}">XX</a>[<span class="bad">${one.bad}</span>]
-                            <span class="examine"><a class="reply" data-id="${one.con_id}">↓评论</a>[<span class="reply-count">${one.reply}</span>]</span>
+                            <a class="oo" data-id="${one.con_id}"></a>[<span class="good">${one.good}</span>]
+                            <a class="xx" data-id="${one.con_id}"></a>[<span class="bad">${one.bad}</span>]
+                            <span class="examine"><a class="reply" data-id="${one.con_id}"></a>[<span class="reply-count">${one.reply}</span>]</span>
                             </p>
                         </div>
                     {{/if}}

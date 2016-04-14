@@ -27,22 +27,22 @@
                     </p>
                     <p class="article-click oo-xx">
                         {if $one.user_sn != ''}
-                        <span class="vip"></span><a href="/member/{$one.user_sn}">{$one.name}</a>
+                        <a class="is_vip" href="/member/{$one.user_sn}">{$one.name}</a>
                         {else}
                         <span class="time text-right">{$one.name}</span>
                         {/if}
                         <span class="time text-right"> 发表于{$one.create_time}</span>
                         <span class="response"></span>
                         <span class="jian-ge">&nbsp;&nbsp;</span>
-                        <a class="oo" data-id="{$one.con_id}">顶</a>(<span class="good">{$one.good}</span>)
-                        <span class="jian-ge">|</span>
-                        <a class="xx" data-id="{$one.con_id}">踩</a>(<span class="bad">{$one.bad}</span>)
+                        <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]
+                        <span class="jian-ge">&nbsp;</span>
+                        <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]
                         <span class="examine">
-                            <span class="jian-ge">|</span>
-                            <span class="reply time cursor" data-id="{$one.con_id}">↓评论</span>(<span class="reply-count">{$one.reply}</span>)
+                            <span class="jian-ge">&nbsp;</span>
+                            <span class="reply time cursor" data-id="{$one.con_id}"></span>[<span class="reply-count">{$one.reply}</span>]
                         </span>
-                        <span class="jian-ge">|</span>
-                        <span class="scan time">浏览({$one.scan})</span>
+                        <span class="jian-ge">&nbsp;</span>
+                        <span class="scan time">浏览[{$one.scan}]</span>
                     </p>
                 </div>
                 <div class="article-one-right"><strong>{$one.day}</strong>{$one.year}</div>

@@ -44,6 +44,32 @@ ul {
     color: #8c8c8c;
     font-size: 12px;
 }
+.oo , .xx , .reply{
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:16px 16px;
+    padding:6px 10px;
+}
+.oo{
+    background-image: url('/resources/images/png/up.png');
+}
+
+.xx{
+    background-image: url('/resources/images/png/down.png');
+    background-position: center 8px;
+}
+
+.reply{
+    background-image: url('/resources/images/png/msg.png');
+    background-position: center 8px;
+}
+
+.oo:hover , .xx:hover ,.reply:hover{
+    background-size:20px 20px;
+}
+.xx:hover ,.reply:hover{
+    background-position: center center;
+}
 
 @media screen and (min-width: 661px) {
 
@@ -72,14 +98,6 @@ ul {
 
     .right {
         float: right;
-    }
-
-    .oo:hover , .xx:hover{
-        color: #3c3c3c;
-    }
-
-    .reply:hover {
-        text-decoration: underline;
     }
 
     .hr-reply {
@@ -195,7 +213,7 @@ ul {
     }
 
     .vip{
-        background-image: url('/resources/images/vip.png');
+        background-image: url('/resources/images/png/vip.png');
         background-repeat: no-repeat;
         background-position: left center;
         background-size:12px 12px;
@@ -213,6 +231,12 @@ ul {
         word-wrap: break-word;
         max-height: 20px;
         overflow: hidden;
+    }
+
+    .one .user .is_vip , .article-one-left .article-click .is_vip{
+        color: #5ca5ec;
+        font-weight: bold;
+        font-size:13px;
     }
 
     .one .content-body img.sina-show {
@@ -253,7 +277,7 @@ ul {
     }
 
     .edit-info{
-        background-image: url('/resources/images/edit.png');
+        background-image: url('/resources/images/png/edit.png');
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 100% 100%;
@@ -360,7 +384,7 @@ ul {
         display: none;
         cursor: pointer;
         opacity: 0.6;
-        background: url(/resources/images/gobacktop.png) no-repeat;
+        background: url(/resources/images/png/gobacktop.png) no-repeat;
     }
 
     #top:hover {
@@ -587,6 +611,13 @@ ul {
         border: 1px solid #e8e8e8;
         padding: 1px;
         float: right;
+        position: relative;
+    }
+
+    .user .login-avatar .vip{
+        position: absolute;
+        top:0;
+        left:0;
     }
     
     .user .login-avatar a{
@@ -877,12 +908,12 @@ ul {
     }
 
     .qy {
-        background-image: url('/resources/images/qy.gif');
+        background-image: url('/resources/images/gif/qy.gif');
         background-position: top center;
     }
 
     .hy {
-        background-image: url('/resources/images/hy.gif');
+        background-image: url('/resources/images/gif/hy.gif');
         background-position: center center;
     }
 
@@ -972,7 +1003,7 @@ ul {
     overflow: hidden !important;
     padding:0 !important;
     margin: 6px 6px 6px 0;
-    background-image: url('/resources/images/share_icon.png') !important;
+    background-image: url('/resources/images/png/share_icon.png') !important;
 }
 .share-sina{
     background-position: -160px 0 !important;
@@ -1130,7 +1161,7 @@ ul {
     font-weight: bold;
     font-size: 14px;
     color: #606060;
-    background-image: url("/resources/images/alert.png");
+    background-image: url("/resources/images/png/alert.png");
     background-position: 0 -161px;
     background-repeat: repeat-x;
     border-left:2px solid #e8e8e8;
@@ -1147,7 +1178,7 @@ ul {
     width:29px;
     height: 29px;
     border-radius: 14px;
-    background-image: url("/resources/images/alert.png");
+    background-image: url("/resources/images/png/alert.png");
     background-repeat: no-repeat;
     margin-top:10px;
     margin-left:10px;
@@ -1344,6 +1375,9 @@ ul {
 .ke-upload-area .ke-upload-file{
     cursor:pointer;
 }
+.ke-upload-area .ke-upload-file:hover ~ span{
+    background-color : #dedede !important;
+}
 .ke-dialog-body .ke-dialog-row:last-child {
     /* display: none; */
 }
@@ -1403,7 +1437,7 @@ ul {
 
 .qq-face{
     float:right;
-    background:url("/resources/images/facebg.png") no-repeat scroll 0 -100px;
+    background:url("/resources/images/png/facebg.png") no-repeat scroll 0 -100px;
     padding: 10px;
     cursor: pointer;
 }
