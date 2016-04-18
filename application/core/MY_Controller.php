@@ -17,7 +17,7 @@ class MY_controller extends CI_Controller {
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
-        $order_by = empty($_COOKIE['order_by']) ? 'create_time desc' : $_COOKIE['order_by']; //排序
+        $order_by = empty($_COOKIE['order_by']) ? '最新' : $_COOKIE['order_by']; //排序
         $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
         $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
 

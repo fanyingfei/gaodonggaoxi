@@ -98,8 +98,12 @@ class article extends MY_Controller  {
         $tags = empty($_COOKIE['tags']) ? '' : $_COOKIE['tags'] ;
         if(!empty($tags)) $where .= " and tags like '%$tags%' ";
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        if(!empty($search)) $where .= " and name like '%$search%' ";
-        if(!empty($_COOKIE['order_by']) && $_COOKIE['order_by'] == 'random') $is_random = 1;
+        if(!empty($search)) $where .= " and name like '%$search%'  or title like '%$search%'  or tags like '%$search%' ";
+
+        $order_by_data = parent::$order_data;
+        $cookie_order_by  = empty($_COOKIE['order_by']) || empty($order_by_data[$_COOKIE['order_by']]) ? '' : $order_by_data[$_COOKIE['order_by']];
+
+        if($cookie_order_by == 'random') $is_random = 1;
 
         if($is_random == 1){
             $key_res = $this->model_article->data_key($where);
@@ -117,7 +121,7 @@ class article extends MY_Controller  {
             $count = $this->model_article->data_count($where);
             $total_page = ceil($count/$limit);
             if(empty($p) || $p > $total_page) $p = $total_page;
-            $order_by = empty($_COOKIE['order_by']) ? '' : ' order by '.$_COOKIE['order_by'] ;
+            $order_by = empty($cookie_order_by) ? '' : ' order by '.$cookie_order_by;
             //得到数据
             $list = $this->model_article->data_list($total_page - $p, $limit, $where, $order_by);
             //生成页码

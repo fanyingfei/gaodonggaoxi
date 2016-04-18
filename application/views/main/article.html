@@ -7,7 +7,7 @@
     </div>
     <ul class="nav-order-by">
         {foreach from=$order_by key=key item=value}
-        <li {if $cur_order == $value}class='active'{/if} order-by="{$value}">{$key}</li>
+        <li {if $cur_order == $key}class='active'{/if}>{$key}</li>
         {/foreach}
     </ul>
     {if $count > 0}
@@ -129,6 +129,7 @@
         sub_cfg.data = {
             "name":name,"email":email,'title':title ,'content':content,'type':type, 'tags':tags
         };
+        $(this).unbind("click");
         ajax_res(sub_cfg);
     })
 

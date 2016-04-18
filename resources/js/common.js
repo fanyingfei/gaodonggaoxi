@@ -271,7 +271,7 @@ $(document).ready(function(){
 
     $('body').on('click', '.nav-order-by li', function(){
         $.cookie('search', '' , {path:'/'});
-        $.cookie('order_by', $(this).attr('order-by') ,{ path : '/' });
+        $.cookie('order_by', $(this).text() ,{ path : '/' });
         var cur_url = window.location.href;
         cur_url = cur_url.replace(/[0-9]+$/g,'');
         window.location.href = cur_url;
@@ -463,6 +463,7 @@ $(document).ready(function(){
             alert_msg('请填写评论');
             return false;
         }
+        $(this).unbind("click");
 
         $.ajax({
             type:'POST',

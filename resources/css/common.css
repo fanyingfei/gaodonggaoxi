@@ -70,7 +70,9 @@ ul {
 .xx:hover ,.reply:hover{
     background-position: center center;
 }
-
+.tag-nav-wapper{
+    display: none;
+}
 @media screen and (min-width: 661px) {
 
     body {
@@ -1522,7 +1524,8 @@ ul {
     float:left;
 }
 .detail p , .detail{
-    line-height: 25px;
+    line-height: 35px;
+    font-size:14px;
 }
 .sr-bdimgshare{
     display: none !important;
@@ -1543,6 +1546,7 @@ ul {
 .nav-order-by{
     border-bottom: 1px solid #e8e8e8;
     overflow: auto;
+    background-color:#f9f9f9;
 }
 .nav-order-by li{
     float:left;
@@ -1551,10 +1555,10 @@ ul {
     border-right:1px solid #e8e8e8;
 }
 .nav-order-by li.active{
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
 }
 @media screen and (max-width: 660px) {
-    .user .login-avatar ,  #top , .right-container , .depict ,.article-one-right,.nav-order-by,
+    .user .login-avatar ,  #top , .right-container , .depict ,.article-one-right,
     .title , .hr-reply , .body-article .sub .textarea-prompt{
         display:none !important;
     }

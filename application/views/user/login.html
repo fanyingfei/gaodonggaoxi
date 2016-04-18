@@ -45,6 +45,7 @@
         sub_cfg.data = {
             "account":account,'password':password,'referer_url':referer_url
         };
+        $(this).unbind("click");
         ajax_res(sub_cfg);
     })
 
