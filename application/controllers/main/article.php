@@ -98,7 +98,7 @@ class article extends MY_Controller  {
         $tags = empty($_COOKIE['tags']) ? '' : $_COOKIE['tags'] ;
         if(!empty($tags)) $where .= " and tags like '%$tags%' ";
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        if(!empty($search)) $where .= " and name like '%$search%'  or title like '%$search%'  or tags like '%$search%' ";
+        if(!empty($search)) $where .= " and (name like '%$search%'  or title like '%$search%'  or tags like '%$search%') ";
 
         $order_by_data = parent::$order_data;
         $cookie_order_by  = empty($_COOKIE['order_by']) || empty($order_by_data[$_COOKIE['order_by']]) ? '' : $order_by_data[$_COOKIE['order_by']];

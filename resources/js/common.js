@@ -358,7 +358,7 @@ $(document).ready(function(){
     //添加表情
     $('body').on('click', '.facebox ul li', function(){
         var id = $(this).attr('data-id');
-        var img = '<img src="/resources/images/face/'+id+'.gif" /> ';
+        var img = '<img src="/resources/images/faces/'+id+'.gif" /> ';
         $(this).parents('.reply-wapper').find('.edit-p').append(img);
         return false;
     });

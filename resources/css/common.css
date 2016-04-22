@@ -1528,7 +1528,7 @@ ul {
     font-size:14px;
 }
 .sr-bdimgshare{
-    display: none !important;
+ /*   display: none !important;*/
 }
 .sub p:first-child {
     background-color: #fafafa;
@@ -1556,6 +1556,7 @@ ul {
 }
 .nav-order-by li.active{
     background-color: #f1f1f1;
+	color:#e50541;
 }
 @media screen and (max-width: 660px) {
     .user .login-avatar ,  #top , .right-container , .depict ,.article-one-right,

@@ -70,7 +70,7 @@ class content extends MY_Controller  {
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$this->type;
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        if(!empty($search)) $where .= " and name like '%$search%' or content like '%$search%' ";
+        if(!empty($search)) $where .= " and (name like '%$search%' or content like '%$search%') ";
 
         $order_by_data = parent::$order_data;
         $cookie_order_by  = empty($_COOKIE['order_by']) || empty($order_by_data[$_COOKIE['order_by']]) ? '' : $order_by_data[$_COOKIE['order_by']];

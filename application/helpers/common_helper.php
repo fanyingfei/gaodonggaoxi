@@ -113,8 +113,10 @@ function change_time($time) {
         $str = sprintf('%d小时前', floor($int / 3600));
     }elseif ($int < 2592000){
         $str = sprintf('%d天前', floor($int / 86400));
+    }elseif ($int < 31104000){
+        $str = sprintf('%d个月前', floor($int / 2592000));
     }else{
-        $str = '';
+        $str = sprintf('%d年前', floor($int / 31104000));
     }
     return $str;
 }
