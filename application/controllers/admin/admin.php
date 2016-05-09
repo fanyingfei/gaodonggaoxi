@@ -310,6 +310,12 @@ class admin extends MY_Controller  {
         //得到数据
         $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
+            if(in_array($v['type'],parent::$detail_data)){
+                $url = get_detail_url($v['con_id'],$v['create_time']);
+            }else{
+                $url = get_single_url($v['con_id'],$v['create_time']);
+            }
+            $v['con_id'] = '<a target="_blank" href="'.$url.'">'.$v['con_id'].'</a>';
             $v['type'] = $this->type_name[$v['type']];
         }
 

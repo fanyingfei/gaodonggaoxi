@@ -262,16 +262,16 @@ $(document).ready(function(){
 
     //标签链接
     $('body').on('click', '.tag-nav', function(){
-        $.cookie('search', '' , {path:'/'});
-        $.cookie('tags', $(this).text() ,{ path : '/' });
+        $.cookie('search', '');
+        $.cookie('tags', $(this).text());
         var cur_url = window.location.href;
         cur_url = cur_url.replace(/[0-9]+$/g,'');
         window.location.href = cur_url;
     })
 
     $('body').on('click', '.nav-order-by li', function(){
-        $.cookie('search', '' , {path:'/'});
-        $.cookie('order_by', $(this).text() ,{ path : '/' });
+        $.cookie('search', '');
+        $.cookie('order_by', $(this).text());
         var cur_url = window.location.href;
         cur_url = cur_url.replace(/[0-9]+$/g,'');
         window.location.href = cur_url;
@@ -358,7 +358,7 @@ $(document).ready(function(){
     //添加表情
     $('body').on('click', '.facebox ul li', function(){
         var id = $(this).attr('data-id');
-        var img = '<img src="/resources/images/faces/'+id+'.gif" /> ';
+        var img = '<img src="/resources/images/face/'+id+'.gif" /> ';
         $(this).parents('.reply-wapper').find('.edit-p').append(img);
         return false;
     });
@@ -393,19 +393,23 @@ $(document).ready(function(){
         }
     });
 
+    function clear_cookie() {
+        $.cookie('tags', '');
+        $.cookie('search', '');
+        $.cookie('order_by', '');
+    }
+
     //监听头部导航点击事件
     $(".nav li a").click(function(){
-        $.cookie('tags', '' ,{ path : '/' });
-        $.cookie('search', '' ,{ path : '/' });
-        $.cookie('order_by', '' ,{ path : '/' });
+        clear_cookie();
     })
 
     //监听搜索事件
     $(".search button").click(function(){
         var search = $("#search").val();
-        $.cookie('tags', '' ,{ path : '/' });
-        $.cookie('order_by', '' ,{ path : '/' });
-        $.cookie('search', search , {path:'/'});
+        $.cookie('tags', '');
+        $.cookie('order_by', '');
+        $.cookie('search', search);
         window.location.href=window.location.href;
     })
 
