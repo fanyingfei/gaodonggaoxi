@@ -3,7 +3,14 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn" id="remove" data-url="/admin/access_delete">Delete</button>
+        <button class="btn btn-op" id="remove" data-url="/admin/access_delete">Delete</button>
+        <span>IP：</span>
+        <div class="form-group">
+            <input type="text"  size="15" class="form-control" id="search_ip" >
+        </div>
+        <div class="form-group">
+            <button class="btn btn-search">search</button>
+        </div>
     </div>
     <table id="table"
            data-toggle="table"
@@ -32,4 +39,12 @@
 <script src="/resources/js/admin/admin.js"></script>
 <script src="/resources/js/admin/bootstrap.min.js"></script>
 <script src="/resources/js/admin/bootstrap-table.js"></script>
+<script>
+    $(".btn-search").click(function(){
+        var search_ip = $('#search_ip').val();
+        var filter = '?ip='+search_ip;
+        $('#table').bootstrapTable('refresh', {url: '/admin/access_list'+filter});
+        return false;
+    })
+</script>
 {/literal}

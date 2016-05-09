@@ -3,9 +3,13 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn" id="remove" data-url="/admin/content_delete">Delete</button>
-        <button class="btn" id="pass" data-url="/admin/content_pass">Pass</button>
-        <button class="btn" id="fail" data-url="/admin/content_fail">Fail</button>
+        <button class="btn btn-op" id="remove" data-url="/admin/content_delete">Delete</button>
+        <button class="btn btn-op" id="pass" data-url="/admin/content_pass">Pass</button>
+        <button class="btn btn-op" id="fail" data-url="/admin/content_fail">Fail</button>
+        <span>ID：</span>
+        <div class="form-group">
+            <input type="text" maxlength="8" size="5" class="form-control" id="search_id" >
+        </div>
         <span>审核状态：</span>
         <div class="form-group">
             <select class="form-control" name="search_status" id="search_status">
@@ -24,6 +28,9 @@
                 {/foreach}
             </select>
         </div>
+        <div class="form-group">
+            <button class="btn btn-search">search</button>
+         </div>
     </div>
     <table id="table"
            data-toggle="table"
@@ -58,4 +65,15 @@
 <script src="/resources/js/admin/admin.js"></script>
 <script src="/resources/js/admin/bootstrap.min.js"></script>
 <script src="/resources/js/admin/bootstrap-table.js"></script>
+<script>
+    $(".btn-search").click(function(){
+        var search_id = $('#search_id').val();
+        var search_type = $('#search_type').val();
+        var search_status = $('#search_status').val();
+        var filter = '?con_id='+search_id+'&type='+search_type+'&status='+search_status;
+
+        $('#table').bootstrapTable('refresh', {url: '/admin/content_list'+filter});
+        return false;
+    })
+</script>
 {/literal}

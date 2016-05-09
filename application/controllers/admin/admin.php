@@ -45,24 +45,22 @@ class admin extends MY_Controller  {
 
     public function content()
 	{
-        unset($this->type_name[-1]);
-        unset($this->type_name[0]);
-        $this->assign('type_list',$this->type_name);
+        $type_list = array(1=>'搞笑',2=>'那些话',5=>'妹子');
+        $this->assign('type_list',$type_list);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/content.html');
     }
 
     public function content_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array('con_id','status','type'));
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
         //得到数据
         $list  = $this->model_content->data_list($p,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -115,24 +113,22 @@ class admin extends MY_Controller  {
 
     public function article()
     {
-        unset($this->type_name[-1]);
-        unset($this->type_name[0]);
-        $this->assign('type_list',$this->type_name);
+        $type_list = array(4=>'渣渣说',6=>'故事' , 7=>'程序猿');
+        $this->assign('type_list',$type_list);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/article.html');
     }
 
     public function article_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array('art_id','status','type'));
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
         //得到数据
         $list  = $this->model_article->data_list($p,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -189,16 +185,16 @@ class admin extends MY_Controller  {
     }
 
     public function user_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array());
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
+
         //得到数据
         $list  = $this->model_users->data_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -259,16 +255,15 @@ class admin extends MY_Controller  {
     }
 
     public function black_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array());
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
         //得到数据
         $list  = $this->model_black->data_list($p+1,$limit , $where , $order_by);
 
@@ -297,16 +292,16 @@ class admin extends MY_Controller  {
     }
 
     public function reply_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array());
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
+
         //得到数据
         $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -353,16 +348,15 @@ class admin extends MY_Controller  {
     }
 
     public function record_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array('ip'));
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
         //得到数据
         $list  = $this->model_record->admin_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -398,16 +392,15 @@ class admin extends MY_Controller  {
     }
 
     public function access_list($str = ''){
+        $where = $order_by = '';
         $params = $this->deal_admin_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
-        $where = $order_by = '';
 
-        if(!empty($sort) && !empty($sort_by)){
-            $order_by = " order by $sort $sort_by ";
-        }
+        $where = $this->get_where_param($params , array('ip'));
+        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
         //得到数据
         $list  = $this->model_access->admin_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
@@ -446,9 +439,19 @@ class admin extends MY_Controller  {
         $params = explode( '&' , $str);
         foreach($params as $p){
             $row = explode( '=' , $p);
-            $data[$row[0]] = $row[1];
+            if(isset($row[1]) && $row[1] != '' && $row[1] >= 0) $data[$row[0]] = $row[1];
         }
         return $data;
+    }
+
+    public function get_where_param($params , $column = array()){
+        if(empty($params) || empty($column)) return '';
+        $str = '';
+        foreach($params as $key=>$v){
+            if(!in_array($key , $column)) continue;
+            $str .= ' and '.$key.' = "'.$v.'"';
+        }
+        if(!empty($str)) return ' where 1 '.$str;
     }
 }
 

@@ -3,7 +3,7 @@ sub_cfg.success = function(result){
     $('button[name=refresh]').trigger("click");
 };
 
-$(".table-toolbar .btn").click(function(){
+$(".table-toolbar .btn-op").click(function(){
     var ids = get_selected();
     if(ids == ''){
         alert('请选择操作项');
