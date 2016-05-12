@@ -1,0 +1,60 @@
+<div class="layout">
+    <a href="/"><div class="logo"></div></a>
+    <div class="bind">账号绑定</div>
+    <input type="text" name="email" id="email" placeholder="请输入要绑定的邮箱账号" value="" />
+    <input type="password" name="password" id="password" placeholder="密码"/>
+    <div class="sub" id="sub">确认</div>
+    <div class="bottom-item"><a href="/register">还没有账号？立即注册</a></div>
+</div>
+</body>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/common.js"></script>
+<script type="text/javascript">
+    $(document).keypress(function(e) {
+        // 回车键事件
+        if(e.which == 13) {
+            $("#sub").trigger('click');
+        }
+    });
+
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/user/bind/save';
+    sub_cfg.success = function(result){
+        alert_msg(result.msg,'success');
+        setTimeout(function(){
+            window.location.href='/';
+        },2000);
+    };
+
+    $("#sub").click(function(){
+        var email = $.trim($("#email").val());
+        var password = $.trim($("#password").val());
+        if(!email_valid(email,password)){
+            return false;
+        }
+        sub_cfg.data = {
+            "email":email,'password':password
+        };
+        $(this).unbind("click");
+        ajax_res(sub_cfg);
+    })
+
+    function email_valid(email,password){
+        if(email == ''){
+            alert_msg('请输入邮箱账号');
+            return false;
+        }
+        if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+            alert_msg('email格式不正确');
+            return false;
+        }
+        if(password == ''){
+            alert_msg('请输入密码');
+            return false;
+        }
+        return true;
+    }
+</script>
+{/literal}
+</html>
