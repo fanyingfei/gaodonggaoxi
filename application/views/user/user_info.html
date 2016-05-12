@@ -53,9 +53,9 @@
                 <label class="label">年龄</label>
                 <span class="separate"></span>
                 <label class="label">
-                    <select name="age" id="age">
+                    <select name="year" id="year">
                         {foreach from=$age key=key item=value}
-                        <option value="{$key}" {if $user.age == $key}selected{/if} >{$value}</option>
+                        <option value="{$key}" {if $user.year == $key}selected{/if} >{$value}</option>
                         {/foreach}
                     </select>
                 </label>
@@ -76,12 +76,12 @@
         var mobile = $.trim($("#mobile").val());
         var weixin = $.trim($("#weixin").val());
         var sina = $.trim($("#sina").val());
-        var age = $.trim($("#age").val());
+        var year = $.trim($("#year").val());
         var sex = $.trim($("#sex").val());
         var qq = $.trim($("#qq").val());
 
         sub_cfg.data = {
-            "mobile":mobile,"weixin":weixin,'sina':sina,'age':age,"sex":sex,'qq':qq
+            "mobile":mobile,"weixin":weixin,'sina':sina,'year':year,"sex":sex,'qq':qq
         };
         $(this).unbind("click");
         ajax_res(sub_cfg);

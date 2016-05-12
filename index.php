@@ -185,6 +185,9 @@ if (defined('ENVIRONMENT'))
 
     define('EMAIL_NUMBER','fanfan_zone@163.com');
     define('EMAIL_PASSWORD','qweasd19880722');
+    define('APP_ID', '101312205');
+    define('APP_KEY', '5242e1f71121a5ec552c9e1dce9cd431');
+    define('REDIRECT_URL_QQ', 'http://gaodonggaoxi.cn/login/third_qq');
 
 	// The path to the "application" folder
 	if (is_dir($application_folder))

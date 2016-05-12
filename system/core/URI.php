@@ -146,7 +146,7 @@ class CI_URI {
         if(empty($path) && !empty($_REQUEST['s'])){
             $path = $_REQUEST['s'];
             $admin_path = $_SERVER['REQUEST_URI'];
-            if(strpos($admin_path,'admin') !== false){
+            if(strpos($admin_path,'admin') !== false || strpos($admin_path,'third_') !== false){
                 $admin_path = str_replace($path,'',$admin_path);
                 if(!empty($admin_path)) $path .= str_replace('?','/',$admin_path);
             }

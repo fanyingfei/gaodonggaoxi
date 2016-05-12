@@ -37,6 +37,14 @@ class model_users extends CI_Model{
     }
 
     /*
+    * 通过QQ查用户
+    */
+    public function get_user_by_openid($openid){
+        $sql = 'select * from '.self::TABLE_NAME ." where qq_id = '$openid'";
+        return $this->db->query($sql)->first_row('array');
+    }
+
+    /*
     * 通过昵称查用户
     */
     public function get_user_by_name($name){

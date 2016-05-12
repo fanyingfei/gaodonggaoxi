@@ -74,6 +74,9 @@ $route['reply/record'] = "main/reply/reply_record";
 $route['login'] = "main/user/login_index";
 $route['login/login_in'] = "main/user/login_in";
 $route['login/login_out'] = "main/user/login_out";
+$route['login/third_qq/(:any)'] = "main/user/login_qq/$1";
+$route['login/third_wb/(:any)'] = "main/user/login_wb/$1";
+$route['login/third_wx/(:any)'] = "main/user/login_wx/$1";
 //注册
 $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
@@ -86,6 +89,8 @@ $route['user/avatar'] = "main/user/user_avatar";
 $route['user/validate/(:any)'] = "main/user/user_validate/$1";
 $route['user/save'] = "main/user/info_save";
 $route['user/nick/save'] = "main/user/nick_save";
+$route['user/bind'] = "main/user/bind";
+$route['user/bind/save'] = "main/user/bind_save";
 $route['user/avatar/save'] = "main/user/avatar_save";
 
 //admin后台

@@ -1077,7 +1077,7 @@
                 pageNumber: this.options.pageNumber,
                 searchText: this.searchText,
                 sortName: this.options.sortName,
-                sortOrder: this.options.sortOrders
+                sortOrder: this.options.sortOrder
             };
 
         if (!this.options.url) {

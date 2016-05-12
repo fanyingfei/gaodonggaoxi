@@ -172,7 +172,13 @@ function image_load_event(thi , src_url){
 window.onload=function(){
     show_play_all();
 }
-
+$(document).keypress(function(e) {
+    // 回车键事件
+    if(e.which == 13) {
+        if($('.right-container .search #search').length > 0 && $('.right-container .search #search').val().length > 0)
+        $(".right-container .search button").trigger('click');
+    }
+});
 //DOM渲染完成
 $(document).ready(function(){
     var reply_url = '/reply/record';
@@ -326,7 +332,7 @@ $(document).ready(function(){
 
     //关闭评论
     $('body').on('click', '.close-reply', function(){
-        $(this).parents('.reply-wapper').fadeOut(500,function(){
+        $(this).parents('.reply-wapper').fadeOut(1000,function(){
             var len = $(this).find('.reply-one').length;
             $(this).prev('.one').find('.reply-count').text(len);
             var height = $(this).prev('.one').offset().top;
@@ -381,7 +387,7 @@ $(document).ready(function(){
 
     //监听验证码的点击事件
     $("#checkpic").click(function(){
-        $(this).attr('src','/code.php?'+Math.random());
+        $(this).attr('src','/tools/code.php?'+Math.random());
     })
 
     //监听滚动条滚动事件
@@ -420,7 +426,7 @@ $(document).ready(function(){
         var type = $("#type").val();
 
         if(obj.parents('.one').next().hasClass('reply-wapper')){
-            obj.parents('.one').next('.reply-wapper').hide(500,function(){
+            obj.parents('.one').next('.reply-wapper').fadeOut(500,function(){
                 obj.parents('.one').next('.reply-wapper').remove();
             });
             return false;
@@ -442,7 +448,7 @@ $(document).ready(function(){
                 obj.parent().children('.reply-count').text(result.data.list.length);
                 var html = reply_list(result);
                 obj.parents('.one').after(html);
-                obj.parents('.one').next('.reply-wapper').show(500);
+                obj.parents('.one').next('.reply-wapper').slideDown(500);
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');

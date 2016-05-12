@@ -470,7 +470,7 @@ ul {
     }
 
     .person-info .age.left {
-        margin-left: 40px;
+        margin-left: 28px;
     }
 
     .person-info .name-email {
@@ -1313,6 +1313,7 @@ ul {
 }
 .layout .weixin {
     background-position: -209px 0;
+    margin-top: 3px;
 }
 .layout .logo{
     height: 100px;
@@ -1888,7 +1889,4 @@ ul {
     .one .user,.one .content-body , .detail p{
         font-size: 1.3em ;
     }
-}
-.login-third{
-    display:none;
 }

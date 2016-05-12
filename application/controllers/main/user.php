@@ -43,7 +43,8 @@ class user extends MY_Controller  {
 
         $sex = $this->sex_data;
         $age = array('0'=>'不填');
-        for($i = 10 ; $i < 90 ; $i++){
+        $max_age = date('Y') - 5;
+        for($i = 1960 ; $i < $max_age ; $i++){
             $age[$i] = $i;
         }
         $this->assign('user',$user);
@@ -75,12 +76,87 @@ class user extends MY_Controller  {
         }
         $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
         if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
+        $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
 
         $this->assign('url',$url);
         $this->assign('title','登录');
+        $this->assign('url_qq',$url_qq);
         $this->native_display('user/header.html');
         $this->native_display('user/login.html');
     }
+
+    public function bind(){
+        $this->assign('title','账号绑定');
+        $this->native_display('user/header.html');
+        $this->native_display('user/bind.html');
+    }
+
+    public function bind_save(){
+        $email = $_REQUEST['email'];
+        if(empty($email)) splash('error','请输入邮箱账号');
+        $password = $_REQUEST['password'];
+        if(empty($password)) splash('error','请输入密码');
+
+        $one = $this->model_users->get_user_by_email($email);
+        if(empty($one)) splash('error','您要绑定的账号不存在');
+        if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
+        if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
+        $openid = $_SESSION['openid'];
+        $access_token = $_SESSION['access_token'];
+        $url = 'https://graph.qq.com/user/get_user_info?access_token='.$access_token.'&oauth_consumer_key='.APP_ID.'&openid='.$openid;
+        $user_info = file_get_contents($url);
+        $data['qq_id'] = $openid;
+        if(!empty($user_info)){
+            $user_info = json_decode($user_info,true);
+            if(!empty($user_info['gender']) && $one['sex'] == 'U'){
+                $sex_array = array_flip($this->sex_data);
+                $data['sex'] = empty($sex_array[$user_info['gender']]) ? 'U' : $sex_array[$user_info['gender']];
+            }
+            if(!empty($user_info['year']) && empty($one['year'])) $data['year'] = $user_info['year'];
+            if(!empty($user_info['figureurl_2']) && empty($one['avatar'])) $data['avatar'] = $user_info['figureurl_2'];
+        }
+        $this->model_users->update_user_info($one['user_id'],$data);
+        $this->set_user_login($one);
+        splash('success','绑定成功');
+    }
+
+    public function login_qq($params){
+        if(strpos($params,'code=') === false) parent::error_msg('第三方登陆失败');
+        $code = str_replace('code=','',$params);
+        $url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id='.APP_ID.
+                   '&client_secret='.APP_KEY.'&code='.$code.'&redirect_uri='.REDIRECT_URL_QQ ;
+        $access_token_res = file_get_contents($url);
+        if(empty($access_token_res)) parent::error_msg('第三方登陆失败');
+        $access_token_array = deal_str_param($access_token_res);
+        $access_token = $access_token_array['access_token'];
+        $url = 'https://graph.qq.com/oauth2.0/me?access_token='.$access_token;
+        $openid_res = file_get_contents($url);
+        if(empty($openid_res)) parent::error_msg('第三方登陆失败');
+        if(preg_match('/"openid":"(.*?)"}/', $openid_res , $matches)){
+            $openid = $matches[1];
+        } else {
+            parent::error_msg('第三方登陆失败');
+        }
+
+        $one = $this->model_users->get_user_by_openid($openid);
+        if(empty($one['qq_id'])){
+            $_SESSION['openid'] = $openid;
+            $_SESSION['access_token'] = $access_token;
+            header_index('/user/bind');
+        }else{
+            $this->set_user_login($one);
+            header_index();
+        }
+    }
+
+    public function login_wb($params){
+        print_r($params);exit;
+    }
+
+    public function login_wx($params){
+        print_r($params);exit;
+    }
+
 
     /*
      * 登陆
@@ -100,20 +176,9 @@ class user extends MY_Controller  {
 
         if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
-        if(empty($one['is_validate']) || empty($one['name'])){
-            splash('error','请先激活账号');
-        }
-        $this->model_users->update_login_time($one['user_id']);
-        $_SESSION['user_id'] = $one['user_id'];
-        $_SESSION['email'] = $one['email'];
-        $_SESSION['name'] = $one['name'];
-        $_SESSION['is_admin'] = empty($one['is_admin']) ? 0 : $one['is_admin'];
-        if(!empty( $one['avatar'])) $_SESSION['avatar'] = $one['avatar'];
+        if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
 
-        my_set_cookie('is_login',1);
-        my_set_cookie('name', $one['name']);
-        my_set_cookie('email',  $one['email']);
-        my_set_cookie('PHPSESSID',session_id());
+        $this->set_user_login($one);
 
         $url = trim($_REQUEST['referer_url']);
         splash('success','登陆成功',array('url'=>empty($url) ? '/' : $url));
@@ -234,7 +299,7 @@ class user extends MY_Controller  {
         $data['mobile'] = trim(strip_tags($_REQUEST['mobile']));
         $data['weixin'] = trim(strip_tags($_REQUEST['weixin']));
         $data['sina'] = trim(strip_tags($_REQUEST['sina']));
-        $data['age'] = trim(strip_tags($_REQUEST['age']));
+        $data['year'] = trim(strip_tags($_REQUEST['year']));
         $data['sex'] = trim(strip_tags($_REQUEST['sex']));
         $data['qq'] = trim(strip_tags($_REQUEST['qq']));
         if(!empty($data['mobile'])) valid_mobile($data['mobile']);
@@ -275,7 +340,7 @@ class user extends MY_Controller  {
         $user_info = $this->model_users->get_user_by_user_id($user_id);
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
         $user_info['sex'] = $this->sex_data[$user_info['sex']];
-        if(empty($user_info['age']))  $user_info['age'] = '未知';
+        if(empty($user_info['year']))  $user_info['year'] = '未知';
         if(empty($user_info['avatar'])) $user_info['avatar'] = '/resources/images/login/logo.jpg';
         if(empty($user_info)) parent :: error_msg('该用户不存在');
         if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
@@ -368,6 +433,20 @@ class user extends MY_Controller  {
 
         $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail , 'type'=>$type);
         splash('success','',$out);
+    }
+
+    public function set_user_login($one){
+        $this->model_users->update_login_time($one['user_id']);
+        $_SESSION['user_id'] = $one['user_id'];
+        $_SESSION['email'] = $one['email'];
+        $_SESSION['name'] = $one['name'];
+        $_SESSION['is_admin'] = empty($one['is_admin']) ? 0 : $one['is_admin'];
+        if(!empty( $one['avatar'])) $_SESSION['avatar'] = $one['avatar'];
+
+        my_set_cookie('is_login',1);
+        my_set_cookie('name', $one['name']);
+        my_set_cookie('email',  $one['email']);
+        my_set_cookie('PHPSESSID',session_id());
     }
 
 }

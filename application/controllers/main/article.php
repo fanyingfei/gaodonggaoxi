@@ -29,7 +29,6 @@ class article extends MY_Controller  {
         parent :: __construct();
         $this->assign('is_show',1);
         $this->load->model('model_article');
-        parent :: $order_data['最冷'] = 'scan asc';
     }
 
     public function zzs($p = 0){

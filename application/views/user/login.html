@@ -10,9 +10,8 @@
             <p>第三方帐号登录</p>
             <div class="login-item">
                 <div class="third-icon-box">
-                    <a href="/sns/login/preauth?action=login&amp;type=qq&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-qq"><div class="third-icon qq"></div></a>
+                    <a href="{$url_qq}" id="third-link-qq"><div class="third-icon qq"></div></a>
                     <a href="/sns/login/preauth?action=login&amp;type=wb&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-wb"> <div class="third-icon sina"></div></a>
-                    <a href="/sns/login/preauth?action=login&amp;type=db&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-db"><div class="third-icon douban"></div></a>
                     <a href="/sns/login/preauth?action=login&amp;type=wx&amp;connectid=&amp;callback=aHR0cDovL3Nob3Aud2hhbGV5LmNuL21lbWJlci9wYXNzcG9ydD9yPWh0dHAlM0ElMkYlMkZ3d3cud2hhbGV5LmNuJTJG" id="third-link-wx"> <div class="third-icon weixin"></div></a>
                 </div>
             </div>
@@ -25,6 +24,12 @@
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/common.js"></script>
 <script type="text/javascript">
+    $(document).keypress(function(e) {
+        // 回车键事件
+        if(e.which == 13) {
+            $("#sub").trigger('click');
+        }
+    });
     var sub_cfg = {};
     sub_cfg.requestUrl = '/login/login_in';
     sub_cfg.success = function(result){

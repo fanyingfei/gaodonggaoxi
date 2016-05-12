@@ -3,7 +3,7 @@
     <input type="text" name="email" id="email" placeholder="邮箱（收到邮件后验证激活账号）" value=""/>
     <div>
         <input type="code" name="code" id="code" placeholder="验证码"/>
-        <img id="checkpic" src="/code.php" />
+        <img id="checkpic" src="/tools/code.php" />
     </div>
     <input type="password" name="password" id="password" placeholder="密码"/>
     <input type="password" name="confirm" id="confirm" placeholder="确认密码"/>
@@ -15,6 +15,13 @@
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/common.js"></script>
 <script type="text/javascript">
+    $(document).keypress(function(e) {
+        // 回车键事件
+        if(e.which == 13) {
+            $("#sub").trigger('click');
+        }
+    });
+
     var sub_cfg = {};
     sub_cfg.requestUrl = '/register/save';
     sub_cfg.success = function(result){

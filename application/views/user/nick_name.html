@@ -13,6 +13,13 @@
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/common.js"></script>
 <script type="text/javascript">
+    $(document).keypress(function(e) {
+        // 回车键事件
+        if(e.which == 13) {
+            $("#sub").trigger('click');
+        }
+    });
+
     var sub_cfg = {};
     sub_cfg.requestUrl = '/user/nick/save';
     sub_cfg.success = function(result){

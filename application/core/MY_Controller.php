@@ -4,7 +4,7 @@ class MY_controller extends CI_Controller {
     static $detail_data = array(4 , 6 , 7); //需要展示详情的
     static $all_type_data   = array('xiao'=>1 ,'hua'=>2 ,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
     static $all_type_name = array('-1'=>'浏览',0=>'评论',1=>'搞笑',2=>'那些话',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
-    static $order_data = array('最新'=>'create_time desc','最早'=>'create_time asc','最赞'=>'good desc','最冷'=>'good+bad asc','随机'=>'random');
+    static $order_data = array('最新'=>'create_time desc','最早'=>'create_time asc','最赞'=>'good desc','热评'=>'reply desc','随机'=>'random');
 
     public function __construct() {
         if(!isset($_SESSION)) session_start();

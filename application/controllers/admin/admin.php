@@ -53,7 +53,7 @@ class admin extends MY_Controller  {
 
     public function content_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -66,10 +66,8 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $url = get_single_url($v['con_id'],$v['create_time']);
-            $v['content'] = '<a target="_blank" href="'.$url.'">查看详情</a>';
-            $v['create_time'] = change_time($v['create_time']);
             $v['type'] = $this->type_name[$v['type']];
+            $v['con_id'] = $this->get_id_url($v);
         }
 
         $total = $this->model_content->data_count($where);
@@ -121,7 +119,7 @@ class admin extends MY_Controller  {
 
     public function article_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -134,10 +132,9 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $v['create_time'] = change_time($v['create_time']);
             $v['type'] = $this->type_name[$v['type']];
-            $url = get_detail_url($v['art_id'],$v['create_time']);
-            $v['content'] = '<a target="_blank" href="'.$url.'">查看详情</a>';
+            $v['con_id'] = $v['art_id'];
+            $v['art_id'] = $this->get_id_url($v);
         }
 
         $total = $this->model_article->data_count($where);
@@ -186,7 +183,7 @@ class admin extends MY_Controller  {
 
     public function user_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -205,6 +202,7 @@ class admin extends MY_Controller  {
             if(!empty($v['is_validate']) && !empty($v['name'])){
                 $v['is_validate'] = '是';
             }
+            $v['year'] = empty($v['year']) ?  '' : date('Y') - $v['year'];
             $v['avatar'] = empty($v['avatar']) ? '' : "<img src='".$v['avatar']."' />";
             $v['last_login'] = empty($v['last_login']) ? '' : change_time($v['last_login']);
         }
@@ -256,7 +254,7 @@ class admin extends MY_Controller  {
 
     public function black_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -293,7 +291,7 @@ class admin extends MY_Controller  {
 
     public function reply_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -305,12 +303,7 @@ class admin extends MY_Controller  {
         //得到数据
         $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
         foreach($list as &$v){
-            if(in_array($v['type'],parent::$detail_data)){
-                $url = get_detail_url($v['con_id'],$v['create_time']);
-            }else{
-                $url = get_single_url($v['con_id'],$v['create_time']);
-            }
-            $v['con_id'] = '<a target="_blank" href="'.$url.'">'.$v['con_id'].'</a>';
+            $v['con_id'] = $this->get_id_url($v);
             $v['type'] = $this->type_name[$v['type']];
         }
 
@@ -349,7 +342,7 @@ class admin extends MY_Controller  {
 
     public function record_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -393,7 +386,7 @@ class admin extends MY_Controller  {
 
     public function access_list($str = ''){
         $where = $order_by = '';
-        $params = $this->deal_admin_param($str);
+        $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
@@ -429,20 +422,6 @@ class admin extends MY_Controller  {
         }
     }
 
-    public function deal_admin_param($str){
-        if(empty($str)) return array();
-        if(strpos($str , '&') === false){
-            $params = explode( '=' , $str);
-            return array($params[0]=>$params[1]);
-        }
-        $data = array();
-        $params = explode( '&' , $str);
-        foreach($params as $p){
-            $row = explode( '=' , $p);
-            if(isset($row[1]) && $row[1] != '' && $row[1] >= 0) $data[$row[0]] = $row[1];
-        }
-        return $data;
-    }
 
     public function get_where_param($params , $column = array()){
         if(empty($params) || empty($column)) return '';
@@ -452,6 +431,15 @@ class admin extends MY_Controller  {
             $str .= ' and '.$key.' = "'.$v.'"';
         }
         if(!empty($str)) return ' where 1 '.$str;
+    }
+
+    public function get_id_url($v){
+        if(in_array($v['type'],parent::$detail_data)){
+            $url = get_detail_url($v['con_id'],$v['create_time']);
+        }else{
+            $url = get_single_url($v['con_id'],$v['create_time']);
+        }
+        return '<a target="_blank" href="'.$url.'">'.$v['con_id'].'</a>';
     }
 }
 

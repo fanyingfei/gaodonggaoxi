@@ -46,6 +46,21 @@ function get_real_ip(){
     return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
 
+function deal_str_param($str){
+    if(empty($str)) return array();
+    if(strpos($str , '&') === false){
+        $params = explode( '=' , $str);
+        return array($params[0]=>$params[1]);
+    }
+    $data = array();
+    $params = explode( '&' , $str);
+    foreach($params as $p){
+        $row = explode( '=' , $p);
+        if(isset($row[1]) && $row[1] != '' && $row[1] >= 0) $data[$row[0]] = $row[1];
+    }
+    return $data;
+}
+
 function valid_name($name){
     if(empty($name)) splash('error','请填写昵称');
     if(utf8_strlen($name) > 20 || utf8_strlen($name) < 2) splash('error','昵称长度2-20个字符');
