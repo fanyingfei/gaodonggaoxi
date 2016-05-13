@@ -81,7 +81,7 @@ $route['login/third_wx/(:any)'] = "main/user/login_wx/$1";
 $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
 //查看某人发表的全部内容
-$route['member/(:any)'] = "main/member/member/$1";
+$route['member/(:any)'] = "main/member/member_index/$1";
 $route['member_list'] = "main/member/member_list";
 //绑定
 $route['user/bind'] = "main/user/bind";

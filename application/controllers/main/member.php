@@ -141,7 +141,7 @@ class member extends MY_Controller  {
     /*
       * 查看某用户发表的全部内容
       */
-    public function member($user_sn){
+    public function member_index($user_sn){
         $user_id = substr($user_sn , 8 );
         $user_time = substr($user_sn , 0 , 8);
         if(empty($user_sn) || empty($user_id)){

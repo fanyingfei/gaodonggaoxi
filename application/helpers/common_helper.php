@@ -149,7 +149,7 @@ function is_login(){
  * 设置COOKIE
  */
 function my_set_cookie($key,$value){
-    setcookie($key,$value,time()+COOKIE_EXPIRE , '/');
+    setcookie($key,$value,time()+COOKIE_EXPIRE , '/' , 'gaodonggaoxi.cn');
 }
 /*
  * COOKIE过期
