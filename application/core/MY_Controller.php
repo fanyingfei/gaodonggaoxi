@@ -50,7 +50,7 @@ class MY_controller extends CI_Controller {
     public function user_display($html)
     {
         $this->ci_smarty->display('main/header.html');
-        $this->ci_smarty->display('user/left.html');
+        $this->ci_smarty->display('member/left.html');
         $this->ci_smarty->display($html);
     }
 

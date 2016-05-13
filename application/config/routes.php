@@ -81,19 +81,22 @@ $route['login/third_wx/(:any)'] = "main/user/login_wx/$1";
 $route['register'] = "main/user/register";
 $route['register/save'] = "main/user/register_save";
 //查看某人发表的全部内容
-$route['member/(:any)'] = "main/user/member/$1";
-$route['member_list'] = "main/user/member_list";
-//用户中心
-$route['user/info'] = "main/user/user_info";
-$route['user/avatar'] = "main/user/user_avatar";
+$route['member/(:any)'] = "main/member/member/$1";
+$route['member_list'] = "main/member/member_list";
+//绑定
 $route['user/bind'] = "main/user/bind";
-$route['user/pass'] = "main/user/user_pass";
-$route['user/validate/(:any)'] = "main/user/user_validate/$1";
-$route['user/save'] = "main/user/info_save";
-$route['user/nick/save'] = "main/user/nick_save";
 $route['user/bind/save'] = "main/user/bind_save";
-$route['user/avatar/save'] = "main/user/avatar_save";
-$route['user/pass/save'] = "main/user/pass_save";
+//激活
+$route['user/validate/(:any)'] = "main/user/user_validate/$1";
+
+$route['user/nick/save'] = "main/user/nick_save";
+//用户中心
+$route['user/info'] = "main/member/user_info";
+$route['user/avatar'] = "main/member/user_avatar";
+$route['user/pass'] = "main/member/user_pass";
+$route['user/save'] = "main/member/info_save";
+$route['user/avatar/save'] = "main/member/avatar_save";
+$route['user/pass/save'] = "main/member/pass_save";
 
 //admin后台
 $route['admin'] = "admin/admin/index";
