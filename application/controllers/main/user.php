@@ -376,6 +376,37 @@ class user extends MY_Controller  {
         }
     }
 
+    public function user_pass(){
+        $this->assign('select',3);
+        $this->assign('title','用户中心-修改密码');
+        $this->assign('body','person-center');
+        $this->user_display('user/user_pass.html');
+    }
+
+    public function pass_save(){
+        //没有登陆直接跳登陆页
+        if(!is_login()) header_index('login');
+        $user_id = $_SESSION['user_id'];
+        if(empty($user_id)) splash('error','保存失败,请重试');
+        $old_pass = trim(strip_tags($_REQUEST['old_pass']));
+        $new_pass = trim(strip_tags($_REQUEST['new_pass']));
+        $confirm_pass = trim(strip_tags($_REQUEST['confirm_pass']));
+
+        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        if(md5($old_pass.ENCRYPTION) != $user_info['password']) splash('error','原密码输入不正确');
+
+        if($old_pass == $new_pass) splash('sucess','保存成功');
+        if($new_pass != $confirm_pass) splash('error','前后密码不一致');
+
+        $data['password'] = md5($new_pass.ENCRYPTION);
+        $res = $this->model_users->update_user_info($user_id,$data);
+        if($res){
+            splash('sucess','修改成功');
+        }else{
+            splash('error','修改失败,请重试');
+        }
+    }
+
     /*
       * 查看某用户发表的全部内容
       */

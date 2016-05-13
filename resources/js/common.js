@@ -2,7 +2,8 @@ var max_name_len = 30;
 var min_name_len = 2;
 
 //通用AJAX
-function ajax_res(obj){
+function ajax_res(obj , thi){
+    if(is_has_class(thi)) return false;
     $.ajax({
         type:'POST',
         data:obj.data,
@@ -19,6 +20,7 @@ function ajax_res(obj){
             alert_msg('提交失败,请刷新重试');
         }
     })
+    click_remove_class(thi);
 }
 //主体内容点oo
 function click_good(url , thi){
@@ -470,7 +472,6 @@ $(document).ready(function(){
 
     //监听评论提交点击事件
     $('body').on('click', '.reply-submit', function(){
-        if(is_has_class(this)) return false;
         var obj = $(this);
         var id = obj.attr('data-id');
         var type = $("#type").val();
@@ -486,6 +487,8 @@ $(document).ready(function(){
             alert_msg('请填写评论');
             return false;
         }
+
+        if(is_has_class(this)) return false;
 
         $.ajax({
             type:'POST',

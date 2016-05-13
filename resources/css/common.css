@@ -506,7 +506,7 @@ ul {
         margin-left: 5px;
     }
 
-    .user-center input[type="text"] {
+    .user-center input {
         border: 1px solid #ddd;
         height: 28px;
         line-height: 28px;

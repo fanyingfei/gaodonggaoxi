@@ -32,7 +32,6 @@
     };
 
     $("#sub").click(function(){
-        if(is_has_class(this)) return false;
         var email = $.trim($("#email").val());
         var code  = $.trim($("#code").val());
         var password = $.trim($("#password").val());
@@ -44,8 +43,7 @@
         sub_cfg.data = {
             "name":name,"email":email,'code':code,'password':password,'confirm':confirm
         };
-        ajax_res(sub_cfg);
-        click_remove_class(this);
+        ajax_res(sub_cfg , this);
     })
 
     function reg_valid(email,password,confirm){

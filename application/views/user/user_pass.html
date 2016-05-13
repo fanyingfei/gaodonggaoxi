@@ -1,0 +1,71 @@
+    <div class="user-info-right">
+        <h3>修改密码</h3>
+        <div class="person-info">
+            <div>
+                <label class="label">原密码&nbsp;&nbsp;&nbsp;</label>
+                <span class="separate"></span>
+                <input name="password" id="password" type="password">
+            </div>
+            <div>
+                <label class="label">新密码&nbsp;&nbsp;&nbsp;</label>
+                <span class="separate"></span>
+                <input type="password" name="new_pass" id="new_pass"/>
+            </div>
+            <div>
+                <label class="label">确认密码</label>
+                <span class="separate"></span>
+                <input type="password" name="confirm_pass" id="confirm_pass"/>
+            </div>
+            <div class="op"><p id="submit" class="c-subbutton">保&nbsp;存</p></div>
+        </div>
+    </div>
+</div>
+<script src="/resources/js/common.js"></script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/user/pass/save';
+    sub_cfg.success = function(result){
+        alert_msg('修改成功','success');
+    };
+
+    $("#submit").click(function(){
+        var old_pass = $.trim($("#password").val());
+        var new_pass = $.trim($("#new_pass").val());
+        var confirm_pass = $.trim($("#confirm_pass").val());
+
+        if(!input_valid(old_pass,new_pass,confirm_pass)){
+            return false;
+        }
+
+        sub_cfg.data = {
+            "old_pass":old_pass,"new_pass":new_pass,'confirm_pass':confirm_pass
+        };
+        ajax_res(sub_cfg , this);
+    })
+
+    function input_valid(old_pass,new_pass,confirm_pass){
+        if(old_pass == ''){
+            alert_msg('请输入原密码');
+            return false;
+        }
+        if(new_pass == ''){
+            alert_msg('请输入新密码');
+            return false;
+        }
+        if((new_pass.length < 6) || (new_pass.length > 30)){
+            alert_msg('密码长度6-30个字符');
+            return false;
+        }
+        if(confirm_pass == ''){
+            alert_msg('请确认新密码');
+            return false;
+        }
+        if(new_pass != confirm_pass){
+            alert_msg('前后密码不一致');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

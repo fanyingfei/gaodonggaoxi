@@ -86,12 +86,14 @@ $route['member_list'] = "main/user/member_list";
 //用户中心
 $route['user/info'] = "main/user/user_info";
 $route['user/avatar'] = "main/user/user_avatar";
+$route['user/bind'] = "main/user/bind";
+$route['user/pass'] = "main/user/user_pass";
 $route['user/validate/(:any)'] = "main/user/user_validate/$1";
 $route['user/save'] = "main/user/info_save";
 $route['user/nick/save'] = "main/user/nick_save";
-$route['user/bind'] = "main/user/bind";
 $route['user/bind/save'] = "main/user/bind_save";
 $route['user/avatar/save'] = "main/user/avatar_save";
+$route['user/pass/save'] = "main/user/pass_save";
 
 //admin后台
 $route['admin'] = "admin/admin/index";
