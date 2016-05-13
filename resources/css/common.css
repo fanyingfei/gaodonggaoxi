@@ -565,10 +565,6 @@ ul {
         box-shadow: none;
     }
 
-    .error {
-        border: 0;
-    }
-
     .one .content .content-body a {
         color: #4285f4;
     }

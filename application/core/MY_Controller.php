@@ -62,6 +62,7 @@ class MY_controller extends CI_Controller {
         $this->assign('description','');
         $this->ci_smarty->display('main/header.html');
         $this->ci_smarty->display('error.html');
+        $this->ci_smarty->display('main/footer.html');
         exit;
     }
 

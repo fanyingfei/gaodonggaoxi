@@ -391,7 +391,7 @@ class user extends MY_Controller  {
         $user_info = $this->model_users->get_user_by_user_id($user_id);
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
         $user_info['sex'] = $this->sex_data[$user_info['sex']];
-        if(empty($user_info['year']))  $user_info['year'] = '未知';
+        $user_info['age'] = empty($user_info['year']) ? '未知' : date('Y') - $user_info['year'];
         if(empty($user_info['avatar'])) $user_info['avatar'] = '/resources/images/login/logo.jpg';
         if(empty($user_info)) parent :: error_msg('该用户不存在');
         if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
