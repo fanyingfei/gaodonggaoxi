@@ -313,13 +313,8 @@ function my_array_column($input, $columnKey, $indexKey=null){
 
 function get_ip_local($queryIP){
     $url = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip='.$queryIP;
-    $ch = curl_init($url);
-    //curl_setopt($ch,CURLOPT_ENCODING ,'utf8');
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-    $location = curl_exec($ch);
+    $location = grab_curl($url);
     $location = json_decode($location);
-    curl_close($ch);
 
     $loc = "";
     if($location===FALSE) return "unknow";
@@ -332,6 +327,106 @@ function get_ip_local($queryIP){
     $filter_loc = str_replace('&nbsp;','',$loc);
     if(empty($filter_loc)) return "unknow";
     return $loc;
+}
+
+function grab_curl($url,$post_data = ''){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0); //不带头信息
+    curl_setopt($ch, CURLOPT_TIMEOUT,5);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //不输出到屏幕上
+    curl_setopt($ch, CURLOPT_TIMEOUT,5);   //只需要设置一个秒的数量就可以
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    $res = curl_exec($ch);
+    curl_close($ch);
+    return $res;
+}
+
+function post_fsockopen($url = '', $post = array() , $method = 'POST', $header = null, $timeout = 20 ){
+    if (empty($url)) return '';
+    $url = parse_url($url);
+    $method = strtoupper(trim($method));
+    $method = empty($method) ? 'GET' : $method;
+    $scheme = strtolower($url['scheme']);
+    $host = $url['host'];
+    $path = $url['path'];
+    empty($path) and ($path = '/');
+    $query = empty($url['query']) ? '' :  $url['query'];
+    $port = isset($url['port']) ? (int)$url['port'] : ('https' == $scheme ? 443 : 80);
+    $protocol = 'https' == $scheme ? 'ssl://' : '';
+
+    if (!$res = fsockopen($protocol.$host, (int)$port, $errno, $errstr, (int)$timeout)) {
+        return '';
+     //   return array('error' => mb_convert_encoding($errstr, 'UTF-8', 'UTF-8,GB2312'), 'errorno' => $errno);
+    } else {
+        $crlf = "\r\n";
+        $commonHeader = $method == 'PROXY' ? array() : array(
+            'Host' => $host
+        ,'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; rv:16.0) Gecko/20100101 Firefox/16.0'
+        ,'Content-Type' => 'POST' == $method ? 'application/x-www-form-urlencoded' : 'text/html; charsert=UTF-8'
+        ,'Connection' => 'Close'
+        );
+        is_array($header) and ($commonHeader = array_merge($commonHeader, $header));
+
+        foreach ($commonHeader as $key => & $val) {
+            $val = str_replace(array("\n", "\r", ':'), '', $val);
+            $key = str_replace(array("\n", "\r", ':'), '', $key);
+            $val = "{$key}: {$val}{$crlf}";
+        }
+
+        if ($method == 'PROXY') {
+            $post = trim(str_replace(array("\n", "\r"), '', $post)).$crlf;
+
+            if (empty($post)) return array('error' => '使用代理时,必须指定代理请求方法($post参数)');
+        } else if (!is_array($post)) {
+            $post = array();
+        }
+
+        switch ($method) {
+            case 'POST':
+                $post = http_build_query($post);
+                $query = empty($query) ? '' : '?'.$query;
+                $commonHeader[] = 'Content-Length: '.strlen($post).$crlf;
+                $post = empty($post) ? '' : $crlf.$post.$crlf;
+                $commonHeader = implode('', $commonHeader);
+                $request = "{$method} {$path}{$query} HTTP/1.1{$crlf}"
+                    ."{$commonHeader}"
+                    .$post
+                    .$crlf;//表示提交结束了
+                break;
+            case 'PROXY'://代理
+                $commonHeader = implode('', $commonHeader);
+                $request =  $post
+                    .$commonHeader
+                    .$crlf;//表示提交结束了
+                break;
+            case 'GET':
+            default:
+                empty($query) ? ($query = array()) : parse_str($query, $query);
+                $query = array_merge($query, $post);
+                $query = http_build_query($query);
+                $commonHeader = implode('', $commonHeader);
+                $query = empty($query) ? '' : '?'.$query;
+                $request =  "{$method} {$path}{$query} HTTP/1.1{$crlf}"
+                    ."{$commonHeader}"
+                    .$crlf;//表示提交结束了
+        }
+
+        fwrite($res, $request);
+        $reponse = '';
+
+        while (!feof($res)) {
+            $reponse .= fgets($res, 128);
+        }
+
+        fclose($res);
+        $pos = strpos($reponse, $crlf . $crlf);//查找第一个分隔
+        if($pos === false) return $reponse;
+        $header = substr($reponse, 0, $pos);
+        $body = substr($reponse, $pos + 2 * strlen($crlf));
+        return $body;
+    }
 }
 
 /*

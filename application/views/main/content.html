@@ -87,6 +87,7 @@
     };
 
     $("#submit").click(function(){
+        if(is_has_class(this)) return false;
         var name = $.trim($("#name").val());
         var email = $.trim($("#email").val());
         var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
@@ -100,6 +101,7 @@
             "name":name,"email":email,'content':content,'type':type
         };
         ajax_res(sub_cfg);
+        click_remove_class(this);
     })
 
 </script>

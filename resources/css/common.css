@@ -992,6 +992,11 @@ ul {
 .detail-reply .reply-wapper{
     display: block;
 }
+.bind{
+    text-align: center;
+    font-size: 20px;
+    color:#000;
+}
 .share{
     margin:30px;
 }
@@ -1275,9 +1280,7 @@ ul {
     width: 80px;
 }
 .layout .login-register:hover{
-    background:#136dfb;
-    color:#fff;
-    border:1px solid #136dfb;
+    background:#fafafa;
 }
 .layout .login-third{
     float:left;
@@ -1313,7 +1316,7 @@ ul {
 }
 .layout .weixin {
     background-position: -209px 0;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 .layout .logo{
     height: 100px;

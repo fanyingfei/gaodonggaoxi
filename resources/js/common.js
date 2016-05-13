@@ -91,6 +91,18 @@ function valid(name,email,content){
     return true;
 }
 
+function is_has_class(thi){
+    if($(thi).hasClass('disabled')){
+        return true;
+    }else{
+        $(thi).addClass('disabled');
+        return false;
+    }
+}
+function click_remove_class(thi){
+    setTimeout(function(){$(thi).removeClass('disabled');}, 1500);
+}
+
 //定位播放图片按钮
 function show_play_all(){
     $(".play").each(function(){
@@ -458,6 +470,7 @@ $(document).ready(function(){
 
     //监听评论提交点击事件
     $('body').on('click', '.reply-submit', function(){
+        if(is_has_class(this)) return false;
         var obj = $(this);
         var id = obj.attr('data-id');
         var type = $("#type").val();
@@ -473,7 +486,6 @@ $(document).ready(function(){
             alert_msg('请填写评论');
             return false;
         }
-        $(this).unbind("click");
 
         $.ajax({
             type:'POST',
@@ -501,6 +513,7 @@ $(document).ready(function(){
                 alert_msg('提交失败,请刷新重试');
             }
         })
+        click_remove_class(this);
     });
 
     function reply_list(result){

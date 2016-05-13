@@ -45,6 +45,14 @@ class model_users extends CI_Model{
     }
 
     /*
+    * 通过新浪微博查用户
+    */
+    public function get_user_by_sinaid($sina_id){
+        $sql = 'select * from '.self::TABLE_NAME ." where wb_id = '$sina_id'";
+        return $this->db->query($sql)->first_row('array');
+    }
+
+    /*
     * 通过昵称查用户
     */
     public function get_user_by_name($name){

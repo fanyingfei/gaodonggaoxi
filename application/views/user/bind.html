@@ -1,9 +1,9 @@
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
-    <div class="bind">账号绑定</div>
-    <input type="text" name="email" id="email" placeholder="请输入要绑定的邮箱账号" value="" />
+    <div class="bind">已有帐号？直接绑定</div>
+    <input type="text" name="email" id="email" placeholder="请输入要绑定的邮箱账号" value="{$email}" />
     <input type="password" name="password" id="password" placeholder="密码"/>
-    <div class="sub" id="sub">确认</div>
+    <div class="sub" id="sub">账号绑定</div>
     <div class="bottom-item"><a href="/register">还没有账号？立即注册</a></div>
 </div>
 </body>
@@ -24,10 +24,11 @@
         alert_msg(result.msg,'success');
         setTimeout(function(){
             window.location.href='/';
-        },2000);
+        },1000);
     };
 
     $("#sub").click(function(){
+        if(is_has_class(this)) return false;
         var email = $.trim($("#email").val());
         var password = $.trim($("#password").val());
         if(!email_valid(email,password)){
@@ -36,8 +37,8 @@
         sub_cfg.data = {
             "email":email,'password':password
         };
-        $(this).unbind("click");
         ajax_res(sub_cfg);
+        click_remove_class(this);
     })
 
     function email_valid(email,password){

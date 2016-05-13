@@ -71,92 +71,19 @@ class user extends MY_Controller  {
     }
 
     public function login_index($param=''){
-        if(is_login()){
-            header_index();
-        }
+        if(is_login()) header_index();
         $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
         if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
         $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
+        $url_wb = 'https://api.weibo.com/oauth2/authorize?client_id='.SINA_ID.'&response_type=code&redirect_uri='.REDIRECT_URL_WB ;
 
         $this->assign('url',$url);
         $this->assign('title','登录');
         $this->assign('url_qq',$url_qq);
+        $this->assign('url_wb',$url_wb);
         $this->native_display('user/header.html');
         $this->native_display('user/login.html');
     }
-
-    public function bind(){
-        $this->assign('title','账号绑定');
-        $this->native_display('user/header.html');
-        $this->native_display('user/bind.html');
-    }
-
-    public function bind_save(){
-        $email = $_REQUEST['email'];
-        if(empty($email)) splash('error','请输入邮箱账号');
-        $password = $_REQUEST['password'];
-        if(empty($password)) splash('error','请输入密码');
-
-        $one = $this->model_users->get_user_by_email($email);
-        if(empty($one)) splash('error','您要绑定的账号不存在');
-        if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
-        if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
-        $openid = $_SESSION['openid'];
-        $access_token = $_SESSION['access_token'];
-        $url = 'https://graph.qq.com/user/get_user_info?access_token='.$access_token.'&oauth_consumer_key='.APP_ID.'&openid='.$openid;
-        $user_info = file_get_contents($url);
-        $data['qq_id'] = $openid;
-        if(!empty($user_info)){
-            $user_info = json_decode($user_info,true);
-            if(!empty($user_info['gender']) && $one['sex'] == 'U'){
-                $sex_array = array_flip($this->sex_data);
-                $data['sex'] = empty($sex_array[$user_info['gender']]) ? 'U' : $sex_array[$user_info['gender']];
-            }
-            if(!empty($user_info['year']) && empty($one['year'])) $data['year'] = $user_info['year'];
-            if(!empty($user_info['figureurl_2']) && empty($one['avatar'])) $data['avatar'] = $user_info['figureurl_2'];
-        }
-        $this->model_users->update_user_info($one['user_id'],$data);
-        $this->set_user_login($one);
-        splash('success','绑定成功');
-    }
-
-    public function login_qq($params){
-        if(strpos($params,'code=') === false) parent::error_msg('第三方登陆失败');
-        $code = str_replace('code=','',$params);
-        $url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id='.APP_ID.
-                   '&client_secret='.APP_KEY.'&code='.$code.'&redirect_uri='.REDIRECT_URL_QQ ;
-        $access_token_res = file_get_contents($url);
-        if(empty($access_token_res)) parent::error_msg('第三方登陆失败');
-        $access_token_array = deal_str_param($access_token_res);
-        $access_token = $access_token_array['access_token'];
-        $url = 'https://graph.qq.com/oauth2.0/me?access_token='.$access_token;
-        $openid_res = file_get_contents($url);
-        if(empty($openid_res)) parent::error_msg('第三方登陆失败');
-        if(preg_match('/"openid":"(.*?)"}/', $openid_res , $matches)){
-            $openid = $matches[1];
-        } else {
-            parent::error_msg('第三方登陆失败');
-        }
-
-        $one = $this->model_users->get_user_by_openid($openid);
-        if(empty($one['qq_id'])){
-            $_SESSION['openid'] = $openid;
-            $_SESSION['access_token'] = $access_token;
-            header_index('/user/bind');
-        }else{
-            $this->set_user_login($one);
-            header_index();
-        }
-    }
-
-    public function login_wb($params){
-        print_r($params);exit;
-    }
-
-    public function login_wx($params){
-        print_r($params);exit;
-    }
-
 
     /*
      * 登陆
@@ -183,6 +110,129 @@ class user extends MY_Controller  {
         $url = trim($_REQUEST['referer_url']);
         splash('success','登陆成功',array('url'=>empty($url) ? '/' : $url));
     }
+
+    public function bind(){
+        $this->assign('title','账号绑定');
+        $this->native_display('user/header.html');
+        $this->native_display('user/bind.html');
+    }
+
+    public function bind_save(){
+        $email = $_REQUEST['email'];
+        if(empty($email)) splash('error','请输入邮箱账号');
+        $password = $_REQUEST['password'];
+        if(empty($password)) splash('error','请输入密码');
+
+        $one = $this->model_users->get_user_by_email($email);
+        if(empty($one)) splash('error','您要绑定的账号不存在');
+        if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
+        if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
+
+        if(!empty($_SESSION['third_type']) && $_SESSION['third_type']=='qq'){
+            if(empty($_SESSION['openid'])) splash('error','绑定失败，请重新登录');
+            $access_token = $_SESSION['access_token'];
+            $data['qq_id'] = $openid = $_SESSION['openid'];
+            $url = 'https://graph.qq.com/user/get_user_info?access_token='.$access_token.'&oauth_consumer_key='.APP_ID.'&openid='.$openid;
+            $user_info = file_get_contents($url);
+            $data['qq_id'] = $openid;
+            if(!empty($user_info)){
+                $user_info = json_decode($user_info,true);
+                if(!empty($user_info['gender']) && $one['sex'] == 'U'){
+                    $sex_array = array_flip($this->sex_data);
+                    $data['sex'] = empty($sex_array[$user_info['gender']]) ? 'U' : $sex_array[$user_info['gender']];
+                }
+                if(!empty($user_info['year']) && empty($one['year'])) $data['year'] = $user_info['year'];
+                if(!empty($user_info['figureurl_2']) && empty($one['avatar'])) $data['avatar'] = $user_info['figureurl_2'];
+            }
+        }elseif(!empty($_SESSION['third_type']) && $_SESSION['third_type']=='wb'){
+            if(empty($_SESSION['openid'])) splash('error','绑定失败，请重新登录');
+            $access_token = $_SESSION['access_token'];
+            $data['wb_id'] = $sina_id = $_SESSION['openid'];
+            $url = 'https://api.weibo.com/2/users/show.json?access_token='.$access_token.'&uid='.$sina_id;
+            $user_info = file_get_contents($url);
+            if(!empty($user_info)){
+                $user_info = json_decode($user_info,true);
+                if(!empty($user_info['gender']) && $one['sex'] == 'U'){
+                    $sex_array = array('m'=>'M','f'=>'W');
+                    $data['sex'] = empty($sex_array[$user_info['gender']]) ? 'U' : $sex_array[$user_info['gender']];
+                }
+                if(!empty($user_info['avatar_hd']) && empty($one['avatar'])) $data['avatar'] = $user_info['avatar_hd'];
+            }
+        }elseif(!empty($_SESSION['third_type']) && $_SESSION['third_type']=='wx'){
+
+        }
+
+        $this->model_users->update_user_info($one['user_id'],$data);
+        $this->set_user_login($one);
+        splash('success','绑定成功');
+    }
+
+    public function login_qq($params){
+        if(strpos($params,'code=') === false) parent::error_msg('QQ登陆失败');
+        $code = str_replace('code=','',$params);
+        $url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id='.APP_ID.
+            '&client_secret='.APP_KEY.'&code='.$code.'&redirect_uri='.REDIRECT_URL_QQ ;
+        $access_token_res = file_get_contents($url);
+        if(empty($access_token_res)) parent::error_msg('QQ登陆失败');
+        $access_token_array = deal_str_param($access_token_res);
+        $access_token = $access_token_array['access_token'];
+        $url = 'https://graph.qq.com/oauth2.0/me?access_token='.$access_token;
+        $openid_res = file_get_contents($url);
+        if(empty($openid_res)) parent::error_msg('QQ登陆失败');
+        if(preg_match('/"openid":"(.*?)"}/', $openid_res , $matches)){
+            $openid = $matches[1];
+        } else {
+            parent::error_msg('QQ登陆失败');
+        }
+
+        $this->login_third('qq',$openid,$access_token);
+    }
+
+    public function login_wb($params){
+        if(strpos($params,'code=') === false) parent::error_msg('微博登陆失败');
+        $code = str_replace('code=','',$params);
+        $url = 'https://api.weibo.com/oauth2/access_token';
+        $data = array(
+            'code'             => $code,
+            'client_id'        => SINA_ID ,
+            'client_secret'    => SINA_KEY ,
+            'redirect_uri'     => REDIRECT_URL_WB ,
+            'grant_type'       => "authorization_code"
+        );
+        $access_token_res = post_fsockopen($url,$data);
+        if(empty($access_token_res)) parent::error_msg('微博登陆失败');
+        $sina_res = json_decode($access_token_res,true);
+        if(empty($sina_res['uid'])) parent::error_msg('微博登陆失败');
+
+        $this->login_third('wb',$sina_res['uid'],$sina_res['access_token']);
+    }
+
+    public function login_wx($params){
+        print_r($params);exit;
+    }
+
+    public function login_third($type,$id,$key){
+        if($type=='qq'){
+            $one = $this->model_users->get_user_by_openid($id);
+            $flag = empty($one['qq_id']) ? true : false;
+        }elseif($type=='wb'){
+            $one = $this->model_users->get_user_by_sinaid($id);
+            $flag = empty($one['wb_id']) ? true : false;
+        }elseif($type=='wx'){
+            $one = $this->model_users->get_user_by_wxid($id);
+            $flag = empty($one['wx_id']) ? true : false;
+        }
+        if($flag){
+            $_SESSION['openid'] = $id;
+            $_SESSION['third_type'] = $type;
+            $_SESSION['access_token'] = $key;
+            header_index('/user/bind');
+        }else{
+            $this->set_user_login($one);
+            header_index();
+        }
+    }
+
 
     public function login_out(){
         session_destroy();
@@ -247,7 +297,7 @@ class user extends MY_Controller  {
         $param = json_decode(base64_decode($str),true);
 
         $time = $param['time'];
-        if(time() - $time > 24*3600){
+        if(time() - $time > 86400){
             parent::error_msg('链接已失效，请联系'.EMAIL_NUMBER .'重新发送');
         }
         $user_id = intval($param['user_id']);
@@ -258,7 +308,7 @@ class user extends MY_Controller  {
             parent::error_msg('出错啦');
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
-            header_index('login');
+            header_index('/login');
         }
         $this->assign('title','完善资料');
         $this->assign('unique_id',$user_id);
@@ -277,14 +327,15 @@ class user extends MY_Controller  {
         if(empty($user_info)) splash('error','激活失败，请刷新重试');
 
         if(!empty($user_info['name']) && !empty($user_info['is_validate'])){
-            splash('error','该账号已激活');
+            splash('error','该账号已激活，请直接登陆');
         }
 
         $res_by_name = $this->model_users->get_user_by_name($name);
         if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
         $res = $this->model_users->user_validate($id,$name);
         if($res){
-            expire_cookie('is_login');
+            $user_info['name'] = $name;
+            $this->set_user_login($user_info);
             splash('sucess','激活成功，立即登录');
         }else{
             splash('error','激活失败,请重试');
@@ -446,7 +497,7 @@ class user extends MY_Controller  {
         my_set_cookie('is_login',1);
         my_set_cookie('name', $one['name']);
         my_set_cookie('email',  $one['email']);
-        my_set_cookie('PHPSESSID',session_id());
+     //   my_set_cookie('PHPSESSID',session_id());
     }
 
 }

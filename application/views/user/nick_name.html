@@ -26,10 +26,11 @@
         alert_msg(result.msg,'success');
         setTimeout(function(){
             window.location.href='/';
-        },2000);
+        },1000);
     };
 
     $("#sub").click(function(){
+        if(is_has_class(this)) return false;
         var id = $.trim($("#unique-id").val());
         var name = $.trim($("#name").val());
         if(!nick_valid(name)){
@@ -38,8 +39,8 @@
         sub_cfg.data = {
             "name":name,"id":id
         };
-        $(this).unbind("click");
         ajax_res(sub_cfg);
+        click_remove_class(this);
     })
 
     function nick_valid(name){
