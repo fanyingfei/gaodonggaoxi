@@ -1,68 +1,63 @@
-<div class="main left">
-    <div class="nav-title">{$menu}<span class="mao edit-info"></span></div>
-    <ul class="nav-order-by">
-        {foreach from=$order_by key=key item=value}
-        <li {if $cur_order == $key}class='active'{/if}>{$key}</li>
+<div class="subnav-wrapper main-width">
+    <ul class="subnav">
+        {foreach from=$sort key=key item=value}
+        <li {if $cur_sort == $key}class='active'{/if}>
+        <a href="/{$nav}{if $key != 'new'}/{$key}{/if}">{$value.name}</a>
+        </li>
         {/foreach}
     </ul>
-    {if $count > 0}
-        {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
-        <div class="main-list">
+    <div class="nav-desc">{$menu}</div>
+</div>
+<div class="main main-width">
+    <div class="main-left main-left-width">
+        {if $count > 10}
+        <div class="pagination page-top">{$page}</div>
+        {/if}
+        <div class="list">
             {foreach from=$list key=key item=one}
-            <div class="one{if $key == 0 } first{/if}">
-                <div class="user">
+            <div class="section">
+                <div class="section-top">
                     {if $one.avatar != ''}
-                    <div class="avatar-wapper">
-                        <div class="login-avatar">
-                            <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
-                        </div>
+                    <div class="section-avatar">
+                        <img title="{$one.name}" src="{$one.avatar}" onerror="avatar_error(this)" />
                     </div>
                     {/if}
-                    {if $one.user_sn != ''}
-                    <a href="/member/{$one.user_sn}"><p class="is_vip name text-right" title="{$one.u_name}">{$one.name}</p></a>
-                    {else}
-                    <p class="name text-right" title="防伪码:{$one.u_name}">{$one.name}</p>
-                    {/if}
-                    <p class="time text-right">{$one.create_time}</p>
+                    <div class="section-user-name" title="{if $one.user_sn != ''}{$one.u_name}{else}防伪码:{$one.u_name}{/if}">{$one.name}</div>
+                    <div class="section-createtime">发布于{$one.create_time}</div>
                 </div>
-                <div class="content">
-                    <div class="content-body{if $one.avatar != ''} avatar-min-height{/if}">{$one.content}</div>
-                    <p class="right clear click oo-xx">
-                        <span class="response"></span>
-                        <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]&nbsp;
-                        <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]&nbsp;
-                        <span class="examine">
-                            <a class="reply" data-id="{$one.con_id}"></a>[<span class="reply-count">{$one.reply}</span>]
-                        </span>
-                    </p>
+                <div class="section-middle">{$one.content}</div>
+                <div class="section-bottom oo-xx">
+                    <span class="response"></span>
+                    <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]&nbsp;
+                    <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]&nbsp;
+                    <a class="reply" data-id="{$one.con_id}"></a>[<span class="reply-count">{$one.reply}</span>]
                 </div>
             </div>
             {/foreach}
         </div>
         {if $count > 10}<div class="pagination">{$page}</div>{/if}
-    {else}
-        <div class="empty"><h2 class="center">没有结果哦~去看看别的吧</h2></div>
-    {/if}
 
-    <div class="sub examine">
-        {if $is_login == 1}
-            <p>{$name},说些什么吧</p>
-            <input type="hidden" name="email" id="email" value="{$email}" />
-            <input type="hidden" name="name" id="name" value="{$name}" />
-        {else}
-            <p>&nbsp;</p>
-            <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
-            <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
-        {/if}
-        <p class="textarea-prompt">
-            图片请上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>
-        </p>
-        <p><textarea name="content" id="content"></textarea></p>
-        <p><button id="submit" class="clear">submit</button></p>
+        <div class="sub examine">
+            <p class="say-something">&nbsp;</p>
+            {if $is_login == 1}
+                <p>{$name},说些什么吧</p>
+                <input type="hidden" name="email" id="email" value="{$email}" />
+                <input type="hidden" name="name" id="name" value="{$name}" />
+            {else}
+                <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
+                <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
+            {/if}
+            <p class="textarea-prompt">
+                [1] 图片可上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">微博相册</a>；右键复制图片地址，点击图片按钮，粘贴至输入框。
+                <br>
+                [2] 请勿发色情/暴恐/时政/二维码等水印的图；勿重复发图，发布后请等待审核。
+            </p>
+            <p><textarea name="content" id="content"></textarea></p>
+            <p><button id="submit" class="clear">submit</button></p>
+        </div>
+        <input type="hidden" id="type" value="{$type}" />
+        <input type="hidden" id="comment-url" value="/content/record" />
     </div>
-    <input type="hidden" id="type" value="{$type}" />
-    <input type="hidden" id="comment-url" value="/content/record" />
-</div>
 {literal}
 <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
 <script charset="utf-8" src="/kindeditor/emoticons.js"></script>
@@ -72,7 +67,8 @@
         window.editor = K.create('#content', {
             newlineTag : "br" ,
             itemsName : true,
-            items : [ 'image' , 'link' ,'emoticons']
+         //   items : [ 'image' , 'link' ,'emoticons']
+            items : [ 'image']
         });
     });
 </script>

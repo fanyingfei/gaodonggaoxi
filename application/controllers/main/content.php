@@ -1,107 +1,98 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class content extends MY_Controller  {
-    private $type = 1; //默认为1
-    private $table_name = 'content';
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
+
+    private $sort_data = array(
+        'new'=>array('name'=>'最新','value'=>'con_id desc'),
+        'ago'=>array('name'=>'最早','value'=>'con_id asc'),
+        'good'=>array('name'=>'最赞','value'=>'good desc'),
+        'hot'=>array('name'=>'热评','value'=>'reply desc'),
+        'rand'=>array('name'=>'随机','value'=>'random')
+    );
 
     public function __construct() {
-        parent :: __construct();
+        parent::__construct();
+        $this->get_nav();
         $this->load->model('model_content');
+        $this->load->model('model_article');
     }
 
-    public function index($p = 0){
-        $this->xiao($p);
+    public function pic($p = 0 , $s = ''){
+        $this->init($p , $s , __FUNCTION__);
     }
 
-    public function xiao($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('body','body-content');
-        $this->assign('title','搞东搞西－搞搞东西');
-        $this->assign('menu','搞笑－开开心心每一天');
-        $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
-        $web_info = '搞东搞西，搞搞东西，这里有搞笑的图片，捧腹的段子，诱人的妹子，还有经典的话，好看的故事，还可以把你喜欢的一起分享哦，快来搞搞吧~';
-        $this->assign('description',$web_info.' 搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
-        $this->content_list($p);
+    public function duan($p = 0 , $s = ''){
+        $this->init($p , $s , __FUNCTION__);
     }
 
-    public function hua($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('body','body-content');
-        $this->assign('title','那些话－搞东搞西');
-        $this->assign('menu','那些话－有没有一句话会让你泪流满面');
-        $this->assign('keywords','那些话,语录,美文,经典,短文,鸡汤,句子');
-        $this->assign('description','总有一句话会让你感动莫名，泪流满面');
-        $this->content_list($p);
+    public function meizi($p = 0, $s = ''){
+        $this->init($p , $s , __FUNCTION__);
     }
 
-    public function meizi($p = 0){
-        $this->set_type_value(__FUNCTION__);
-        $this->assign('body','body-content');
-        $this->assign('title','妹子－搞东搞西');
-        $this->assign('menu','妹子－嘿嘿嘿，你懂的');
-        $this->assign('keywords','妹子,美女,美女图片,软妹子,清纯美女,性感美女');
-        $this->assign('description','清纯甜美、性感火辣、温柔可爱的软妹子都在这捏，走过路过不要错过哦。');
-        $this->content_list($p);
+    public function zzs($p = 0, $s = ''){
+        $this->assign('is_show',1);
+        $this->init($p , $s , __FUNCTION__);
+    }
+
+    public function tale($p = 0, $s = ''){
+        $this->assign('is_show',1);
+        $this->init($p , $s , __FUNCTION__);
+    }
+
+    public function cxy($p = 0, $s = ''){
+        $this->assign('is_show',0);
+        $this->init($p , $s , __FUNCTION__);
     }
 
     /*
      * 列表
      */
-    public function content_list($p = 0)
+    public function content_list($param)
     {
         $limit = 10;
-        $p = intval($p);
-        $is_random = 0;
+        $p = intval($param['page']);
+        $type = $param['type'];
+        $sort = $param['sort'];
+        $is_detail = $param['is_detail'];
+
         $this->load->library('page');
-        $where = 'where status = 1 and type = '.$this->type;
+        $where = 'where status = 1 and type = '.$type;
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
-        if(!empty($search)) $where .= " and (name like '%$search%' or content like '%$search%') ";
 
-        $order_by_data = parent::$order_data;
-        $cookie_order_by  = empty($_COOKIE['order_by']) || empty($order_by_data[$_COOKIE['order_by']]) ? '' : $order_by_data[$_COOKIE['order_by']];
+        if(empty($is_detail)){
+            $html_name = 'content.html';
+            $table_name = 'model_content';
+            if(!empty($search)) $where .= " and (name like '%$search%' or content like '%$search%') ";
+        }else{
+            $html_name = 'article.html';
+            $table_name = 'model_article';
+            if(!empty($search)) $where .= " and (name like '%$search%'  or title like '%$search%'  or tags like '%$search%') ";
+        }
 
-        if($cookie_order_by == 'random') $is_random = 1;
-
-        if($is_random == 1){
-            $key_res = $this->model_content->data_key($where);
-            $count = count($key_res) - 1;
-            $random_data = array();
-            while(count($random_data)<$limit){
-                $rand =mt_rand(0 , $count);
-                $random_data[] = $key_res[$rand]['id'];
-            }
-            $random_data = array_unique($random_data);
-            $list = $this->model_content->data_random_list($random_data,$limit , $where);
+        //得到总数
+        $count = $this->$table_name->GetTotal($where);
+        if($sort == 'rand'){
+            $page = mt_rand(0 , ceil($count/$limit)-1);
+            $result = $this->$table_name->GetAllKey($where , $page ,$limit);
+            $key_res = array_column($result,'id');
+            $rand_num = 10 > count($key_res) ? count($key_res) : 10;
+            $rand_keys = array_rand($key_res, $rand_num);
+            $where .=' and con_id in ('.implode(',',$rand_keys).')';
+            $list = $this->$table_name->GetAll($where);
             $page = '<div onclick="window.location.href=window.location.href"><a>再随一次</a></div>';
         }else{
-            //得到总数
-            $count = $this->model_content->data_count($where);
+            $sort_data = $this->sort_data;
+            $sort_value  = empty($sort) || empty($sort_data[$sort]) ? '' : $sort_data[$sort]['value'];
             $total_page = ceil($count/$limit);
             if(empty($p) || $p > $total_page) $p = $total_page;
-            $order_by = empty($cookie_order_by) ? '' : ' order by '.$cookie_order_by;
             //得到数据
-            $list  = $this->model_content->data_list($total_page - $p,$limit,$where,$order_by);
+            $list  = $this->$table_name->GetAll($where,$sort_value,$total_page - $p,$limit);
             //生成页码
             $page = get_page($count,$limit,$total_page - $p + 1);
         }
 
         //得到头像
-        $user_res =  parent :: get_user_avatar($list);
+        $user_res =  $this->get_user_avatar($list);
         if(!empty($user_res)){
             $user_avatar = my_array_column($user_res , 'avatar' , 'user_id');
             $user_time = my_array_column($user_res , 'create_time' , 'user_id');
@@ -109,44 +100,47 @@ class content extends MY_Controller  {
 
         foreach($list as &$v){
             $v['user_sn'] = $v['avatar'] = '';
-            $v['create_time'] = change_time($v['create_time']);
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
             if(!empty($v['user_id'])){
                 $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];
                 $v['user_sn'] = get_user_sn($v['user_id'] , $time);
             }
-             //gif图转成静态，145条后在保存时就已经转化过了
-            if($v['con_id'] < 145){
-                if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-                $v['content'] = filter_content_br(strip_tags($v['content'],'<div><img><br>'));
+            if(!empty($is_detail)){
+                $v['tags'] = explode(' ' , $v['tags']);
+                $v['detail_url'] = get_detail_url($v['con_id'],$v['create_time']);
+                $v['year'] = substr($v['create_time'], 0 , 7);
+                $v['day'] = substr($v['create_time'], 8 , 2);
             }
+
+            $v['create_time'] = change_time($v['create_time']);
         }
 
         $this->assign('list',$list);
         $this->assign('count',$count);
         $this->assign('page',$page);
-        $this->assign('type',$this->type);
-        $this->assign('order_by', parent :: $order_data);
 
-        $this->display('content.html');
+        $this->display($html_name);
     }
 
-    public function detail($time,$param){
+
+    public function content_detail($time,$param){
         $id = intval(get_detail_id($param));
-        $detail  = $this->model_content->detail($id);
+        $where = 'where con_id = '.$id;
+        $detail  = $this->model_content->GetRow($where);
         $detail['create_time'] = change_time($detail['create_time']);
         $detail['user_sn'] = $detail['avatar'] = '';
         $detail['u_name'] = empty($detail['user_id']) ? md5($detail['email']) : $detail['name'];
         if(!empty($detail['user_id'])){
             $this->load->model('model_users');
-            $user_res = $this->model_users->get_user_by_user_id($detail['user_id']);
+            $where = 'where user_id = '.$detail['user_id'];
+            $user_res = $this->model_users->GetRow($where);
             $detail['avatar'] = $user_res['avatar'];
             $detail['user_sn'] = get_user_sn($detail['user_id'] , $user_res['create_time']);
         }
         $this->assign('one',$detail);
         $this->assign('type',$detail['type']);
-        $this->assign('body','body-content');
+        $this->assign('body','body-single');
         $this->assign('title','搞东搞西－搞搞东西');
         $this->assign('menu','搞笑－开开心心每一天');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
@@ -156,14 +150,54 @@ class content extends MY_Controller  {
     }
 
     /*
+    * 文章详情
+    */
+    public function article_detail($time,$param){
+        $id = intval(get_detail_id($param));
+        if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
+        $where = "where con_id = $id";
+        $detail = $this->model_article->GetRow($where);
+        if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
+        $this->scan_record($id);
+        //   $detail['content'] = strip_tags($detail['content'],'<img><br>');
+        $detail['create_time'] = substr($detail['create_time'] , 0 , 10);
+        $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
+        $this->assign('data',$detail);
+        $this->assign('body','body-detail');
+        $this->assign('title',$detail['title'].'－搞东搞西');
+        $this->assign('keywords',$detail['tags'].' 搞东搞西');
+        $this->assign('description',empty($description) ? $detail['title'] : $description);
+
+        $this->display('detail.html');
+    }
+
+    /*
+     * 记录浏览
+     */
+    public function scan_record($id){
+        $this->load->model('model_record');
+        $type = -1;  //文章详情浏览专用
+        $ip = get_real_ip();
+        $where = "where row_id = $id and type = $type and ip = '$ip'";
+        $res = $this->model_record->GetRow($where);
+        if($res){
+            $data = array('type'=>$type ,'row_id'=>$id,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
+            $list  = $this->model_record->save($data);
+            $this->model_article->UpdateNum($id , 'scan');
+        }
+    }
+
+    /*
      * 用户提交内容
      */
-    public function save(){
+    public function content_save(){
         //是否拉入黑名单
         $this->load->model('model_black');
         $this->load->model('model_users');
-        $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单');
+        $ip = get_real_ip();
+        $where = "where ip = '$ip";
+        $res = $this->model_black->GetRow();
+        if(!empty($res)) splash('error','你已被拉入黑名单');
 
         $data['type'] = intval($_REQUEST['type']);
         $data['content'] = $this->deal_content($_REQUEST['content']);
@@ -174,9 +208,10 @@ class content extends MY_Controller  {
             $data['name'] = $_SESSION['name'];
             $data['email'] = $_SESSION['email'];
         }else{
-            $data['name'] = strip_tags(trim($_REQUEST['name']));
+            $data['name'] = $name = strip_tags(trim($_REQUEST['name']));
             //已经注册过的昵称不能用
-            $res_by_name = $this->model_users->get_user_by_name($data['name']);
+            $where = "where name = '$name'";
+            $res_by_name = $this->model_users->GetRow($where);
             if(!empty($res_by_name)) splash('error','该昵称已被注册，仅本人登陆后可用');
 
             $data['name'] = strip_tags(trim($_REQUEST['name']));
@@ -184,8 +219,62 @@ class content extends MY_Controller  {
             valid_name($data['name']);
             valid_email($data['email']);
         }
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['ip'] = $ip;
+		if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
+        $res  = $this->model_content->Save($data);
+        if($res){
+            splash('success','提交成功，审核后自动发布');
+        }else{
+            splash('error','提交失败');
+        }
+    }
 
-        $res  = $this->model_content->save($data);
+    public function article_save(){
+        //是否拉入黑名单
+        $this->load->model('model_black');
+        $this->load->model('model_users');
+        $ip = get_real_ip();
+        $where = "where ip = '$ip";
+        $res = $this->model_black->GetRow();
+        if(!empty($res)) splash('error','你已被拉入黑名单');
+
+        $data['type'] = intval($_REQUEST['type']);
+        if($data['type'] == 4){
+            //渣渣说
+            $_REQUEST['content'] = strip_tags($_REQUEST['content'],'<p><br>');
+        }
+        $data['tags'] = trim(strip_tags($_REQUEST['tags']));
+        if(empty($data['tags'])) splash('error','请添加标签');
+
+        $data['content'] = $content = trim($_REQUEST['content']);
+        if(empty($content)) splash('error','请填写内容');
+
+        $title = trim(strip_tags($_REQUEST['title']));
+        if(empty($title)) splash('error','请填写标题');
+        $data['title'] = $title;
+
+        if(is_login()){
+            //已登陆用户
+            $data['user_id'] = $_SESSION['user_id'];
+            $data['name'] = $_SESSION['name'];
+            $data['email'] = $_SESSION['email'];
+        }else{
+            $data['name'] = $name = strip_tags(trim($_REQUEST['name']));
+            //已经注册过的昵称不能用
+            $where = "where name = '$name'";
+            $res_by_name = $this->model_users->GetRow($where);
+            if(!empty($res_by_name)) splash('error','该昵称已被注册，仅本人登陆后可用');
+
+            $data['name'] = strip_tags(trim($_REQUEST['name']));
+            $data['email'] = strip_tags(trim($_REQUEST['email']));
+            valid_name($data['name']);
+            valid_email($data['email']);
+        }
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['ip'] = $ip;
+        if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
+        $res  = $this->model_article->Save($data);
         if($res){
             splash('success','提交成功，审核后自动发布');
         }else{
@@ -197,27 +286,77 @@ class content extends MY_Controller  {
      * 主要内容点赞
      */
     public function content_record(){
-        parent :: record($this->table_name);
+        $this->record('content');
     }
+
+    /*
+     * 文章内容点赞
+     */
+    public function article_record(){
+        $this->record('article');
+    }
+
 
     /*
      * 保存时处理内容
      */
     public function deal_content($content){
+        $content = str_replace(array('“','”'),'"',$content);
         $valid_content = trim(strip_tags($content,'<img>'));
         if(empty($valid_content)) splash('error','请填写内容');
         $content = strip_tags($content,'<img><a><br>');
         if($res_content = gif_static_gif($content)) $content = $res_content;
-        return filter_content_br($content);
+        return $content;
     }
-
 
     public function error(){
         parent :: error_msg();
     }
 
-    public function set_type_value($fun){
-        $this->type = parent :: $all_type_data[$fun];
+
+    public function init($p , $s , $nav){
+        $flag = 0;
+        $data['sort'] = $s;
+        $data['type'] = 1;
+        $data['page'] = $p;
+        if(array_key_exists($p,$this->sort_data)){
+            $data['sort'] = $p;
+            $data['page'] = $s;
+        }
+        $cur_sort = empty($data['sort']) ? 'new' : $data['sort'];
+
+        $nav_list = $this->get_nav();
+        foreach($nav_list as $val){
+            if($nav != $val['alias']) continue;
+            $flag = 1;
+            if(empty($val['is_detail'])){
+                $body = 'body-content body-'.$nav;
+            }else{
+                $body = 'body-article body-'.$nav;
+            }
+            $title = $val['name'].'－搞东搞西';
+            $description = $val['description'];
+            $keywords = $val['keywords'];
+            $tags = explode(',',$val['tags']);
+            $menu = $val['desc'];
+            $data['type'] = $val['type'];
+            $data['is_detail'] = $val['is_detail'];
+        }
+
+        if($flag == 0) header_index();
+
+        $this->assign('nav',$nav);
+        $this->assign('title',$title);
+        $this->assign('tags',$tags);
+        $this->assign('body',$body);
+        $this->assign('menu',$menu);
+        $this->assign('cur_sort', $cur_sort);
+        $this->assign('type',$data['type']);
+        $this->assign('sort', $this->sort_data);
+        $this->assign('keywords',$keywords);
+        $this->assign('description',$description);
+
+        $this->content_list($data);
     }
 
 }

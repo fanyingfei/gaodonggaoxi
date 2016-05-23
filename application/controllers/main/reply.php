@@ -28,18 +28,20 @@ class reply extends MY_Controller  {
         $type = intval($_REQUEST['type']);
         if(empty($con_id)) splash('error','打开失败，请刷新重试');
         $this->load->model('model_reply');
-        $res = $this->model_reply->data_list($con_id,$type);
-        $user_avatar = parent::get_user_avatar($res , 'avatar');
+        $where = "where con_id = $con_id and type = $type";
+        $res = $this->model_reply->GetAll($where , 'rep_id asc');
+        $user_avatar = $this->get_user_avatar($res , 'avatar');
 
-        $parent_res = my_array_column($res,'content','rep_id');
+        foreach($res as &$v){
+            $v['create_time'] = change_time($v['create_time']);
+            $parent_res[$v['rep_id']] = $v;
+        }
 
         foreach($res as &$v){
             $v['reply_content'] = '';
-            $v['create_time'] = change_time($v['create_time']);
             $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '/resources/images/jpg/avatar_error.jpg' : $user_avatar[$v['user_id']];
-            if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']])){
-                //回复时只显示一行太短了所以过滤过<br>标签，只留图片和文字
-                $v['reply_content'] =str_replace('<br>','',$parent_res[$v['parent_id']]);
+            if($v['parent_id'] > 0 && !empty($parent_res[$v['parent_id']]['content'])){
+                $v['reply_content'] = $parent_res[$v['parent_id']];
             }
         }
         $data['list'] = empty($res) ? '' : $res;
@@ -58,8 +60,10 @@ class reply extends MY_Controller  {
         if(!is_login()) splash('error','回复请先登陆');
         //是否拉入黑名单
         $this->load->model('model_black');
-        $res = $this->model_black->find_one();
-        if($res) splash('error','你已被拉入黑名单');
+        $ip = get_real_ip();
+        $where = "where ip ='$ip'";
+        $res = $this->model_black->GetRow($where);
+        if(!empty($res)) splash('error','你已被拉入黑名单');
 
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','提交失败，请刷新重试');
@@ -69,16 +73,20 @@ class reply extends MY_Controller  {
         $content = trim($_REQUEST['content']);
         $data = $this->content_is_at($parent_id,$parent_name,$content);
 
+        $data['ip'] = $ip;
         $data['con_id'] = $id;
         $data['type'] = intval($_REQUEST['type']);
-        $res  = $this->model_reply->save($data);
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['user_id'] = $_SESSION['user_id'];
+        $data['name'] = $_SESSION['name'];
+        $res  = $this->model_reply->Save($data);
         if($res){
             if(in_array($data['type'], parent::$detail_data)){
                 $this->load->model('model_article');
-                $this->model_article->update_reply($id);
+                $this->model_article->UpdateNum($id,'reply');
             }else{
                 $this->load->model('model_content');
-                $this->model_content->update_reply($id);
+                $this->model_content->UpdateNum($id,'reply');
             }
             splash('success','提交成功');
         }else{
@@ -91,7 +99,7 @@ class reply extends MY_Controller  {
      */
     public function reply_record(){
         $_REQUEST['type'] = 0;
-        parent :: record($this->table_name);
+        $this->record($this->table_name);
     }
 
     /*
@@ -106,12 +114,12 @@ class reply extends MY_Controller  {
         if(empty($parent_id)) return $data;
         $str = '@'.$parent_name;
         if(strpos( substr( $content , 0 , strlen($str) ) , $str ) !== false){
-            $data['content'] = filter_content_br(trim(str_replace($str,'',$content)));
+            $data['content'] = trim(str_replace($str,'',$content));
             return $data;
         }elseif(strpos(substr($content,0,1),'@') !== false){
             splash('error','请点击 @Ta 来回复评论');
         }else{
-            $content = filter_content_br(trim($content));
+            $content = trim($content);
             $data['parent_id'] = 0;
             $data['parent_name'] = '';
             return $data;

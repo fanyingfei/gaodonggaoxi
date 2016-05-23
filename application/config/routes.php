@@ -39,36 +39,42 @@
 */
 
 //搞笑
-$route['xiao'] = "main/content/xiao";
-$route['xiao/(:num)'] = "main/content/xiao/$1";
-//语录
-$route['hua'] = "main/content/hua";
-$route['hua/(:num)'] = "main/content/hua/$1";
+$route['pic'] = "main/content/pic";
+$route['pic/(:any)'] = "main/content/pic/$1";
+$route['pic/(:any)/(:num)'] = "main/content/pic/$1/$2";
+//段子
+$route['duan'] = "main/content/duan";
+$route['duan/(:any)'] = "main/content/duan/$1";
+$route['duan/(:any)/(:num)'] = "main/content/duan/$1/$2";
 //妹子
 $route['meizi'] = "main/content/meizi";
-$route['meizi/(:num)'] = "main/content/meizi/$1";
+$route['meizi/(:any)'] = "main/content/meizi/$1";
+$route['meizi/(:any)/(:num)'] = "main/content/meizi/$1/$2";
 //故事
-$route['tale'] = "main/article/tale";
-$route['tale/(:num)'] = "main/article/tale/$1";
+$route['tale'] = "main/content/tale";
+$route['tale/(:any)'] = "main/content/tale/$1";
+$route['tale/(:any)/(:num)'] = "main/content/tale/$1/$2";
 //渣渣说
-$route['zzs'] = "main/article/zzs";
-$route['zzs/(:num)'] = "main/article/zzs/$1";
+$route['zzs'] = "main/content/zzs";
+$route['zzs/(:any)'] = "main/content/zzs/$1";
+$route['zzs/(:any)/(:num)'] = "main/content/zzs/$1/$2";
 //程序猿
-$route['cxy'] = "main/article/cxy";
-$route['cxy/(:num)'] = "main/article/cxy/$1";
+$route['cxy'] = "main/content/cxy";
+$route['cxy/(:any)'] = "main/content/cxy/$1";
+$route['cxy/(:any)/(:num)'] = "main/content/cxy/$1/$2";
 //详情
-$route['detail'] = "main/content/xiao"; //没参数时直接跳首页
-$route['detail/(:num)/(:any)'] = "main/article/detail/$1/$2";
-$route['single/(:num)/(:any)'] = "main/content/detail/$1/$2";
+$route['detail'] = "main/content/pic"; //没参数时直接跳首页
+$route['detail/(:num)/(:any)'] = "main/content/article_detail/$1/$2";
+$route['single/(:num)/(:any)'] = "main/content/content_detail/$1/$2";
 //回复列表，回复
 $route['reply'] = "main/reply/reply_list";
 $route['reply/save'] = "main/reply/reply_save";
 //保存
-$route['content/save'] = "main/content/save";
-$route['article/save'] = "main/article/save";
+$route['content/save'] = "main/content/content_save";
+$route['article/save'] = "main/content/article_save";
 //点赞记录
 $route['content/record'] = "main/content/content_record";
-$route['article/record'] = "main/article/article_record";
+$route['article/record'] = "main/content/article_record";
 $route['reply/record'] = "main/reply/reply_record";
 //登录
 $route['login'] = "main/user/login_index";
@@ -102,49 +108,36 @@ $route['user/pass/save'] = "main/member/pass_save";
 $route['admin'] = "admin/admin/index";
 $route['admin/content'] = "admin/admin/content";
 $route['admin/content_list'] = "admin/admin/content_list";
-$route['admin/content_list/(:any)'] = "admin/admin/content_list/$1";
-$route['admin/content_delete'] = "admin/admin/content_delete";
-$route['admin/content_pass'] = "admin/admin/content_pass";
-$route['admin/content_fail'] = "admin/admin/content_fail";
+$route['admin/list/(:any)?(:any)'] = "admin/admin/main_list/$1/$2";
+$route['admin/list/(:any)'] = "admin/admin/main_list/$1";
+$route['admin/delete/(:any)'] = "admin/admin/delete/$1";
+
+$route['admin/pass/(:any)'] = "admin/admin/pass/$1";
+$route['admin/fail/(:any)'] = "admin/admin/fail/$1";
 
 $route['admin/article'] = "admin/admin/article";
-$route['admin/article_list'] = "admin/admin/article_list";
-$route['admin/article_list/(:any)'] = "admin/admin/article_list/$1";
-$route['admin/article_delete'] = "admin/admin/article_delete";
-$route['admin/article_pass'] = "admin/admin/article_pass";
-$route['admin/article_fail'] = "admin/admin/article_fail";
 
 $route['admin/user'] = "admin/admin/user";
-$route['admin/user_list'] = "admin/admin/user_list";
-$route['admin/user_list/(:any)'] = "admin/admin/user_list/$1";
-$route['admin/user_delete'] = "admin/admin/user_delete";
 $route['admin/user_add_admin'] = "admin/admin/user_add_admin";
 $route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
 
 $route['admin/black'] = "admin/admin/black";
-$route['admin/black_list'] = "admin/admin/black_list";
-$route['admin/black_list/(:any)'] = "admin/admin/black_list/$1";
-$route['admin/black_delete'] = "admin/admin/black_delete";
 
 $route['admin/reply'] = "admin/admin/reply";
-$route['admin/reply_list'] = "admin/admin/reply_list";
-$route['admin/reply_list/(:any)'] = "admin/admin/reply_list/$1";
 $route['admin/reply_delete'] = "admin/admin/reply_delete";
 
 $route['admin/record'] = "admin/admin/record";
-$route['admin/record_list'] = "admin/admin/record_list";
-$route['admin/record_list/(:any)'] = "admin/admin/record_list/$1";
-$route['admin/record_delete'] = "admin/admin/record_delete";
 
 $route['admin/access'] = "admin/admin/access";
-$route['admin/access_list'] = "admin/admin/access_list";
-$route['admin/access_list/(:any)'] = "admin/admin/access_list/$1";
-$route['admin/access_delete'] = "admin/admin/access_delete";
+
+$route['admin/nav'] = "admin/admin/nav";
+$route['admin/nav_one'] = "admin/admin/nav_one";
+$route['admin/nav_update'] = "admin/admin/nav_update";
 
 $route['error'] = 'main/content/error';
 
-$route['default_controller'] = "main/content/xiao";
-$route['404_override'] = 'main/content/xiao';
+$route['default_controller'] = "main/content/pic";
+$route['404_override'] = 'main/content/pic';
 
 $route['api/([a-z0-9]+)/(\d+)'] = "api/$1/index/$2";
 /* End of file routes.php */

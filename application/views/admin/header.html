@@ -24,6 +24,7 @@
                 $("iframe").attr('src',url);
                 $.cookie('cur_path', url ,{ path : '/admin' });
                 $(this).children("a").addClass("select").end().siblings().children('a').removeClass("select");
+                $(this).children("a").addClass("select").end().parents('li').siblings().find('a').removeClass("select");
             })
         });
     </script>
@@ -41,7 +42,13 @@
         <div class="sidebar-content">
             <ul class="sidebar-list">
                 <li>
-                    <a href="javascript:void(0);">常用操作</a>
+                    <a class="main-menu" href="javascript:void(0);">基础配置</a>
+                    <ul class="sub-menu">
+                        <li data-url="/admin/nav"><a href="javascript:void(0);">导航配置</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="main-menu" href="javascript:void(0);">常用操作</a>
                     <ul class="sub-menu">
                         <li data-url="/admin/content"><a href="javascript:void(0);">发布管理</a></li>
                         <li data-url="/admin/article"><a href="javascript:void(0);">文章管理</a></li>

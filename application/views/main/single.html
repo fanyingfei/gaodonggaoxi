@@ -1,39 +1,28 @@
-<div class="main left">
-    <div class="nav-title">{$menu}</div>
-    <div class="main-list">
-        <div class="one first">
-            <div class="user">
-                {if $one.avatar != ''}
-                    <div class="avatar-wapper">
-                        <div class="login-avatar">
-                            <a href="/member/{$one.user_sn}"><img title="{$one.name}" src="{$one.avatar}" /></a>
-                        </div>
+<div class="main main-width">
+    <div class="main-left main-left-width">
+        <div class="list">
+            <div class="section">
+                <div class="section-top">
+                    {if $one.avatar != ''}
+                    <div class="section-avatar">
+                        <img title="{$one.name}" src="{$one.avatar}" onerror="avatar_error(this)" />
                     </div>
-                {/if}
-                {if $one.user_sn != ''}
-                    <a href="/member/{$one.user_sn}"><p class="is_vip name text-right" title="{$one.u_name}">{$one.name}</p></a>
-                {else}
-                    <p class="name text-right" title="防伪码:{$one.u_name}">{$one.name}</p>
-                {/if}
-                <p class="time text-right">{$one.create_time}</p>
-            </div>
-            <div class="content">
-                <div class="content-body{if $one.avatar != ''} avatar-min-height{/if}">{$one.content}</div>
-                <p class="right clear click oo-xx">
+                    {/if}
+                    <div class="section-user-name" title="{if $one.user_sn != ''}{$one.u_name}{else}防伪码:{$one.u_name}{/if}">{$one.name}</div>
+                    <div class="section-createtime">发布于{$one.create_time}</div>
+                </div>
+                <div class="section-middle">{$one.content}</div>
+                <div class="section-bottom oo-xx">
                     <span class="response"></span>
-                    <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]
-                    <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]
-                    <span class="examine">
-                        <a class="reply" data-id="{$one.con_id}"></a>[<span class="reply-count">{$one.reply}</span>]
-                    </span>
-                </p>
+                    <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]&nbsp;
+                    <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]&nbsp;
+                    <a class="reply" data-id="{$one.con_id}"></a>[<span class="reply-count">{$one.reply}</span>]
+                </div>
             </div>
         </div>
+        <input type="hidden" id="type" value="{$type}" />
+        <input type="hidden" id="comment-url" value="/content/record" />
     </div>
-
-    <input type="hidden" id="type" value="{$type}" />
-    <input type="hidden" id="comment-url" value="/content/record" />
-</div>
 <script>
     $(document).ready(function(){
         $(".reply").trigger("click");

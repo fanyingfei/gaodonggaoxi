@@ -48,10 +48,11 @@ class user extends MY_Controller  {
         if(empty($account)) splash('error','账号不存在');
 
         if(is_email($account)){
-            $one = $this->model_users->get_user_by_email($account);
+            $where = "where email = '$account'";
         }else{
-            $one = $this->model_users->get_user_by_name($account);
+            $where = "where name = '$account'";
         }
+        $one = $this->model_users->GetRow($where);
 
         if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
@@ -75,7 +76,8 @@ class user extends MY_Controller  {
         $password = $_REQUEST['password'];
         if(empty($password)) splash('error','请输入密码');
 
-        $one = $this->model_users->get_user_by_email($email);
+        $where = "where email = '$email'";
+        $one = $this->model_users->GetRow($where);
         if(empty($one)) splash('error','您要绑定的账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
         if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
@@ -114,7 +116,7 @@ class user extends MY_Controller  {
 
         }
 
-        $this->model_users->update_user_info($one['user_id'],$data);
+        $this->model_users->Update(array('user_id'=>$one['user_id']),$data);
         $this->set_user_login($one);
         splash('success','绑定成功');
     }
@@ -165,15 +167,16 @@ class user extends MY_Controller  {
 
     public function login_third($type,$id,$key){
         if($type=='qq'){
-            $one = $this->model_users->get_user_by_openid($id);
+            $where = "where qq_id = '$id'";
             $flag = empty($one['qq_id']) ? true : false;
         }elseif($type=='wb'){
-            $one = $this->model_users->get_user_by_sinaid($id);
+            $where = "where wb_id = '$id'";
             $flag = empty($one['wb_id']) ? true : false;
         }elseif($type=='wx'){
-            $one = $this->model_users->get_user_by_wxid($id);
+            $where = "where wx_id = '$id'";
             $flag = empty($one['wx_id']) ? true : false;
         }
+        $one = $this->model_users->GetRow($where);
         if($flag){
             $_SESSION['openid'] = $id;
             $_SESSION['third_type'] = $type;
@@ -203,10 +206,12 @@ class user extends MY_Controller  {
     public function register_save(){
         //是否拉入黑名单
         $this->load->model('model_black');
-        $res = $this->model_black->find_one();
+        $ip = get_real_ip();
+        $where = "where ip = '$ip'";
+        $res = $this->model_black->GetRow($where);
         if($res) splash('error','你已被拉入黑名单');
 
-        $data['email'] = trim(strip_tags($_REQUEST['email']));
+        $data['email'] = $email = trim(strip_tags($_REQUEST['email']));
         $data['code'] = $code = trim(strip_tags($_REQUEST['code']));
         $data['password'] = trim(strip_tags($_REQUEST['password']));
         $data['confirm'] = trim(strip_tags($_REQUEST['confirm']));
@@ -215,7 +220,8 @@ class user extends MY_Controller  {
 
         unset($data['confirm']);
         unset($data['code']);
-        $res_by_email = $this->model_users->get_user_by_email($data['email']);
+        $where = "where email = '$email'";
+        $res_by_email = $this->model_users->GetRow($where);
         if(!empty($res_by_email) && $res_by_email['is_validate'] == 1){
             //邮箱已被注册并激活了
             splash('error','该邮箱已被注册，不可使用');
@@ -224,7 +230,9 @@ class user extends MY_Controller  {
             $data = $res_by_email;
         }elseif(empty($res_by_email)){
             $data['password'] = md5($data['password'].ENCRYPTION);
-            $data['user_id'] = $this->model_users->save($data);
+            $data['create_time'] = date('Y-m-d H:i:s');
+            $data['ip'] = $ip;
+            $data['user_id'] = $this->model_users->Save($data);
         }else{
             splash('error','注册失败，请刷新重试');
         }
@@ -255,7 +263,8 @@ class user extends MY_Controller  {
         $user_id = intval($param['user_id']);
         if(empty($user_id)) parent::error_msg('出错啦');
 
-        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        $where = "where user_id = '$user_id'";
+        $user_info = $this->model_users->GetRow($where);
         if(empty($user_info) || $user_info['email'] != $param['email']){
             parent::error_msg('出错啦');
         }
@@ -275,16 +284,18 @@ class user extends MY_Controller  {
         if(empty($id)) splash('error','激活失败，请刷新重试');
         valid_name($name);
 
-        $user_info = $this->model_users->get_user_by_user_id($id);
+        $where = "where user_id = $id";
+        $user_info = $this->model_users->GetRow($where);
         if(empty($user_info)) splash('error','激活失败，请刷新重试');
 
         if(!empty($user_info['name']) && !empty($user_info['is_validate'])){
             splash('error','该账号已激活，请直接登陆');
         }
 
-        $res_by_name = $this->model_users->get_user_by_name($name);
+        $where = "where name = '$name'";
+        $res_by_name = $this->model_users->GetRow($where);
         if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
-        $res = $this->model_users->user_validate($id,$name);
+        $res = $this->model_users->UpdateByKey($id,array('name'=>$name,'is_validate'=>1));
         if($res){
             $user_info['name'] = $name;
             $this->set_user_login($user_info);
@@ -295,7 +306,7 @@ class user extends MY_Controller  {
     }
 
     public function set_user_login($one){
-        $this->model_users->update_login_time($one['user_id']);
+        $this->model_users->Update(array('last_login'=>date('Y-m-d H:i:s'),'ip'=>get_real_ip()),array('user_id'=>$one['user_id']));
         $_SESSION['user_id'] = $one['user_id'];
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];
@@ -305,7 +316,7 @@ class user extends MY_Controller  {
         my_set_cookie('is_login',1);
         my_set_cookie('name', $one['name']);
         my_set_cookie('email',  $one['email']);
-     //   my_set_cookie('PHPSESSID',session_id());
+        my_set_cookie('PHPSESSID',session_id());
     }
 
 }

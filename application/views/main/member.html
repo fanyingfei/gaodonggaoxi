@@ -1,136 +1,126 @@
-<div class="main left">
-    <div class="nav-title">{$menu}</div>
-
-    <div class="member-total">
+<div class="subnav-wrapper main-width">
+    <ul class="subnav subnam-member">
         {foreach from=$group_count key=key item=one}
-            <span class="group-count">{$one.type_name}
-                <span data-type="{$one.type}" class="{if $key !=0}group-count-value{/if}">[{$one.num}]</span>
-            </span>
+        <li data-type="{$one.type}" {if $key !=0}class="can-click"{/if}>
+            <span class="group-name">{$one.type_name}</span>
+            <span class="group-count">[{$one.num}]</span>
+        </li>
         {/foreach}
-    </div>
+    </ul>
+    <div class="nav-desc">{$menu}</div>
+</div>
 
-    <div class="content-list"></div>
-    <input type="hidden" id="unique-id" value="{$user.user_id}" />
-    <input type="hidden" id="initial_type" value="{$initial_type}" />
+<div class="main main-width">
+    <div class="main-left main-left-width"></div>
+    <input type="hidden" id="id" value="{$user.user_id}" />
+    <input type="hidden" id="type" value="{$initial_type}" />
 
     <script src="/resources/js/tmpl.js"></script>
     <script id="content-list" type="text/x-dot-template">
     {literal}
-    {{if count > 0}}
         {{if count > 10}}<div class="pagination page-top">{{html page}}</div>{{/if}}
-        <div class="main-list">
-            {{each(key,one) list}}
-            <div class="one{{if key == 0 }} first{{/if}}">
-                {{if is_detail == 1}}
-                    <div class="article-one-left">
-                        <p class="detail-wapper">
-                            <a class="detail-title" target="_blank" href="${one.detail_url}">${one.title}</a>
-                        </p>
-                        <p class="detail-tags">标签：<span>${one.tags}</span></p>
-                        <p class="article-click oo-xx">
-                            <span class="time text-right">${one.name}</span>
-                            <span class="time text-right"> 发表于${one.create_time}</span>
-                            <span class="response"></span>
-                            <span class="jian-ge">&nbsp;&nbsp;</span>
-                            <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">${one.good}</span>]
-                            <span class="jian-ge">&nbsp;</span>
-                            <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">${one.bad}</span>]
-                            <span class="jian-ge">&nbsp;</span>
+        <div class="list">
+            {{if is_detail == 1}}
+                {{each(key,one) list}}
+                <div class="row section">
+                    <div class="row-body">
+                        <div class="row-left">
+                            <p class="row-top">
+                                <a class="row-title" target="_blank" href="${one.detail_url}">${one.title}</a>
+                            </p>
+                            <p class="row-middle">
+                                <span>标签：</span>
+                                <span class="row-tags">${one.tags}</span>
+                            </p>
+                            <p class="row-bottom oo-xx">
+                                <span class="row-user-name">${one.name}</span>
+                                <span> 发表于${one.create_time}</span>
+                                <span class="jian-ge">&nbsp;&nbsp;</span>
+                                <span class="response"></span>
+                                <a class="oo" data-id="${one.con_id}"></a>[<span class="good">${one.good}</span>]
+                                <span class="jian-ge">&nbsp;</span>
+                                <a class="xx" data-id="${one.con_id}"></a>[<span class="bad">${one.bad}</span>]
                             <span class="examine">
                                 <span class="jian-ge">&nbsp;</span>
-                                <span class="reply time cursor" data-id="{$one.con_id}"></span>[<span class="reply-count">${one.reply}</span>]
+                                <span class="reply" data-id="${one.con_id}"></span>[<span class="reply-count">${one.reply}</span>]
                             </span>
-                            <span class="jian-ge">&nbsp;</span>
-                            <span class="scan time">浏览[${one.scan}]</span>
-                        </p>
-                    </div>
-                    <div class="article-one-right">
-                        <strong>${one.day}</strong>
-                        ${one.year}
-                    </div>
-                {{else}}
-                    <div class="user member">
-                        <p class="time text-right" title="${one.u_name}">${one.name}</p>
-                        <p class="time text-right">发表于 ${one.create_time}</p>
-                    </div>
-                    <div class="content">
-                        <div class="content-body">{{html one.content}}</div>
-                        <p class="right clear click oo-xx">
-                            <span class="response"></span>
-                            <a class="oo" data-id="${one.con_id}"></a>[<span class="good">${one.good}</span>]
-                            <a class="xx" data-id="${one.con_id}"></a>[<span class="bad">${one.bad}</span>]
-                            <span class="examine"><a class="reply" data-id="${one.con_id}"></a>[<span class="reply-count">${one.reply}</span>]</span>
+                                <span class="jian-ge">&nbsp;</span>
+                                <span class="scan">浏览[${one.scan}]</span>
                             </p>
                         </div>
-                    {{/if}}
+                        <div class="row-right"><strong>${one.day}</strong>${one.year}</div>
+                    </div>
                 </div>
                 {{/each}}
-            </div>
-            {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
-        {{else}}
-            <div class="empty"><h2 class="center">还没有发表过东西哦</h2></div>
-        {{/if}}
-        <input type="hidden" id="type" value="${type}" />
-        {{if is_detail == 1}}
-            <input type="hidden" id="comment-url" value="/article/record" />
-        {{else}}
-            <input type="hidden" id="comment-url" value="/content/record" />
-        {{/if}}
+            {{else}}
+                {{each(key,one) list}}
+                <div class="section">
+                    <div class="section-top">
+                        {{if one.avatar != ''}}
+                        <div class="section-avatar">
+                            <img title="${one.name}" src="${one.avatar}" onerror="avatar_error(this)" />
+                        </div>
+                        {{/if}}
+                        <div class="section-user-name" title="${one.name}">${one.name}</div>
+                        <div class="section-createtime">发布于${one.create_time}</div>
+                    </div>
+                    <div class="section-middle">{{html one.content}}</div>
+                    <div class="section-bottom oo-xx">
+                        <span class="response"></span>
+                        <a class="oo" data-id="${one.con_id}"></a>[<span class="good">${one.good}</span>]&nbsp;
+                        <a class="xx" data-id="${one.con_id}"></a>[<span class="bad">${one.bad}</span>]&nbsp;
+                        <a class="reply" data-id="${one.con_id}"></a>[<span class="reply-count">${one.reply}</span>]
+                    </div>
+                </div>
+                {{/each}}
+                <input type="hidden" id="comment-url" value="/content/record" />
+            {{/if}}
+        </div>
+        {{if count > 10}}<div class="pagination">{{html page}}</div>{{/if}}
         {/literal}
-        </script>
-</div>
-<div class="right-container left">
-    <div class="member-user-info">
-        {if $user.avatar != ''}<div class="reply-avatar"><img src="{$user.avatar}" /></div>{/if}
-    </div>
-    <div class="left member-user-info-right">
-        <p>性别：{$user.sex}</p>
-        <p>年龄：{$user.age}</p>
-    </div>
-</div>
-<script type="text/javascript">
-$(function(){
-    ajax_page(0);
-})
-function ajax_page(page){
-    var user_id = $('#unique-id').val();
-    if($("#type").length > 0){
-        var type = $('#type').val();
-    }else{
-        var type = $('#initial_type').val();
-    }
-    $.ajax({
-        url: "/member_list",
-        data:{
-            "id" : user_id,
-            "type" : type,
-            "page":page
-        },
-        type: "POST",
-        dataType:'json',
-        beforeSend: function() {
-        //    $('.content-list').html('<h2 class="center">数据加载中...</h2>');
-        },
-        success:function(result){
-            if(result.status == "error"){
-                alert_msg(result.msg);
-                return false;
-            }
-            $('.content-list').html('');
-            $("#content-list").tmpl(result.data).appendTo('.content-list');
-        },
-        error:function(e){
-            alert_msg('请求失败，请刷新重试');
-        }
-    });
-}
+    </script>
 
-$('body').on('click', '.group-count-value', function(){
-    if(!$(this).hasClass("group-count-value")){
-        return false;
+<script type="text/javascript">
+    $(function(){
+        ajax_page(0);
+    })
+    function ajax_page(page){
+        var user_id = $('#id').val();
+        if($('.subnam-member li.active').length <= 0){
+            var type = $('.subnam-member li:first-child').attr('data-type');
+        }else{
+            var type = $('.subnam-member li.active').attr('data-type');
+        }
+        $.ajax({
+            url: "/member_list",
+            data:{
+                "id" : user_id,
+                "type" : type,
+                "page":page
+            },
+            type: "POST",
+            dataType:'json',
+            beforeSend: function() {
+            //    $('.content-list').html('<h2 class="center">数据加载中...</h2>');
+            },
+            success:function(result){
+                if(result.status == "error"){
+                    alert_msg(result.msg);
+                    return false;
+                }
+                $('.main-left').html('');
+                $("#content-list").tmpl(result.data).appendTo('.main-left');
+            },
+            error:function(e){
+                alert_msg('请求失败，请刷新重试');
+            }
+        });
     }
-    $('#type').val($(this).attr('data-type'));
-    $(this).removeClass("group-count-value").parent().siblings().children().addClass('group-count-value');
-    ajax_page(0);
-})
+
+    $('body').on('click', '.subnam-member li span', function(){
+        if(!$(this).parent().hasClass("can-click")) return false;
+        $(this).parent().addClass('active').removeClass('can-click').siblings().removeClass('active').addClass('can-click');
+        $("#type").val($(this).parent().attr('data-type'));
+        ajax_page(0);
+    });
 </script>

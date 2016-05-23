@@ -124,8 +124,7 @@ class CI_Page {
                         $pageString = $pageString ."<a class='page-next' onclick='" .$this->jsFunction . "(" . ($this->pageCount-$this->pageNo ) . ")'>»</a>";
                     }
                 }else{
-                    $total_url = explode('/',$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-                    $url = empty($total_url[1]) ? '/xiao/' : '/'.$total_url[1].'/';
+                    $url = get_page_url();
                     if($this->hasPrePage){
                         $pageString = $pageString ."<a class='page-next' href='" .$url . ($this->pageCount-$this->pageNo + 2) . "'>«</a>";
                     }

@@ -2,7 +2,7 @@ html,body{
     margin:0;
     padding:0;
     height: 100%;
-    font-family: 微软雅黑;
+    font-family: 'Microsoft YaHei','Arial';
     min-width:1400px;
 }
 a{
@@ -11,6 +11,9 @@ a{
 .menu{
     float:left;
     width:15%;
+}
+.main-menu{
+    background-color: #e5e5e5;
 }
 .main{
     float:left;
@@ -41,8 +44,7 @@ a{
     background: #f2f2f2 none repeat scroll 0 0;
     border-right: 1px solid #ccc;
     float: left;
-    height: 100%;
-    width: 189px;
+    width: 148px;
 }
 .sidebar-title {
     font-size: 18px;
@@ -82,7 +84,7 @@ ul, ol {
 .sidebar-list li .sub-menu a:hover,.sidebar-list li .sub-menu a.select{
     color:#1963aa;
 }
-.sub-menu {
+.sidebar-list {
     background: #fff none repeat scroll 0 0;
     border-top: 1px solid #e5e5e5;
 }
@@ -91,7 +93,7 @@ ul, ol {
 }
 .right-iframe{
     height: 100%;
-    margin-left: 200px;
+    margin-left: 150px;
     text-align: left;
     width: 1200px;
 }

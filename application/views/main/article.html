@@ -1,88 +1,85 @@
-<div class="main left">
-    <div class="nav-title">{$menu}<span class="mao edit-info"></span></div>
-    <div class="tag-nav-wapper">
-        {foreach from=$tags key=key item=tag}
-        <span class="tag-nav">{$tag}</span>
-        {/foreach}
-    </div>
-    <ul class="nav-order-by">
-        {foreach from=$order_by key=key item=value}
-        <li {if $cur_order == $key}class='active'{/if}>{$key}</li>
+<div class="subnav-wrapper main-width">
+    <ul class="subnav">
+        {foreach from=$sort key=key item=value}
+        <li {if $cur_sort == $key}class='active'{/if}>
+            <a href="/{$nav}{if $key != 'new'}/{$key}{/if}">{$value.name}</a>
+        </li>
         {/foreach}
     </ul>
-    {if $count > 0}
+    <div class="nav-desc">{$menu}</div>
+</div>
+<div class="main main-width">
+    <div class="main-left main-left-width">
         {if $count > 10}<div class="pagination page-top">{$page}</div>{/if}
-        <div class="main-list">
+        <div class="list">
             {foreach from=$list key=key item=one}
-            <div class="one{if $key == 0 } first{/if}">
-                <div class="article-one-left">
-                    <p class="detail-wapper">
-                        <a class="detail-title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
-                    </p>
-                    <p class="detail-tags">
-                        <span class="left">标签：</span>
-                        {foreach from=$one.tags key=key item=tag}
-                            <span class="tag-nav">{$tag}</span>
-                        {/foreach}
-                    </p>
-                    <p class="article-click oo-xx">
-                        {if $one.user_sn != ''}
-                        <a class="is_vip" href="/member/{$one.user_sn}">{$one.name}</a>
-                        {else}
-                        <span class="time text-right">{$one.name}</span>
-                        {/if}
-                        <span class="time text-right"> 发表于{$one.create_time}</span>
+            <div class="row section">
+                <div class="row-body">
+                    <div class="row-left">
+                        <p class="row-top">
+                            <a class="row-title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
+                        </p>
+                        <p class="row-middle">
+                            <span>标签：</span>
+                            {foreach from=$one.tags key=key item=tag}
+                                <span class="row-tags">{$tag}</span>
+                            {/foreach}
+                        </p>
+                        <p class="row-bottom oo-xx">
+                            <span class="row-user-name">{$one.name}</span>
+                            <span> 发表于{$one.create_time}</span>
 
-                        <span class="jian-ge">&nbsp;&nbsp;</span>
-                        <span class="response"></span>
-                        <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]
-                        <span class="jian-ge">&nbsp;</span>
-                        <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]
-                        <span class="examine">
+                            <span class="jian-ge">&nbsp;&nbsp;</span>
+                            <span class="response"></span>
+                            <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]
                             <span class="jian-ge">&nbsp;</span>
-                            <span class="reply time cursor" data-id="{$one.con_id}"></span>[<span class="reply-count">{$one.reply}</span>]
-                        </span>
-                        <span class="jian-ge">&nbsp;</span>
-                        <span class="scan time">浏览[{$one.scan}]</span>
-                    </p>
-                </div>
-                <div class="article-one-right"><strong>{$one.day}</strong>{$one.year}</div>
+                            <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]
+                            <span class="examine">
+                                <span class="jian-ge">&nbsp;</span>
+                                <span class="reply" data-id="{$one.con_id}"></span>[<span class="reply-count">{$one.reply}</span>]
+                            </span>
+                            <span class="jian-ge">&nbsp;</span>
+                            <span class="scan">浏览[{$one.scan}]</span>
+                        </p>
+                    </div>
+                    <div class="row-right"><strong>{$one.day}</strong>{$one.year}</div>
+                 </div>
             </div>
             {/foreach}
         </div>
         {if $count > 10}<div class="pagination">{$page}</div>{/if}
-    {else}
-        <div class="empty"><h2 class="center">没有结果哦~去看看别的吧</h2></div>
-    {/if}
 
-    {if $is_show == 1}
-    <div class="sub examine">
-        {if $is_login == 1}
-            <p>{$name},说些什么吧</p>
-            <input type="hidden" name="email" id="email" value="{$email}" />
-            <input type="hidden" name="name" id="name" value="{$name}" />
-        {else}
-            <p>&nbsp;</p>
-            <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
-            <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
+        {if $is_show == 1}
+        <div class="sub examine">
+            <p class="say-something">&nbsp;</p>
+            {if $is_login == 1}
+                <p>{$name},说些什么吧</p>
+                <input type="hidden" name="email" id="email" value="{$email}" />
+                <input type="hidden" name="name" id="name" value="{$name}" />
+            {else}
+                <p>昵称：<input type="text" name="name" id="name" value="{$name}" /></p>
+                <p>邮箱：<input type="text" name="email" id="email" value="{$email}" /></p>
+            {/if}
+            <p class="textarea-prompt">
+                [1] 图片可上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">微博相册</a>；右键复制图片地址，点击图片按钮，粘贴至输入框。
+                <br>
+                [2] 请勿发色情/暴恐/时政/二维码等水印的图；勿重复发图，发布后请等待审核。
+            </p>
+            <p>标题：<input placeholder="请填写标题" type="text" name="title" id="title" value="" /></p>
+            <p class="tag-wapper">
+                <span class="label">标签：</span>
+                {foreach from=$tags key=key item=tag}
+                <span class="tag">{$tag}</span>
+                {/foreach}
+                <span class="add-tag">+</span>
+            </p>
+            <p><textarea name="content" id="content"></textarea></p>
+            <p><button id="submit" class="clear">submit</button></p>
+        </div>
         {/if}
-        <p>标题：<input placeholder="请填写标题" type="text" name="title" id="title" value="" /></p>
-        <p class="tag-wapper">
-            {foreach from=$tags key=key item=tag}
-            <span class="tag">{$tag}</span>
-            {/foreach}
-            <span class="add-tag">+</span>
-        </p>
-        <p class="textarea-prompt">
-            图片请上传到 <a target="_blank" href="http://photo.weibo.com/photos/upload">[微博相册]</a>
-        </p>
-        <p><textarea name="content" id="content"></textarea></p>
-        <p><button id="submit" class="clear">submit</button></p>
+        <input type="hidden" id="type" value="{$type}" />
+        <input type="hidden" id="comment-url" value="/article/record" />
     </div>
-    {/if}
-    <input type="hidden" id="type" value="{$type}" />
-    <input type="hidden" id="comment-url" value="/article/record" />
-</div>
 {literal}
 <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
 <script charset="utf-8" src="/kindeditor/emoticons.js"></script>
@@ -94,13 +91,11 @@
             itemsName : false,
             filterMode : false,
             items : [
-                'undo', 'redo', '|',  'print', 'template', 'code', 'cut', 'copy', 'paste',
-                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-                'superscript', 'clearhtml', 'quickformat', 'selectall', 'pagebreak', '|', 'fullscreen', 'preview',
-                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-                'table', 'hr', 'emoticons',  'link', 'unlink', 'about','|'
+                'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'subscript',
+                'superscript', '|','fontsize',  'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', '|',
+                'table', 'hr',  'link', 'unlink', '|','image','selectall','fullscreen', 'preview',
             ]
         });
     });

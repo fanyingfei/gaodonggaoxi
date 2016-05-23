@@ -121,7 +121,7 @@ function show_play_one(thi){
     $(thi).css("width",width+'px');
     $(thi).css("height",height+'px');
     $(thi).css("line-height",height+'px');
-    $(thi).css("margin-top",'-'+parseFloat(height + 4)+'px');
+    $(thi).css("margin-top",'-'+parseFloat(height)+'px');
     $(thi).show();
 }
 
@@ -135,16 +135,23 @@ function alert_msg(msg,type){
     var html = '<div class="alert-msg"><span class="msg-info">';
     html += '<span class="icon '+type+'"></span>&nbsp;&nbsp;'+msg+'</span></div>';
     $('body').append(html);
-    width = $('.alert-msg').width();
-    $('.alert-msg').css('left',$(document).width()/2 - width/2);
-    $('.alert-msg').fadeIn(500);
+    var obj = $('.alert-msg');
+    var alert_width = obj.width();
+    obj.css('left',$(document).width()/2 - alert_width/2);
+    obj.fadeIn(500);
      setTimeout(function(){
-         $('.alert-msg').fadeOut(500,function(){
-             $('.alert-msg').remove();
+         obj.fadeOut(500,function(){
+             if(obj != undefined) obj.remove();
          });
      },2000);
 }
 
+function avatar_error(thi){
+    $(thi).parent().hide();
+}
+function reply_avatar(thi){
+    $(thi).attr('src','/resources/images/jpg/avatar_error.jpg');
+}
 function login(){
     window.location.href='/login';
 }
@@ -189,8 +196,8 @@ window.onload=function(){
 $(document).keypress(function(e) {
     // 回车键事件
     if(e.which == 13) {
-        if($('.right-container .search #search').length > 0 && $('.right-container .search #search').val().length > 0)
-        $(".right-container .search button").trigger('click');
+        if($('.search #search').length > 0 && $('.search #search').val().length > 0)
+        $(".search .search-btn").trigger('click');
     }
 });
 //DOM渲染完成
@@ -266,6 +273,10 @@ $(document).ready(function(){
         if($(this).hasClass('tag-select')){
             $(this).removeClass('tag-select');
         }else{
+            if($(this).parent().children('.tag-select').length >= 3){
+                alert_msg('贴标签不能超过3个');
+                return false;
+            }
             $(this).addClass('tag-select');
         }
     })
@@ -278,23 +289,6 @@ $(document).ready(function(){
         }
         var tag_html = '<span class="tag my-tag"><input placeholder="请输入" value=""/></span>';
         $(this).before(tag_html);
-    })
-
-    //标签链接
-    $('body').on('click', '.tag-nav', function(){
-        $.cookie('search', '');
-        $.cookie('tags', $(this).text());
-        var cur_url = window.location.href;
-        cur_url = cur_url.replace(/[0-9]+$/g,'');
-        window.location.href = cur_url;
-    })
-
-    $('body').on('click', '.nav-order-by li', function(){
-        $.cookie('search', '');
-        $.cookie('order_by', $(this).text());
-        var cur_url = window.location.href;
-        cur_url = cur_url.replace(/[0-9]+$/g,'');
-        window.location.href = cur_url;
     })
 
     //监听主体OO点击事件
@@ -310,13 +304,13 @@ $(document).ready(function(){
     })
 
     //监听评论@点击事件
-    $('body').on('click', '.r-ta', function(){
+    $('body').on('click', '.reply-ta', function(){
         if($(this).parents('.reply-main').find('.textarea-wrapper .edit-p').length <= 0){
             alert_msg('你还没有登陆哦');
             return false;
         }
-        $(this).addClass("at").parents('.reply-one').siblings().find(".r-ta").removeClass('at');
-        var html_name = '<span class="r-name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+        $(this).addClass("at").parents('.reply-section').siblings().find(".reply-ta").removeClass('at');
+        var html_name = '<span class="reply-to-name">@'+$(this).data('name')+'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
         $(this).parents('.reply-main').find('.textarea-wrapper .edit-p').html(html_name);
         height = $(this).parents('.reply-main').find('.textarea-wrapper .edit-p').offset().top;
         $('html,body').animate({scrollTop: height -200}, 500);
@@ -338,26 +332,20 @@ $(document).ready(function(){
         });
     });
 
-    $('body').on('click', '.reply-to-reply', function(){
-        rep_id = $(this).attr('rep-id');
-        to_height = $(this).parents('.reply-main').find('.rep-id-'+rep_id).offset().top;
-        $('html,body').animate({scrollTop: to_height}, 500);
-    });
-
     //关闭评论
     $('body').on('click', '.close-reply', function(){
-        $(this).parents('.reply-wapper').fadeOut(1000,function(){
-            var len = $(this).find('.reply-one').length;
-            $(this).prev('.one').find('.reply-count').text(len);
-            var height = $(this).prev('.one').offset().top;
+        $(this).parents('.reply-wrapper').fadeOut(1000,function(){
+            var len = $(this).find('.reply-section').length;
+            $(this).parents('.section').find('.reply-count').text(len);
+            var height = $(this).parents('.section').offset().top;
             $('html,body').animate({scrollTop: height}, 500);
             $(this).remove();
         });
     });
 
     $('body').on('click', '.qq-face', function(){
-        if($(this).parents('.reply-wapper').find('.facebox').length > 0 ){
-            $(this).parents('.reply-wapper').find('.facebox').remove();
+        if($(this).parents('.reply-wrapper').find('.facebox').length > 0 ){
+            $(this).parents('.reply-wrapper').find('.facebox').remove();
             return false;
         }
         $('.facebox').remove();
@@ -366,7 +354,7 @@ $(document).ready(function(){
             faceimg+='<li data-id="'+i+'"></li>';
         };
         faceimg+='</ul></div>';
-        $(this).parents('.reply-wapper').append(faceimg);
+        $(this).parents('.reply-wrapper').append(faceimg);
         var qq_height = $(this).offset().top;
         var qq_wight = $(this).offset().left;
         $('.facebox').css('top',qq_height - 170);
@@ -379,12 +367,12 @@ $(document).ready(function(){
     $('body').on('click', '.facebox ul li', function(){
         var id = $(this).attr('data-id');
         var img = '<img src="/resources/images/face/'+id+'.gif" /> ';
-        $(this).parents('.reply-wapper').find('.edit-p').append(img);
+        $(this).parents('.reply-wrapper').find('.edit-p').append(img);
         return false;
     });
 
     //监听到底部点击事件
-    $('body').on('click', '.mao', function(){
+    $('body').on('click', '.down', function(){
         var height = $(document).height();
         $('html,body').animate({scrollTop: height}, 500);
     })
@@ -414,22 +402,22 @@ $(document).ready(function(){
     });
 
     function clear_cookie() {
-        $.cookie('tags', '');
-        $.cookie('search', '');
-        $.cookie('order_by', '');
+        $.cookie('search', '' , { path : '/' });
     }
 
     //监听头部导航点击事件
+    $(".subnav li a").click(function(){
+        clear_cookie();
+    })
+
     $(".nav li a").click(function(){
         clear_cookie();
     })
 
     //监听搜索事件
-    $(".search button").click(function(){
+    $(".search .search-btn").click(function(){
         var search = $("#search").val();
-        $.cookie('tags', '');
-        $.cookie('order_by', '');
-        $.cookie('search', search);
+        $.cookie('search', search , { path : '/' });
         window.location.href=window.location.href;
     })
 
@@ -439,9 +427,9 @@ $(document).ready(function(){
         var id = obj.attr('data-id');
         var type = $("#type").val();
 
-        if(obj.parents('.one').next().hasClass('reply-wapper')){
-            obj.parents('.one').next('.reply-wapper').fadeOut(500,function(){
-                obj.parents('.one').next('.reply-wapper').remove();
+        if(obj.parents('.section').children('.reply-wrapper').length > 0){
+            obj.parents('.section').children('.reply-wrapper').fadeOut(500,function(){
+                obj.parents('.section').children('.reply-wrapper').remove();
             });
             return false;
         }
@@ -461,8 +449,8 @@ $(document).ready(function(){
 
                 obj.parent().children('.reply-count').text(result.data.list.length);
                 var html = reply_list(result);
-                obj.parents('.one').after(html);
-                obj.parents('.one').next('.reply-wapper').slideDown(500);
+                obj.parents('.section').append(html);
+                obj.parents('.section').find('.reply-wrapper').slideDown(500);
             },
             error:function (){
                 alert_msg('提交失败,请刷新重试');
@@ -507,8 +495,8 @@ $(document).ready(function(){
                     //详情页的评论
                     get_detail_reply_list();
                 }else{
-                    //普通列表页的评论，评论成功加一个DIV，点击close-reply时会统计reply-one的数量
-                    obj.parents('.reply-main').before('<div class="reply-one display"></div>');
+                    //普通列表页的评论，评论成功加一个DIV，点击close-reply时会统计reply-section的数量
+                    obj.parents('.reply-main').append('<div class="reply-section display"></div>');
                     obj.parents('.reply-main').find('.close-reply').trigger("click");
                 }
             },
@@ -520,35 +508,28 @@ $(document).ready(function(){
     });
 
     function reply_list(result){
-        var html = '<div class="reply-wapper"><hr class="hr-reply"><div class="reply-main">';
+        var html = '<div class="reply-wrapper"><hr class="hr-reply"><div class="reply-main">';
         if(result.data.list != ''){
             html += '<div class="reply-title">评论</div>';
             $.each(result.data.list, function(k, v){
-                html += '<div class="reply-one rep-id-'+v.rep_id+'">';
-                html += '<div class="reply-avatar left"><img src="'+v.avatar+'" /></div>';
-                html += '<div class="reply-content left">';
-                html += '<p><span  class="r-name">'+v.name+'</span>';
-                if(v.parent_id != 0 && v.parent_name != ''){
-                    html += '<span class="time">&nbsp;&nbsp;@&nbsp;&nbsp;</span>';
-                    html += '<a  class="r-name reply-to-reply" rep-id="'+ v.parent_id+'">'+v.parent_name+'</a>';
-                }
-                html += '<span class="time right">'+(k+1)+'L</span></p>';
+                html += '<div class="reply-section rep-id-'+v.rep_id+'">';
+                html += '<div class="reply-avatar"><img src="'+v.avatar+'" onerror="reply_avatar(this)" /></div>';
+                html += '<div class="reply-right">';
+                html += '<div class="reply-right-top"><div  class="reply-user-name">'+v.name+'</div>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
-                    html += '<p class="reply-aite-p"><span class="time left">评论</span><span class="qy left"></span>';
-                    html += '<span  class="reply-at-content left">'+ v.reply_content+'</span>';
-                    html += '<span class="hy left"></span></p>';
+                    html += '<div  class="reply-to-reply" rep-id="'+ v.parent_id+'"><div class="reply-to-user">回复 '+v.parent_name+'</div>';
+                    html += '<div class="reply-reply-content"><p class="reply-to-user">'+ v.reply_content.name;
+                    html += '&nbsp;&nbsp;&nbsp;'+v.reply_content.create_time+'</p>'+ v.reply_content.content+'</div>';
+                    html += '</div>';
                 }
-                html += '<p class="r-comment">'+v.content+'</p>';
-                html += '<p class="click">';
-                html += '<span class="time reply-time">'+ v.create_time+'</span>';
-                html += '<span class="r-ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">@Ta</span>';
-                html += '<span>&nbsp;&nbsp;</span>';
-                html += '<a class="oo" data-id="'+v.rep_id+'"></a>[<span class="good">'+v.good+'</span>]';
-                html += '<span>&nbsp;&nbsp;</span>';
-                html += '<a class="xx" data-id="'+v.rep_id+'"></a>[<span class="bad">'+v.bad+'</span>]';
-                html += '<span>&nbsp;&nbsp;</span>';
-                html += '<span class="response"></span></p>';
-                html += '</div>';
+                html += '</div><p class="reply-content">'+v.content+'</p>';
+                html += '<p class="reply-bottom">';
+                html += '<span class="reply-createtime">'+v.create_time+'</span>';
+                html += '<span class="reply-ta" data-id="'+ v.rep_id+'" data-name="'+ v.name+'">回复</span>';
+                html += '<a class="oo" data-id="'+v.rep_id+'">OO</a>[<span class="good">'+v.good+'</span>]';
+                html += '<a class="xx" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
+                html += '<span class="response"></span>';
+                html += '</p></div>';
                 html += '</div>';
             });
         }else{
@@ -558,8 +539,8 @@ $(document).ready(function(){
         if(result.data.is_login == 1){
             html += '<div class="reply-comment">';
             html += '<p><span>'+result.data.name+'</span><span class="qq-face"></span></p>';
-            html += '<div class="reply-avatar left"><img src="'+result.data.avatar+'" /></div>';
-            html += '<div class="textarea-wrapper left">';
+            html += '<div class="reply-avatar"><img src="'+result.data.avatar+'" /></div>';
+            html += '<div class="textarea-wrapper">';
             html += '<p class="edit-p" contenteditable="true"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
             html += '</div></div><p class="close-reply">[X]关闭评论</p></div>';
@@ -569,6 +550,10 @@ $(document).ready(function(){
             html += '<p class="close-reply">[X]关闭评论</p></div>';
         }
         return html;
+    }
+
+    function reply_one(){
+
     }
 
 

@@ -20,6 +20,7 @@ class member extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
+        $this->get_nav();
         $this->assign('keywords','用户中心');
         $this->assign('description','用户中心');
         $this->load->model('model_users');
@@ -29,7 +30,8 @@ class member extends MY_Controller  {
         if(!is_login()){
             header_index('login');
         }
-        $user = $this->model_users->get_user_by_user_id($_SESSION['user_id']);
+        $where = 'where user_id = '.$_SESSION['user_id'];
+        $user = $this->model_users->GetRow($where);
         if(empty($user)) parent::error_msg();
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
         $user['user_sn'] = get_user_sn($user['user_id'] , $user['create_time']);
@@ -37,8 +39,8 @@ class member extends MY_Controller  {
         $this->load->model('model_article');
         $this->load->model('model_content');
         $where = 'where status = 1 and user_id = '.$_SESSION['user_id'];
-        $count_article = $this->model_article->data_count($where);
-        $count_content = $this->model_content->data_count($where);
+        $count_article = $this->model_article->GetTotal($where);
+        $count_content = $this->model_content->GetTotal($where);
         $user['content_count'] = $count_article + $count_content ;
 
         $sex = $this->sex_data;
@@ -91,8 +93,9 @@ class member extends MY_Controller  {
         $data['year'] = trim(strip_tags($_REQUEST['year']));
         $data['sex'] = trim(strip_tags($_REQUEST['sex']));
         $data['qq'] = trim(strip_tags($_REQUEST['qq']));
+        if(empty($data['sex'])) $data['sex'] = 'U';
         if(!empty($data['mobile'])) valid_mobile($data['mobile']);
-        $res = $this->model_users->update_user_info($user_id,$data);
+        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
         if($res){
             splash('sucess','保存成功');
         }else{
@@ -105,7 +108,7 @@ class member extends MY_Controller  {
         $user_id = $_SESSION['user_id'];
         $data['avatar'] = trim(strip_tags($_REQUEST['avatar']));
         if(empty($data['avatar'])) splash('error','请输入图片url');
-        $res = $this->model_users->update_user_info($user_id,$data);
+        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
         if($res){
             $_SESSION['avatar'] = $data['avatar'];
             splash('sucess','保存成功');
@@ -123,14 +126,15 @@ class member extends MY_Controller  {
         $new_pass = trim(strip_tags($_REQUEST['new_pass']));
         $confirm_pass = trim(strip_tags($_REQUEST['confirm_pass']));
 
-        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        $where = 'where user_id = '.$user_id;
+        $user_info = $this->model_users->GetRow($where);
         if(md5($old_pass.ENCRYPTION) != $user_info['password']) splash('error','原密码输入不正确');
 
         if($old_pass == $new_pass) splash('sucess','保存成功');
         if($new_pass != $confirm_pass) splash('error','前后密码不一致');
 
         $data['password'] = md5($new_pass.ENCRYPTION);
-        $res = $this->model_users->update_user_info($user_id,$data);
+        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
         if($res){
             splash('sucess','修改成功');
         }else{
@@ -150,7 +154,8 @@ class member extends MY_Controller  {
 
         $this->load->model('model_article');
         $this->load->model('model_content');
-        $user_info = $this->model_users->get_user_by_user_id($user_id);
+        $where = 'where user_id = '.$user_id;
+        $user_info = $this->model_users->GetRow($where);
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
         $user_info['sex'] = $this->sex_data[$user_info['sex']];
         $user_info['age'] = empty($user_info['year']) ? '未知' : date('Y') - $user_info['year'];
@@ -162,8 +167,8 @@ class member extends MY_Controller  {
 
         $count = 0;
         $where = 'where status = 1 and user_id = '.$user_id;
-        $group_article_count = $this->model_article->group_count_by_type($where);
-        $group_content_count = $this->model_content->group_count_by_type($where);
+        $group_article_count = $this->model_article->GetCountGroupBy($where , 'type');
+        $group_content_count = $this->model_content->GetCountGroupBy($where , 'type');
         $group_count = array_merge($group_content_count,$group_article_count);
         foreach($group_count as &$value){
             $value['type_name'] = parent :: $all_type_name[$value['type']];
@@ -175,7 +180,7 @@ class member extends MY_Controller  {
         }
         array_multisort($group_num, SORT_DESC , $group_count);
 
-        $this->assign('body','member');
+        $this->assign('body','body-member');
         $this->assign('title',$user_info['name'].'－搞东搞西');
         $this->assign('menu',$user_info['name']);
         $this->assign('keywords',$user_info['name']);
@@ -184,9 +189,7 @@ class member extends MY_Controller  {
         $this->assign('group_count',$group_count);
         $this->assign('initial_type',$group_count[0]['type']); //最多的一类
 
-        $this->native_display('main/header.html');
-        $this->native_display('main/member.html');
-        $this->native_display('main/footer.html');
+        $this->display('member.html');
     }
 
     /*
@@ -211,32 +214,23 @@ class member extends MY_Controller  {
         }
         $this->load->model($model_table_name);
         //得到总数
-        $count = $this->$model_table_name->data_count($where);
+        $count = $this->$model_table_name->GetTotal($where);
 
         $total_page = ceil($count/$limit);
         if(empty($p) || $p > $total_page) $p = $total_page;
 
         //得到数据
-        $list  = $this->$model_table_name->data_list($total_page - $p,$limit,$where);
+        $list  = $this->$model_table_name->GetAll($where, '' ,$total_page - $p,$limit);
         //得到头像
-        $user_res =  parent :: get_user_avatar($list);
-        if(!empty($user_res)){
-            $user_avatar = my_array_column($user_res , 'avatar' , 'user_id');
-            $user_time = my_array_column($user_res , 'create_time' , 'user_id');
-        }
+        $avatar = $this->model_users->GetRowByKey($user_id);
 
         foreach($list as &$v){
-            if(empty($v['con_id'])) $v['con_id'] = $v['art_id'];
             if($is_detail == 1){
-                $v['detail_url'] =  get_detail_url($v['art_id'],$v['create_time']);
+                $v['detail_url'] =  get_detail_url($v['con_id'],$v['create_time']);
                 $v['year'] = substr($v['create_time'], 0 , 7);
                 $v['day'] = substr($v['create_time'], 8 , 2);
-            }else{
-                if($v['con_id'] < 145){
-                    if($res_content = gif_static_gif($v['content'])) $v['content'] = $res_content;
-                    $v['content'] = filter_content_br($v['content']);
-                }
             }
+            $v['avatar'] = $avatar;
             $v['create_time'] = change_time($v['create_time']);
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
         }
@@ -244,7 +238,7 @@ class member extends MY_Controller  {
         //生成页码
         $page = get_page($count,$limit,$total_page - $p + 1,'ajax_page');
 
-        $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail , 'type'=>$type);
+        $out = array('list'=>$list,'count'=>$count,'page'=>$page , 'is_detail'=>$is_detail);
         splash('success','',$out);
     }
 

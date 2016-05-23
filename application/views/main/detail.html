@@ -1,125 +1,37 @@
-<div class="main left">
-    <div class="detail-title-top">
-        <p>{$data.title}</p>
-        <p class="time text-right">
-            <span>浏览[{$data.scan}]</span>
-            <span class="examine">
-                <span class="mao edit-info"></span>
-                <span class="mao cursor">评论[{$data.reply}]</span>
-            </span>
-            <span>{$data.name}</span>
-            <span>{$data.create_time}</span>
-        </p>
-    </div>
-    <div class="detail">{$data.content}</div>
-    <div class="bdsharebuttonbox share">
-        <span>分享到：</span>
-        <a href="#" class="bds_qzone share-qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-        <a href="#" class="bds_tsina share-sina" data-cmd="tsina" title="分享到新浪微博"></a>
-        <a href="#" class="bds_weixin share-weixin" data-cmd="weixin" title="分享到微信"></a>
-    </div>
-    <div  class="detail-reply examine"></div>
-    <input type="hidden" id="type" value="{$data.type}" />
-    <input type="hidden" id="unique-id" value="{$data.art_id}" />
-    <input type="hidden" id="comment-url" value="/content/record" />
-</div>
-<div class="right-container left">
-
-</div>
-<script src="/resources/js/tmpl.js"></script>
-<script id="reply-list" type="text/x-dot-template">
-    {literal}
-    <div class="reply-wapper">
-        <div class="reply-main">
-            {{if list != ''}}
-                <div class="reply-title">评论<span class="mao edit-info"></span></div>
-                {{each(key,one) list}}
-                <div class="reply-one rep-id-${one.rep_id}">
-                    <div class="reply-avatar left">
-                        <img src="${one.avatar}">
-                    </div>
-                    <div class="reply-content left">
-                        <p>
-                            <span class="r-name">${one.name}</span>
-                            {{if one.parent_id != 0 && one.parent_name != '' }}
-                                <span class="time">&nbsp;&nbsp;@&nbsp;&nbsp;</span>
-                                <a  class="r-name reply-to-reply" rep-id="${one.parent_id}">${one.parent_name}</a>
-                            {{/if}}
-                            <span class="time right">${key + 1}L</span>
-                        </p>
-                        {{if one.parent_id != 0 && one.parent_name != '' && one.reply_content != ''}}
-                            <p class="reply-aite-p">
-                                <span class="time left">回复</span>
-                                <span class="qy left"></span>
-                                <span  class="reply-at-content left">{{html one.reply_content}}</span>
-                                <span class="hy left"></span>
-                            </p>
-                        {{/if}}
-                        <p class="r-comment">{{html one.content}}</p>
-                        <p class="click">
-                            <span class="time reply-time">${one.create_time}</span>
-                            <span class="r-ta" data-id="${one.rep_id}" data-name="悬笔题枫月">@Ta</span>
-                            <span>&nbsp;&nbsp;</span>
-                            <a class="oo" data-id="${one.rep_id}"></a>[<span class="good">${one.good}</span>]
-                            <span>&nbsp;&nbsp;</span><a class="xx" data-id="${one.rep_id}"></a>[<span class="bad">${one.bad}</span>]
-                            <span>&nbsp;&nbsp;</span>
-                            <span class="response"></span>
-                        </p>
-                    </div>
-                </div>
-                {{/each}}
-            {{else}}
-                <div class="reply-title">评论</div>
-            {{/if}}
-            {{if is_login == 1}}
-                <div class="reply-comment">
-                    <p><span>${name}</span><span class="qq-face"></span></p>
-                    <div class="reply-avatar left"><img src="${avatar}"></div>
-                    <div class="textarea-wrapper left">
-                        <p class="edit-p" contenteditable="true" placeholder="说点什么吧"></p>
-                        <p class="post-toolbar"><button data-id="${con_id}" class="reply-submit ds-post-button">发布</button></p>
-                    </div>
-                </div>
-            {{else}}
-                <div class="reply-no-login">
-                    <span onclick="login()">&nbsp;登录&nbsp;</span>后才能回复
-                </div>
-            {{/if}}
+<div class="main main-width">
+    <div class="main-left main-left-width">
+        <div class="detail-top">
+            <p class="detail-title">{$data.title}</p>
+            <p class="detail-info">
+                <span>{$data.create_time}</span>
+                <span>{$data.name}</span>
+                <span class="examine">
+                    <span class="down cursor">评论[{$data.reply}]</span>
+                    <span class="down edit-info"></span>
+                </span>
+                <span>浏览[{$data.scan}]</span>
+            </p>
         </div>
+        <div class="detail-middle">{$data.content}</div>
+        <div class="bdsharebuttonbox share">
+            <span>分享到：</span>
+            <a href="#" class="bds_qzone share-qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+            <a href="#" class="bds_tsina share-sina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="bds_weixin share-weixin" data-cmd="weixin" title="分享到微信"></a>
+        </div>
+        <div  class="detail-reply section examine">
+            <span data-id="{$data.con_id}" class="reply"></span>
+        </div>
+        <input type="hidden" id="type" value="{$data.type}" />
+        <input type="hidden" id="unique-id" value="{$data.con_id}" />
+        <input type="hidden" id="comment-url" value="/content/record" />
     </div>
-    {/literal}
-</script>
 
 <script>
-    $(function(){
-        get_detail_reply_list();
-    })
-    function get_detail_reply_list(){
-        var id = $('#unique-id').val();
-        var type = $('#type').val();
-        $.ajax({
-            url: "/reply",
-            data:{
-                "id" : id,"type" : type
-            },
-            type: "POST",
-            dataType:'json',
-            beforeSend: function() {
-                //    $('.content-list').html('<h2 class="center">数据加载中...</h2>');
-            },
-            success:function(result){
-                if(result.status == "error"){
-                    alert_msg(result.msg);
-                    return false;
-                }
-                $('.detail-reply').html('');
-                $("#reply-list").tmpl(result.data).appendTo('.detail-reply');
-            },
-            error:function(e){
-                alert_msg('请求失败，请刷新重试');
-            }
-        });
-    }
+    $(document).ready(function(){
+        $(".reply").trigger("click");
+    });
+
     {literal}
     window._bd_share_config={
         "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},

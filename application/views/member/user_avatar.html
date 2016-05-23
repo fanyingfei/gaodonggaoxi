@@ -1,17 +1,16 @@
     <div class="user-info-right">
-        <h3>修改头像</h3>
         <div class="person-info">
             <div class="avatar-info">
                 <p>请输入新的头像url
-                    <span class="time">&nbsp;&nbsp;头像上传&nbsp;[<a target="_blank" href="http://photo.weibo.com/photos/upload">微博相册</a>]</span>
+                    <span>&nbsp;&nbsp;头像上传&nbsp;[<a target="_blank" href="http://photo.weibo.com/photos/upload">微博相册</a>]</span>
                 </p>
                 <br>
                 <p>
                     <input name="avatar" id="avatar" type="text" value="{$avatar}">
-                    <span class="select-all time cursor">&nbsp;全选</span>
+                    <span class="select-all">&nbsp;全选</span>
                 </p>
             </div>
-            <div class="avatar-img">
+            <div class="info-avatar-img">
                 {if $avatar != '' }<img src="{$avatar}" /> {/if}
             </div>
             <div  class='op'>
@@ -43,7 +42,7 @@
 
     $("#show").click(function(){
         var avatar = $.trim($("#avatar").val());
-        $('.avatar-img').html('<img src="'+avatar+'" />');
+        $('.info-avatar-img').html('<img src="'+avatar+'" />');
     })
 
     $(".select-all").click(function(){

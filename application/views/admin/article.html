@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn btn-op" id="remove" data-url="/admin/article_delete">Delete</button>
-        <button class="btn btn-op" id="pass" data-url="/admin/article_pass">Pass</button>
-        <button class="btn btn-op" id="fail" data-url="/admin/article_fail">Fail</button>
+        <button class="btn btn-op" id="remove" data-url="/admin/delete/article">Delete</button>
+        <button class="btn btn-op" id="pass" data-url="/admin/pass/article">Pass</button>
+        <button class="btn btn-op" id="fail" data-url="/admin/fail/article">Fail</button>
         <span>ID：</span>
         <div class="form-group">
             <input type="text" maxlength="12" size="5" class="form-control" id="search_id" >
@@ -34,7 +34,7 @@
     </div>
     <table id="table"
            data-toggle="table"
-           data-url="/admin/article_list"
+           data-url="/admin/list/article"
            data-show-columns="true"
            data-search="false"
            data-show-refresh="true"
@@ -45,7 +45,7 @@
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-sortable="true" data-field="art_id">ID</th>
+            <th data-sortable="true" data-field="con_id">ID</th>
             <th data-field="type">类型</th>
             <th data-field="title">标题</th>
             <th data-field="email">邮箱</th>
@@ -72,9 +72,9 @@
         var search_id = $('#search_id').val();
         var search_type = $('#search_type').val();
         var search_status = $('#search_status').val();
-        var filter = '?art_id='+search_id+'&type='+search_type+'&status='+search_status;
+        var filter = '?con_id='+search_id+'&type='+search_type+'&status='+search_status;
 
-        $('#table').bootstrapTable('refresh', {url: '/admin/article_list'+filter});
+        $('#table').bootstrapTable('refresh', {url: '/admin/list/article'+filter});
         return false;
     })
 </script>

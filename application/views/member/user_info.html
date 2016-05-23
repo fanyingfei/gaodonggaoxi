@@ -1,7 +1,6 @@
     <div class="user-info-right">
-        <h3>个人资料</h3>
         <div class="person-info">
-            <div>
+            <div class="div-wrapper">
                 {if $avatar != '' }
                 <div class="info-avatar-img"><img src="{$avatar}" /></div>
                 {/if}
@@ -17,28 +16,27 @@
                     {/if}
                 </div>
             </div>
-            <p class="clear"><br></p>
-            <div>
+            <div class="div-wrapper">
                 <label class="label">手机</label>
                 <span class="separate"></span>
                 <input name="mobile" id="mobile" type="text" maxlength="16" value="{$user.mobile}">
             </div>
-            <div>
+            <div class="div-wrapper">
                 <label class="label">微信</label>
                 <span class="separate"></span>
                 <input name="weixin" id="weixin" type="text" maxlength="32" value="{$user.weixin}">
             </div>
-            <!--<div>
+            <!--<div class="div-wrapper">
                 <label class="label">新浪</label>
                 <span class="separate"></span>
                 <input name="sina" id="sina" type="text" maxlength="16" value="{$user.sina}">
             </div>
-            <div>
+            <div class="div-wrapper">
                 <label class="label qq">&nbsp;QQ</label>
                 <span class="separate"></span>
                 <input name="qq"  id="qq" type="text" maxlength="16" value="{$user.qq}">
             </div> -->
-            <div class="left">
+            <div class="sex-wrapper">
                 <label class="label">性别</label>
                 <span class="separate"></span>
                 <label class="label">
@@ -49,7 +47,7 @@
                     </select>
                 </label>
             </div>
-            <div class="left age">
+            <div class="age-wrapper">
                 <label class="label">年龄</label>
                 <span class="separate"></span>
                 <label class="label">
@@ -60,7 +58,7 @@
                     </select>
                 </label>
             </div>
-            <div class="op"><p id="submit" class="c-subbutton">保&nbsp;存</p></div>
+            <div class="div-wrapper op"><p id="submit" class="c-subbutton">保&nbsp;存</p></div>
         </div>
     </div>
 </div>

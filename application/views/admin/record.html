@@ -3,10 +3,18 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn btn-op" id="remove" data-url="/admin/record_delete">Delete</button>
+        <button class="btn btn-op" id="remove" data-url="/admin/delete/record">Delete</button>
         <span>IP：</span>
         <div class="form-group">
             <input type="text" size="15" class="form-control" id="search_ip" >
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="search_type" id="search_type">
+                <option value="-1" >未选择</option>
+                {foreach key=key item=item from=$type_list}
+                <option value="{$key}" >{$item}</option>
+                {/foreach}
+            </select>
         </div>
         <div class="form-group">
             <button class="btn btn-search">search</button>
@@ -14,7 +22,7 @@
     </div>
     <table id="table"
            data-toggle="table"
-           data-url="/admin/record_list"
+           data-url="/admin/list/record"
            data-show-columns="true"
            data-search="false"
            data-show-refresh="true"
@@ -43,8 +51,9 @@
 <script>
     $(".btn-search").click(function(){
         var search_ip = $('#search_ip').val();
-        var filter = '?ip='+search_ip;
-        $('#table').bootstrapTable('refresh', {url: '/admin/record_list'+filter});
+        var search_type = $('#search_type').val();
+        var filter = '?ip='+search_ip+'&type='+search_type;
+        $('#table').bootstrapTable('refresh', {url: '/admin/list/record'+filter});
         return false;
     })
 </script>

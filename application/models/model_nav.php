@@ -1,9 +1,9 @@
 <?php
 
-class model_black extends MY_Model{
+class model_nav extends MY_Model{
 
-    private $key = 'black_id';
-    private $table  = 'black';
+    private $key = 'nav_id';
+    private $table  = 'nav';
 
     function __construct()
     {

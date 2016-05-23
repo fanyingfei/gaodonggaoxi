@@ -25,35 +25,33 @@
         })();
     </script>
 </head>
-<body>
-<div class="menu">
-    <div class="logo">
-        <img  height="75px" src="/resources/images/png/gao.png" />
-    </div>
-    <div class="nav clear">
-        <ul class="left">
-            <li><a href="/xiao">搞笑</a></li>
-            <li><a href="/meizi">妹子</a></li>
-            <li><a href="/hua">那些话</a></li>
-            <li><a href="/zzs">渣渣说</a></li>
-            <li><a href="/tale">故事</a></li>
-            <li><a href="/cxy">程序猿</a></li>
-        </ul>
-        <div class="right login examine">
+<body class="{$body}">
+<div class="nav">
+    <div class="nav-container main-width">
+        <div class="logo">
+            <img src="/resources/images/png/gao.png" />
+        </div>
+        <div class="search">
+            <input type="text" id="search" placeholder="搜索" value="">
+            <div class="search-btn"></div>
+        </div>
+        <div class="nav-user examine">
             {if $is_login == 0}
-                <a href="/login">登录</a>
-                <span>|</span>
-                <a href="/register">注册</a>
+            <a href="/login">登录</a>
+            <a href="/register">注册</a>
             {else}
-                <a href="/user/info"><span class="user_name">{$name}</span></a>
-                <span>|</span>
-                <span class="login_out"><a href="/login/login_out">退出</a></span>
-                {if $is_admin == 1}
-                    <span>|</span>
-                    <span><a href="/admin">后台管理</a></span>
-                {/if}
+            <a  class="user-icon" href="/user/info">{$name}</a>
+            <div class="dropdown">
+                <a href="/user/info">个人中心</a>
+                <a href="/login/login_out">退出</a>
+                {if $is_admin == 1}<a href="/admin">后台</a>{/if}
+            </div>
             {/if}
         </div>
+        <ul class="nav-ul">
+            {foreach from=$navigation key=key item=val}
+            <li><a {if $nav == $val.alias}class="active"{/if} href="/{$val.alias}">{$val.name}</a></li>
+            {/foreach}
+        </ul>
     </div>
 </div>
-<div class="wapper {$body}">

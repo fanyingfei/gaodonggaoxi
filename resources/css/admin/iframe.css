@@ -44,8 +44,26 @@ body{
     overflow: hidden;
 }
 body,td,td,div,input,select button{
-    font-family: 微软雅黑;
+    font-family: 'Microsoft YaHei','Arial';
 }
 .container{
     margin-left:0px;
+}
+.modal-body{
+    padding:20px 0;
+    overflow:auto;
+}
+.modal-body .form-group{
+    overflow: auto;
+    clear:both;
+}
+.modal-body .form-group label{
+    width:80px;
+    text-align: right;
+    float:left;
+    padding-top: 6px;
+}
+.modal-body .form-group .form-control{
+    float:left;
+    width:480px;
 }

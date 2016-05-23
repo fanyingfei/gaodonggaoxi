@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="/resources/css/admin/iframe.css">
 <div class="container">
     <div class="table-toolbar">
-        <button class="btn btn-op" id="remove" data-url="/admin/content_delete">Delete</button>
-        <button class="btn btn-op" id="pass" data-url="/admin/content_pass">Pass</button>
-        <button class="btn btn-op" id="fail" data-url="/admin/content_fail">Fail</button>
+        <button class="btn btn-op" id="remove" data-url="/admin/delete/content">Delete</button>
+        <button class="btn btn-op" id="pass" data-url="/admin/pass/content">Pass</button>
+        <button class="btn btn-op" id="fail" data-url="/admin/fail/content">Fail</button>
         <span>ID：</span>
         <div class="form-group">
             <input type="text" maxlength="12" size="5" class="form-control" id="search_id" >
@@ -34,7 +34,7 @@
     </div>
     <table id="table"
            data-toggle="table"
-           data-url="/admin/content_list"
+           data-url="/admin/list/content"
            data-show-columns="true"
            data-search="false"
            data-show-refresh="true"
@@ -72,7 +72,7 @@
         var search_status = $('#search_status').val();
         var filter = '?con_id='+search_id+'&type='+search_type+'&status='+search_status;
 
-        $('#table').bootstrapTable('refresh', {url: '/admin/content_list'+filter});
+        $('#table').bootstrapTable('refresh', {url: '/admin/list/content'+filter});
         return false;
     })
 </script>

@@ -56,7 +56,7 @@ function deal_str_param($str){
     $params = explode( '&' , $str);
     foreach($params as $p){
         $row = explode( '=' , $p);
-        if(isset($row[1]) && $row[1] != '' && $row[1] >= 0) $data[$row[0]] = $row[1];
+        if(isset($row[1]) && $row[1] != '') $data[$row[0]] = $row[1];
     }
     return $data;
 }
@@ -91,6 +91,19 @@ function valid_mobile($mobile){
     if(!preg_match("/1[34578]{1}\d{9}$/",$mobile)){
         splash('error','请输入正确手机号');
     }
+}
+
+function get_page_url(){
+    $url = '/';
+    $request_url = $_SERVER['REQUEST_URI'];
+    if(empty($request_url) || $request_url == '/') return $url.'pic/';
+    $url_res = explode('/',$_SERVER['REQUEST_URI']);
+    if(count($url_res) <= 1) return $url.'pic/';
+    if(count($url_res) > 1 && is_numeric(end($url_res))) array_pop($url_res);
+    foreach($url_res as $v){
+        if(!empty($v)) $url .= $v.'/';
+    }
+    return $url;
 }
 
 function register_valid($data){

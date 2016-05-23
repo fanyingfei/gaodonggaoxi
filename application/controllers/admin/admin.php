@@ -36,6 +36,7 @@ class admin extends MY_Controller  {
         $this->load->model('model_reply');
         $this->load->model('model_access');
         $this->load->model('model_record');
+        $this->load->model('model_nav');
     }
 
     public function index(){
@@ -45,32 +46,30 @@ class admin extends MY_Controller  {
 
     public function content()
 	{
-        $type_list = array(1=>'搞笑',2=>'那些话',5=>'妹子');
+        $type_list = array(1=>'搞笑',3=>'段子',5=>'妹子');
         $this->assign('type_list',$type_list);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/content.html');
     }
 
-    public function content_list($str = ''){
+    public function main_list($name , $str=''){
         $where = $order_by = '';
+        $table_name = 'model_'.$name;
+        $function = $name.'_list';
         $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
         $limit = empty($params['limit']) ? 10 : $params['limit'];
         $sort = empty($params['sort']) ? '' : $params['sort'];
         $sort_by = empty($params['order']) ? '' : $params['order'];
 
-        $where = $this->get_where_param($params , array('con_id','status','type'));
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
+        $where = $this->get_where_param($params);
+        if(!empty($sort) && !empty($sort_by)) $order_by = "$sort $sort_by";
+        if(empty($order_by) && $name == 'nav') $order_by = 'sort desc';
         //得到数据
-        $list  = $this->model_content->data_list($p,$limit , $where , $order_by);
-        foreach($list as &$v){
-            $v['status'] = $this->status_data[$v['status']];
-            $v['user_id'] = empty($v['user_id']) ? '否' : '是';
-            $v['type'] = $this->type_name[$v['type']];
-            $v['con_id'] = $this->get_id_url($v);
-        }
+        $list = $this->$table_name->GetAll($where , $order_by ,$p,$limit );
+        $list = $this->$function($list);
 
-        $total = $this->model_content->data_count($where);
+        $total = $this->$table_name->GetTotal($where);
 
         $result = array(
             'total'=>$total,
@@ -79,9 +78,20 @@ class admin extends MY_Controller  {
         echo json_encode($result);
     }
 
-    public function content_delete(){
+    public function content_list($list){
+        foreach($list as &$v){
+            $v['status'] = $this->status_data[$v['status']];
+            $v['user_id'] = empty($v['user_id']) ? '否' : '是';
+            $v['type'] = $this->type_name[$v['type']];
+            $v['con_id'] = $this->get_id_url($v);
+        }
+        return $list;
+    }
+
+    public function delete($name){
+        $table_name = 'model_'.$name;
         $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_content->delete($ids);
+        $res = $this->$table_name->delete($ids);
         if($res){
             splash('success','删除成功');
         }else{
@@ -89,9 +99,11 @@ class admin extends MY_Controller  {
         }
     }
 
-    public function content_pass(){
+    public function pass($name){
+        $table_name = 'model_'.$name;
         $ids = trim($_REQUEST['ids']);
-        $res = $this->model_content->update_status($ids,$this->status_pass);
+        $where = 'where con_id in ('.$ids.')';
+        $res = $this->$table_name->UpdateBySql($where,'status',$this->status_pass);
         if($res){
             splash('success','审核通过');
         }else{
@@ -99,9 +111,11 @@ class admin extends MY_Controller  {
         }
     }
 
-    public function content_fail(){
+    public function fail($name){
+        $table_name = 'model_'.$name;
         $ids = $_REQUEST['ids'];
-        $res = $this->model_content->update_status($ids,$this->status_fail);
+        $where = 'where con_id in ('.$ids.')';
+        $res = $this->$table_name->UpdateBySql($where,'status',$this->status_fail);
         if($res){
             splash('success','成功');
         }else{
@@ -117,63 +131,14 @@ class admin extends MY_Controller  {
         $this->native_display('admin/article.html');
     }
 
-    public function article_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array('art_id','status','type'));
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-        //得到数据
-        $list  = $this->model_article->data_list($p,$limit , $where , $order_by);
+    public function article_list($list){
         foreach($list as &$v){
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
             $v['type'] = $this->type_name[$v['type']];
-            $v['con_id'] = $v['art_id'];
-            $v['art_id'] = $this->get_id_url($v);
+            $v['con_id'] = $this->get_id_url($v);
         }
-
-        $total = $this->model_article->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
-    }
-
-    public function article_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_article->delete($ids);
-        if($res){
-            splash('success','删除成功');
-        }else{
-            splash('error','删除失败,请重试');
-        }
-    }
-
-    public function article_pass(){
-        $ids = trim($_REQUEST['ids']);
-        $res = $this->model_article->update_status($ids,$this->status_pass);
-        if($res){
-            splash('success','审核通过');
-        }else{
-            splash('error','审核失败,请重试');
-        }
-    }
-
-    public function article_fail(){
-        $ids = $_REQUEST['ids'];
-        $res = $this->model_content->update_status($ids,$this->status_fail);
-        if($res){
-            splash('success','成功');
-        }else{
-            splash('error','失败,请重试');
-        }
+        return $list;
     }
 
     public function user()
@@ -181,19 +146,7 @@ class admin extends MY_Controller  {
         $this->native_display('admin/user.html');
     }
 
-    public function user_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array());
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-
-        //得到数据
-        $list  = $this->model_users->data_list($p+1,$limit , $where , $order_by);
+    public function users_list($list){
         foreach($list as &$v){
             $v['is_admin'] = empty($v['is_admin']) ? '否' : '是';
             if(empty($v['sex'])) $v['sex'] = 'U';
@@ -206,30 +159,14 @@ class admin extends MY_Controller  {
             $v['avatar'] = empty($v['avatar']) ? '' : "<img src='".$v['avatar']."' />";
             $v['last_login'] = empty($v['last_login']) ? '' : change_time($v['last_login']);
         }
-
-        $total = $this->model_users->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
+        return $list;
     }
 
-    public function user_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_users->delete($ids);
-        if($res){
-            if(!empty($_SESSION['user_id'])) $_SESSION['user_id'] = '';
-            splash('success','删除成功');
-        }else{
-            splash('error','删除失败,请重试');
-        }
-    }
 
     public function user_add_admin(){
         $ids = trim($_REQUEST['ids']);
-        $res = $this->model_users->update_admin($ids , 1);
+        $where = "where user_id in ($ids)";
+        $res = $this->model_users->UpdateBySql($where , 'is_admin', 1);
         if($res){
             splash('success','删除成功');
         }else{
@@ -239,7 +176,8 @@ class admin extends MY_Controller  {
 
     public function user_remove_admin(){
         $ids = trim($_REQUEST['ids']);
-        $res = $this->model_users->update_admin($ids , 0);
+        $where = "where user_id in ($ids)";
+        $res = $this->model_users->UpdateBySql($where , 'is_admin', 0);
         if($res){
             splash('success','移除管理员成功');
         }else{
@@ -252,82 +190,41 @@ class admin extends MY_Controller  {
         $this->native_display('admin/black.html');
     }
 
-    public function black_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array());
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-        //得到数据
-        $list  = $this->model_black->data_list($p+1,$limit , $where , $order_by);
-
-        $total = $this->model_black->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
+    public function black_list($list){
+        return $list;
     }
 
-    public function black_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_black->delete($ids);
-        if($res){
-            splash('success','删除成功');
-        }else{
-            splash('error','删除失败,请重试');
-        }
-    }
 
     public function reply()
     {
         $this->native_display('admin/reply.html');
     }
 
-    public function reply_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array());
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-
-        //得到数据
-        $list  = $this->model_reply->admin_list($p+1,$limit , $where , $order_by);
+    public function reply_list($list){
         foreach($list as &$v){
             $v['con_id'] = $this->get_id_url($v);
             $v['type'] = $this->type_name[$v['type']];
         }
-
-        $total = $this->model_reply->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
+        return $list;
     }
 
     public function reply_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $data = $this->model_reply->get_detail_by_ids($_REQUEST['ids']);
+        $ids = trim($_REQUEST['ids']);
+        $where = 'where rep_id in ('.$ids.')';
+        $data = $this->model_reply->GetAll($where);
         if(empty($data))  splash('error','数据为空,请重试');
         foreach($data as $v){
+            $where = 'where parent_id = '.$v['rep_id'];
+            $num = $this->model_reply->GetTotal($where);
             if(in_array($v['type'],parent :: $detail_data)){
-                $this->model_article->update_reply($v['con_id'] , '-1');
+                $this->model_article->UpdateNum($v['con_id'] ,'reply', '-'.($num + 1));
             }else{
-                $this->model_content->update_reply($v['con_id'] , '-1');
+                $this->model_content->UpdateNum($v['con_id'] ,'reply',  '-'.($num + 1));
             }
         }
-        $res = $this->model_reply->delete($ids);
+        $ids = explode(',',$ids);
+        $res = $this->model_reply->Delete($ids);
+        $this->model_reply->Delete($ids , 'parent_id');
         if($res){
             splash('success','删除成功');
         }else{
@@ -337,94 +234,79 @@ class admin extends MY_Controller  {
 
     public function record()
     {
+        $this->assign('type_list',parent::$all_type_name);
         $this->native_display('admin/record.html');
     }
 
-    public function record_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array('ip'));
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-        //得到数据
-        $list  = $this->model_record->admin_list($p+1,$limit , $where , $order_by);
+    public function record_list($list){
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                if(!empty($v['ip_address'])) $this->model_record->update_ip_address($v['rec_id'] , $v['ip_address']);
+                if(!empty($v['ip_address'])) $this->model_record->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
             }
             $v['type'] = $this->type_name[$v['type']];
         }
-
-        $total = $this->model_record->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
+        return $list;
     }
 
-    public function record_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_record->delete($ids);
-        if($res){
-            splash('success','删除成功');
-        }else{
-            splash('error','删除失败,请重试');
-        }
-    }
 
     public function access()
     {
         $this->native_display('admin/access.html');
     }
 
-    public function access_list($str = ''){
-        $where = $order_by = '';
-        $params = deal_str_param($str);
-        $p = empty($params['offset']) ? 0 : $params['offset']/10;
-        $limit = empty($params['limit']) ? 10 : $params['limit'];
-        $sort = empty($params['sort']) ? '' : $params['sort'];
-        $sort_by = empty($params['order']) ? '' : $params['order'];
-
-        $where = $this->get_where_param($params , array('ip'));
-        if(!empty($sort) && !empty($sort_by)) $order_by = " order by $sort $sort_by ";
-        //得到数据
-        $list  = $this->model_access->admin_list($p+1,$limit , $where , $order_by);
+    public function access_list($list){
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                if(!empty($v['ip_address'])) $this->model_access->update_ip_address($v['rec_id'] , $v['ip_address']);
+                if(!empty($v['ip_address'])) $this->model_access->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
             }
         }
-
-        $total = $this->model_access->data_count($where);
-
-        $result = array(
-            'total'=>$total,
-            'rows'=>$list,
-        );
-        echo json_encode($result);
+        return $list;
     }
 
-    public function access_delete(){
-        $ids = explode(',',$_REQUEST['ids']);
-        $res = $this->model_access->delete($ids);
-        if($res){
-            splash('success','删除成功');
-        }else{
-            splash('error','删除失败,请重试');
+
+    public function nav()
+    {
+        $this->native_display('admin/nav.html');
+    }
+
+    public function nav_list($list){
+        foreach($list as &$v){
+            $v['is_view'] = empty($v['is_view']) ? '否' : '是';
+            $v['is_detail'] = empty($v['is_detail']) ? '无' : '有';
+            $v['op'] = '<button data-id="'.$v['nav_id'].'" class="btn nav-edit" data-toggle="modal" data-target="#myModal">编辑</button>';
         }
+        return $list;
+    }
+
+    public function nav_one(){
+        $nav_id = intval($_REQUEST['nav_id']);
+        if(empty($nav_id)) splash('error','参数有误');
+        $where = 'where nav_id = '.$nav_id;
+        $res  = $this->model_nav->GetRow($where);
+        if(empty($res)) splash('error','没有数据');
+        splash('success','',$res);
+    }
+
+    public function nav_update(){
+        $nav_id = intval($_REQUEST['nav_id']);
+        if(empty($nav_id)) splash('error','参数有误');
+        $data['sort'] = empty($_REQUEST['sort']) ? '' : intval($_REQUEST['sort']);
+        $data['desc'] = empty($_REQUEST['desc']) ? '' : trim($_REQUEST['desc']);
+        $data['tags'] = empty($_REQUEST['tags']) ? '' : trim($_REQUEST['tags']);
+        $data['is_view'] = empty($_REQUEST['is_view']) ? 0 : trim($_REQUEST['is_view']);
+        $data['keywords'] = empty($_REQUEST['keywords']) ? '' : trim($_REQUEST['keywords']);
+        $data['description'] = empty($_REQUEST['description']) ? '' : trim($_REQUEST['description']);
+        $res  = $this->model_nav->UpdateByKey($nav_id,$data);
+        if($res) splash('success','修改成功');
+        splash('error','修改失败,请重试');
     }
 
 
-    public function get_where_param($params , $column = array()){
-        if(empty($params) || empty($column)) return '';
+    public function get_where_param($params){
+        if(empty($params)) return '';
+        $column = array('con_id','status','type','ip');
         $str = '';
         foreach($params as $key=>$v){
             if(!in_array($key , $column)) continue;

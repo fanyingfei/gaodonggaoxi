@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="/resources/css/admin/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/admin/bootstrap-table.min.css">
+<link rel="stylesheet" href="/resources/css/admin/iframe.css">
+<div class="container">
+    <table id="table"
+           data-toggle="table"
+           data-url="/admin/list/nav"
+           data-show-columns="true"
+           data-search="false"
+           data-show-refresh="true"
+           data-show-toggle="false"
+           data-pagination="true"
+           data-side-pagination="server"
+           data-height="600">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-sortable="true" data-sortable="true" data-field="nav_id">ID</th>
+            <th data-sortable="true" data-field="name">导航名字</th>
+            <th data-sortable="true" data-field="alias">别名</th>
+            <th data-sortable="true" data-field="sort">权重</th>
+            <th data-sortable="true" data-field="type">类型</th>
+            <th data-sortable="true" data-field="is_detail">详情</th>
+            <th data-sortable="true" data-field="is_view">显示</th>
+            <th data-sortable="true" data-field="tags">标签</th>
+            <th data-sortable="true" data-field="desc">简述</th>
+            <th data-sortable="true" data-field="keywords">关键词</th>
+            <th data-sortable="true" data-field="description">描述</th>
+            <th data-sortable="true" data-field="op">操作</th>
+        </tr>
+        </thead>
+    </table>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary btn-submit" data-dismiss="modal">提交更改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
+</div>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/admin/admin.js"></script>
+<script src="/resources/js/admin/bootstrap.min.js"></script>
+<script src="/resources/js/admin/bootstrap-table.js"></script>
+<script>
+    $("body").on("click", '.nav-edit', function(){
+        var nav_id = $(this).attr('data-id');
+        var cfg = {};
+        cfg.requestUrl = '/admin/nav_one';
+        cfg.success = function(result){
+            var html = '<input type="hidden" id="m-nav-id" value="'+result.nav_id+'" >';
+            html += '<div  class="form-group"><label>显示：</label>';
+            html += '<span class="form-control"><input type="radio" value="1" name="is_view" ';
+            if(result.is_view == 1) html += 'checked="checked"';
+            html +=  '/>显示&nbsp;&nbsp;';
+            html += '<input type="radio" value="0" name="is_view" ';
+            if(result.is_view == 0) html += 'checked="checked"';
+            html +=  '/>不显示</span></div>';
+            html += '<div  class="form-group"><label>权重：</label>';
+            html += '<input type="text" class="form-control" id="m-sort" value="'+result.sort+'" ></div>';
+            html += '<div  class="form-group"><label>标签：</label>';
+            html += '<input type="text" class="form-control" id="m-tags" value="'+result.tags+'" ></div>';
+            html += '<div  class="form-group"><label>简述：</label>';
+            html += '<input type="text" class="form-control" id="m-desc" value="'+result.desc+'" ></div>';
+            html += '<div  class="form-group"><label>关键词：</label>';
+            html += '<input type="text" class="form-control" id="m-keywords" value="'+result.keywords+'" ></div>';
+            html += '<div  class="form-group"><label>描述：</label>';
+            html += '<textarea class="form-control" id="m-description">'+result.description+'</textarea></div>';
+            $('#myModalLabel').html(result.name);
+            $('#myModal .modal-body').html(html);
+        };
+        cfg.data = {"nav_id":nav_id};
+        admin_ajax_res(cfg);
+    })
+
+    $("body").on("click", '.btn-submit', function(){
+        var nav_id = $('#m-nav-id').val();
+        var desc = $('#m-desc').val();
+        var tags = $('#m-tags').val();
+        var sort = $('#m-sort').val();
+        var is_view = $('input:radio[name="is_view"]:checked').val();
+        var keywords = $('#m-keywords').val();
+        var description = $('#m-description').val();
+        var cfg = {};
+        cfg.requestUrl = '/admin/nav_update';
+        cfg.success = function(result){
+            alert('修改成功');
+            $('#table').bootstrapTable('refresh', {url: '/admin/list/nav'});
+        };
+        cfg.data = {"nav_id":nav_id,'tags':tags,'desc':desc,'keywords':keywords,'description':description,'is_view':is_view , 'sort':sort};
+        admin_ajax_res(cfg);
+    })
+</script>
+{/literal}

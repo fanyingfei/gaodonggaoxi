@@ -1,15 +1,16 @@
-<div class="user-center">
-    <div class="user-menu-left">
-        <h3>个人中心</h3>
-        <ul>
-            <li {if $select == 1}class="at"{/if} >
-            <a href="/user/info">个人资料</a>
-            </li>
-            <li {if $select == 2}class="at"{/if} >
-            <a href="/user/avatar">修改头像</a>
-            </li>
-            <li {if $select == 3}class="at"{/if} >
-            <a href="/user/pass">修改密码</a>
-            </li>
-        </ul>
-    </div>
+<div class="main main-width">
+    <div class="user-center">
+        <h3 class="user-center-title">个人中心</h3>
+        <div class="user-menu-left">
+            <ul>
+                <li {if $select == 1}class="at"{/if} >
+                <a href="/user/info">个人资料</a>
+                </li>
+                <li {if $select == 2}class="at"{/if} >
+                <a href="/user/avatar">修改头像</a>
+                </li>
+                <li {if $select == 3}class="at"{/if} >
+                <a href="/user/pass">修改密码</a>
+                </li>
+            </ul>
+        </div>
