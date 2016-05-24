@@ -401,19 +401,6 @@ $(document).ready(function(){
         }
     });
 
-    function clear_cookie() {
-        $.cookie('search', '' , { path : '/' });
-    }
-
-    //监听头部导航点击事件
-    $(".subnav li a").click(function(){
-        clear_cookie();
-    })
-
-    $(".nav li a").click(function(){
-        clear_cookie();
-    })
-
     //监听搜索事件
     $(".search .search-btn").click(function(){
         var search = $("#search").val();

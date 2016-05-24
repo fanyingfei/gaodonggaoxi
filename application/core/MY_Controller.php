@@ -1,9 +1,6 @@
 <?php
 
 class MY_controller extends CI_Controller {
-    static $detail_data = array(4 , 6 , 7); //需要展示详情的
-    static $all_type_data   = array('pic'=>1 ,'hua'=>2 ,'duan'=>3,'zzs'=>4,'meizi'=>5,'tale'=>6 , 'cxy'=>7);
-    static $all_type_name = array('-1'=>'浏览',0=>'评论',1=>'无聊图',3=>'段子',4=>'渣渣说',5=>'妹子',6=>'故事' , 7=>'程序猿');
 
     public function __construct() {
         parent::__construct();
@@ -68,7 +65,7 @@ class MY_controller extends CI_Controller {
     public function get_user_avatar($list , $col = ''){
         if(empty($list)) return array();
 
-        $user_column = array_unique(my_array_column($list , 'user_id'));
+        $user_column = array_unique(array_column($list , 'user_id'));
         foreach($user_column as $key=>$v){
             if(empty($v)) unset($user_column[$key]);
         }
@@ -80,7 +77,7 @@ class MY_controller extends CI_Controller {
         if(empty($user_res))  return array();
 
         if($col == '') return $user_res;
-        return my_array_column($user_res,$col,'user_id');
+        return array_column($user_res,$col,'user_id');
     }
 
     public function record($table_name){
@@ -120,16 +117,33 @@ class MY_controller extends CI_Controller {
         if(strpos($url,'reply') !== false) return false;
         if(empty($url) || $url == '?') $url = 'shou';
         $this->load->model('model_access');
-        $data = array('url'=>$url,'ip'=>$ip);
+        $data = array('url'=>$url,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
         $this->model_access->save($data);
     }
 
 
-    public function get_nav(){
+    public function get_nav_list($flag = 0){
         $this->load->model('model_nav');
-        $res = $this->model_nav->GetAll( 'where is_view = 1' , 'sort desc');
+        $where = empty($flag) ? 'where is_view = 1' : '';
+        $res = $this->model_nav->GetAll( $where , 'sort desc');
         $this->ci_smarty->assign('navigation',$res);
         return $res;
+    }
+
+    public function get_nav_info($type){
+        $this->load->model('model_nav');
+        $where = "where type = $type";
+        $res = $this->model_nav->GetRow($where);
+        $res['table_name'] = empty($res['is_detail']) ? 'model_content' : 'model_article';
+        return $res;
+    }
+
+    public function is_black(){
+        $this->load->model('model_black');
+        $ip = get_real_ip();
+        $where = "where ip = '$ip";
+        $res = $this->model_black->GetRow();
+        if(!empty($res)) splash('error','你已被拉入黑名单');
     }
 
 }

@@ -6,6 +6,7 @@ class admin extends MY_Controller  {
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
     private $status_data = array(0=>'审核中',1=>'通过',2=>'没通过');
     private $type_name ;
+    private $nav_list;
 	/**
 	 * Index Page for this controller.
 	 *
@@ -28,7 +29,12 @@ class admin extends MY_Controller  {
             echo  'you have no permission to do this. ';
             exit;
         }
-        $this->type_name = parent::$all_type_name;
+        $nav_list = $this->get_nav_list(1);
+        $this->nav_list = $nav_list;
+        $type_name = array_column($nav_list,'name','type');
+        $type_name[-1] = '浏览';
+        $type_name[0]  = '评论';
+        $this->type_name = $type_name;
         $this->load->model('model_content');
         $this->load->model('model_article');
         $this->load->model('model_black');
@@ -213,18 +219,16 @@ class admin extends MY_Controller  {
         $where = 'where rep_id in ('.$ids.')';
         $data = $this->model_reply->GetAll($where);
         if(empty($data))  splash('error','数据为空,请重试');
+        $detail_res = array_column($this->nav_list, 'is_detail','type');
         foreach($data as $v){
-            $where = 'where parent_id = '.$v['rep_id'];
-            $num = $this->model_reply->GetTotal($where);
-            if(in_array($v['type'],parent :: $detail_data)){
-                $this->model_article->UpdateNum($v['con_id'] ,'reply', '-'.($num + 1));
+            if(empty($detail_res[$v['type']])){
+                $this->model_content->UpdateNum($v['con_id'] ,'reply',  '-1');
             }else{
-                $this->model_content->UpdateNum($v['con_id'] ,'reply',  '-'.($num + 1));
+                $this->model_article->UpdateNum($v['con_id'] ,'reply', '-1');
             }
         }
         $ids = explode(',',$ids);
         $res = $this->model_reply->Delete($ids);
-        $this->model_reply->Delete($ids , 'parent_id');
         if($res){
             splash('success','删除成功');
         }else{
@@ -234,7 +238,7 @@ class admin extends MY_Controller  {
 
     public function record()
     {
-        $this->assign('type_list',parent::$all_type_name);
+        $this->assign('type_list',$this->type_name);
         $this->native_display('admin/record.html');
     }
 
@@ -316,10 +320,11 @@ class admin extends MY_Controller  {
     }
 
     public function get_id_url($v){
-        if(in_array($v['type'],parent::$detail_data)){
-            $url = get_detail_url($v['con_id'],$v['create_time']);
-        }else{
+        $detail_res = array_column($this->nav_list, 'is_detail','type');
+        if(empty($detail_res[$v['type']])){
             $url = get_single_url($v['con_id'],$v['create_time']);
+        }else{
+            $url = get_detail_url($v['con_id'],$v['create_time']);
         }
         return '<a target="_blank" href="'.$url.'">'.$v['con_id'].'</a>';
     }

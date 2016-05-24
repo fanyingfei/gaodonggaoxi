@@ -20,7 +20,7 @@ class member extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->get_nav();
+        $this->get_nav_list();
         $this->assign('keywords','用户中心');
         $this->assign('description','用户中心');
         $this->load->model('model_users');
@@ -170,8 +170,11 @@ class member extends MY_Controller  {
         $group_article_count = $this->model_article->GetCountGroupBy($where , 'type');
         $group_content_count = $this->model_content->GetCountGroupBy($where , 'type');
         $group_count = array_merge($group_content_count,$group_article_count);
+
+        $nav_list = $this->get_nav_list();
+        $type_name = array_column($nav_list,'name','type');
         foreach($group_count as &$value){
-            $value['type_name'] = parent :: $all_type_name[$value['type']];
+            $value['type_name'] = $type_name[$value['type']];
         }
 
         $group_num = array();
@@ -205,22 +208,18 @@ class member extends MY_Controller  {
         $where = 'where status = 1 and user_id = '.$user_id;
         if(!empty($type)) $where .= ' and type = '.$type;
 
-        if(in_array($type,parent :: $detail_data)){
-            $is_detail = 1;
-            $model_table_name = 'model_article';
-        }else{
-            $is_detail = 0;
-            $model_table_name = 'model_content';
-        }
-        $this->load->model($model_table_name);
+        $nav_info = $this->get_nav_info($type);
+        $is_detail = $nav_info['is_detail'];
+        $table_name = $nav_info['table_name'];
+        $this->load->model($table_name);
         //得到总数
-        $count = $this->$model_table_name->GetTotal($where);
+        $count = $this->$table_name->GetTotal($where);
 
         $total_page = ceil($count/$limit);
         if(empty($p) || $p > $total_page) $p = $total_page;
 
         //得到数据
-        $list  = $this->$model_table_name->GetAll($where, '' ,$total_page - $p,$limit);
+        $list  = $this->$table_name->GetAll($where, '' ,$total_page - $p,$limit);
         //得到头像
         $avatar = $this->model_users->GetRowByKey($user_id);
 

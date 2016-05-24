@@ -1338,6 +1338,12 @@ body,
 
 /*PC端*/
 @media screen and (max-width: 660px) {
+    body,.pagination *{
+        font: 13px/1.3 'Microsoft YaHei','Arial';
+    }
+    .nav-ul li a{
+        font-size: 1.3em !important;
+    }
     .main-right,
     .nav .logo,
     .nav .search,

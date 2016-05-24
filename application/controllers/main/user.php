@@ -191,7 +191,7 @@ class user extends MY_Controller  {
 
     public function login_out(){
         session_destroy();
-        expire_cookie('is_login');
+        cookie_expire('is_login');
         $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
         if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
         header_index($url);
@@ -205,11 +205,7 @@ class user extends MY_Controller  {
 
     public function register_save(){
         //是否拉入黑名单
-        $this->load->model('model_black');
-        $ip = get_real_ip();
-        $where = "where ip = '$ip'";
-        $res = $this->model_black->GetRow($where);
-        if($res) splash('error','你已被拉入黑名单');
+        $this->is_black();
 
         $data['email'] = $email = trim(strip_tags($_REQUEST['email']));
         $data['code'] = $code = trim(strip_tags($_REQUEST['code']));
@@ -231,7 +227,7 @@ class user extends MY_Controller  {
         }elseif(empty($res_by_email)){
             $data['password'] = md5($data['password'].ENCRYPTION);
             $data['create_time'] = date('Y-m-d H:i:s');
-            $data['ip'] = $ip;
+            $data['ip'] = get_real_ip();
             $data['user_id'] = $this->model_users->Save($data);
         }else{
             splash('error','注册失败，请刷新重试');

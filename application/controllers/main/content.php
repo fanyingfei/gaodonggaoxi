@@ -12,7 +12,7 @@ class content extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->get_nav();
+        $this->get_nav_list();
         $this->load->model('model_content');
         $this->load->model('model_article');
     }
@@ -53,11 +53,12 @@ class content extends MY_Controller  {
         $p = intval($param['page']);
         $type = $param['type'];
         $sort = $param['sort'];
+        $search = $param['search'];
         $is_detail = $param['is_detail'];
 
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$type;
-        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ;
+
 
         if(empty($is_detail)){
             $html_name = 'content.html';
@@ -94,8 +95,8 @@ class content extends MY_Controller  {
         //得到头像
         $user_res =  $this->get_user_avatar($list);
         if(!empty($user_res)){
-            $user_avatar = my_array_column($user_res , 'avatar' , 'user_id');
-            $user_time = my_array_column($user_res , 'create_time' , 'user_id');
+            $user_avatar = array_column($user_res , 'avatar' , 'user_id');
+            $user_time = array_column($user_res , 'create_time' , 'user_id');
         }
 
         foreach($list as &$v){
@@ -192,13 +193,9 @@ class content extends MY_Controller  {
      */
     public function content_save(){
         //是否拉入黑名单
-        $this->load->model('model_black');
-        $this->load->model('model_users');
-        $ip = get_real_ip();
-        $where = "where ip = '$ip";
-        $res = $this->model_black->GetRow();
-        if(!empty($res)) splash('error','你已被拉入黑名单');
+        $this->is_black();
 
+        $this->load->model('model_users');
         $data['type'] = intval($_REQUEST['type']);
         $data['content'] = $this->deal_content($_REQUEST['content']);
 
@@ -220,7 +217,7 @@ class content extends MY_Controller  {
             valid_email($data['email']);
         }
         $data['create_time'] = date('Y-m-d H:i:s');
-        $data['ip'] = $ip;
+        $data['ip'] = get_real_ip();
 		if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
         $res  = $this->model_content->Save($data);
         if($res){
@@ -232,18 +229,10 @@ class content extends MY_Controller  {
 
     public function article_save(){
         //是否拉入黑名单
-        $this->load->model('model_black');
-        $this->load->model('model_users');
-        $ip = get_real_ip();
-        $where = "where ip = '$ip";
-        $res = $this->model_black->GetRow();
-        if(!empty($res)) splash('error','你已被拉入黑名单');
+        $this->is_black();
 
+        $this->load->model('model_users');
         $data['type'] = intval($_REQUEST['type']);
-        if($data['type'] == 4){
-            //渣渣说
-            $_REQUEST['content'] = strip_tags($_REQUEST['content'],'<p><br>');
-        }
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
 
@@ -272,7 +261,7 @@ class content extends MY_Controller  {
             valid_email($data['email']);
         }
         $data['create_time'] = date('Y-m-d H:i:s');
-        $data['ip'] = $ip;
+        $data['ip'] = get_real_ip();
         if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
         $res  = $this->model_article->Save($data);
         if($res){
@@ -319,13 +308,14 @@ class content extends MY_Controller  {
         $data['sort'] = $s;
         $data['type'] = 1;
         $data['page'] = $p;
+        $data['search'] = '';
         if(array_key_exists($p,$this->sort_data)){
             $data['sort'] = $p;
             $data['page'] = $s;
         }
         $cur_sort = empty($data['sort']) ? 'new' : $data['sort'];
 
-        $nav_list = $this->get_nav();
+        $nav_list = $this->get_nav_list();
         foreach($nav_list as $val){
             if($nav != $val['alias']) continue;
             $flag = 1;
@@ -345,6 +335,11 @@ class content extends MY_Controller  {
 
         if($flag == 0) header_index();
 
+        if(!empty($_COOKIE['search'])){
+            $data['search'] = trim($_COOKIE['search']);
+            cookie_expire('search');
+        }
+
         $this->assign('nav',$nav);
         $this->assign('title',$title);
         $this->assign('tags',$tags);
@@ -352,8 +347,9 @@ class content extends MY_Controller  {
         $this->assign('menu',$menu);
         $this->assign('cur_sort', $cur_sort);
         $this->assign('type',$data['type']);
-        $this->assign('sort', $this->sort_data);
         $this->assign('keywords',$keywords);
+        $this->assign('search',$data['search']);
+        $this->assign('sort', $this->sort_data);
         $this->assign('description',$description);
 
         $this->content_list($data);

@@ -59,11 +59,7 @@ class reply extends MY_Controller  {
     public function reply_save(){
         if(!is_login()) splash('error','回复请先登陆');
         //是否拉入黑名单
-        $this->load->model('model_black');
-        $ip = get_real_ip();
-        $where = "where ip ='$ip'";
-        $res = $this->model_black->GetRow($where);
-        if(!empty($res)) splash('error','你已被拉入黑名单');
+        $this->is_black();
 
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','提交失败，请刷新重试');
@@ -73,7 +69,7 @@ class reply extends MY_Controller  {
         $content = trim($_REQUEST['content']);
         $data = $this->content_is_at($parent_id,$parent_name,$content);
 
-        $data['ip'] = $ip;
+        $data['ip'] = get_real_ip();
         $data['con_id'] = $id;
         $data['type'] = intval($_REQUEST['type']);
         $data['create_time'] = date('Y-m-d H:i:s');
@@ -81,13 +77,10 @@ class reply extends MY_Controller  {
         $data['name'] = $_SESSION['name'];
         $res  = $this->model_reply->Save($data);
         if($res){
-            if(in_array($data['type'], parent::$detail_data)){
-                $this->load->model('model_article');
-                $this->model_article->UpdateNum($id,'reply');
-            }else{
-                $this->load->model('model_content');
-                $this->model_content->UpdateNum($id,'reply');
-            }
+            $nav_info = $this->get_nav_info($data['type']);
+            $table_name = $nav_info['table_name'];
+            $this->load->model($table_name);
+            $this->$table_name->UpdateNum($id,'reply');
             splash('success','提交成功');
         }else{
             splash('error','提交失败');

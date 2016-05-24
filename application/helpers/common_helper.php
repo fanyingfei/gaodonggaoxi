@@ -167,7 +167,7 @@ function my_set_cookie($key,$value){
 /*
  * COOKIE过期
  */
-function expire_cookie($key){
+function cookie_expire($key){
     setcookie($key,'',time(),'/');
 }
 /*
@@ -294,33 +294,32 @@ function get_single_url($id,$time){
     return '/single/'.date('Ymd',strtotime($time)).'/content_'.$id.'.html';
 }
 
-function my_array_column($input, $columnKey, $indexKey=null){
-    if(!function_exists('array_column')){
-        $columnKeyIsNumber  = (is_numeric($columnKey))?true:false;
-        $indexKeyIsNull            = (is_null($indexKey))?true :false;
-        $indexKeyIsNumber     = (is_numeric($indexKey))?true:false;
-        $result                         = array();
-        foreach((array)$input as $key=>$row){
-            if($columnKeyIsNumber){
-                $tmp= array_slice($row, $columnKey, 1);
-                $tmp= (is_array($tmp) && !empty($tmp))?current($tmp):null;
+if(!function_exists("array_column")){
+    function array_column($input, $columnKey, $indexKey = NULL){
+        $columnKeyIsNumber = (is_numeric($columnKey)) ? TRUE : FALSE;
+        $indexKeyIsNull = (is_null($indexKey)) ? TRUE : FALSE;
+        $indexKeyIsNumber = (is_numeric($indexKey)) ? TRUE : FALSE;
+        $result = array();
+
+        foreach ((array)$input AS $key => $row){
+            if ($columnKeyIsNumber){
+                $tmp = array_slice($row, $columnKey, 1);
+                $tmp = (is_array($tmp) && !empty($tmp)) ? current($tmp) : NULL;
             }else{
-                $tmp= isset($row[$columnKey])?$row[$columnKey]:null;
+                $tmp = isset($row[$columnKey]) ? $row[$columnKey] : NULL;
             }
-            if(!$indexKeyIsNull){
-                if($indexKeyIsNumber){
+            if (!$indexKeyIsNull){
+                if ($indexKeyIsNumber){
                     $key = array_slice($row, $indexKey, 1);
-                    $key = (is_array($key) && !empty($key))?current($key):null;
-                    $key = is_null($key)?0:$key;
+                    $key = (is_array($key) && ! empty($key)) ? current($key) : NULL;
+                    $key = is_null($key) ? 0 : $key;
                 }else{
-                    $key = isset($row[$indexKey])?$row[$indexKey]:0;
+                    $key = isset($row[$indexKey]) ? $row[$indexKey] : 0;
                 }
             }
             $result[$key] = $tmp;
         }
         return $result;
-    }else{
-        return array_column($input, $columnKey, $indexKey);
     }
 }
 
