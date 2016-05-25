@@ -23,7 +23,7 @@ KindEditor.plugin('insertfile', function(K) {
 		var html = [
 			'<div style="padding:20px;">',
 			'<div class="ke-dialog-row">',
-			'<label for="keUrl" style="width:60px;">' + lang.url + '</label>',
+			'<label for="keUrl">' + lang.url + '</label>',
 			'<input type="text" id="keUrl" name="url" class="ke-input-text" style="width:160px;" /> &nbsp;',
 			'<input type="button" class="ke-upload-button" value="' + lang.upload + '" /> &nbsp;',
 			'<span class="ke-button-common ke-button-outer">',
@@ -32,7 +32,7 @@ KindEditor.plugin('insertfile', function(K) {
 			'</div>',
 			//title
 			'<div class="ke-dialog-row">',
-			'<label for="keTitle" style="width:60px;">' + lang.title + '</label>',
+			'<label for="keTitle">' + lang.title + '</label>',
 			'<input type="text" id="keTitle" class="ke-input-text" name="title" value="" style="width:160px;" /></div>',
 			'</div>',
 			//form end

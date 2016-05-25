@@ -11,7 +11,7 @@ KindEditor.plugin('wordpaste', function(K) {
 	var self = this, name = 'wordpaste';
 	self.clickToolbar(name, function() {
 		var lang = self.lang(name + '.'),
-			html = '<div style="padding:10px 20px;">' +
+			html = '<div  class="ke-wrapper">' +
 				'<div style="margin-bottom:10px;">' + lang.comment + '</div>' +
 				'<iframe class="ke-textarea" frameborder="0" style="width:408px;height:260px;"></iframe>' +
 				'</div>',

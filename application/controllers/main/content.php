@@ -30,7 +30,7 @@ class content extends MY_Controller  {
     }
 
     public function zzs($p = 0, $s = ''){
-        $this->assign('is_show',1);
+        $this->assign('is_show',0);
         $this->init($p , $s , __FUNCTION__);
     }
 
@@ -40,7 +40,7 @@ class content extends MY_Controller  {
     }
 
     public function cxy($p = 0, $s = ''){
-        $this->assign('is_show',0);
+        $this->assign('is_show',1);
         $this->init($p , $s , __FUNCTION__);
     }
 

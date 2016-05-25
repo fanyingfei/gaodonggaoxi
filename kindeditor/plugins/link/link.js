@@ -15,11 +15,11 @@ KindEditor.plugin('link', function(K) {
 				html = '<div style="padding:20px;">' +
 					//url
 					'<div class="ke-dialog-row">' +
-					'<label for="keUrl" style="width:60px;">' + lang.url + '</label>' +
+					'<label for="keUrl">' + lang.url + '</label>' +
 					'<input class="ke-input-text" type="text" id="keUrl" name="url" value="" style="width:260px;" /></div>' +
 					//type
-					'<div class="ke-dialog-row"">' +
-					'<label for="keType" style="width:60px;">' + lang.linkType + '</label>' +
+					'<div class="ke-dialog-row" style="display: none;;">' +
+					'<label for="keType">' + lang.linkType + '</label>' +
 					'<select id="keType" name="type"></select>' +
 					'</div>' +
 					'</div>',

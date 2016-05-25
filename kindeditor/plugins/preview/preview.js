@@ -11,7 +11,7 @@ KindEditor.plugin('preview', function(K) {
 	var self = this, name = 'preview', undefined;
 	self.clickToolbar(name, function() {
 		var lang = self.lang(name + '.'),
-			html = '<div style="padding:10px 20px;">' +
+			html = '<div class="ke-wrapper">' +
 				'<iframe class="ke-textarea" frameborder="0" style="width:708px;height:400px;"></iframe>' +
 				'</div>',
 			dialog = self.createDialog({

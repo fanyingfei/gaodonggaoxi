@@ -21,7 +21,7 @@ KindEditor.plugin('media', function(K) {
 				'<div style="padding:20px;">',
 				//url
 				'<div class="ke-dialog-row">',
-				'<label for="keUrl" style="width:60px;">' + lang.url + '</label>',
+				'<label for="keUrl">' + lang.url + '</label>',
 				'<input class="ke-input-text" type="text" id="keUrl" name="url" value="" style="width:160px;" /> &nbsp;',
 				'<input type="button" class="ke-upload-button" value="' + lang.upload + '" /> &nbsp;',
 				'<span class="ke-button-common ke-button-outer">',
@@ -30,12 +30,12 @@ KindEditor.plugin('media', function(K) {
 				'</div>',
 				//width
 				'<div class="ke-dialog-row">',
-				'<label for="keWidth" style="width:60px;">' + lang.width + '</label>',
+				'<label for="keWidth">' + lang.width + '</label>',
 				'<input type="text" id="keWidth" class="ke-input-text ke-input-number" name="width" value="550" maxlength="4" />',
 				'</div>',
 				//height
 				'<div class="ke-dialog-row">',
-				'<label for="keHeight" style="width:60px;">' + lang.height + '</label>',
+				'<label for="keHeight">' + lang.height + '</label>',
 				'<input type="text" id="keHeight" class="ke-input-text ke-input-number" name="height" value="400" maxlength="4" />',
 				'</div>',
 				//autostart

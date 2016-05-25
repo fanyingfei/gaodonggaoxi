@@ -774,6 +774,9 @@ body,
     background: #fdfdfd;
     width: 100%;
 }
+.main .sub button:hover{
+    background: #fafafa;
+}
 .main .sub p {
     margin: 5px 0 10px 0;
 }
@@ -826,55 +829,28 @@ body,
 /*提交结束*/
 
 /*kindeditor*/
-.ke-tabs ,
-.ke-button,
-.ke-dialog-header,
-.ke-dialog-body {
-    font-family: 'Microsoft YaHei','Arial' !important;
-}
-.ke-dialog-footer .ke-button{
-    background-position: center 0;
-    border:1px solid #e8e8e8;
-    border-radius: 5px;
-}
 .ke-dialog-content .tab1 div ~ div {
     display: none;
-}
-.ke-dialog-content .ke-dialog-body {
-    height: auto !important;
 }
 #tabContent{
     max-height: 220px;
     overflow-y: scroll;
 }
-.ke-dialog-default {
-    height: auto !important;
-    top:30%;
-}
 #remoteUrl {
-    width: 320px !important;
+    width: 335px !important;
 }
-.ke-dialog-content .ke-dialog-footer {
-    text-align: center !important;
-    margin-top: -15px;
+#keUrl{
+    width:365px !important;
+    margin-top:20px;
 }
-.ke-dialog-footer span.ke-button-common{
-    border-radius: 5px;
-    overflow: hidden;
+label[for='keUrl']{
+    margin-top:20px;
 }
-.ke-button-common{
-    background-image: none !important;
-    background-color: #f1f1f1 !important;
-    border-radius: 5px;
-}
-.ke-button-common:hover{
-    background-color: #dedede !important;
+.ke-input-text[name='localUrl']{
+    width: 260px !important;
 }
 .ke-upload-area .ke-upload-file{
     cursor:pointer;
-}
-.ke-upload-area .ke-upload-file:hover ~ span{
-    background-color : #dedede !important;
 }
 .ke-container .ke-toolbar, .ke-container .ke-statusbar {
     background-color: #fdfdfd;
@@ -1025,7 +1001,7 @@ body,
     border-radius: 0;
 }
 .row-bottom * {
-    color: #6c6c6c;
+    color: #999;
     font-size: 9pt;
 }
 .row-user-name{
@@ -1034,7 +1010,7 @@ body,
 .row-bottom{
     float: left;
     text-align: left;
-    color: #666666;
+    color: #999;
     clear: both;
     width:100%;
     margin-top: 16px;

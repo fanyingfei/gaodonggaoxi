@@ -6,7 +6,7 @@ class admin extends MY_Controller  {
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
     private $status_data = array(0=>'审核中',1=>'通过',2=>'没通过');
     private $type_name ;
-    private $nav_list;
+    private $type_detail ;
 	/**
 	 * Index Page for this controller.
 	 *
@@ -30,11 +30,11 @@ class admin extends MY_Controller  {
             exit;
         }
         $nav_list = $this->get_nav_list(1);
-        $this->nav_list = $nav_list;
         $type_name = array_column($nav_list,'name','type');
         $type_name[-1] = '浏览';
         $type_name[0]  = '评论';
         $this->type_name = $type_name;
+        $this->type_detail = array_column($nav_list,'is_detail','type');
         $this->load->model('model_content');
         $this->load->model('model_article');
         $this->load->model('model_black');
@@ -86,10 +86,10 @@ class admin extends MY_Controller  {
 
     public function content_list($list){
         foreach($list as &$v){
+            $v['con_id'] = $this->get_id_url($v);
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
             $v['type'] = $this->type_name[$v['type']];
-            $v['con_id'] = $this->get_id_url($v);
         }
         return $list;
     }
@@ -139,10 +139,10 @@ class admin extends MY_Controller  {
 
     public function article_list($list){
         foreach($list as &$v){
+            $v['con_id'] = $this->get_id_url($v);
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
             $v['type'] = $this->type_name[$v['type']];
-            $v['con_id'] = $this->get_id_url($v);
         }
         return $list;
     }
@@ -219,7 +219,7 @@ class admin extends MY_Controller  {
         $where = 'where rep_id in ('.$ids.')';
         $data = $this->model_reply->GetAll($where);
         if(empty($data))  splash('error','数据为空,请重试');
-        $detail_res = array_column($this->nav_list, 'is_detail','type');
+        $detail_res = $this->type_detail;
         foreach($data as $v){
             if(empty($detail_res[$v['type']])){
                 $this->model_content->UpdateNum($v['con_id'] ,'reply',  '-1');
@@ -296,7 +296,7 @@ class admin extends MY_Controller  {
     public function nav_update(){
         $nav_id = intval($_REQUEST['nav_id']);
         if(empty($nav_id)) splash('error','参数有误');
-        $data['sort'] = empty($_REQUEST['sort']) ? '' : intval($_REQUEST['sort']);
+        $data['sort'] = empty($_REQUEST['sort']) ? 0 : intval($_REQUEST['sort']);
         $data['desc'] = empty($_REQUEST['desc']) ? '' : trim($_REQUEST['desc']);
         $data['tags'] = empty($_REQUEST['tags']) ? '' : trim($_REQUEST['tags']);
         $data['is_view'] = empty($_REQUEST['is_view']) ? 0 : trim($_REQUEST['is_view']);
@@ -314,13 +314,14 @@ class admin extends MY_Controller  {
         $str = '';
         foreach($params as $key=>$v){
             if(!in_array($key , $column)) continue;
+            if($key == 'status' && $v < 0) continue;
             $str .= ' and '.$key.' = "'.$v.'"';
         }
         if(!empty($str)) return ' where 1 '.$str;
     }
 
     public function get_id_url($v){
-        $detail_res = array_column($this->nav_list, 'is_detail','type');
+        $detail_res = $this->type_detail;
         if(empty($detail_res[$v['type']])){
             $url = get_single_url($v['con_id'],$v['create_time']);
         }else{

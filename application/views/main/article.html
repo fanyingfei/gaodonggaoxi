@@ -71,6 +71,9 @@
                 {foreach from=$tags key=key item=tag}
                 <span class="tag">{$tag}</span>
                 {/foreach}
+                <span class="tag my-tag">
+                    <input placeholder="请输入" value="">
+                </span>
                 <span class="add-tag">+</span>
             </p>
             <p><textarea name="content" id="content"></textarea></p>
@@ -89,14 +92,20 @@
         window.editor = K.create('#content', {
             newlineTag : "br" ,
             itemsName : false,
-            filterMode : false,
+            filterMode : true,
             items : [
-                'justifyleft', 'justifycenter', 'justifyright',
-                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'subscript',
-                'superscript', '|','fontsize',  'forecolor', 'hilitecolor', 'bold',
-                'italic', 'underline', 'strikethrough', '|',
-                'table', 'hr',  'link', 'unlink', '|','image','selectall','fullscreen', 'preview',
-            ]
+                'justifyleft', 'justifycenter', '|','fontsize',  'forecolor',  'bold',
+                'italic', 'underline', 'strikethrough','|',
+                'link', 'image', '|','selectall','fullscreen', 'preview',
+            ],
+            htmlTags : {
+                'strong,s,b,i,em,pre,blockquote':[],
+                span : ['.color', '.text-align',  '.font-size'],
+                a : ['href', 'target'],
+                div:['align','.text-align'],
+                img : ['src', 'width', 'height', 'alt'],
+                p : ['align','.text-align', '.color',  '.font-size', '.font-weight']
+            }
         });
     });
 </script>
@@ -118,7 +127,8 @@
         var type = $("#type").val();
         var tags = get_tags();
 
-        if(tags == '' || !valid(name,email,content))  return false;
+        if(tags == '')  return false;
+        if(!valid(name,email,content))  return false;
 
         $.cookie('name', name ,  { path:'/', expires: 365 });
         $.cookie('email', email ,  { path:'/', expires: 365 });
@@ -129,15 +139,24 @@
     })
 
     function get_tags(){
+        var flag = 0;
         var tags = '';
         $('.tag-select').each(function(){
             if($(this).children('input').length == 1){
-                var cur_tag = $(this).children('input').val();
+                var cur_tag = $.trim($(this).children('input').val());
             }else{
                 var cur_tag = $(this).text();
             }
-            if(cur_tag != '') tags += cur_tag+' ';
+            if(cur_tag != ''){
+                tags += cur_tag+' ';
+            }else{
+                flag = 1;
+            }
         });
+        if(flag == 1){
+            alert_msg('请输入有效标签');
+            return '';
+        }
         if(tags == '') alert_msg('请添加标签');
         return tags;
     }

@@ -4230,7 +4230,7 @@ _extend(KDialog, KWidget, {
 		}
 		var headerDiv = K('<div class="ke-dialog-header"></div>');
 		contentDiv.append(headerDiv);
-		headerDiv.html(title);
+		headerDiv.html('<h4>'+title+'</h4>');
 		self.closeIcon = K('<span class="ke-dialog-icon-close" title="' + closeBtn.name + '"></span>').click(closeBtn.click);
 		headerDiv.append(self.closeIcon);
 		self.draggable({
@@ -4246,8 +4246,8 @@ _extend(KDialog, KWidget, {
 		}
 		_each([
 			{ btn : previewBtn, name : 'preview' },
-			{ btn : yesBtn, name : 'yes' },
-			{ btn : noBtn, name : 'no' }
+			{ btn : noBtn, name : 'no' },
+            { btn : yesBtn, name : 'yes' }
 		], function() {
 			if (this.btn) {
 				var button = _createButton(this.btn);
@@ -5357,7 +5357,7 @@ KEditor.prototype = {
 		var dialog = self.createDialog({
 			width : 750,
 			title : self.lang('uploadError'),
-			body : '<div style="padding:10px 20px;"><iframe frameborder="0" style="width:708px;height:400px;"></iframe></div>'
+			body : '<div  class="ke-wrapper"><iframe frameborder="0" style="width:708px;height:400px;"></iframe></div>'
 		});
 		var iframe = K('iframe', dialog.div), doc = K.iframeDoc(iframe);
 		doc.open();

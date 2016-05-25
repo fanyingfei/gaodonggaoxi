@@ -284,7 +284,7 @@ $(document).ready(function(){
     //添加标签
     $('body').on('click', '.add-tag', function(){
         if($(this).parent().children('.my-tag').length >= 3){
-            alert_msg('自己添加的标签不能超过3个');
+            alert_msg('新添标签不能超过3个');
             return false;
         }
         var tag_html = '<span class="tag my-tag"><input placeholder="请输入" value=""/></span>';

@@ -12,7 +12,7 @@
 KindEditor.plugin('map', function(K) {
 	var self = this, name = 'map', lang = self.lang(name + '.');
 	self.clickToolbar(name, function() {
-		var html = ['<div style="padding:10px 20px;">',
+		var html = ['<div class="ke-wrapper">',
 			'<div class="ke-dialog-row">',
 			lang.address + ' <input id="kindeditor_plugin_map_address" name="address" class="ke-input-text" value="" style="width:200px;" /> ',
 			'<span class="ke-button-common ke-button-outer">',

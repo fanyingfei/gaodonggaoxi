@@ -29,7 +29,7 @@ KindEditor.plugin('filemanager', function(K) {
 			viewType = K.undef(options.viewType, 'VIEW').toUpperCase(), // "LIST" or "VIEW"
 			clickFn = options.clickFn;
 		var html = [
-			'<div style="padding:10px 20px;">',
+			'<div class="ke-wrapper">',
 			// header start
 			'<div class="ke-plugin-filemanager-header">',
 			// left start
