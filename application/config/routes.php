@@ -62,6 +62,10 @@ $route['zzs/(:any)/(:num)'] = "main/content/zzs/$1/$2";
 $route['cxy'] = "main/content/cxy";
 $route['cxy/(:any)'] = "main/content/cxy/$1";
 $route['cxy/(:any)/(:num)'] = "main/content/cxy/$1/$2";
+
+//markdown
+$route['mdedit'] = "main/content/markdown";
+
 //详情
 $route['detail'] = "main/content/pic"; //没参数时直接跳首页
 $route['detail/(:num)/(:any)'] = "main/content/article_detail/$1/$2";
@@ -134,6 +138,8 @@ $route['admin/nav'] = "admin/admin/nav";
 $route['admin/nav_one'] = "admin/admin/nav_one";
 $route['admin/nav_update'] = "admin/admin/nav_update";
 
+$route['admin/black_text'] = "admin/admin/black_text";
+$route['admin/black_update'] = "admin/admin/black_update";
 $route['error'] = 'main/content/error';
 
 $route['default_controller'] = "main/content/pic";

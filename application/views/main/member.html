@@ -81,7 +81,7 @@
     </script>
 
 <script type="text/javascript">
-    $(function(){
+    $(document).ready(function(){
         ajax_page(0);
     })
     function ajax_page(page){
@@ -98,6 +98,7 @@
                 "type" : type,
                 "page":page
             },
+            async: false,
             type: "POST",
             dataType:'json',
             beforeSend: function() {
@@ -110,6 +111,10 @@
                 }
                 $('.main-left').html('');
                 $("#content-list").tmpl(result.data).appendTo('.main-left');
+
+                $(".peripheral .img").load(function(){
+                    init_play(this);
+                });
             },
             error:function(e){
                 alert_msg('请求失败，请刷新重试');

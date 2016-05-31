@@ -115,14 +115,6 @@ class MY_Model extends CI_Model{
         return $this->db->delete($this->table);
     }
 
-    /*
-     * 得到key，随机取时用
-     */
-    public function GetAllKey($where = '' ,$p , $limit = 10){
-        $limit = empty($limit) ? '' : 'limit '.($p * $limit)." , 100 ";
-        $sql = 'select '.$this->key.' as id from '.$this->table ." $where $limit";
-        return $this->db->query($sql)->result_array();
-    }
 }
 ?>
 

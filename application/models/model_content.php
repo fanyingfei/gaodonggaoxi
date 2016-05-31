@@ -3,7 +3,7 @@
 class model_content extends MY_Model{
 
     private $key = 'con_id';
-    private $table  = 'content';
+    private $table  = 'fyf_content';
 
     function __construct()
     {

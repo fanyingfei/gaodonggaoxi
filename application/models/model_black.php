@@ -3,7 +3,7 @@
 class model_black extends MY_Model{
 
     private $key = 'black_id';
-    private $table  = 'black';
+    private $table  = 'fyf_black';
 
     function __construct()
     {

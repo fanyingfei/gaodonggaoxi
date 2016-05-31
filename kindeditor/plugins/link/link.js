@@ -12,20 +12,22 @@ KindEditor.plugin('link', function(K) {
 	self.plugin.link = {
 		edit : function() {
 			var lang = self.lang(name + '.'),
-				html = '<div style="padding:20px;">' +
+				html = '<div class="ke-dialog-image" style="padding:20px;">' +
 					//url
 					'<div class="ke-dialog-row">' +
-					'<label for="keUrl">' + lang.url + '</label>' +
-					'<input class="ke-input-text" type="text" id="keUrl" name="url" value="" style="width:260px;" /></div>' +
+					'<p for="keUrl">请输入' + lang.url + '</p>' +
+					'<input class="ke-input-text" type="text" id="keUrl" name="url" value="" /></div>' +
 					//type
+                        /*
 					'<div class="ke-dialog-row" style="display: none;;">' +
 					'<label for="keType">' + lang.linkType + '</label>' +
 					'<select id="keType" name="type"></select>' +
 					'</div>' +
+					*/
 					'</div>',
 				dialog = self.createDialog({
 					name : name,
-					width : 450,
+					width : 550,
 					title : self.lang(name),
 					body : html,
 					yesBtn : {

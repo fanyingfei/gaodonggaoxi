@@ -105,14 +105,7 @@ function click_remove_class(thi){
     setTimeout(function(){$(thi).removeClass('disabled');}, 1500);
 }
 
-//定位播放图片按钮
-function show_play_all(){
-    $(".play").each(function(){
-        show_play_one(this);
-    });
-}
-
-function show_play_one(thi){
+function show_play(thi){
     width = $(thi).prev().width();
     height = $(thi).prev().height();
     if(width <=2 || height <= 2){
@@ -175,6 +168,15 @@ function image_is_gif(str){
     return true;
 }
 
+function init_play(thi){
+    $(thi).parents('.section-middle').children('.loading').remove();
+    $(thi).parents('.peripheral').slideDown(200);
+    if($(thi).hasClass('sina-show-gif') &&  !image_is_gif($(thi).attr('src'))){
+        var play_obj = $(thi).parent().children('.play');
+        show_play(play_obj);
+    }
+}
+
 function image_load_event(thi , src_url){
     var img = new Image(); //创建一个Image对象，实现图片的预下载
     img.src = src_url;
@@ -189,10 +191,6 @@ function image_load_event(thi , src_url){
     };
 }
 
-//资源加载完成
-window.onload=function(){
-    show_play_all();
-}
 $(document).keypress(function(e) {
     // 回车键事件
     if(e.which == 13) {
@@ -200,24 +198,20 @@ $(document).keypress(function(e) {
         $(".search .search-btn").trigger('click');
     }
 });
+
+function loading_list(){
+    $(".peripheral img").each(function() {
+        if(this.complete) init_play(this);
+    });
+}
+
 //DOM渲染完成
 $(document).ready(function(){
+    loading_list();
+
     var reply_url = '/reply/record';
 
-   // display();
-    function display(){
-        if($('.login_out').length <= 0){
-            $('.examine').hide();
-        }
-    }
-
-
-    $(".peripheral img").load(function(){
-        if($(this).hasClass('sina-show-gif') && !image_is_gif($(this).attr('src'))){
-            var play_obj = $(this).parent().children('.play');
-            show_play_one(play_obj);
-        }
-    });
+    $(".peripheral img").load(function(){init_play(this);});
 
     //监听图片双击事件
     $(".sina-show").dblclick(function(){
@@ -247,7 +241,7 @@ $(document).ready(function(){
         if(image_is_gif(ori_src)){
             $(this).next('div.play').show();
         }else{
-            show_play_one($(this).next('div.play'));
+            show_play($(this).next('div.play'));
             $(this).next('div.play').text('loading...');
             image_load_event($(this).next('div.play') , src_url);
         }

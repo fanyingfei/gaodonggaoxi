@@ -44,6 +44,10 @@ class content extends MY_Controller  {
         $this->init($p , $s , __FUNCTION__);
     }
 
+    public function markdown(){
+        $this->native_display('main/markdown.html');
+    }
+
     /*
      * 列表
      */
@@ -74,12 +78,8 @@ class content extends MY_Controller  {
         $count = $this->$table_name->GetTotal($where);
         if($sort == 'rand'){
             $page = mt_rand(0 , ceil($count/$limit)-1);
-            $result = $this->$table_name->GetAllKey($where , $page ,$limit);
-            $key_res = array_column($result,'id');
-            $rand_num = 10 > count($key_res) ? count($key_res) : 10;
-            $rand_keys = array_rand($key_res, $rand_num);
-            $where .=' and con_id in ('.implode(',',$rand_keys).')';
-            $list = $this->$table_name->GetAll($where);
+            $list = $this->$table_name->GetAll($where ,'', $page ,$limit);
+            shuffle($list);
             $page = '<div onclick="window.location.href=window.location.href"><a>再随一次</a></div>';
         }else{
             $sort_data = $this->sort_data;
@@ -181,7 +181,7 @@ class content extends MY_Controller  {
         $ip = get_real_ip();
         $where = "where row_id = $id and type = $type and ip = '$ip'";
         $res = $this->model_record->GetRow($where);
-        if($res){
+        if(empty($res)){
             $data = array('type'=>$type ,'row_id'=>$id,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
             $list  = $this->model_record->save($data);
             $this->model_article->UpdateNum($id , 'scan');
@@ -236,7 +236,8 @@ class content extends MY_Controller  {
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
 
-        $data['content'] = $content = trim($_REQUEST['content']);
+        $content = trim($_REQUEST['content']);
+		$data['content'] = str_replace(array('“','”'),'"',$content);
         if(empty($content)) splash('error','请填写内容');
 
         $title = trim(strip_tags($_REQUEST['title']));
@@ -295,7 +296,7 @@ class content extends MY_Controller  {
         if(empty($valid_content)) splash('error','请填写内容');
         $content = strip_tags($content,'<img><a><br>');
         if($res_content = gif_static_gif($content)) $content = $res_content;
-        return $content;
+        return filter_content_br($content);
     }
 
     public function error(){
@@ -331,6 +332,7 @@ class content extends MY_Controller  {
             $menu = $val['desc'];
             $data['type'] = $val['type'];
             $data['is_detail'] = $val['is_detail'];
+            break;
         }
 
         if($flag == 0) header_index();

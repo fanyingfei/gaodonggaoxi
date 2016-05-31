@@ -3174,7 +3174,7 @@ _extend(KCmd, {
 	insertimage : function(url, title, width, height, border, align) {
 		title = _undef(title, '');
 		border = _undef(border, 0);
-		var html = '<p style="text-align: center;"><img style="max-width:96%;" src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		var html = '<p style="text-align: center;"><img src="' + _escape(url) + '" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
 		}
@@ -3198,7 +3198,7 @@ _extend(KCmd, {
 			range.selectNode(a.get());
 			self.select();
 		}
-		var html = '<a href="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		var html = '<a href="' + _escape(url) + '" ';
 		if (type) {
 			html += ' target="' + _escape(type) + '"';
 		}
@@ -3216,7 +3216,7 @@ _extend(KCmd, {
 		}
 		_nativeCommand(doc, 'createlink', '__kindeditor_temp_url__');
 		K('a[href="__kindeditor_temp_url__"]', doc).each(function() {
-			K(this).attr('href', url).attr('data-ke-src', url);
+		//	K(this).attr('href', url).attr('data-ke-src', url);
 			if (type) {
 				K(this).attr('target', type);
 			} else {
@@ -3510,7 +3510,7 @@ function _getInitHtml(themesPath, bodyClass, cssPath, cssData) {
 		'body, p, div {word-wrap: break-word;}',
 		'p {margin:5px 0;}',
 		'table {border-collapse:collapse;}',
-		'img {border:0;}',
+		'img {border:0;max-width:100%;}',
 		'noscript {display:none;}',
 		'table.ke-zeroborder td {border:1px dotted #AAA;}',
 		'img.ke-flash {',

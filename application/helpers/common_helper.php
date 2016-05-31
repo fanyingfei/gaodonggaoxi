@@ -226,7 +226,8 @@ function header_index($url = '/'){
 function filter_content_br($str){
     $str = preg_replace('/(<br\s*\/?>)+$/i','',$str);
     $str = preg_replace('/^(<br\s*\/?>)+/i','',$str);
-    return str_replace('div><br><div','div><div',$str);
+ //   return str_replace('div><br><div','div><div',$str);
+    return $str;
 }
 
 /*
@@ -258,18 +259,18 @@ function gif_static_gif($content , $flag = 0){
         $img_domain = 'http://'.$separate[2];  //域名
         //图片URL不包含本域名
         if(strpos($src_url,$_SERVER['HTTP_HOST']) === false){
-            //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
-            if(strpos($src_url,'.sinaimg.cn') !== false ){
-                $small_url = $img_domain.'/small/'.$img_name;
-            }else{
-                $small_url = '/resources/images/png/gray.png';
-            }
             $original[] = $total_img;
             if(substr($img_name , -4 , 4) == '.gif' && $flag == 0){
+                //新浪域名可能会出现 ttp://ww4.sinaimg.cn 和 http://ww1.sinaimg.cn
+                if(strpos($src_url,'.sinaimg.cn') !== false ){
+                    $small_url = $img_domain.'/small/'.$img_name;
+                }else{
+                    $small_url = '/resources/images/gif/small_gray.gif';
+                }
                 $src = '<div class="peripheral"><img class="sina-show-gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                 $src .= '<div class="play">PLAY</div></div>';
             }else{
-                $src = '<div class="peripheral"><img class="sina-show" src="'.$src_url.'"  ori-data="'.$src_url.'"  /></div>';
+                $src = '<div class="peripheral"><img class="sina-show" src="'.$src_url.'"/></div>';
             }
             $new_img[] = $src;
         }

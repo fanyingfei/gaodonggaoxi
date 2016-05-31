@@ -540,6 +540,9 @@
     text-align: left;
     overflow: hidden;
 }
+.ke-dialog-default{
+    color:#666;
+}
 .ke-menu-item {
     border: 1px solid #F1F1F1;
     background-color: #F1F1F1;
@@ -637,15 +640,14 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     background-clip: padding-box;
     background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
     outline: 0 none;
     overflow:hidden;
     height: auto !important;
     top:20%;
 }
 .ke-wrapper{
-    padding:10px 0 10px 18px;
+    border:1px solid #ccc;
+    margin:10px 20px;
 }
 .ke-dialog .ke-header {
     width: 100%;
@@ -714,8 +716,14 @@
     text-align: left;
     overflow: hidden;
     width: 100%;
+    min-height: 120px;
     height: auto !important;
-    min-height: 150px;
+}
+.ke-input-text:focus{
+    border-color: rgba(79,161,219,0.5);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.025), 0 0 12px -1px #4fa1db;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.025), 0 0 8px -2px #4fa1db;
 }
 .ke-dialog-body textarea {
     display: block;
@@ -757,9 +765,6 @@
     width: 408px;
     height: 260px;
     font-size: 12px;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
 }
 .ke-dialog-body .ke-form {
     margin: 0;
@@ -790,8 +795,8 @@
     text-align: right;
     background-color: #FFF;
 }
-.ke-dialog-no {
-    margin: 5px 10px 5px 5px;
+.ke-dialog-yes {
+    margin: 5px 0px 5px 10px;
 }
 .ke-dialog-mask {
     background-color:#000;
@@ -800,7 +805,6 @@
 }
 span .ke-button-common {
     border: 1px solid transparent;
-    border-radius: 4px;
     cursor: pointer;
     display: inline-block;
     font-size: 14px;
@@ -808,6 +812,10 @@ span .ke-button-common {
     text-align: center;
     vertical-align: middle;
     white-space: nowrap;
+}
+.ke-dialog-no .ke-button-common,
+.ke-dialog-yes .ke-button-common{
+    padding:4px 20px;
 }
 .ke-button-outer {
     padding: 0;
@@ -840,11 +848,10 @@ span .ke-button-common {
     background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
-    border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     color: #555;
-    line-height: 25px;
-    height: 25px;
+    line-height: 30px;
+    height: 30px;
     padding: 2px 4px;
     display: -moz-inline-stack;
     display: inline-block;
@@ -874,6 +881,17 @@ span .ke-button-common {
 .ke-upload-button {
     position: relative;
 }
+.ke-dialog-image{
+    padding-bottom: 0 !important;
+}
+.ke-dialog-image .ke-input-text{
+    width:500px;
+}
+.ke-dialog-image .ke-upload-button{
+    position: absolute;
+    right: 2px;
+    margin-top:-32px;
+}
 .ke-upload-area {
     position: relative;
     overflow: hidden;
@@ -882,18 +900,19 @@ span .ke-button-common {
 }
 .ke-upload-area .ke-upload-file {
     position: absolute;
-    height: 35px;
-    width:65px !important;
     z-index: 811212;
     opacity: 0;
     filter: alpha(opacity=0);
 }
+.ke-dialog-image p{
+    color:#999;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
 /* tabs */
 .ke-tabs {
     border-bottom:1px solid #cfcfcf;
-    padding-left:5px;
-    margin-bottom:20px;
-    margin-top:1px;
+    margin-bottom:10px;
 }
 .ke-tabs-ul  {
     list-style-image:none;
@@ -904,25 +923,28 @@ span .ke-button-common {
 }
 .ke-tabs-li {
     position: relative;
-    border: 1px solid #cfcfcf;
-    background-color: #F0F0EE;
     margin: 0 2px -1px 0;
-    padding: 0 20px;
+    padding: 5px 15px 5px;
     float: left;
     line-height: 25px;
     text-align: center;
-    color: #555555;
+    color: #4fa1db;
     cursor: pointer;
 }
 .ke-tabs-li-selected {
     background-color: #FFF;
+    border: 1px solid #cfcfcf;
     border-bottom: 1px solid #FFF;
-    color: #000;
+    color: #555;
     cursor: default;
 }
-.ke-tabs-li-on {
+.ke-tabs-li:hover {
+    background-color: rgba(0,0,0,0.02);;
+    color: #216da3;
+}
+.ke-tabs-li-selected:hover{
     background-color: #FFF;
-    color: #000;
+    color: #555;
 }
 /* progressbar */
 .ke-progressbar {

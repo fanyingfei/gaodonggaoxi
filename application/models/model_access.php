@@ -3,7 +3,7 @@
 class model_access extends MY_Model{
 
     private $key = 'rec_id';
-    private $table  = 'access';
+    private $table  = 'fyf_access';
 
     function __construct()
     {

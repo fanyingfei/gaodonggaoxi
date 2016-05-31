@@ -37,33 +37,37 @@ KindEditor.plugin('image', function(K) {
 			hiddenElements.push('<input type="hidden" name="' + k + '" value="' + extraParams[k] + '" />');
 		}
 		var html = [
-			'<div style="padding:20px;">',
+			'<div class="ke-dialog-image" style="padding:20px;">',
 			//tabs
 			'<div class="tabs"></div>',
 			//remote image - start
 			'<div class="tab1">',
 			//url
 			'<div class="ke-dialog-row">',
-			'<label for="remoteUrl">' + lang.remoteUrl + '</label>',
-			'<input type="text" id="remoteUrl" class="ke-input-text" name="url" value="" style="width:200px;" /> &nbsp;',
+			'<p for="remoteUrl">' + lang.remoteUrl + '(右键单击图片选择"复制图片网址")</p>',
+			'<input type="text" id="remoteUrl" class="ke-input-text" name="url" value=""/> &nbsp;',
 			'<span class="ke-button-common ke-button-outer">',
 			'<input type="button" class="ke-button-common ke-button" name="viewServer" value="' + lang.viewServer + '" />',
 			'</span>',
 			'</div>',
 			//size
+            /*
 			'<div class="ke-dialog-row">',
 			'<label for="remoteWidth">' + lang.size + '</label>',
 			lang.width + ' <input type="text" id="remoteWidth" class="ke-input-text ke-input-number" name="width" value="" maxlength="4" /> ',
 			lang.height + ' <input type="text" class="ke-input-text ke-input-number" name="height" value="" maxlength="4" /> ',
 			'<img class="ke-refresh-btn" src="' + imgPath + 'refresh.png" width="16" height="16" alt="" style="cursor:pointer;" title="' + lang.resetSize + '" />',
 			'</div>',
+			*/
 			//align
+            /*
 			'<div class="ke-dialog-row">',
 			'<label>' + lang.align + '</label>',
 			'<input type="radio" name="align" class="ke-inline-block" value="" checked="checked" /> <img name="defaultImg" src="' + imgPath + 'align_top.gif" width="23" height="25" alt="" />',
 			' <input type="radio" name="align" class="ke-inline-block" value="left" /> <img name="leftImg" src="' + imgPath + 'align_left.gif" width="23" height="25" alt="" />',
 			' <input type="radio" name="align" class="ke-inline-block" value="right" /> <img name="rightImg" src="' + imgPath + 'align_right.gif" width="23" height="25" alt="" />',
 			'</div>',
+             */
 			//title
 			'<div class="ke-dialog-row">',
 			'<label for="remoteTitle">' + lang.imgTitle + '</label>',
@@ -73,13 +77,12 @@ KindEditor.plugin('image', function(K) {
 			//remote image - end
 			//local upload - start
 			'<div class="tab2" style="display:none;">',
-			'<iframe name="' + target + '" style="display:none;"></iframe>',
 			'<form class="ke-upload-area ke-form" method="post" enctype="multipart/form-data" target="' + target + '" action="' + K.addParam(uploadJson, 'dir=image') + '">',
 			//file
 			'<div class="ke-dialog-row">',
 			hiddenElements.join(''),
-			'<label>' + lang.localUrl + '</label>',
-			'<input type="text" name="localUrl" class="ke-input-text" tabindex="-1" style="width:200px;" readonly="true" /> &nbsp;',
+			'<p>' + lang.localUrl + ',支持格式 .jpg .gif .png .bmp</p>',
+			'<input type="text" name="localUrl" class="ke-input-text" tabindex="-1" readonly="true" /> &nbsp;',
 			'<input type="button" class="ke-upload-button" value="' + lang.upload + '" />',
 			'</div>',
 			'</form>',
@@ -87,7 +90,7 @@ KindEditor.plugin('image', function(K) {
 			//local upload - end
 			'</div>'
 		].join('');
-		var dialogWidth = showLocal || allowFileManager ? 450 : 400,
+		var dialogWidth = showLocal || allowFileManager ? 550 : 400,
 			dialogHeight = showLocal && showRemote ? 300 : 250;
 		var dialog = self.createDialog({
 			name : name,

@@ -54,6 +54,11 @@ $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
 $db['default']['database'] = 'fanfan';
 
+$db['default']['hostname'] = 'rds0h36w61iz9769fq7d.mysql.rds.aliyuncs.com';
+$db['default']['username'] = 'fanfan';
+$db['default']['password'] = 'qweasd13145';
+$db['default']['database'] = 'rvi7d2c463';
+
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

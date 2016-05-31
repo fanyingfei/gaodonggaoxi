@@ -302,7 +302,7 @@ class user extends MY_Controller  {
     }
 
     public function set_user_login($one){
-        $this->model_users->Update(array('last_login'=>date('Y-m-d H:i:s'),'ip'=>get_real_ip()),array('user_id'=>$one['user_id']));
+        $this->model_users->UpdateByKey($one['user_id'],array('last_login'=>date('Y-m-d H:i:s'),'ip'=>get_real_ip()));
         $_SESSION['user_id'] = $one['user_id'];
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];

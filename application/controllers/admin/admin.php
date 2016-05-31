@@ -52,7 +52,10 @@ class admin extends MY_Controller  {
 
     public function content()
 	{
-        $type_list = array(1=>'搞笑',3=>'段子',5=>'妹子');
+        $type_list = array();
+        foreach($this->type_detail as $key=>$v){
+            if(empty($v)) $type_list[$key] = $this->type_name[$key];
+        }
         $this->assign('type_list',$type_list);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/content.html');
@@ -131,7 +134,10 @@ class admin extends MY_Controller  {
 
     public function article()
     {
-        $type_list = array(4=>'渣渣说',6=>'故事' , 7=>'程序猿');
+        $type_list = array();
+        foreach($this->type_detail as $key=>$v){
+            if(!empty($v)) $type_list[$key] = $this->type_name[$key];
+        }
         $this->assign('type_list',$type_list);
         $this->assign('status_list',$this->status_data);
         $this->native_display('admin/article.html');
@@ -307,6 +313,21 @@ class admin extends MY_Controller  {
         splash('error','修改失败,请重试');
     }
 
+    public function black_text(){
+        $black_str = file_get_contents(ROOT_PATH.'tools/black.php');
+        splash('success','',$black_str);
+    }
+
+    public function black_update(){
+        $str = trim($_REQUEST['content']);
+        if(empty($str)) $str = 'localhost,';
+        $res = file_put_contents(ROOT_PATH.'tools/black.php',$str);
+        if(empty($res)){
+            splash('error','保存失败');
+        }else{
+            splash('success','保存成功');
+        }
+    }
 
     public function get_where_param($params){
         if(empty($params)) return '';

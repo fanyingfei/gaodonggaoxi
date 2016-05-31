@@ -3,7 +3,7 @@
 class model_users extends MY_Model{
 
     private $key = 'user_id';
-    private $table  = 'users';
+    private $table  = 'fyf_users';
 
     function __construct()
     {

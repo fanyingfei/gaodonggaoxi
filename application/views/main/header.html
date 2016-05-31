@@ -27,14 +27,15 @@
 </head>
 <body class="{$body}">
 <div class="nav">
-    <div class="nav-container main-width">
+    <div class="nav-container">
         <div class="logo">
-            <img src="/resources/images/png/gao.png" />
+            <a href="/"><img src="/resources/images/png/gao.png" /></a>
         </div>
         <div class="search">
-            <input type="text" id="search" placeholder="搜索" value="{$search}">
+            <input type="text" id="search" placeholder="本栏搜索" value="{$search}">
             <div class="search-btn"></div>
         </div>
+        <div class="nav-edit"><span class="edit-info down"></span></div>
         <div class="nav-user examine">
             {if $is_login == 0}
             <a href="/login">登录</a>

@@ -173,8 +173,13 @@ class member extends MY_Controller  {
 
         $nav_list = $this->get_nav_list();
         $type_name = array_column($nav_list,'name','type');
-        foreach($group_count as &$value){
-            $value['type_name'] = $type_name[$value['type']];
+        $type_view = array_column($nav_list,'is_view','type');
+        foreach($group_count as $key=>&$value){
+            if(!empty($type_view[$value['type']])){
+                $value['type_name'] = $type_name[$value['type']];
+            }else{
+                unset($group_count[$key]);
+            }
         }
 
         $group_num = array();
@@ -229,7 +234,7 @@ class member extends MY_Controller  {
                 $v['year'] = substr($v['create_time'], 0 , 7);
                 $v['day'] = substr($v['create_time'], 8 , 2);
             }
-            $v['avatar'] = $avatar;
+            $v['avatar'] = $avatar['avatar'];
             $v['create_time'] = change_time($v['create_time']);
             $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
         }

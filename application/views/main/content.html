@@ -25,7 +25,10 @@
                     <div class="section-user-name" title="{if $one.user_sn != ''}{$one.u_name}{else}防伪码:{$one.u_name}{/if}">{$one.name}</div>
                     <div class="section-createtime">发布于{$one.create_time}</div>
                 </div>
-                <div class="section-middle">{$one.content}</div>
+                <div class="section-middle">
+                    <div class="main-content">{$one.content}</div>
+                    {if $nav=='pic' || $nav=='meizi'}<img class="loading" src="/resources/images/png/loading.png" />{/if}
+                </div>
                 <div class="section-bottom oo-xx">
                     <span class="response"></span>
                     <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]&nbsp;
@@ -97,6 +100,11 @@
         };
         ajax_res(sub_cfg , this);
     })
-
-</script>
+    </script>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["tsina","qzone","weixin","tqq","tqf","renren","kaixin001","mshare","tieba","douban","sqq","meilishuo","mogujie","huaban","ty","fbook","twi","linkedin"],"bdPic":"","bdStyle":"0","bdSize":"16"},
+            "slide":{"type":"slide","bdImg":"2","bdPos":"left","bdTop":"128.9974365234375"}
+        };
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 {/literal}

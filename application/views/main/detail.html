@@ -3,13 +3,10 @@
         <div class="detail-top">
             <p class="detail-title">{$data.title}</p>
             <p class="detail-info">
-                <span>{$data.create_time}</span>
-                <span>{$data.name}</span>
-                <span class="examine">
-                    <span class="down cursor">评论[{$data.reply}]</span>
-                    <span class="down edit-info"></span>
-                </span>
-                <span>浏览[{$data.scan}]</span>
+                <span class="detail-info-name">{$data.name}</span>
+                <span class="detail-info-time">{$data.create_time}</span>
+                <span class="detail-info-scan">浏览[{$data.scan}]</span>
+                <span class="down examine">评论[{$data.reply}]</span>
             </p>
         </div>
         <div class="detail-middle">{$data.content}</div>
@@ -36,6 +33,6 @@
     window._bd_share_config={
         "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},
         "share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"}};
-        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/resources/js/baidu.share.js'];
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
     {/literal}
 </script>
