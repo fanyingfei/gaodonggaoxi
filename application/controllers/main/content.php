@@ -45,6 +45,8 @@ class content extends MY_Controller  {
     }
 
     public function markdown(){
+        $content = file_get_contents(ROOT_PATH.'tools/markdown.php');
+        $this->assign('content',$content);
         $this->native_display('main/markdown.html');
     }
 

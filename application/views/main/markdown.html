@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="theme">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Markdown 编辑阅读器">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搞东搞西－ markdown编辑阅读器 </title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link href="/resources/css/markdown/base.lib.css" rel="stylesheet" media="screen">
+    <link id="prettify-style" href="/resources/css/markdown/prettify-cmd.css" type="text/css" rel="stylesheet">
+    <link href="/resources/css/markdown/layout.css" rel="stylesheet" media="screen">
+    <link href="/resources/css/markdown/mdeditor.lib.css" rel="stylesheet" media="screen">
+    <style type="text/css" id="customized-font-css"></style>
+    <style type="text/css" id="customized-style-css"></style>
+</head>
+
+<body class="theme">
+<div id="container">
+<div id="editor-column" class="pull-left">
+<div id="wmd-button-bar" class="wmd-button-bar"></div>
+<div id="wmd-panel-editor" class="wmd-panel-editor">
+
+<textarea class="wmd-input theme" id="wmd-input" spellcheck="false" autocomplete="off">
+{$content}
+</textarea>
+
+</div>
+</div>
+<div id="preview-column" class="pull-right">
+    <div id="preview-button-bar" class="preview-button-bar">
+    </div>
+    <!--in page preview buttons. -->
+    <div id="wmd-panel-preview" class="wmd-panel-preview preview-container">
+        <div id="wmd-preview" class="wmd-preview"></div>
+    </div>
+</div>
+</div>
+
+
+<!-- UML diagram, hidden always -->
+<div id="uml-X-x-X-diagram" class="editor-reader-hidden-always"></div>
+
+<div id="wmd-preview-real" class="editor-reader-hidden-always"></div>
+
+
+
+<!-- Hidden Popup Modal -->
+<div id="notification-popup-window" class="modal hide fade theme" tabindex="-1" role="dialog" aria-labelledby="notification-title" aria-hidden="true">
+    <div class="modal-header theme">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="notification-title">通知</h3>
+    </div>
+    <div class="modal-body theme">
+        <p></p>
+    </div>
+    <div class="modal-footer theme">
+        <button id="notification-cancel" class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button id="notification-confirm" class="btn btn-primary">确认</button>
+    </div>
+</div>
+
+<!-- zybuluo's foot -->
+
+<script src="/resources/js/markdown/base.lib.js"></script>
+
+<script>
+    Namespace('com.zybuluo.base');
+    com.zybuluo.base.initData = {
+        globalPromptUrl: ""
+    };
+</script>
+
+
+<!--mathjax-->
+<!--blacker: 1 below means font weight.-->
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]], processEscapes: true }, TeX: { equationNumbers: { autoNumber: "AMS" } }, messageStyle: "none", SVG: { blacker: 1 }});
+    </script>
+<script src="/resources/js/markdown/mathjax.lib.js"></script>
+<!--mathjax source code is here: https://github.com/mathjax/MathJax.-->
+<script src="/resources/js/markdown/mathjax.js"></script>
+
+<script>
+    Namespace('com.zybuluo.mdeditor.layout');
+    com.zybuluo.mdeditor.layout.initData = {
+        loggedInUsername: '',
+        isPageOwner: 'True' === 'True' ? true : false,
+        loginComeFromUrl: '',
+        noteRemarksUrl: '',
+        newNoteRemarkUrl: '',
+        updateNoteRemarkUrl: '',
+        deleteNoteRemarkUrl: '',
+        publishNoteRemarkUrl: '',
+        newNoteRemarkReplyUrl: '',
+        updateNoteRemarkReplyUrl: '',
+        deleteNoteRemarkReplyUrl: ''
+    };
+
+</script>
+
+<script src="/resources/js/markdown/layout.lib.js"></script>
+<script src="/resources/js/markdown/layout.js"></script>
+<script src="/resources/js/markdown/mdeditor.lib.js"></script>
+<script src="/resources/js/markdown/diagram.js"></script><!-- can't be in beginmin/endmin block, otherwise error. -->
+
+<script>
+    Namespace('com.zybuluo.mdeditor');
+    com.zybuluo.mdeditor.initData = {
+        loginComeFromUrl: '',
+        markdownHelpUrl: "",
+        updateUserNoteUrl: "",
+        newUserNoteUrl: "",
+        deleteUserNoteUrl: "",
+        publishUserNoteUrl: "",
+        removePasswordUserNoteUrl: "",
+        downloadPdfUrl: "",
+        mdeditorNoteInfoUrl: "",
+        mdeditorNoteSyncUrl: "",
+        userNoteUrl: "",
+        noteRevisionsUrl: "",
+        noteRevisionUrl: "",
+        noteRevisionSaveUrl: "",
+        loginUserUrl: "",
+        userTierUrl: "",
+        uptokenUrl: "",
+        userfileAuthUrl: "",
+        userfileTrackUrl: "",
+        thirdPartyAccountUrl: "",
+        thirdPartyAccountExportUrl: "",
+        paymentUrl: "",
+        cmdDesktopVersionUrl: "",
+        staticAssetsUrl: "",
+        staticImgUrl: "https://www.zybuluo.com/static/img/"
+    };
+</script>
+
+<script src="/resources/js/markdown/mdeditor.js"></script>
+
+
+
+</body>
+</html>
