@@ -7,6 +7,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+nav.php
+black.php
+markdown.html
 application/config/database.php
 .idea/
 *.iml

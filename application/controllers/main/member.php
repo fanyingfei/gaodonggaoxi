@@ -144,12 +144,19 @@ class member extends MY_Controller  {
     }
 
     /*
+     * 我的主页
+     */
+    public function homepage(){
+        if(!is_login()) header_index('login');
+        $this->member_index('88888888'.$_SESSION['user_id']);
+    }
+
+    /*
       * 查看某用户发表的全部内容
       */
     public function member_index($user_sn){
         $user_id = substr($user_sn , 8 );
-        $user_time = substr($user_sn , 0 , 8);
-        if(empty($user_sn) || empty($user_id)){
+        if(empty($user_sn)){
             parent :: error_msg('该用户不存在');
         }
 
@@ -157,14 +164,12 @@ class member extends MY_Controller  {
         $this->load->model('model_content');
         $where = 'where user_id = '.$user_id;
         $user_info = $this->model_users->GetRow($where);
+
+        if(empty($user_info)) parent :: error_msg('该用户不存在');
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
         $user_info['sex'] = $this->sex_data[$user_info['sex']];
         $user_info['age'] = empty($user_info['year']) ? '未知' : date('Y') - $user_info['year'];
         if(empty($user_info['avatar'])) $user_info['avatar'] = '/resources/images/login/logo.jpg';
-        if(empty($user_info)) parent :: error_msg('该用户不存在');
-        if(date('Ymd',strtotime($user_info['create_time'])) != $user_time){
-            parent :: error_msg('该用户不存在');
-        }
 
         $count = 0;
         $where = 'where status = 1 and user_id = '.$user_id;

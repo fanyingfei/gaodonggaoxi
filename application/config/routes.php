@@ -101,12 +101,13 @@ $route['user/validate/(:any)'] = "main/user/user_validate/$1";
 
 $route['user/nick/save'] = "main/user/nick_save";
 //用户中心
-$route['user/info'] = "main/member/user_info";
-$route['user/avatar'] = "main/member/user_avatar";
-$route['user/pass'] = "main/member/user_pass";
-$route['user/save'] = "main/member/info_save";
-$route['user/avatar/save'] = "main/member/avatar_save";
-$route['user/pass/save'] = "main/member/pass_save";
+$route['member'] = "main/member/homepage";
+$route['member/info'] = "main/member/user_info";
+$route['member/avatar'] = "main/member/user_avatar";
+$route['member/pass'] = "main/member/user_pass";
+$route['member/save'] = "main/member/info_save";
+$route['member/avatar/save'] = "main/member/avatar_save";
+$route['member/pass/save'] = "main/member/pass_save";
 
 //admin后台
 $route['admin'] = "admin/admin/index";

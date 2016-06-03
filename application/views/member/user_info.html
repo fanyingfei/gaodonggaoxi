@@ -6,15 +6,12 @@
                 {/if}
                 <div class="name-email">
                     <p class="u-name">{$user.name}</p>
-                    <p class="u-email">{$user.email}</p>
                 </div>
-                <div class="my-sub">
-                    {if $user.content_count > 0}
-                        <a href="/member/{$user.user_sn}">我的发布 [{$user.content_count}]</a>
-                    {else}
-                        <a href="javascript:;">我的发布 [{$user.content_count}]</a>
-                    {/if}
-                </div>
+            </div>
+            <div class="div-wrapper">
+                <label class="label">邮箱</label>
+                <span class="separate"></span>
+                <input name="mobile" id="eamil" type="text" maxlength="16" value="{$user.email}">
             </div>
             <div class="div-wrapper">
                 <label class="label">手机</label>
@@ -65,7 +62,7 @@
 <script src="/resources/js/common.js"></script>
 <script>
     var sub_cfg = {};
-    sub_cfg.requestUrl = '/user/save';
+    sub_cfg.requestUrl = '/member/save';
     sub_cfg.success = function(result){
         alert_msg('保存成功','success');
     };

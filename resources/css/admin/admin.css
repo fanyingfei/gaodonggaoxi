@@ -97,3 +97,7 @@ ul, ol {
     text-align: left;
     width: 1200px;
 }
+.logout{
+    float:right;
+    margin-right:100px;
+}

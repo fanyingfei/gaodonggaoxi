@@ -644,6 +644,7 @@
     overflow:hidden;
     height: auto !important;
     top:20%;
+    border-radius: 3px;
 }
 .ke-wrapper{
     border:1px solid #ccc;
@@ -801,7 +802,7 @@
 .ke-dialog-mask {
     background-color:#000;
     filter:alpha(opacity=40);
-    opacity:0.4;
+    opacity:0.8;
 }
 span .ke-button-common {
     border: 1px solid transparent;

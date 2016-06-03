@@ -41,11 +41,12 @@
             <a href="/login">登录</a>
             <a href="/register">注册</a>
             {else}
-            <a  class="user-icon" href="/user/info">{$name}</a>
+            <a  class="user-icon" href="/member">{$name}</a>
             <div class="u-dropdown">
-                <a href="/user/info">个人中心</a>
-                <a href="/login/login_out">退出</a>
-                {if $is_admin == 1}<a href="/admin">后台</a>{/if}
+                <a href="/member">我的主页</a>
+                <a href="/member/info">个人中心</a>
+                <a href="/login/login_out">退出登录</a>
+                {if $is_admin == 1}<a href="/admin">管理后台</a>{/if}
             </div>
             {/if}
         </div>
