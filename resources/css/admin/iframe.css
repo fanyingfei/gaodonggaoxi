@@ -67,3 +67,32 @@ body,td,td,div,input,select button{
     float:left;
     width:480px;
 }
+.priv_no{
+    display: block;
+    margin-left:10px;
+}
+.user-premission{
+    padding:2px 8px;
+}
+.priv_wrapper{
+    padding:0 20px;
+}
+.priv_wrapper p{
+    margin:0;
+}
+.priv_wrapper span{
+    font-size: 13px;
+    margin-left:5px;
+}
+.checkbox-item{
+    float:left;
+    width:33%;
+}
+.priv_wrapper input,.priv_wrapper span{
+    display:block;
+    float:left;
+    color:#4c4c4c;
+}
+.priv_left{
+    width:100px;
+}

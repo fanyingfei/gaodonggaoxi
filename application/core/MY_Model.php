@@ -38,8 +38,8 @@ class MY_Model extends CI_Model{
     /*
      * 得到单条记录
      */
-    public function GetRow($where = ''){
-        $sql = 'select * from ' .$this->table ." $where";
+    public function GetRow($where = '' , $col = '*'){
+        $sql = "select $col from " .$this->table ." $where";
         return $this->db->query($sql)->first_row('array');
     }
 

@@ -124,6 +124,8 @@ $route['admin/article'] = "admin/admin/article";
 $route['admin/user'] = "admin/admin/user";
 $route['admin/user_add_admin'] = "admin/admin/user_add_admin";
 $route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
+$route['admin/user_permission'] = "admin/admin/user_permission";
+$route['admin/user_priv_update'] = "admin/admin/user_priv_update";
 
 $route['admin/black'] = "admin/admin/black";
 

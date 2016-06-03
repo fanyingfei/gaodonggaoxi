@@ -44,6 +44,7 @@ class admin extends MY_Controller  {
         $this->load->model('model_access');
         $this->load->model('model_record');
         $this->load->model('model_nav');
+        $this->load->model('model_permission');
     }
 
     public function index(){
@@ -99,6 +100,7 @@ class admin extends MY_Controller  {
     }
 
     public function delete($name){
+        $this->check_permission($name.'_delete');
         $table_name = 'model_'.$name;
         $ids = explode(',',$_REQUEST['ids']);
         $res = $this->$table_name->delete($ids);
@@ -110,6 +112,7 @@ class admin extends MY_Controller  {
     }
 
     public function pass($name){
+        $this->check_permission($name.'_pass');
         $table_name = 'model_'.$name;
         $ids = trim($_REQUEST['ids']);
         $where = 'where con_id in ('.$ids.')';
@@ -122,6 +125,7 @@ class admin extends MY_Controller  {
     }
 
     public function fail($name){
+        $this->check_permission($name.'_fail');
         $table_name = 'model_'.$name;
         $ids = $_REQUEST['ids'];
         $where = 'where con_id in ('.$ids.')';
@@ -161,7 +165,6 @@ class admin extends MY_Controller  {
 
     public function users_list($list){
         foreach($list as &$v){
-            $v['is_admin'] = empty($v['is_admin']) ? '否' : '是';
             if(empty($v['sex'])) $v['sex'] = 'U';
             $v['sex'] = $this->sex_data[$v['sex']];
             $v['is_validate'] = '否';
@@ -171,12 +174,20 @@ class admin extends MY_Controller  {
             $v['year'] = empty($v['year']) ?  '' : date('Y') - $v['year'];
             $v['avatar'] = empty($v['avatar']) ? '' : "<img src='".$v['avatar']."' />";
             $v['last_login'] = empty($v['last_login']) ? '' : change_time($v['last_login']);
+            if(empty($v['is_admin'])){
+                $v['is_admin'] = '否';
+                $v['op'] = '<span class="priv_no">无</span>';
+            }else{
+                $v['is_admin'] = '是';
+                $v['op'] = '<button data-target="#myModal" data-toggle="modal" class="btn user-premission" data-id="'.$v['user_id'].'">权限</button>';
+            }
         }
         return $list;
     }
 
 
     public function user_add_admin(){
+        $this->check_permission('user_add_admin');
         $ids = trim($_REQUEST['ids']);
         $where = "where user_id in ($ids)";
         $res = $this->model_users->UpdateBySql($where , 'is_admin', 1);
@@ -188,6 +199,7 @@ class admin extends MY_Controller  {
     }
 
     public function user_remove_admin(){
+        $this->check_permission('user_remove_admin');
         $ids = trim($_REQUEST['ids']);
         $where = "where user_id in ($ids)";
         $res = $this->model_users->UpdateBySql($where , 'is_admin', 0);
@@ -196,6 +208,37 @@ class admin extends MY_Controller  {
         }else{
             splash('error','移除管理员失败,请重试');
         }
+    }
+
+    public function user_permission(){
+        $user_id = intval($_REQUEST['user_id']);
+        if(empty($user_id)) splash('error','参数有误');
+        $user_res = $this->model_users->GetRow("where user_id = $user_id",'permission');
+        if(empty($user_res)) splash('error','没有记录');
+        $permission = explode(',',$user_res['permission']);
+
+        $data = array();
+        $per_list = $this->model_permission->GetAll();
+        foreach($per_list as $v){
+            $v['check'] = 0;
+            if(in_array($v['value'],$permission)) $v['check'] = 1;
+            $data[$v['cat']][] = $v;
+        }
+        splash('success','',array('user_id'=>$user_id,'list'=>$data));
+    }
+
+    public function user_priv_update(){
+        $this->check_permission('user_permission');
+        $user_id = intval($_REQUEST['user_id']);
+        if(empty($user_id)) splash('error','参数有误');
+        $priv_str = trim($_REQUEST['str']);
+
+        $res = $this->model_users->UpdateByKey($user_id,array('permission'=>$priv_str));
+        if($res){
+            $_SESSION['permission'] = $priv_str;
+            splash('error','修改成功');
+        }
+        else splash('error','修改失败');
     }
 
     public function black()
@@ -222,6 +265,7 @@ class admin extends MY_Controller  {
     }
 
     public function reply_delete(){
+        $this->check_permission('reply_delete');
         $ids = trim($_REQUEST['ids']);
         $where = 'where rep_id in ('.$ids.')';
         $data = $this->model_reply->GetAll($where);
@@ -301,6 +345,7 @@ class admin extends MY_Controller  {
     }
 
     public function nav_update(){
+        $this->check_permission('nav_edit');
         $nav_id = intval($_REQUEST['nav_id']);
         if(empty($nav_id)) splash('error','参数有误');
         $data['sort'] = empty($_REQUEST['sort']) ? 0 : intval($_REQUEST['sort']);
@@ -321,6 +366,7 @@ class admin extends MY_Controller  {
     }
 
     public function black_update(){
+        $this->check_permission('black_edit');
         $str = trim($_REQUEST['content']);
         if(empty($str)) $str = 'localhost,';
         $res = file_put_contents(ROOT_PATH.'tools/black.php',$str);
@@ -338,6 +384,7 @@ class admin extends MY_Controller  {
         foreach($params as $key=>$v){
             if(!in_array($key , $column)) continue;
             if($key == 'status' && $v < 0) continue;
+            if($key == 'type' && $v < -10) continue;
             $str .= ' and '.$key.' = "'.$v.'"';
         }
         if(!empty($str)) return ' where 1 '.$str;
@@ -351,6 +398,12 @@ class admin extends MY_Controller  {
             $url = get_detail_url($v['con_id'],$v['create_time']);
         }
         return '<a target="_blank" href="'.$url.'">'.$v['con_id'].'</a>';
+    }
+
+    public function check_permission($priv_str){
+        if($_SESSION['user_id'] == 1) return true;
+        $user_priv = empty($_SESSION['permission']) ? '' : $_SESSION['permission'];
+        if (strpos( ','.$user_priv.',' , ','.$priv_str.',') === false) splash('error','没有权限做此操作');
     }
 }
 

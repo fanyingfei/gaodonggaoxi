@@ -193,7 +193,7 @@ class user extends MY_Controller  {
         session_destroy();
         cookie_expire('is_login');
         $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
-        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
+        if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register') || strpos($url,'admin')) $url = '/';
         header_index($url);
     }
 
@@ -307,6 +307,7 @@ class user extends MY_Controller  {
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];
         $_SESSION['is_admin'] = empty($one['is_admin']) ? 0 : $one['is_admin'];
+        $_SESSION['permission'] = empty($one['permission']) ? '' : $one['permission'];
         if(!empty( $one['avatar'])) $_SESSION['avatar'] = $one['avatar'];
 
         my_set_cookie('is_login',1);

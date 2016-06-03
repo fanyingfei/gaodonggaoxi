@@ -18,6 +18,7 @@ function ajax_res(obj , thi){
         },
         error:function (){
             alert_msg('提交失败,请刷新重试');
+            return false;
         }
     })
     click_remove_class(thi);

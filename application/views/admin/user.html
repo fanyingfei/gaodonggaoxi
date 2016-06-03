@@ -27,20 +27,144 @@
             <th data-field="year">年龄</th>
             <th data-field="mobile">手机</th>
             <th data-field="qq">QQ</th>
-            <th data-field="sina">新浪</th>
             <th data-field="weixin">微信</th>
             <th data-sortable="true" data-field="is_admin">admin</th>
             <th data-sortable="true" data-field="ip">ip</th>
             <th data-sortable="true" data-field="create_time">注册时间</th>
-            <th data-sortable="true" data-field="is_validate">是否有效</th>
             <th data-sortable="true" data-field="last_login">上次登陆</th>
+            <th data-field="op">权限</th>
         </tr>
         </thead>
     </table>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">权限管理</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary btn-submit" data-dismiss="modal">提交更改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
+
 </div>
 {literal}
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/admin/admin.js"></script>
 <script src="/resources/js/admin/bootstrap.min.js"></script>
 <script src="/resources/js/admin/bootstrap-table.js"></script>
+<script>
+    $("body").on("click", '.user-premission', function(){
+        var user_id = $(this).attr('data-id');
+        var cfg = {};
+        cfg.requestUrl = '/admin/user_permission';
+        cfg.success = function(result){
+            var html = '<div class="priv_wrapper"><table class="table table-bordered">';
+            html += '<tr><th align="center" colspan="2"><p><input class="btSelectAll" type="checkbox"><span>全选</span><span>&nbsp;&nbsp;</span>';
+            html += '<input class="btSelectOver" type="checkbox"><span>反选</span></p></th></tr>';
+            $.each(result.list, function(key, item){
+                html+= '<tr><td class="priv_left"><p><input  class="btSelectGroup"  value="'+ key+'" type="checkbox"><span>'+ key+'</span></p></td><td>';
+                $.each(item, function(k, v){
+                    html+= '<div class="checkbox-item">';
+                    if(v.check){
+                        html += '<input checked class="btSelectItem"  value="'+ v.value+'" type="checkbox">';
+                    }else{
+                        html += '<input  class="btSelectItem"  value="'+ v.value+'" type="checkbox">';
+                    }
+                    html+= '<span>'+ v.name+'</span></div>';
+                })
+                html += '</td></tr>';
+             })
+            html += '</table></div><input type="hidden" id="user_id" value="'+result.user_id+'" />';
+            $('#myModal .modal-body').html(html);
+        };
+        cfg.data = {"user_id":user_id};
+        admin_ajax_res(cfg);
+    })
+
+    $("body").on("click", '.btn-submit', function(){
+        var user_id = $('#user_id').val();
+        var str = '';
+        $('.checkbox-item input[type=checkbox]').each(function(){
+            if($(this).is(':checked')){
+                str += $(this).val()+',';
+            }
+        });
+        var cfg = {};
+        cfg.requestUrl = '/admin/user_priv_update';
+        cfg.success = function(result){
+            alert('修改成功');
+        };
+        cfg.data = {"user_id":user_id,'str':str};
+        admin_ajax_res(cfg);
+    })
+
+    $("body").on("click", '.btSelectItem', function(){
+        if($(this).is(':checked')){
+            $(this).attr("checked",true);
+        }else{
+                $(this).attr("checked",false);
+        }
+        if($(this).parents('td').find('input[type=checkbox]').length == $(this).parents('td').find('input[type=checkbox]:checked').length ){
+            $(this).parents('tr').children('td').eq(0).find('input[type=checkbox]').attr("checked",true);
+        }else{
+            $(this).parents('tr').children('td').eq(0).find('input[type=checkbox]').attr("checked",false);
+        }
+        $('.btSelectOver').attr("checked",false);
+        is_all_select();
+    })
+
+    $("body").on("click", '.btSelectGroup', function(){
+        if($(this).is(':checked')){
+            $(this).parents('tr').children('td').eq(1).find('input[type=checkbox]').attr("checked",true);
+        }else{
+            $(this).parents('tr').children('td').eq(1).find('input[type=checkbox]').attr("checked",false);
+        }
+        $('.btSelectOver').attr("checked",false);
+        is_all_select();
+    })
+
+    $("body").on("click", '.btSelectAll', function(){
+        if($(this).is(':checked')){
+            $('.priv_wrapper td input[type=checkbox]').attr("checked",true);
+        }else{
+            $('.priv_wrapper td input[type=checkbox]').attr("checked",false);
+        }
+        $('.btSelectOver').attr("checked",false);
+    })
+
+    $("body").on("click", '.btSelectOver', function(){
+        $('.priv_wrapper td input[type=checkbox]').each(function(){
+            if($(this).is(':checked')){
+                $(this).attr("checked",false);
+            }else{
+                $(this).attr("checked",true);
+            }
+        });
+        is_all_select();
+    })
+
+    function is_all_select(){
+        var total = $('.priv_wrapper td input[type=checkbox]').length;
+        var check = $('.priv_wrapper td input[type=checkbox]:checked').length;
+        if(total == check){
+            $('.btSelectAll').attr("checked",true);
+        }else{
+            $('.btSelectAll').attr("checked",false);
+        }
+    }
+</script>
 {/literal}
