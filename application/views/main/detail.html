@@ -1,4 +1,7 @@
-<div class="main main-width">
+<link rel="stylesheet" href="/resources/css/markdown/base.lib.css">
+<link rel="stylesheet" href="/resources/css/markdown/prettify-cmd.css">
+<link rel="stylesheet" href="/resources/css/markdown/layout.css">
+<div class="main main-width main-detail">
     <div class="main-left main-left-width">
         <div class="detail-top">
             <p class="detail-title">{$data.title}</p>
@@ -9,7 +12,7 @@
                 <span class="down examine">评论[{$data.reply}]</span>
             </p>
         </div>
-        <div class="detail-middle">{$data.content}</div>
+        <div class="detail-middle wmd-preview">{$data.content}</div>
         <div class="bdsharebuttonbox share">
             <span>分享到：</span>
             <a href="#" class="bds_qzone share-qzone" data-cmd="qzone" title="分享到QQ空间"></a>

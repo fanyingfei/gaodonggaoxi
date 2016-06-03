@@ -39,6 +39,9 @@ body,
 .login-third{
     display: none;
 }
+.a-markdown{
+    color:#0077bb;
+}
 /*通用结束*/
 
 /*header*/
@@ -149,7 +152,7 @@ body,
 .nav-user a:hover{
     color:#333;
 }
-.dropdown{
+.u-dropdown{
     background: #fff;
     color: #333;
     border: 1px solid #ccc;
@@ -162,14 +165,14 @@ body,
     right: 0;
     width:88px;
 }
-.nav-user:hover .dropdown{
+.nav-user:hover .u-dropdown{
     display: block;
 }
-.dropdown a{
+.u-dropdown a{
     display: block;
     padding:5px 20px;
 }
-.dropdown a:hover{
+.u-dropdown a:hover{
     background-color: #f2f2f5;
 }
 .subnav-wrapper{
@@ -584,19 +587,18 @@ body,
     display: block;
 }
 .detail-title{
-    font-weight: bold;
-    font-size: 20px;
-    color:#d32;
+    font-size: 24px;
+    color:#0077bb;
     padding:10px 0;
 }
 .detail-middle{
-    padding:20px 0;
-    line-height: 32px;
-    word-wrap: break-word;
-    word-break: normal;
-    overflow: hidden;
+    padding:20px 0 !important;
+    line-height: 32px !important;
+    word-wrap: break-word !important;
+    word-break: normal !important;
+    overflow: hidden !important;
     color:#333;
-    font-size: 15px;
+    font-size: 14px !important;
 }
 .detail-middle img{
     max-width: 100%;
@@ -974,15 +976,24 @@ body,
     cursor: pointer;
 }
 .oo{
+    background-image: url('/resources/images/png/up-h.png');
+}
+.oo:hover{
     background-image: url('/resources/images/png/up.png');
 }
 .xx{
-    background-image: url('/resources/images/png/down.png');
+    background-image: url('/resources/images/png/down-h.png');
     background-position: center 8px;
 }
+.xx:hover{
+    background-image: url('/resources/images/png/down.png');
+}
 .reply{
-    background-image: url('/resources/images/png/msg.png');
+    background-image: url('/resources/images/png/msg-h.png');
     background-position: center 8px;
+}
+.reply:hover{
+    background-image: url('/resources/images/png/msg.png');
 }
 .oo:hover , .xx:hover ,.reply:hover{
     background-size:20px 20px;

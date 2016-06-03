@@ -45,8 +45,18 @@ class content extends MY_Controller  {
     }
 
     public function markdown(){
+        $type = 0;
+        $nav_list = array();
+        $refer_url = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
+        $nav_res = $this->get_nav_list();
+        foreach($nav_res['view'] as $v){
+            if(strpos($refer_url,$v['alias']) !== false) $type = $v['type'];
+            if(!empty($v['is_detail']) && $v['alias'] != 'zzs') $nav_list[] = $v;
+        }
         $content = file_get_contents(ROOT_PATH.'tools/markdown.php');
         $this->assign('content',$content);
+        $this->assign('list',$nav_list);
+        $this->assign('type',$type);
         $this->native_display('main/markdown.html');
     }
 
@@ -61,18 +71,16 @@ class content extends MY_Controller  {
         $sort = $param['sort'];
         $search = $param['search'];
         $is_detail = $param['is_detail'];
+        $html_name = $param['table_name'].'.html';
+        $table_name = 'model_'.$param['table_name'];
 
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$type;
 
 
         if(empty($is_detail)){
-            $html_name = 'content.html';
-            $table_name = 'model_content';
             if(!empty($search)) $where .= " and (name like '%$search%' or content like '%$search%') ";
         }else{
-            $html_name = 'article.html';
-            $table_name = 'model_article';
             if(!empty($search)) $where .= " and (name like '%$search%'  or title like '%$search%'  or tags like '%$search%') ";
         }
 
@@ -239,6 +247,9 @@ class content extends MY_Controller  {
         if(empty($data['tags'])) splash('error','请添加标签');
 
         $content = trim($_REQUEST['content']);
+        if(!empty($_REQUEST['markdown'])){
+            $content = str_replace('<div class="md-section-divider"></div>','',$content);
+        }
 		$data['content'] = str_replace(array('“','”'),'"',$content);
         if(empty($content)) splash('error','请填写内容');
 
@@ -266,6 +277,7 @@ class content extends MY_Controller  {
         $data['create_time'] = date('Y-m-d H:i:s');
         $data['ip'] = get_real_ip();
         if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
+        if(empty($data['type'])) $data['status'] = 0;
         $res  = $this->model_article->Save($data);
         if($res){
             splash('success','提交成功，审核后自动发布');
@@ -318,7 +330,8 @@ class content extends MY_Controller  {
         }
         $cur_sort = empty($data['sort']) ? 'new' : $data['sort'];
 
-        $nav_list = $this->get_nav_list();
+        $nav_res = $this->get_nav_list();
+        $nav_list = $nav_res['view'];
         foreach($nav_list as $val){
             if($nav != $val['alias']) continue;
             $flag = 1;
@@ -334,6 +347,7 @@ class content extends MY_Controller  {
             $menu = $val['desc'];
             $data['type'] = $val['type'];
             $data['is_detail'] = $val['is_detail'];
+            $data['table_name'] = $val['table_name'];
             break;
         }
 
@@ -349,8 +363,8 @@ class content extends MY_Controller  {
         $this->assign('tags',$tags);
         $this->assign('body',$body);
         $this->assign('menu',$menu);
-        $this->assign('cur_sort', $cur_sort);
         $this->assign('type',$data['type']);
+        $this->assign('cur_sort', $cur_sort);
         $this->assign('keywords',$keywords);
         $this->assign('search',$data['search']);
         $this->assign('sort', $this->sort_data);

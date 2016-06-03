@@ -50,7 +50,7 @@ Namespace("com.zybuluo.mdeditor.common"),
                                         Array.prototype.forEach.call(b.types,
                                             function(a, f) {
                                                 var g;
-                                                if (!e) return a.match(c.matchType) || b.items[f].type.match(c.matchType) ? (g = b.items[f].getAsFile(), c.callback.call(d, g), e = !0) : void 0
+                                            //    if (!e) return a.match(c.matchType) || b.items[f].type.match(c.matchType) ? (g = b.items[f].getAsFile(), c.callback.call(d, g), e = !0) : void 0
                                             })
                                 })
                     })

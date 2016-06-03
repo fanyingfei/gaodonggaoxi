@@ -49,6 +49,7 @@ class member extends MY_Controller  {
         for($i = 1960 ; $i < $max_age ; $i++){
             $age[$i] = $i;
         }
+
         $this->assign('user',$user);
         $this->assign('sex',$sex);
         $this->assign('age',$age);
@@ -171,12 +172,11 @@ class member extends MY_Controller  {
         $group_content_count = $this->model_content->GetCountGroupBy($where , 'type');
         $group_count = array_merge($group_content_count,$group_article_count);
 
-        $nav_list = $this->get_nav_list();
-        $type_name = array_column($nav_list,'name','type');
-        $type_view = array_column($nav_list,'is_view','type');
+        $nav_res = $this->get_nav_list();
+        $nav_list = $nav_res['type'];
         foreach($group_count as $key=>&$value){
-            if(!empty($type_view[$value['type']])){
-                $value['type_name'] = $type_name[$value['type']];
+            if(!empty($nav_list[$value['type']]['is_view'])){
+                $value['type_name'] = $nav_list[$value['type']]['name'];
             }else{
                 unset($group_count[$key]);
             }

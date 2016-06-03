@@ -17,8 +17,6 @@
     display: none
 }
 
-body {
-}
 
 .theme-black {
     background-color: #444;
@@ -41,7 +39,7 @@ body {
 hr {
     border: 0;
     border-bottom: 1px dashed #cfcfcf;
-    margin: 30px 0
+    margin: 10px 0
 }
 
 .footnote {
@@ -127,7 +125,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .wmd-preview>p,.wmd-preview>pre,.wmd-preview>blockquote {
-    margin: 0 0 20px
+    margin: 0 0 10px
 }
 
 .wmd-preview blockquote {
@@ -183,26 +181,26 @@ pre {
 }
 
 h1 {
-    margin: 20px 0 20px;
-    font-size: 30px
+    margin: 10px 0 10px;
+    font-size: 24px
 }
 
 h2 {
     margin: 35px 0 20px;
-    font-size: 26px
-}
-
-h3 {
-    margin: 20px 0;
     font-size: 21px
 }
 
-h4 {
+h3 {
+    margin: 10px 0;
     font-size: 18px
 }
 
+h4 {
+    font-size: 15px
+}
+
 h5,h6 {
-    font-size: 16px
+    font-size: 15px
 }
 
 .wmd-preview code,.wmd-preview pre {
@@ -480,15 +478,11 @@ ul.dropdown-menu#signup-login-intro {
 #file-list {
     width: 500px;
     margin-top: 50px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
     overflow-y: auto
 }
 
 #file-list-topbar {
-    width: 500px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0
+
 }
 
 #file-list-topbar #search-file-bar {
@@ -572,6 +566,21 @@ ul.dropdown-menu #search-file-textbox {
     border: 0;
     font-size: 16px;
     width: 300px
+}
+#type-list{
+    width:190px;
+    background-color: #444;
+    color: #bbb;
+}
+#file-list-topbar li{
+    margin-top: 5px;
+}
+ul.dropdown-menu .my-input{
+    background-color: #444;
+    color: #bbb;
+    font-size: 16px;
+    width: 240px;
+    border: 1px solid #888;
 }
 
 ul.dropdown-menu.theme-black li>a {
@@ -860,7 +869,6 @@ ul.dropdown-menu li i[class*=icon] {
 }
 
 .wmd-spacer {
-    width: 0;
     height: 20px;
     margin-left: 30px;
     display: inline-block;
@@ -897,7 +905,6 @@ ul.dropdown-menu li i[class*=icon] {
 }
 
 .wmd-button,.preview-button,.in-page-button {
-    width: 20px;
     height: 20px;
     display: inline-block;
     list-style: none;
@@ -926,9 +933,11 @@ ul.dropdown-menu li i[class*=icon] {
 }
 
 .wmd-button>span,.preview-button>span,.in-page-button>span {
-    width: 20px;
     height: 20px;
     display: inline-block
+}
+#preview-publish-btn button{
+    font-size: 17px;
 }
 
 .preview-link button {
@@ -1506,4 +1515,7 @@ button:focus {
 .medium-editor-toolbar li .medium-editor-button-last {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px
+}
+.display{
+    display: none;
 }

@@ -29,7 +29,8 @@ class admin extends MY_Controller  {
             echo  'you have no permission to do this. ';
             exit;
         }
-        $nav_list = $this->get_nav_list(1);
+        $nav_res = $this->get_nav_list();
+        $nav_list = $nav_res['type'];
         $type_name = array_column($nav_list,'name','type');
         $type_name[-1] = '浏览';
         $type_name[0]  = '评论';
@@ -309,6 +310,7 @@ class admin extends MY_Controller  {
         $data['keywords'] = empty($_REQUEST['keywords']) ? '' : trim($_REQUEST['keywords']);
         $data['description'] = empty($_REQUEST['description']) ? '' : trim($_REQUEST['description']);
         $res  = $this->model_nav->UpdateByKey($nav_id,$data);
+        @file_put_contents(NAV_FILE , '');
         if($res) splash('success','修改成功');
         splash('error','修改失败,请重试');
     }

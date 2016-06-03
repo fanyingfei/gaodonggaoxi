@@ -474,7 +474,8 @@ $(document).ready(function(){
                 alert_msg(result.msg , 'success');
                 if($('.detail-reply').length > 0){
                     //详情页的评论
-                    get_detail_reply_list();
+                    $('.detail-reply .reply-wrapper').remove();
+                    $(".reply").trigger("click");
                 }else{
                     //普通列表页的评论，评论成功加一个DIV，点击close-reply时会统计reply-section的数量
                     obj.parents('.reply-main').append('<div class="reply-section display"></div>');

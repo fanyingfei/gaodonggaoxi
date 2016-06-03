@@ -6,6 +6,7 @@ class MY_controller extends CI_Controller {
         parent::__construct();
         if(!isset($_SESSION)) session_start();
         $this->save_access();
+        $this->check_access();
         $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
@@ -122,12 +123,30 @@ class MY_controller extends CI_Controller {
     }
 
 
-    public function get_nav_list($flag = 0){
+    public function get_nav_list(){
+        $nav_data = @file_get_contents(NAV_FILE);
+        if(!empty($nav_data['all'])){
+            $this->assign('navigation',$nav_data['view']);
+            return $nav_data;
+        }
+
         $this->load->model('model_nav');
-        $where = empty($flag) ? 'where is_view = 1' : '';
-        $res = $this->model_nav->GetAll( $where , 'sort desc');
-        $this->ci_smarty->assign('navigation',$res);
-        return $res;
+        $res = $this->model_nav->GetAll( '' , 'sort desc');
+        $type = $alias = $view = array();
+        foreach($res as $v){
+            if(empty($v['is_detail'])){
+                $v['table_name'] = 'content';
+            }else{
+                $v['table_name'] = 'article';
+            }
+            $type[$v['type']] = $v;
+            $alias[$v['alias']] = $v;
+            if(!empty($v['is_view'])) $view[$v['type']] = $v;
+        }
+        $data = array('type'=>$type,'alias'=>$alias,'view'=>$view);
+        @file_put_contents(NAV_FILE , var_export($data,TRUE));
+        $this->assign('navigation',$view);
+        return $data;
     }
 
     public function get_nav_info($type){
@@ -144,6 +163,23 @@ class MY_controller extends CI_Controller {
         $where = "where ip = '$ip";
         $res = $this->model_black->GetRow();
         if(!empty($res)) splash('error','你已被拉入黑名单');
+    }
+
+    public function check_access(){
+        if(!empty($_SESSION['access_time'])){
+            if(time() - $_SESSION['access_time'] < ACCESS_TIME_LIMIT){
+                $_SESSION['access_count']++;
+                if($_SESSION['access_count'] > ACCESS_COUNT_LIMIT){
+                    echo 'Access too frequently, please visit later.';exit;
+                }
+            }else{
+                $_SESSION['access_time'] = time();
+                $_SESSION['access_count'] = 0;
+            }
+        }else{
+            $_SESSION['access_time'] = time();
+            $_SESSION['access_count'] = 0;
+        }
     }
 
 }

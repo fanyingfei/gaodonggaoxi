@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>搞东搞西－ markdown编辑阅读器 </title>
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link href="/resources/css/common.css" rel="stylesheet" media="screen">
     <link href="/resources/css/markdown/base.lib.css" rel="stylesheet" media="screen">
     <link id="prettify-style" href="/resources/css/markdown/prettify-cmd.css" type="text/css" rel="stylesheet">
     <link href="/resources/css/markdown/layout.css" rel="stylesheet" media="screen">
     <link href="/resources/css/markdown/mdeditor.lib.css" rel="stylesheet" media="screen">
-    <style type="text/css" id="customized-font-css"></style>
-    <style type="text/css" id="customized-style-css"></style>
 </head>
 
 <body class="theme">
@@ -28,12 +27,45 @@
 </div>
 <div id="preview-column" class="pull-right">
     <div id="preview-button-bar" class="preview-button-bar">
+        <ul class="preview-button-row pull-right" id="preview-button-row">
+            <li title="完善信息 Ctrl+Alt+F" id="preview-list-button" class="preview-button dropdown">
+                <span data-toggle="dropdown" class="dropdown-toggle icon-reorder" style="color: rgb(187, 187, 187);">&nbsp;完善信息</span>
+                <ul role="menu" class="dropdown-menu theme-black pull-right" id="file-list-topbar">
+                    {if $is_login == 1}
+                        <input type="hidden"  id="email" value="{$email}">
+                        <input type="hidden"  id="name"  value="{$name}">
+                    {else}
+                        <li>
+                            <input class="my-input" type="text" placeholder="填写邮箱" id="email" value="">
+                        </li>
+                        <li>
+                            <input class="my-input" type="text" placeholder="填写昵称" id="name"  value="">
+                        </li>
+                    {/if}
+                    <li>
+                        <input class="my-input" type="text" placeholder="文章标题" id="title" value="">
+                    </li>
+                    <li>
+                        <input class="my-input" type="text" placeholder="填写标签[多个标签用空格隔开]" id="tags">
+                    </li>
+                </ul>
+            </li>
+            <li id="preview-publish-btn" class="preview-link editor-only">
+                <div class="btn-group">
+                    <button>
+                        <span class="icon-share"></span>
+                        发布
+                    </button>
+                </div>
+            </li>
+        </ul>
     </div>
     <!--in page preview buttons. -->
     <div id="wmd-panel-preview" class="wmd-panel-preview preview-container">
         <div id="wmd-preview" class="wmd-preview"></div>
     </div>
 </div>
+    <input id="type" type="hidden" value="{$type}"/>
 </div>
 
 
@@ -58,7 +90,6 @@
         <button id="notification-confirm" class="btn btn-primary">确认</button>
     </div>
 </div>
-
 <!-- zybuluo's foot -->
 
 <script src="/resources/js/markdown/base.lib.js"></script>
@@ -135,7 +166,34 @@
 </script>
 
 <script src="/resources/js/markdown/mdeditor.js"></script>
+<script src="/resources/js/common.js"></script>
+<script>
+    var sub_cfg = {};
+    sub_cfg.requestUrl = '/article/save';
+    sub_cfg.success = function(result){
+        alert_msg(result.msg,'success');
+        setTimeout(function(){
+            window.location.href='/cxy';
+        },500);
+    };
+    $("#preview-button-row button").click(function(){
+        var name = $.trim($("#name").val());
+        var email = $.trim($("#email").val());
+        var tags = $.trim($("#tags").val());
+        var title = $.trim($("#title").val());
+        var type = $.trim($("#type").val());
+        var content = $.trim($("#wmd-preview").html());
 
+        if(!valid(name,email,content))  return false;
+
+        $.cookie('name', name ,  { path:'/', expires: 365 });
+        $.cookie('email', email ,  { path:'/', expires: 365 });
+        sub_cfg.data = {
+            "name":name,"email":email,'title':title ,'content':content,'tags':tags,'type':type,'markdown':1
+        };
+        ajax_res(sub_cfg,this);
+    })
+</script>
 
 
 </body>

@@ -4,6 +4,11 @@ define('ENCRYPTION','fanyingfei');
 
 define('COOKIE_EXPIRE',3600*24*30);
 
+define('NAV_FILE',ROOT_PATH.'tools/nav.php');
+
+define('ACCESS_TIME_LIMIT',5);
+define('ACCESS_COUNT_LIMIT',10);
+
 define('EMAIL_NUMBER','fanfan_zone@163.com');
 define('EMAIL_PASSWORD','qweasd19880722');
 
