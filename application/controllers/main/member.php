@@ -34,15 +34,6 @@ class member extends MY_Controller  {
         $user = $this->model_users->GetRow($where);
         if(empty($user)) parent::error_msg();
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
-        $user['user_sn'] = get_user_sn($user['user_id'] , $user['create_time']);
-
-        $this->load->model('model_article');
-        $this->load->model('model_content');
-        $where = 'where status = 1 and user_id = '.$_SESSION['user_id'];
-        $count_article = $this->model_article->GetTotal($where);
-        $count_content = $this->model_content->GetTotal($where);
-        $user['content_count'] = $count_article + $count_content ;
-
         $sex = $this->sex_data;
         $age = array('0'=>'不填');
         $max_age = date('Y') - 5;

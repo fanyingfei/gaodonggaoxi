@@ -214,6 +214,16 @@ $(document).ready(function(){
 
     $(".peripheral img").load(function(){init_play(this);});
 
+    $(".nav-edit .search-btn").click(function(){
+        $(this).hide();
+        $('.nav .search').show();
+        return false; //阻止冒泡
+    })
+
+    $(".search").click(function(){
+        return false; //阻止冒泡
+    })
+
     //监听图片双击事件
     $(".sina-show").dblclick(function(){
         window.open($(this).attr('src'));
@@ -378,8 +388,14 @@ $(document).ready(function(){
     })
 
     $(document).click(function() {
-        $('.facebox').fadeOut(300);
-        $('.facebox').remove();
+        if(!$(".facebox").is(":hidden")) {
+            $('.facebox').fadeOut(300);
+            $('.facebox').remove();
+        }
+        if(!$(".nav .search").is(":hidden")) {
+            $(".nav .search").hide();
+            $(".nav-edit .search-btn").show();
+        }
     });
 
     //监听验证码的点击事件
@@ -400,6 +416,7 @@ $(document).ready(function(){
     $(".search .search-btn").click(function(){
         var search = $("#search").val();
         $.cookie('search', search , { path : '/' });
+        if($('.search #search').length > 0 && $('.search #search').val().length > 0)
         window.location.href=window.location.href;
     })
 

@@ -31,17 +31,18 @@
         <div class="logo">
             <a href="/"><img src="/resources/images/png/gao.png" /></a>
         </div>
-        <div class="search">
-            <input type="text" id="search" placeholder="本栏搜索" value="{$search}">
-            <div class="search-btn"></div>
-        </div>
-        <div class="nav-edit"><span class="edit-info down"></span></div>
+        <ul class="nav-ul">
+            {foreach from=$navigation key=key item=val}
+            <li><a {if $nav == $val.alias}class="active"{/if} href="/{$val.alias}">{$val.name}</a></li>
+            {/foreach}
+        </ul>
         <div class="nav-user examine">
             {if $is_login == 0}
             <a href="/login">登录</a>
             <a href="/register">注册</a>
             {else}
-            <a  class="user-icon" href="/member">{$name}</a>
+            <span class="user-icon"></span>
+            <a href="/member">{$name}</a>
             <div class="u-dropdown">
                 <a href="/member">我的主页</a>
                 <a href="/member/info">个人中心</a>
@@ -50,10 +51,13 @@
             </div>
             {/if}
         </div>
-        <ul class="nav-ul">
-            {foreach from=$navigation key=key item=val}
-            <li><a {if $nav == $val.alias}class="active"{/if} href="/{$val.alias}">{$val.name}</a></li>
-            {/foreach}
-        </ul>
+        <div class="nav-edit">
+            <span class="search-btn"></span>
+            <span class="edit-info down"></span>
+        </div>
+        <div class="search">
+            <input type="text" id="search" placeholder="搜索" value="">
+            <div class="search-btn"></div>
+        </div>
     </div>
 </div>
