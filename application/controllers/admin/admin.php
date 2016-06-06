@@ -91,6 +91,7 @@ class admin extends MY_Controller  {
 
     public function content_list($list){
         foreach($list as &$v){
+            $v['op'] = '<button data-id="'.$v['con_id'].'" class="btn edit-btn" data-toggle="modal" data-target="#myModal">编辑</button>';
             $v['con_id'] = $this->get_id_url($v);
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
@@ -137,6 +138,23 @@ class admin extends MY_Controller  {
         }
     }
 
+    public function update_row($name){
+        $this->check_permission($name.'_edit');
+        $table_name = 'model_'.$name;
+        $con_id = intval($_REQUEST['con_id']);
+        $data['type'] = intval($_REQUEST['type']);
+        $data['status'] = intval($_REQUEST['status']);
+        $data['good'] = intval($_REQUEST['good']);
+        $data['bad'] = intval($_REQUEST['bad']);
+        $data['reply'] = intval($_REQUEST['reply']);
+        $data['content'] = trim($_REQUEST['content']);
+        if(!empty($_REQUEST['scan'])) $data['scan'] = trim($_REQUEST['scan']);
+        if(!empty($_REQUEST['title'])) $data['title'] = trim($_REQUEST['title']);
+        $res  = $this->$table_name->UpdateByKey($con_id,$data);
+        if($res) splash('success','修改成功');
+        splash('error','修改失败,请重试');
+    }
+
     public function article()
     {
         $type_list = array();
@@ -150,6 +168,7 @@ class admin extends MY_Controller  {
 
     public function article_list($list){
         foreach($list as &$v){
+            $v['op'] = '<button data-id="'.$v['con_id'].'" class="btn edit-btn" data-toggle="modal" data-target="#myModal">编辑</button>';
             $v['con_id'] = $this->get_id_url($v);
             $v['status'] = $this->status_data[$v['status']];
             $v['user_id'] = empty($v['user_id']) ? '否' : '是';
@@ -179,7 +198,7 @@ class admin extends MY_Controller  {
                 $v['op'] = '<span class="priv_no">无</span>';
             }else{
                 $v['is_admin'] = '是';
-                $v['op'] = '<button data-target="#myModal" data-toggle="modal" class="btn user-premission" data-id="'.$v['user_id'].'">权限</button>';
+                $v['op'] = '<button data-target="#myModal" data-toggle="modal" class="btn edit-btn" data-id="'.$v['user_id'].'">权限</button>';
             }
         }
         return $list;
@@ -330,16 +349,17 @@ class admin extends MY_Controller  {
         foreach($list as &$v){
             $v['is_view'] = empty($v['is_view']) ? '否' : '是';
             $v['is_detail'] = empty($v['is_detail']) ? '无' : '有';
-            $v['op'] = '<button data-id="'.$v['nav_id'].'" class="btn nav-edit" data-toggle="modal" data-target="#myModal">编辑</button>';
+            $v['op'] = '<button data-id="'.$v['nav_id'].'" class="btn edit-btn" data-toggle="modal" data-target="#myModal">编辑</button>';
         }
         return $list;
     }
 
-    public function nav_one(){
-        $nav_id = intval($_REQUEST['nav_id']);
-        if(empty($nav_id)) splash('error','参数有误');
-        $where = 'where nav_id = '.$nav_id;
-        $res  = $this->model_nav->GetRow($where);
+    public function get_row($name){
+        if(empty($name)) splash('error','参数有误');
+        $table_name = 'model_'.$name;
+        $id = intval($_REQUEST['id']);
+        if(empty($id)) splash('error','参数有误');
+        $res  = $this->$table_name->GetRowByKey($id);
         if(empty($res)) splash('error','没有数据');
         splash('success','',$res);
     }
@@ -401,6 +421,7 @@ class admin extends MY_Controller  {
     }
 
     public function check_permission($priv_str){
+        return true;
         if($_SESSION['user_id'] == 1) return true;
         $user_priv = empty($_SESSION['permission']) ? '' : $_SESSION['permission'];
         if (strpos( ','.$user_priv.',' , ','.$priv_str.',') === false) splash('error','没有权限做此操作');

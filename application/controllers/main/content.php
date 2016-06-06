@@ -373,6 +373,22 @@ class content extends MY_Controller  {
         $this->content_list($data);
     }
 
+    public  function ppt(){
+        header("Content-type: text/html; charset=utf-8");
+        $dir = ROOT_PATH.'/resources/file/ppt';
+        $files = array();
+        $dirpath = realpath($dir);
+        $filenames = scandir($dir);
+
+        foreach ($filenames as $filename){
+            if ($filename=='.' || $filename=='..') continue;
+            $file = $dirpath . DIRECTORY_SEPARATOR . $filename;
+
+            if (is_dir($file)) $files = array_merge($files, $this->ppt($file));
+            else echo '<a href="http://'. $_SERVER['HTTP_HOST'].'/resources/file/ppt/'.$filename.'">'.$filename.'</a><br>';
+        }
+    }
+
 }
 
 /* End of file welcome.php */

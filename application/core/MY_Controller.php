@@ -109,7 +109,7 @@ class MY_controller extends CI_Controller {
 
     public function save_access(){
         $ip = get_real_ip();
-        if($ip == '127.0.0.1') return false;
+        if(in_array($ip, array( '127.0.0.1','101.245.183.255','116.228.159.142'))) return false;
         if(isCrawler()) return false;
         if(!empty($_SESSION['is_admin'])) return false;
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -166,11 +166,15 @@ class MY_controller extends CI_Controller {
     }
 
     public function check_access(){
+        $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        if(strpos($url , 'admin') !== false) return false;
         if(!empty($_SESSION['access_time'])){
             if(time() - $_SESSION['access_time'] < ACCESS_TIME_LIMIT){
                 $_SESSION['access_count']++;
                 if($_SESSION['access_count'] > ACCESS_COUNT_LIMIT){
-                    echo 'Access too frequently, please visit later.';exit;
+                    $_SESSION['access_time'] = time();
+                    echo 'Access too frequently, please visit later.';
+                    exit;
                 }
             }else{
                 $_SESSION['access_time'] = time();

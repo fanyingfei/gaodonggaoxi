@@ -1,5 +1,5 @@
 #table td{
-    max-width:250px;
+    max-width:200px;
 }
 #table td div{
     max-height: 80px;
@@ -71,9 +71,6 @@ body,td,td,div,input,select button{
     display: block;
     margin-left:10px;
 }
-.user-premission{
-    padding:2px 8px;
-}
 .priv_wrapper{
     padding:0 20px;
 }
@@ -95,4 +92,19 @@ body,td,td,div,input,select button{
 }
 .priv_left{
     width:100px;
+}
+.edit-btn{
+    padding:2px 5px;
+    font-size:12px;
+}
+#m-content,#m-description{
+    max-width: 480px;
+    min-width: 480px;
+}
+i.glyphicon{
+    font-family: "Microsoft YaHei","Arial";
+    color: #999;
+}
+.glyphicon-refresh::before,.glyphicon-th::before{
+    content:"";
 }

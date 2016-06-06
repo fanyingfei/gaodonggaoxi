@@ -517,7 +517,7 @@
         if (this.options.showRefresh) {
             html.push(sprintf('<button class="btn btn-default" type="button" name="refresh" title="%s">',
                 this.options.formatRefresh()),
-                '<i class="glyphicon glyphicon-refresh icon-refresh"></i>',
+                '<i class="glyphicon glyphicon-refresh icon-refresh">刷新</i>',
                 '</button>');
         }
 
@@ -533,7 +533,7 @@
                 this.options.showRefresh || this.options.showToggle ? 'btn-group' : '',
                 this.options.formatColumns()),
                 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">',
-                '<i class="glyphicon glyphicon-th icon-th"></i>',
+                '<i class="glyphicon glyphicon-th icon-th">行列</i>',
                 ' <span class="caret"></span>',
                 '</button>',
                 '<ul class="dropdown-menu" role="menu">');

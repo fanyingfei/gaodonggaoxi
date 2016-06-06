@@ -60,10 +60,10 @@
 <script src="/resources/js/admin/bootstrap.min.js"></script>
 <script src="/resources/js/admin/bootstrap-table.js"></script>
 <script>
-    $("body").on("click", '.nav-edit', function(){
-        var nav_id = $(this).attr('data-id');
+    $("body").on("click", '.edit-btn', function(){
+        var id = $(this).attr('data-id');
         var cfg = {};
-        cfg.requestUrl = '/admin/nav_one';
+        cfg.requestUrl = '/admin/get_row/nav';
         cfg.success = function(result){
             var html = '<input type="hidden" id="m-nav-id" value="'+result.nav_id+'" >';
             html += '<div  class="form-group"><label>显示：</label>';
@@ -86,7 +86,7 @@
             $('#myModalLabel').html(result.name);
             $('#myModal .modal-body').html(html);
         };
-        cfg.data = {"nav_id":nav_id};
+        cfg.data = {"id":id};
         admin_ajax_res(cfg);
     })
 

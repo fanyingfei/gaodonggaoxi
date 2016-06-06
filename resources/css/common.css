@@ -2,7 +2,8 @@
 body {
     color: #4c4c4c;
     font: 13px 'Microsoft YaHei','Arial';
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 a{
     cursor: pointer;
@@ -1360,6 +1361,7 @@ body,
 /*PC端*/
 @media screen and (max-width: 660px) {
     .main-right,
+    .bdshare-slide-button-box,
     .nav .logo,
     .nav .search,
     .nav-desc,

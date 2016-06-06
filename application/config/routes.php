@@ -98,7 +98,7 @@ $route['user/bind'] = "main/user/bind";
 $route['user/bind/save'] = "main/user/bind_save";
 //激活
 $route['user/validate/(:any)'] = "main/user/user_validate/$1";
-
+//昵称保存
 $route['user/nick/save'] = "main/user/nick_save";
 //用户中心
 $route['member'] = "main/member/homepage";
@@ -108,40 +108,47 @@ $route['member/pass'] = "main/member/user_pass";
 $route['member/save'] = "main/member/info_save";
 $route['member/avatar/save'] = "main/member/avatar_save";
 $route['member/pass/save'] = "main/member/pass_save";
+//得到ppt目录
+$route['ppt'] = "main/content/ppt";
 
 //admin后台
 $route['admin'] = "admin/admin/index";
 $route['admin/content'] = "admin/admin/content";
-$route['admin/content_list'] = "admin/admin/content_list";
+$route['admin/article'] = "admin/admin/article";
+$route['admin/user'] = "admin/admin/user";
+$route['admin/reply'] = "admin/admin/reply";
+$route['admin/black'] = "admin/admin/black";
+$route['admin/record'] = "admin/admin/record";
+$route['admin/nav'] = "admin/admin/nav";
+$route['admin/access'] = "admin/admin/access";
+//得到列表
 $route['admin/list/(:any)?(:any)'] = "admin/admin/main_list/$1/$2";
 $route['admin/list/(:any)'] = "admin/admin/main_list/$1";
+//通用删除
 $route['admin/delete/(:any)'] = "admin/admin/delete/$1";
-
-$route['admin/pass/(:any)'] = "admin/admin/pass/$1";
-$route['admin/fail/(:any)'] = "admin/admin/fail/$1";
-
-$route['admin/article'] = "admin/admin/article";
-
-$route['admin/user'] = "admin/admin/user";
-$route['admin/user_add_admin'] = "admin/admin/user_add_admin";
-$route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
-$route['admin/user_permission'] = "admin/admin/user_permission";
-$route['admin/user_priv_update'] = "admin/admin/user_priv_update";
-
-$route['admin/black'] = "admin/admin/black";
-
-$route['admin/reply'] = "admin/admin/reply";
+//回复删除
 $route['admin/reply_delete'] = "admin/admin/reply_delete";
-
-$route['admin/record'] = "admin/admin/record";
-
-$route['admin/access'] = "admin/admin/access";
-
-$route['admin/nav'] = "admin/admin/nav";
-$route['admin/nav_one'] = "admin/admin/nav_one";
+//审核通过
+$route['admin/pass/(:any)'] = "admin/admin/pass/$1";
+//审核失败
+$route['admin/fail/(:any)'] = "admin/admin/fail/$1";
+//增加管理员
+$route['admin/user_add_admin'] = "admin/admin/user_add_admin";
+//移除管理员
+$route['admin/user_remove_admin'] = "admin/admin/user_remove_admin";
+//用户权限管理
+$route['admin/user_permission'] = "admin/admin/user_permission";
+//用户权限更新
+$route['admin/user_priv_update'] = "admin/admin/user_priv_update";
+//得到单条记录
+$route['admin/get_row/(:any)'] = "admin/admin/get_row/$1";
+//导航单条记录更新
 $route['admin/nav_update'] = "admin/admin/nav_update";
-
+//内容和文章后台单条记录更新
+$route['admin/update_row/(:any)'] = "admin/admin/update_row/$1";
+//黑名单文本
 $route['admin/black_text'] = "admin/admin/black_text";
+//黑名单文本更新
 $route['admin/black_update'] = "admin/admin/black_update";
 $route['error'] = 'main/content/error';
 
