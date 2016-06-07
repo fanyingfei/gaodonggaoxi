@@ -24,6 +24,7 @@
                     {/if}
                     <div class="section-user-name" title="{if $one.user_sn != ''}{$one.u_name}{else}防伪码:{$one.u_name}{/if}">{$one.name}</div>
                     <div class="section-createtime">发布于{$one.create_time}</div>
+                    {if $is_admin}<div class="floor">#{$one.con_id}</div>{/if}
                 </div>
                 <div class="section-middle">
                     <div class="main-content">{$one.content}</div>

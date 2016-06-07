@@ -10,8 +10,10 @@ Thumbs.db
 nav.php
 black.php
 markdown.html
-application/config/database.php
+database.php
 .idea/
 *.iml
+*.pptx
+*.ppt
 application/template/*
 *-map.json

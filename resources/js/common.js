@@ -179,6 +179,12 @@ function init_play(thi){
 }
 
 function image_load_event(thi , src_url){
+    img_size = $(thi).prev('img').attr('data-size');
+    if(img_size != undefined && img_size){
+        $(thi).text(' LOADING...  图片大小'+img_size+'M');
+    }else{
+        $(thi).text('LOADING...');
+    }
     var img = new Image(); //创建一个Image对象，实现图片的预下载
     img.src = src_url;
     if(img.complete) {
@@ -252,8 +258,6 @@ $(document).ready(function(){
         if(image_is_gif(ori_src)){
             $(this).next('div.play').show();
         }else{
-            show_play($(this).next('div.play'));
-            $(this).next('div.play').text('loading...');
             image_load_event($(this).next('div.play') , src_url);
         }
         $(this).attr('src',src_url);
@@ -268,7 +272,6 @@ $(document).ready(function(){
         ori_src = pre_img_obj.attr('src');
         pre_img_obj.attr('src',src_url);
         pre_img_obj.attr('ori-data',ori_src);
-        $(this).text('loading...');
         image_load_event(this,src_url);
         return false;
     })

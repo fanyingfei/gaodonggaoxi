@@ -267,7 +267,11 @@ function gif_static_gif($content , $flag = 0){
                 }else{
                     $small_url = '/resources/images/gif/small_gray.gif';
                 }
-                $src = '<div class="peripheral"><img class="sina-show-gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
+                $img_size = '';
+                $img_res = get_headers($src_url,true);
+                if(!empty($img_res['Content-Length'])) $img_size = number_format($img_res['Content-Length']/(1024*1025),2);
+
+                $src = '<div class="peripheral"><img data-size="'.$img_size.'" class="sina-show-gif" src="'.$small_url.'" ori-data="'.$src_url.'"  />';
                 $src .= '<div class="play">PLAY</div></div>';
             }else{
                 $src = '<div class="peripheral"><img class="sina-show" src="'.$src_url.'"/></div>';

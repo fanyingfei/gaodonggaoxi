@@ -935,12 +935,20 @@ body,
     font-size: 12px;
     color:#b5b5b5;
 }
+.section-top .floor{
+    font-size: 12px;
+    color:#b5b5b5;
+    float:right;
+}
 .section-middle .sina-show {
     max-height: 600px;
 }
 .peripheral img{
     max-width: 100%;
     cursor: pointer;
+}
+.peripheral .sina-show-gif{
+    min-width:240px;
 }
 .peripheral .play{
     display: none;
