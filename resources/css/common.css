@@ -960,6 +960,15 @@ body,
     width: 0;
     overflow: hidden;
 }
+.peripheral .loading_error{
+    background-color: #eeeeee;
+    color: #aaa;
+    font-size: 24px;
+    height: 170px;
+    line-height: 160px;
+    text-align: center;
+    width: 272px;
+}
 .section-middle .main-content{
     width:100%;
     clear:both;

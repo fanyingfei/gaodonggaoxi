@@ -173,8 +173,7 @@ class MY_controller extends CI_Controller {
                 $_SESSION['access_count']++;
                 if($_SESSION['access_count'] > ACCESS_COUNT_LIMIT){
                     $_SESSION['access_time'] = time();
-                    echo 'Access too frequently, please visit later.';
-                    exit;
+                    splash('error','Access too frequently, please visit later.');
                 }
             }else{
                 $_SESSION['access_time'] = time();

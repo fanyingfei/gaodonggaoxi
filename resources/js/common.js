@@ -208,8 +208,13 @@ $(document).keypress(function(e) {
 
 function loading_list(){
     $(".peripheral img").each(function() {
+        $(this).attr('onerror','load_error(this)');
         if(this.complete) init_play(this);
     });
+}
+
+function load_error(thi){
+    $(thi).parent().html('<div class="loading_error">图片加载失败...</div>');
 }
 
 //DOM渲染完成
