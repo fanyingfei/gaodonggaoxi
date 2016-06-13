@@ -97,7 +97,7 @@ body,td,td,div,input,select button{
     padding:2px 5px;
     font-size:12px;
 }
-#m-content,#m-description{
+#m-content,#m-description,#m-ip{
     max-width: 480px;
     min-width: 480px;
 }
