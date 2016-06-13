@@ -308,7 +308,7 @@ class content extends MY_Controller  {
         $content = str_replace(array('“','”'),'"',$content);
         $valid_content = trim(strip_tags($content,'<img>'));
         if(empty($valid_content)) splash('error','请填写内容');
-        $content = strip_tags($content,'<img><a><br>');
+        $content = strip_tags($content,'<img><br>');
         if($res_content = gif_static_gif($content)) $content = $res_content;
         return filter_content_br($content);
     }

@@ -112,7 +112,7 @@ class reply extends MY_Controller  {
         }elseif(strpos(substr($content,0,1),'@') !== false){
             splash('error','请点击 @Ta 来回复评论');
         }else{
-            $content = trim($content);
+            $content = str_replace(array('“','”'),'"',rim($content));
             $data['parent_id'] = 0;
             $data['parent_name'] = '';
             return $data;

@@ -345,9 +345,17 @@ body,
     padding-right: 0;
 }
 .reply-main .oo:hover,
-.reply-main .xx:hover,
-.reply-main .reply{
-    color:#6c6c6c;
+.reply-main .xx:hover{
+    background-image: none;
+}
+.reply-main .oo:hover{
+    color:#ffaaaa;
+}
+.reply-main .xx:hover{
+    color:#aaaaff;
+}
+.reply-main .reply-ta:hover{
+    color:#666;
 }
 .hr-reply {
     float: right;
@@ -1396,6 +1404,7 @@ body,
     }
     .nav .nav-ul{
         float:left;
+        margin:0;
     }
     .main-left{
         padding:0 10px;

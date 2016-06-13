@@ -166,6 +166,10 @@ class MY_controller extends CI_Controller {
     }
 
     public function check_access(){
+        $ip = get_real_ip();
+        $black_str = @file_get_contents(ROOT_PATH. '/tools/black.php');
+        if(strpos($black_str,','.$ip) !== false) exit;
+
         $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         if(strpos($url , 'admin') !== false) return false;
         if(!empty($_SESSION['access_time'])){
