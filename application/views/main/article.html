@@ -26,24 +26,20 @@
                             {/foreach}
                         </p>
                         <p class="row-bottom oo-xx">
-                            <span class="row-user-name">{$one.name}</span>
+                            <span class="row-user-name{if $one.user_sn != ''} user-member{/if}">{$one.name}</span>
                             <span> 发表于{$one.create_time}</span>
-
-                            <span class="jian-ge">&nbsp;&nbsp;</span>
                             <span class="response"></span>
                             <a class="oo" data-id="{$one.con_id}"></a>[<span class="good">{$one.good}</span>]
-                            <span class="jian-ge">&nbsp;</span>
                             <a class="xx" data-id="{$one.con_id}"></a>[<span class="bad">{$one.bad}</span>]
                             <span class="examine">
-                                <span class="jian-ge">&nbsp;</span>
                                 <span class="reply" data-id="{$one.con_id}"></span>[<span class="reply-count">{$one.reply}</span>]
                             </span>
-                            <span class="jian-ge">&nbsp;</span>
                             <span class="scan">浏览[{$one.scan}]</span>
                         </p>
                     </div>
                     <div class="row-right"><strong>{$one.day}</strong>{$one.year}</div>
                  </div>
+                <input type="hidden" class="section-user-sn" value="{$one.user_sn}" />
             </div>
             {/foreach}
         </div>

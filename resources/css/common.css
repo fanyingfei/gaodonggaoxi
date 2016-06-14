@@ -43,6 +43,16 @@ body,
 .a-markdown{
     color:#0077bb;
 }
+.user-member{
+    cursor: pointer;
+}
+.data-loading{
+    height: 500px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 200px;
+    color:#8c8c8c;
+}
 /*通用结束*/
 
 /*header*/
@@ -53,6 +63,7 @@ body,
     box-shadow: 0 0 2px 0px #666;
     background-color: #fff;
     border-top: 2px solid #fa7d3c;
+    height: 48px;
 }
 .nav-container{
     margin: 0 auto;
@@ -1079,6 +1090,12 @@ body,
     overflow: hidden;
     min-height: 20px;
     padding:4px 0;
+}
+.row-bottom .xx,
+.row-bottom .examine,
+.row-bottom .scan,
+.row-bottom .response{
+    margin-left:10px;
 }
 .row-right strong {
     font-size: 16pt;

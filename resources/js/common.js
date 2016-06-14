@@ -106,7 +106,7 @@ function click_remove_class(thi){
     setTimeout(function(){$(thi).removeClass('disabled');}, 1500);
 }
 
-function show_play(thi){
+function show_play_btn(thi){
     width = $(thi).prev().width();
     height = $(thi).prev().height();
     if(width <=2 || height <= 2){
@@ -174,7 +174,7 @@ function init_play(thi){
     $(thi).parents('.peripheral').slideDown(200);
     if($(thi).hasClass('sina-show-gif') &&  !image_is_gif($(thi).attr('src'))){
         var play_obj = $(thi).parent().children('.play');
-        show_play(play_obj);
+        show_play_btn(play_obj);
     }
 }
 
@@ -239,6 +239,11 @@ $(document).ready(function(){
     $(".sina-show").dblclick(function(){
         window.open($(this).attr('src'));
         return false;
+    })
+
+    $('body').on('click', '.user-member', function(){
+        var user_sn = $(this).parents('.section').find('.section-user-sn').val();
+        if(user_sn != '') window.open('/member/'+user_sn);
     })
 
     //监听图片单击事件

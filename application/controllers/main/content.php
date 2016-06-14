@@ -111,7 +111,7 @@ class content extends MY_Controller  {
 
         foreach($list as &$v){
             $v['user_sn'] = $v['avatar'] = '';
-            $v['u_name'] = empty($v['user_id']) ? md5($v['email']) : $v['name'];
+            $v['u_name'] = empty($v['user_id']) ? md5($v['email'].$v['name']) : $v['name'];
             if(!empty($v['user_id'])){
                 $v['avatar'] = empty($user_avatar[$v['user_id']]) ? '' : $user_avatar[$v['user_id']];
                 $time = empty($user_time[$v['user_id']]) ? '' : $user_time[$v['user_id']];

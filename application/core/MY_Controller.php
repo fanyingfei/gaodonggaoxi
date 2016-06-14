@@ -5,8 +5,8 @@ class MY_controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         if(!isset($_SESSION)) session_start();
-        $this->save_access();
         $this->check_access();
+        $this->save_access();
         $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
@@ -171,14 +171,14 @@ class MY_controller extends CI_Controller {
 
         $ip = get_real_ip();
         $black_str = @file_get_contents(ROOT_PATH. '/tools/black.php');
-        if(strpos($black_str,','.$ip) !== false) exit;
+        if(strpos($black_str,$ip.',') !== false) splash('error','The IP is prohibited to access !');
 
         if(!empty($_SESSION['access_time'])){
             if(time() - $_SESSION['access_time'] < ACCESS_TIME_LIMIT){
                 $_SESSION['access_count']++;
                 if($_SESSION['access_count'] > ACCESS_COUNT_LIMIT){
                     $_SESSION['access_time'] = time();
-                    splash('error','Access too frequently, please visit later.');
+                    splash('error','Access too frequently, please visit later !');
                 }
             }else{
                 $_SESSION['access_time'] = time();
