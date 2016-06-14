@@ -217,6 +217,16 @@ function load_error(thi){
     $(thi).parent().html('<div class="loading_error">图片加载失败...</div>');
 }
 
+function body_init(){
+    var win_height = $(window).height();
+    var doc_height = $(document.body).height();
+    if(doc_height < win_height){
+        $('.footer').css({'position':'absolute','bottom':'0'});
+    }
+}
+$(window).load(function() {
+    body_init();
+});
 //DOM渲染完成
 $(document).ready(function(){
     loading_list();

@@ -227,7 +227,35 @@ body,
     padding-top:14px;
 }
 /*header结束*/
-
+/*empty开始*/
+.body-empty,
+.body-empty .main{
+    background-color: #fff;
+}
+.empty{
+    width:510px;
+    margin:60px auto;
+}
+.empty div{
+    float:left;
+}
+.empty .sorry-img{
+    width:200px;
+    height:200px;
+}
+.empty .sorry-content{
+    margin-left:10px;
+    width:300px;
+    text-align: left;
+    padding-top:40px;
+    color:#6c6c6c;
+}
+.empty .sorry-content p:first-child{
+    margin-bottom: 30px;
+    font-size:24px;
+    color:#444;
+}
+/*empty结束*/
 /*翻页*/
 .pagination a,
 .pagination .page-cur,
@@ -1147,6 +1175,7 @@ body,
     padding:20px 0;
     box-shadow: 0 0 1px 0px rgba(0,0,0,0.15);
     border-top: 1px solid #dedede;
+    width:100%;
 }
 .footer-container{
     margin:0 auto;

@@ -86,6 +86,11 @@ class content extends MY_Controller  {
 
         //得到总数
         $count = $this->$table_name->GetTotal($where);
+        if($count <= 0 && !empty($search)){
+            $this->assign('body','body-empty');
+            $this->display('empty.html','','','');
+            exit;
+        }
         if($sort == 'rand'){
             $page = mt_rand(0 , ceil($count/$limit)-1);
             $list = $this->$table_name->GetAll($where ,'', $page ,$limit);

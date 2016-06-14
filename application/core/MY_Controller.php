@@ -31,10 +31,9 @@ class MY_controller extends CI_Controller {
     {
         if(empty($header)) $header = 'header.html';
         if(empty($footer))   $footer = 'footer.html';
-        if(empty($right))     $right = 'right.html';
         $this->ci_smarty->display('main/'.$header);
         $this->ci_smarty->display('main/'.$html);
-        $this->ci_smarty->display('main/'.$right);
+        if(!empty($right)) $this->ci_smarty->display('main/'.$right);
         $this->ci_smarty->display('main/'.$footer);
     }
 
