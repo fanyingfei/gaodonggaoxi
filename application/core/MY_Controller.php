@@ -123,8 +123,9 @@ class MY_controller extends CI_Controller {
 
 
     public function get_nav_list(){
-        $nav_data = @file_get_contents(NAV_FILE);
-        if(!empty($nav_data['all'])){
+        $nav_res = @file_get_contents(NAV_FILE);
+        $nav_data = json_decode($nav_res,true);
+        if(!empty($nav_data['view'])){
             $this->assign('navigation',$nav_data['view']);
             return $nav_data;
         }
@@ -143,7 +144,7 @@ class MY_controller extends CI_Controller {
             if(!empty($v['is_view'])) $view[$v['type']] = $v;
         }
         $data = array('type'=>$type,'alias'=>$alias,'view'=>$view);
-        @file_put_contents(NAV_FILE , var_export($data,TRUE));
+        @file_put_contents(NAV_FILE , json_encode($data));
         $this->assign('navigation',$view);
         return $data;
     }

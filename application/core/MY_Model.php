@@ -22,7 +22,8 @@ class MY_Model extends CI_Model{
         $limit = empty($limit) ? '' : 'limit '.($p * $limit)." , $limit ";
         $sort = empty($sort) ? 'order by '.$this->key.' desc'  : 'order by '.$sort;
 
-        $sql = 'select * from ' . $this->table. " $where $sort $limit ";
+        $sql = 'select t2.* from (select '.$this->key.' from ' . $this->table. " $where $sort $limit ) t1 , ".
+                    $this->table.' t2  where t1.'.$this->key.' = t2.'.$this->key;
         return $this->db->query($sql)->result_array();
     }
 
@@ -31,7 +32,7 @@ class MY_Model extends CI_Model{
      * 得到总数
      */
     public function GetTotal($where = ''){
-        $sql = 'select count(*) as total from ' .$this->table ." $where";
+        $sql = 'select count('.$this->key.') as total from ' .$this->table ." $where";
         return $this->db->query($sql)->first_row('array')['total'];
     }
 
