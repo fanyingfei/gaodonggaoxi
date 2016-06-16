@@ -306,8 +306,12 @@ if ( ! function_exists('show_error'))
 {
 	function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
 	{
-		$_error =& load_class('Exceptions', 'core');
-		echo $_error->show_error($heading, $message, 'error_general', $status_code);
+        include_once(APPPATH . '/core/MY_Controller.php');
+        $my_controller = new MY_controller();
+        $msg = empty($status_code) ? $message : $status_code.'：'.$message;
+        $my_controller->error_msg($msg);
+	//	$_error =& load_class('Exceptions', 'core');
+	//	echo $_error->show_error($heading, $message, 'error_general', $status_code);
 		exit;
 	}
 }
