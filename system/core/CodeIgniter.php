@@ -244,7 +244,11 @@
 	// If this include fails it means that the default controller in the Routes.php file is not resolving to something valid.
 	if ( ! file_exists(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().'.php'))
 	{
-		show_error('Unable to load your default controller. Please make sure the controller specified in your Routes.php file is valid.');
+	//	show_error('Unable to load your default controller. Please make sure the controller specified in your Routes.php file is valid.');
+        include_once(APPPATH . '/core/MY_Controller.php');
+        $my_controller = new MY_controller();
+        $my_controller->error_msg('页面未找到');
+        exit;
 	}
 
 	include(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().'.php');

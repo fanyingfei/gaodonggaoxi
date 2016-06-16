@@ -53,6 +53,13 @@ body,
     line-height: 200px;
     color:#8c8c8c;
 }
+.nav-edit .search-btn{
+    display: none;
+}
+.body-article .search-btn,
+.body-content .search-btn{
+    display: block;
+}
 /*通用结束*/
 
 /*header*/
@@ -122,7 +129,7 @@ body,
     float:left;
 }
 .nav-container ul li a{
-    padding: 15px 10px 14px;
+    padding: 14px 10px 14px;
 }
 .nav-container ul li a {
     color: #333;
@@ -1100,6 +1107,10 @@ body,
     background-color: #fff;
     margin-right: 10px;
     border-radius: 0;
+    cursor: pointer;
+}
+.row-tags:hover{
+    color:#0077bb;
 }
 .row-bottom * {
     color: #999;
@@ -1191,6 +1202,10 @@ body,
 .footer a:hover{
     color: #8c8c8c;
     text-decoration: none;
+}
+.footer-bottom{
+    position: absolute;
+    bottom: 0;
 }
 #top {
     bottom: 0;
@@ -1402,6 +1417,9 @@ body,
     }
     .nav-container{
         width:960px;
+    }
+    .nav-container ul li a {
+        font-size: 14px;
     }
     .main {
         margin: 20px auto 50px;

@@ -221,19 +221,27 @@ function body_init(){
     var win_height = $(window).height();
     var doc_height = $(document.body).height();
     if(doc_height < win_height){
-        $('.footer').css({'position':'absolute','bottom':'0'});
+        $('.footer').addClass('footer-bottom');
+    }else{
+        if($('.footer').hasClass('footer-bottom')) $('.footer').removeClass('footer-bottom');
     }
 }
-$(window).load(function() {
+window.onload=function(){
     body_init();
-});
+}
+//滚动条
+window.onscroll = function(){
+    body_init();
+}
 //DOM渲染完成
 $(document).ready(function(){
     loading_list();
 
     var reply_url = '/reply/record';
 
-    $(".peripheral img").load(function(){init_play(this);});
+    $(".peripheral img").load(function(){
+        init_play(this);
+    });
 
     $(".nav-edit .search-btn").click(function(){
         $(this).hide();
@@ -434,6 +442,14 @@ $(document).ready(function(){
             $("#top").hide();
         }
     });
+
+    //监听搜索事件
+    $(".row-middle .row-tags").click(function(){
+        var tags = $(this).text();
+        $.cookie('search', tags , { path : '/' });
+        if(tags.length > 0)
+            window.location.href=window.location.href;
+    })
 
     //监听搜索事件
     $(".search .search-btn").click(function(){

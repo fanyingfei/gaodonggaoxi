@@ -52,13 +52,8 @@ class MY_controller extends CI_Controller {
 
     public function error_msg($msg = ''){
         $this->assign('body','error');
-        $this->assign('title','出错啦');
         $this->assign('msg',empty($msg) ? '出错啦' : $msg);
-        $this->assign('keywords','');
-        $this->assign('description','');
-        $this->ci_smarty->display('main/header.html');
         $this->ci_smarty->display('error.html');
-        $this->ci_smarty->display('main/footer.html');
         exit;
     }
 
