@@ -1,8 +1,8 @@
 <?php
 
 if(strpos($_SERVER['HTTP_HOST'],'fanfan-zone') !== false){
-    header("Location:http://www.gaodonggaoxi.cn");
-    exit();
+//    header("Location:http://www.gaodonggaoxi.cn");
+//    exit();
 }
 
 /*
