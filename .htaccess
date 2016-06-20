@@ -8,3 +8,6 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteCond $1 !^(index\.php|\.html|images|robots\.txt)
 RewriteRule ^(.*)$ index.php?s=/$1 [L]
+
+#RewriteCond $1 (\.css|\.js)
+#RewriteRule ^(.*)$ http://gaodonggaoxi.cn/$1 [L]
