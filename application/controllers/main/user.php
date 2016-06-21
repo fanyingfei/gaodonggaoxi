@@ -26,13 +26,9 @@ class user extends MY_Controller  {
         if(is_login()) header_index();
         $url = empty($_SERVER['HTTP_REFERER']) ? '/' : $_SERVER['HTTP_REFERER'];
         if(strpos($url,'user') || strpos($url,'login') || strpos($url,'register')) $url = '/';
-        $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
-        $url_wb = 'https://api.weibo.com/oauth2/authorize?client_id='.SINA_ID.'&response_type=code&redirect_uri='.REDIRECT_URL_WB ;
 
         $this->assign('url',$url);
         $this->assign('title','登录');
-        $this->assign('url_qq',$url_qq);
-        $this->assign('url_wb',$url_wb);
         $this->native_display('user/header.html');
         $this->native_display('user/login.html');
     }
@@ -48,7 +44,7 @@ class user extends MY_Controller  {
         if(empty($account)) splash('error','账号不存在');
 
         if(is_email($account)){
-            $where = "where email = '$account'";
+            $where = "where email = '$account' and is_validate = 1";
         }else{
             $where = "where name = '$account'";
         }
@@ -56,7 +52,6 @@ class user extends MY_Controller  {
 
         if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
-        if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
 
         $this->set_user_login($one);
 
@@ -71,12 +66,12 @@ class user extends MY_Controller  {
     }
 
     public function bind_save(){
-        $email = $_REQUEST['email'];
-        if(empty($email)) splash('error','请输入邮箱账号');
+        $name = $_REQUEST['name'];
+        if(empty($name)) splash('error','请输入账号');
         $password = $_REQUEST['password'];
         if(empty($password)) splash('error','请输入密码');
 
-        $where = "where email = '$email'";
+        $where = "where name = '$name'";
         $one = $this->model_users->GetRow($where);
         if(empty($one)) splash('error','您要绑定的账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
@@ -122,28 +117,28 @@ class user extends MY_Controller  {
     }
 
     public function login_qq($params){
-        if(strpos($params,'code=') === false) parent::error_msg('QQ登陆失败');
+        if(strpos($params,'code=') === false) $this->error_msg('QQ登陆失败');
         $code = str_replace('code=','',$params);
         $url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id='.APP_ID.
             '&client_secret='.APP_KEY.'&code='.$code.'&redirect_uri='.REDIRECT_URL_QQ ;
         $access_token_res = file_get_contents($url);
-        if(empty($access_token_res)) parent::error_msg('QQ登陆失败');
+        if(empty($access_token_res)) $this->error_msg('QQ登陆失败');
         $access_token_array = deal_str_param($access_token_res);
         $access_token = $access_token_array['access_token'];
         $url = 'https://graph.qq.com/oauth2.0/me?access_token='.$access_token;
         $openid_res = file_get_contents($url);
-        if(empty($openid_res)) parent::error_msg('QQ登陆失败');
+        if(empty($openid_res)) $this->error_msg('QQ登陆失败');
         if(preg_match('/"openid":"(.*?)"}/', $openid_res , $matches)){
             $openid = $matches[1];
         } else {
-            parent::error_msg('QQ登陆失败');
+            $this->error_msg('QQ登陆失败');
         }
 
         $this->login_third('qq',$openid,$access_token);
     }
 
     public function login_wb($params){
-        if(strpos($params,'code=') === false) parent::error_msg('微博登陆失败');
+        if(strpos($params,'code=') === false) $this->error_msg('微博登陆失败');
         $code = str_replace('code=','',$params);
         $url = 'https://api.weibo.com/oauth2/access_token';
         $data = array(
@@ -154,9 +149,9 @@ class user extends MY_Controller  {
             'grant_type'       => "authorization_code"
         );
         $access_token_res = post_fsockopen($url,$data);
-        if(empty($access_token_res)) parent::error_msg('微博登陆失败');
+        if(empty($access_token_res)) $this->error_msg('微博登陆失败');
         $sina_res = json_decode($access_token_res,true);
-        if(empty($sina_res['uid'])) parent::error_msg('微博登陆失败');
+        if(empty($sina_res['uid'])) $this->error_msg('微博登陆失败');
 
         $this->login_third('wb',$sina_res['uid'],$sina_res['access_token']);
     }
@@ -168,16 +163,13 @@ class user extends MY_Controller  {
     public function login_third($type,$id,$key){
         if($type=='qq'){
             $where = "where qq_id = '$id'";
-            $flag = empty($one['qq_id']) ? true : false;
         }elseif($type=='wb'){
             $where = "where wb_id = '$id'";
-            $flag = empty($one['wb_id']) ? true : false;
         }elseif($type=='wx'){
             $where = "where wx_id = '$id'";
-            $flag = empty($one['wx_id']) ? true : false;
         }
         $one = $this->model_users->GetRow($where);
-        if($flag){
+        if(empty($one)){
             $_SESSION['openid'] = $id;
             $_SESSION['third_type'] = $type;
             $_SESSION['access_token'] = $key;
@@ -208,6 +200,7 @@ class user extends MY_Controller  {
         $this->is_black();
 
         $data['email'] = $email = trim(strip_tags($_REQUEST['email']));
+        $data['name'] = $name = trim(strip_tags($_REQUEST['name']));
         $data['code'] = $code = trim(strip_tags($_REQUEST['code']));
         $data['password'] = trim(strip_tags($_REQUEST['password']));
         $data['confirm'] = trim(strip_tags($_REQUEST['confirm']));
@@ -216,31 +209,23 @@ class user extends MY_Controller  {
 
         unset($data['confirm']);
         unset($data['code']);
-        $where = "where email = '$email'";
+
+        $where = "where name = '$name'";
+        $res_by_name = $this->model_users->GetRow($where);
+        if(!empty($res_by_name)) splash('error','该昵称已经被注册，不可使用');
+
+        $where = "where email = '$email' and is_validate = 1";
         $res_by_email = $this->model_users->GetRow($where);
-        if(!empty($res_by_email) && $res_by_email['is_validate'] == 1){
-            //邮箱已被注册并激活了
-            splash('error','该邮箱已被注册，不可使用');
-        }elseif(!empty($res_by_email) && $res_by_email['is_validate'] == 0){
-            //邮箱已被注册但没有激活
-            $data = $res_by_email;
-        }elseif(empty($res_by_email)){
-            $data['password'] = md5($data['password'].ENCRYPTION);
-            $data['create_time'] = date('Y-m-d H:i:s');
-            $data['ip'] = get_real_ip();
-            $data['user_id'] = $this->model_users->Save($data);
-        }else{
-            splash('error','注册失败，请刷新重试');
-        }
+        if(!empty($res_by_email)) splash('error','该邮箱已经被注册，不可使用');
+
+        $data['password'] = md5($data['password'].ENCRYPTION);
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['ip'] = get_real_ip();
+        $data['user_id'] = $this->model_users->Save($data);
 
         if($data['user_id']){
-            $email_content = get_email_content($data['user_id'],$data['email']);
-            $res = my_send_email($data['email'],'账号激活',$email_content);
-            if($res){
-                splash('success','注册成功，收到邮件后请激活账号');
-            }else{
-                splash('success','注册成功，邮件发送失败，请联系邮箱 '.EMAIL_NUMBER);
-            }
+            $this->set_user_login($data);
+            splash('success','注册成功');
         }else{
             splash('error','注册失败,请重试');
         }
@@ -254,23 +239,23 @@ class user extends MY_Controller  {
 
         $time = $param['time'];
         if(time() - $time > 86400){
-            parent::error_msg('链接已失效，请联系'.EMAIL_NUMBER .'重新发送');
+            $this->error_msg('链接已失效');
         }
         $user_id = intval($param['user_id']);
-        if(empty($user_id)) parent::error_msg('出错啦');
+        if(empty($user_id)) $this->error_msg('出错啦');
 
         $where = "where user_id = '$user_id'";
         $user_info = $this->model_users->GetRow($where);
         if(empty($user_info) || $user_info['email'] != $param['email']){
-            parent::error_msg('出错啦');
+            $this->error_msg('出错啦');
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
             header_index('/login');
         }
-        $this->assign('title','完善资料');
-        $this->assign('unique_id',$user_id);
+        $this->model_users->Update(array('user_id'=>$user_id),array('is_validate'=>1));
+        $this->assign('title','邮箱验证');
         $this->native_display('user/header.html');
-        $this->native_display('user/nick_name.html');
+        $this->native_display('user/valid_email.html');
     }
 
     public function nick_save(){

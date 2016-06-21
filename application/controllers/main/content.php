@@ -170,10 +170,10 @@ class content extends MY_Controller  {
     */
     public function article_detail($time,$param){
         $id = intval(get_detail_id($param));
-        if(empty($id)) parent :: error_msg('你要找的内容不见啦！');
+        if(empty($id)) $this->error_msg('你要找的内容不见啦！');
         $where = "where con_id = $id";
         $detail = $this->model_article->GetRow($where);
-        if(empty($detail)) parent :: error_msg('你要找的内容不见啦！');
+        if(empty($detail)) $this->error_msg('你要找的内容不见啦！');
         $this->scan_record($id);
         //   $detail['content'] = strip_tags($detail['content'],'<img><br>');
         $detail['create_time'] = substr($detail['create_time'] , 0 , 10);
@@ -317,11 +317,6 @@ class content extends MY_Controller  {
         if($res_content = gif_static_gif($content)) $content = $res_content;
         return filter_content_br($content);
     }
-
-    public function error(){
-        parent :: error_msg();
-    }
-
 
     public function init($p , $s , $nav){
         $flag = 0;

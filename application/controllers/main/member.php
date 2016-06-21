@@ -32,7 +32,7 @@ class member extends MY_Controller  {
         }
         $where = 'where user_id = '.$_SESSION['user_id'];
         $user = $this->model_users->GetRow($where);
-        if(empty($user)) parent::error_msg();
+        if(empty($user)) $this->error_msg();
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
         $sex = $this->sex_data;
         $age = array('0'=>'不填');
@@ -81,7 +81,8 @@ class member extends MY_Controller  {
         if(empty($user_id)) splash('error','保存失败,请重试');
         $data['mobile'] = trim(strip_tags($_REQUEST['mobile']));
         $data['weixin'] = trim(strip_tags($_REQUEST['weixin']));
-        $data['sina'] = trim(strip_tags($_REQUEST['sina']));
+        $data['email'] = trim(strip_tags($_REQUEST['email']));
+        if($data['email'] != $_SESSION['email']) $data['is_validate'] = 0;
         $data['year'] = trim(strip_tags($_REQUEST['year']));
         $data['sex'] = trim(strip_tags($_REQUEST['sex']));
         $data['qq'] = trim(strip_tags($_REQUEST['qq']));
@@ -93,6 +94,26 @@ class member extends MY_Controller  {
         }else{
             splash('error','保存失败,请重试');
         }
+    }
+
+    public function valid_email(){
+        if(!is_login()) header_index('login');
+        $email = trim($_REQUEST['email']);
+        $user_id = $_SESSION['user_id'];
+        $where = "where email = '$email' and is_validate = 1 and user_id != $user_id";
+        $user_by_email = $this->model_users->GetRow($where);
+        if(!empty($user_by_email)) splash('error','该邮箱已被注册');
+
+        $where = 'where user_id = '.$user_id;
+        $user_info = $this->model_users->GetRow($where);
+        if($email != $user_info['email']){
+            $_SESSION['email'] = $email;
+            $this->model_users->Update(array('user_id'=>$user_id),array('email'=>$email,'is_validate'=>0));
+        }else{
+            if($user_info['is_validate'] == 1) splash('error','邮箱已验证');
+        }
+        $email_content = get_email_content($user_id,$email);
+        my_send_email($email,'邮箱验证',$email_content);
     }
 
     public function avatar_save(){
@@ -148,7 +169,7 @@ class member extends MY_Controller  {
     public function member_index($user_sn){
         $user_id = substr($user_sn , 8 );
         if(empty($user_sn)){
-            parent :: error_msg('该用户不存在');
+            $this->error_msg('该用户不存在');
         }
 
         $this->load->model('model_article');
@@ -156,17 +177,27 @@ class member extends MY_Controller  {
         $where = 'where user_id = '.$user_id;
         $user_info = $this->model_users->GetRow($where);
 
-        if(empty($user_info)) parent :: error_msg('该用户不存在');
+        if(empty($user_info)) $this-> error_msg('该用户不存在');
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
         $user_info['sex'] = $this->sex_data[$user_info['sex']];
         $user_info['age'] = empty($user_info['year']) ? '未知' : date('Y') - $user_info['year'];
         if(empty($user_info['avatar'])) $user_info['avatar'] = '/resources/images/login/logo.jpg';
+
+        $this->assign('body','body-member');
+        $this->assign('title',$user_info['name'].'－搞东搞西');
+        $this->assign('menu',$user_info['name']);
+        $this->assign('keywords',$user_info['name']);
+        $this->assign('description',$user_info['name']);
+        $this->assign('user',$user_info);
 
         $count = 0;
         $where = 'where status = 1 and user_id = '.$user_id;
         $group_article_count = $this->model_article->GetCountGroupBy($where , 'type');
         $group_content_count = $this->model_content->GetCountGroupBy($where , 'type');
         $group_count = array_merge($group_content_count,$group_article_count);
+        if(empty($group_count)){
+            $this->display('member_empty.html');exit;
+        }
 
         $nav_res = $this->get_nav_list();
         $nav_list = $nav_res['type'];
@@ -184,12 +215,6 @@ class member extends MY_Controller  {
         }
         array_multisort($group_num, SORT_DESC , $group_count);
 
-        $this->assign('body','body-member');
-        $this->assign('title',$user_info['name'].'－搞东搞西');
-        $this->assign('menu',$user_info['name']);
-        $this->assign('keywords',$user_info['name']);
-        $this->assign('description',$user_info['name']);
-        $this->assign('user',$user_info);
         $this->assign('group_count',$group_count);
         $this->assign('initial_type',$group_count[0]['type']); //最多的一类
 

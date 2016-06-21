@@ -107,6 +107,7 @@ function get_page_url(){
 }
 
 function register_valid($data){
+    $name = $data['name'];
     $email = $data['email'];
     $code  = $data['code'];
     $password = $data['password'];
@@ -116,6 +117,7 @@ function register_valid($data){
     if(empty($code) || strtolower($code) != strtolower($_SESSION['code'])) splash('error','验证码不正确');
 
     valid_email($email);
+    valid_name($name);
 
     if(empty($password)) splash('error','请填写密码');
     if(strlen($password) > 30 || strlen($password) < 6) splash('error','密码长度6-30个字符');
@@ -211,7 +213,7 @@ function my_send_email($to = '929632454@qq.com',$title = '',$content = '')
 function get_email_content($user_id,$email){
     $data = array('user_id'=>$user_id,'email'=>$email,'time'=>time());
     $url = "http://".$_SERVER['HTTP_HOST'].'/user/validate/'.base64_encode(json_encode($data));
-    return '<p>请点击以下链接激活账号，24小时有效</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
+    return '<p>请点击以下链接验证邮箱，24小时有效</p><p><a target="_blank" href="'.$url.'"></a>'.$url.'</p>';
 }
 
 function header_index($url = '/'){

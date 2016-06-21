@@ -11,17 +11,19 @@
             <div class="div-wrapper">
                 <label class="label">邮箱</label>
                 <span class="separate"></span>
-                <input name="mobile" id="eamil" type="text" maxlength="16" value="{$user.email}">
+                <input name="email" id="email" type="text" value="{$user.email}">
+                {if $user.is_validate != 1}<span class="separate valid_email">验证</span>
+                {else}<span class="separate">已验证</span>{/if}
             </div>
             <div class="div-wrapper">
                 <label class="label">手机</label>
                 <span class="separate"></span>
-                <input name="mobile" id="mobile" type="text" maxlength="16" value="{$user.mobile}">
+                <input name="mobile" id="mobile" type="text"  value="{$user.mobile}">
             </div>
             <div class="div-wrapper">
                 <label class="label">微信</label>
                 <span class="separate"></span>
-                <input name="weixin" id="weixin" type="text" maxlength="32" value="{$user.weixin}">
+                <input name="weixin" id="weixin" type="text"  value="{$user.weixin}">
             </div>
             <!--<div class="div-wrapper">
                 <label class="label">新浪</label>
@@ -61,24 +63,39 @@
 </div>
 <script src="/resources/js/common.js"></script>
 <script>
-    var sub_cfg = {};
-    sub_cfg.requestUrl = '/member/save';
-    sub_cfg.success = function(result){
-        alert_msg('保存成功','success');
-    };
-
     $("#submit").click(function(){
         var qq = $.trim($("#qq").val());
         var sex = $.trim($("#sex").val());
-        var sina = $.trim($("#sina").val());
+        var email = $.trim($("#email").val());
         var year = $.trim($("#year").val());
         var weixin = $.trim($("#weixin").val());
         var mobile = $.trim($("#mobile").val());
-
+        var sub_cfg = {};
+        sub_cfg.requestUrl = '/member/save';
+        sub_cfg.success = function(result){
+            alert_msg('保存成功','success');
+            setTimeout(function(){
+                window.location.href=window.location.href;
+            },1000);
+        };
         sub_cfg.data = {
-            "mobile":mobile,"weixin":weixin,'sina':sina,'year':year,"sex":sex,'qq':qq
+            "mobile":mobile,"weixin":weixin,'email':email,'year':year,"sex":sex,'qq':qq
         };
         ajax_res(sub_cfg , this);
+    })
+
+    $(".valid_email").click(function(){
+        var email = $.trim($("#email").val());
+        if(!available_email(email)) return false;
+        var sub_cfg = {};
+        sub_cfg.requestUrl = '/member/valid_email';
+        sub_cfg.success = function(result){};
+        sub_cfg.data = {
+            "email":email
+        };
+        ajax_res(sub_cfg , this);
+        $(this).text('验证中...');
+        $(this).removeClass('valid_email');
     })
 </script>
 </body>

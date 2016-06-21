@@ -184,7 +184,10 @@
         var type = $.trim($("#type").val());
         var content = $.trim($("#wmd-preview").html());
 
-        if(!valid(name,email,content))  return false;
+        if(!available_email(email)) return false;
+        if(!available_name(name)) return false;
+        if(!available_content(content)) return false;
+        if(!available_empty(tags,'请填写标签')) return false;
 
         $.cookie('name', name ,  { path:'/', expires: 365 });
         $.cookie('email', email ,  { path:'/', expires: 365 });

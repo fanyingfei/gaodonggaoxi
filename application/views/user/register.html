@@ -1,6 +1,7 @@
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
-    <input type="text" name="email" id="email" placeholder="邮箱（收到邮件后验证激活账号）" value=""/>
+    <input type="text" name="name" id="name" placeholder="昵称" value=""/>
+    <input type="text" name="email" id="email" placeholder="邮箱" value=""/>
     <div>
         <input type="code" name="code" id="code" placeholder="验证码"/>
         <img id="checkpic" src="/tools/code.php" />
@@ -32,47 +33,23 @@
     };
 
     $("#sub").click(function(){
+        var name = $.trim($("#name").val());
         var email = $.trim($("#email").val());
         var code  = $.trim($("#code").val());
         var password = $.trim($("#password").val());
-        var confirm = $.trim($("#confirm").val());
+        var pass_copy = $.trim($("#confirm").val());
 
-        if(!reg_valid(email,password,confirm)){
-            return false;
-        }
+        if(!available_name(name)) return false;
+        if(!available_email(email)) return false;
+        if(!available_empty(code,'验证码不能为空')) return false;
+        if(!available_pass(password)) return false;
+        if(!available_pass_confirm(password,pass_copy)) return false;
+
         sub_cfg.data = {
-            "name":name,"email":email,'code':code,'password':password,'confirm':confirm
+            "name":name,"email":email,'code':code,'password':password,'confirm':pass_copy
         };
         ajax_res(sub_cfg , this);
     })
-
-    function reg_valid(email,password,confirm){
-        if(email == ''){
-            alert_msg('请填写email');
-            return false;
-        }
-        if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-            alert_msg('email格式不正确');
-            return false;
-        }
-        if(password == ''){
-            alert_msg('请填写密码');
-            return false;
-        }
-        if((password.length < 6) || (password.length > 30)){
-            alert_msg('密码长度6-30个字符');
-            return false;
-        }
-        if(confirm == ''){
-            alert_msg('请确认密码');
-            return false;
-        }
-        if(password != confirm){
-            alert_msg('前后密码不一致');
-            return false;
-        }
-        return true;
-    }
 </script>
 {/literal}
 </html>

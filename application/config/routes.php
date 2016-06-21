@@ -103,6 +103,7 @@ $route['user/nick/save'] = "main/user/nick_save";
 //用户中心
 $route['member'] = "main/member/homepage";
 $route['member/info'] = "main/member/user_info";
+$route['member/valid_email'] = "main/member/valid_email";
 $route['member/avatar'] = "main/member/user_avatar";
 $route['member/pass'] = "main/member/user_pass";
 $route['member/save'] = "main/member/info_save";

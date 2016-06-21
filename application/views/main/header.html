@@ -15,6 +15,7 @@
     <script src="/resources/js/jquery.js"></script>
     <script src="/resources/js/jquery.cookie.js"></script>
     <script src="/resources/js/common.js"></script>
+    <script src="/resources/js/available.js"></script>
     <script>
         var _hmt = _hmt || [];
         (function() {
@@ -36,6 +37,14 @@
             <li><a {if $nav == $val.alias}class="active"{/if} href="/{$val.alias}">{$val.name}</a></li>
             {/foreach}
         </ul>
+        {if $is_login == 0}
+        <div class="login-item">
+            <div class="third-icon-box">
+                <a href="{$url_qq}" id="third-link-qq"><div class="third-icon qq"></div></a>
+                <a href="{$url_wb}" id="third-link-wb"> <div class="third-icon sina"></div></a>
+            </div>
+        </div>
+        {/if}
         <div class="nav-user examine">
             {if $is_login == 0}
             <a href="/login">登录</a>

@@ -1,6 +1,6 @@
 <div class="layout">
     <a href="/"><div class="logo"></div></a>
-    <input type="text" name="account" id="account" placeholder="邮箱账号/昵称" value="{$email}"/>
+    <input type="text" name="account" id="account" placeholder="昵称/(邮箱验证后可通过邮箱登陆)" value="{$name}"/>
     <input type="password" name="password" id="password" placeholder="密码"/>
     <div class="sub" id="sub">立即登录</div>
     <input type="hidden" id="referer-url" value="{$url}" />
@@ -44,26 +44,14 @@
         var password = $.trim($("#password").val());
         var referer_url = $.trim($("#referer-url").val());
 
-        if(!login_valid(account,password)){
-            return false;
-        }
+        if(!available_empty(account,'请填写账号')) return false;
+        if(!available_empty(password,'请填写密码')) return false;
+
         sub_cfg.data = {
             "account":account,'password':password,'referer_url':referer_url
         };
         ajax_res(sub_cfg , this);
     })
-
-    function login_valid(account,password){
-        if(account == ''){
-            alert_msg('请填写账号');
-            return false;
-        }
-        if(password == ''){
-            alert_msg('请填写密码');
-            return false;
-        }
-        return true;
-    }
 </script>
 {/literal}
 </html>

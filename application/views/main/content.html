@@ -92,9 +92,11 @@
         var email = $.trim($("#email").val());
         var content = $(document.getElementById('myiframe').contentWindow.document.body).html();
         var type = $("#type").val();
-        if(!valid(name,email,content)){
-            return false;
-        }
+
+        if(!available_email(email)) return false;
+        if(!available_name(name)) return false;
+        if(!available_content(content)) return false;
+
         $.cookie('name', name ,  { path:'/', expires: 365 });
         $.cookie('email', email ,  { path:'/', expires: 365 });
         sub_cfg.data = {

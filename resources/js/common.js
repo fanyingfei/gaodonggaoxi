@@ -1,6 +1,3 @@
-var max_name_len = 30;
-var min_name_len = 2;
-
 //通用AJAX
 function ajax_res(obj , thi){
     if(is_has_class(thi)) return false;
@@ -68,30 +65,6 @@ function click_bad(url , thi){
         },
         error:function (){}
     })
-}
-//字段是否有效
-function valid(name,email,content){
-    if(name == ''){
-        alert_msg('请填写昵称');
-        return false;
-    }
-    if(name.length > max_name_len || name.length < min_name_len){
-        alert_msg('昵称长度2-30个字符');
-        return false;
-    }
-    if(email == ''){
-        alert_msg('请填写email');
-        return false;
-    }
-    if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-        alert_msg('email格式不正确');
-        return false;
-    }
-    if(content == '' || content == '<br>'){
-        alert_msg('请填写内容');
-        return false;
-    }
-    return true;
 }
 
 function is_has_class(thi){

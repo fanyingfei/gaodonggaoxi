@@ -16,7 +16,11 @@ class MY_controller extends CI_Controller {
         $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
         $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
         $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
+        $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
+        $url_wb = 'https://api.weibo.com/oauth2/authorize?client_id='.SINA_ID.'&response_type=code&redirect_uri='.REDIRECT_URL_WB ;
 
+        $this->assign('url_qq',$url_qq);
+        $this->assign('url_wb',$url_wb);
         $this->ci_smarty->assign('nav','');
         $this->ci_smarty->assign('name',$name);
         $this->ci_smarty->assign('email',$email);
