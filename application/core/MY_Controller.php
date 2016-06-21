@@ -5,8 +5,11 @@ class MY_controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         if(!isset($_SESSION)) session_start();
-        $this->check_access();
-        $this->save_access();
+        $ip = get_real_ip();
+        if(!in_array($ip, array( '127.0.0.1','101.245.183.255','116.228.159.142'))){
+            $this->check_access();
+            $this->save_access();
+        }
         $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
@@ -103,7 +106,6 @@ class MY_controller extends CI_Controller {
 
     public function save_access(){
         $ip = get_real_ip();
-        if(in_array($ip, array( '127.0.0.1','101.245.183.255','116.228.159.142'))) return false;
         if(isCrawler()) return false;
         if(!empty($_SESSION['is_admin'])) return false;
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
