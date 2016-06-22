@@ -73,7 +73,7 @@ class MY_controller extends CI_Controller {
         }
         if(empty($user_column)) return array();
 
-        $this->load->model('model_users');
+        $this->load->model('Model_users');
         $where = 'where user_id in ('.implode(',',$user_column).')';
         $user_res = $this->model_users->GetAll($where);
         if(empty($user_res))  return array();
@@ -87,7 +87,7 @@ class MY_controller extends CI_Controller {
         $click = $_REQUEST['click'];
         if(!in_array($click,array('good','bad'))) splash('error','Try again');
         if(empty($id) || empty($click)) splash('error','Try again');
-        $this->load->model('model_record');
+        $this->load->model('Model_record');
         $type = intval($_REQUEST['type']);
         $ip = get_real_ip();
 
@@ -99,7 +99,7 @@ class MY_controller extends CI_Controller {
             $this->model_record->Save($data);
         }
 
-        $model_name = 'model_'.$table_name;
+        $model_name = 'Model_'.$table_name;
         $res  = $this->$model_name->UpdateNum($id, $click);
         if($res){
             splash('success','Think you');
@@ -117,7 +117,7 @@ class MY_controller extends CI_Controller {
         $url = str_replace('/index.php?','',$url);
         if(strpos($url,'reply') !== false) return false;
         if(empty($url) || $url == '?') $url = 'shou';
-        $this->load->model('model_access');
+        $this->load->model('Model_access');
         $data = array('url'=>$url,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
         $this->model_access->save($data);
     }
@@ -131,7 +131,7 @@ class MY_controller extends CI_Controller {
             return $nav_data;
         }
 
-        $this->load->model('model_nav');
+        $this->load->model('Model_nav');
         $res = $this->model_nav->GetAll( '' , 'sort desc');
         $type = $alias = $view = array();
         foreach($res as $v){
@@ -151,15 +151,15 @@ class MY_controller extends CI_Controller {
     }
 
     public function get_nav_info($type){
-        $this->load->model('model_nav');
+        $this->load->model('Model_nav');
         $where = "where type = $type";
         $res = $this->model_nav->GetRow($where);
-        $res['table_name'] = empty($res['is_detail']) ? 'model_content' : 'model_article';
+        $res['table_name'] = empty($res['is_detail']) ? 'Model_content' : 'Model_article';
         return $res;
     }
 
     public function is_black(){
-        $this->load->model('model_black');
+        $this->load->model('Model_black');
         $ip = get_real_ip();
         $where = "where ip = '$ip";
         $res = $this->model_black->GetRow();

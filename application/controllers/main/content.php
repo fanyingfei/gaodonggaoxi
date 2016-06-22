@@ -13,8 +13,8 @@ class Content extends MY_Controller  {
     public function __construct() {
         parent::__construct();
         $this->get_nav_list();
-        $this->load->model('model_content');
-        $this->load->model('model_article');
+        $this->load->model('Model_content');
+        $this->load->model('Model_article');
     }
 
     public function pic($p = 0 , $s = ''){
@@ -72,7 +72,7 @@ class Content extends MY_Controller  {
         $search = $param['search'];
         $is_detail = $param['is_detail'];
         $html_name = $param['table_name'].'.html';
-        $table_name = 'model_'.$param['table_name'];
+        $table_name = 'Model_'.$param['table_name'];
 
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$type;
@@ -148,7 +148,7 @@ class Content extends MY_Controller  {
         $detail['user_sn'] = $detail['avatar'] = '';
         $detail['u_name'] = empty($detail['user_id']) ? md5($detail['email']) : $detail['name'];
         if(!empty($detail['user_id'])){
-            $this->load->model('model_users');
+            $this->load->model('Model_users');
             $where = 'where user_id = '.$detail['user_id'];
             $user_res = $this->model_users->GetRow($where);
             $detail['avatar'] = $user_res['avatar'];
@@ -191,7 +191,7 @@ class Content extends MY_Controller  {
      * 记录浏览
      */
     public function scan_record($id){
-        $this->load->model('model_record');
+        $this->load->model('Model_record');
         $type = -1;  //文章详情浏览专用
         $ip = get_real_ip();
         $where = "where row_id = $id and type = $type and ip = '$ip'";
@@ -210,7 +210,7 @@ class Content extends MY_Controller  {
         //是否拉入黑名单
         $this->is_black();
 
-        $this->load->model('model_users');
+        $this->load->model('Model_users');
         $data['type'] = intval($_REQUEST['type']);
         $data['content'] = $this->deal_content($_REQUEST['content']);
 
@@ -246,7 +246,7 @@ class Content extends MY_Controller  {
         //是否拉入黑名单
         $this->is_black();
 
-        $this->load->model('model_users');
+        $this->load->model('Model_users');
         $data['type'] = intval($_REQUEST['type']);
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');

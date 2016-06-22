@@ -23,7 +23,7 @@ class Member extends MY_Controller  {
         $this->get_nav_list();
         $this->assign('keywords','用户中心');
         $this->assign('description','用户中心');
-        $this->load->model('model_users');
+        $this->load->model('Model_users');
     }
 
     public function user_info(){
@@ -172,8 +172,8 @@ class Member extends MY_Controller  {
             $this->error_msg('该用户不存在');
         }
 
-        $this->load->model('model_article');
-        $this->load->model('model_content');
+        $this->load->model('Model_article');
+        $this->load->model('Model_content');
         $where = 'where user_id = '.$user_id;
         $user_info = $this->model_users->GetRow($where);
 

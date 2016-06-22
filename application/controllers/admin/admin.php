@@ -36,15 +36,15 @@ class Admin extends MY_Controller  {
         $type_name[0]  = '评论';
         $this->type_name = $type_name;
         $this->type_detail = array_column($nav_list,'is_detail','type');
-        $this->load->model('model_content');
-        $this->load->model('model_article');
-        $this->load->model('model_black');
-        $this->load->model('model_users');
-        $this->load->model('model_reply');
-        $this->load->model('model_access');
-        $this->load->model('model_record');
-        $this->load->model('model_nav');
-        $this->load->model('model_permission');
+        $this->load->model('Model_content');
+        $this->load->model('Model_article');
+        $this->load->model('Model_black');
+        $this->load->model('Model_users');
+        $this->load->model('Model_reply');
+        $this->load->model('Model_access');
+        $this->load->model('Model_record');
+        $this->load->model('Model_nav');
+        $this->load->model('Model_permission');
     }
 
     public function index(){
@@ -65,7 +65,7 @@ class Admin extends MY_Controller  {
 
     public function main_list($name , $str=''){
         $where = $order_by = '';
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $function = $name.'_list';
         $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
@@ -102,7 +102,7 @@ class Admin extends MY_Controller  {
 
     public function delete($name){
         $this->check_permission($name.'_delete');
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $ids = explode(',',$_REQUEST['ids']);
         $res = $this->$table_name->delete($ids);
         if($res){
@@ -114,7 +114,7 @@ class Admin extends MY_Controller  {
 
     public function pass($name){
         $this->check_permission($name.'_pass');
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $ids = trim($_REQUEST['ids']);
         $where = 'where con_id in ('.$ids.')';
         $res = $this->$table_name->UpdateBySql($where,'status',$this->status_pass);
@@ -127,7 +127,7 @@ class Admin extends MY_Controller  {
 
     public function fail($name){
         $this->check_permission($name.'_fail');
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $ids = $_REQUEST['ids'];
         $where = 'where con_id in ('.$ids.')';
         $res = $this->$table_name->UpdateBySql($where,'status',$this->status_fail);
@@ -140,7 +140,7 @@ class Admin extends MY_Controller  {
 
     public function update_row($name){
         $this->check_permission($name.'_edit');
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $con_id = intval($_REQUEST['con_id']);
         $data['type'] = intval($_REQUEST['type']);
         $data['status'] = intval($_REQUEST['status']);
@@ -356,7 +356,7 @@ class Admin extends MY_Controller  {
 
     public function get_row($name){
         if(empty($name)) splash('error','参数有误');
-        $table_name = 'model_'.$name;
+        $table_name = 'Model_'.$name;
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','参数有误');
         $res  = $this->$table_name->GetRowByKey($id);

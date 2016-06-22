@@ -19,7 +19,7 @@ class User extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('model_users');
+        $this->load->model('Model_users');
     }
 
     public function login_index($param=''){

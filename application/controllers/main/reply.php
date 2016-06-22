@@ -20,14 +20,13 @@ class Reply extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('model_reply');
+        $this->load->model('Model_reply');
     }
 
     public function reply_list(){
         $con_id = intval($_REQUEST['id']);
         $type = intval($_REQUEST['type']);
         if(empty($con_id)) splash('error','打开失败，请刷新重试');
-        $this->load->model('model_reply');
         $where = "where con_id = $con_id and type = $type";
         $res = $this->model_reply->GetAll($where , 'rep_id asc');
         $user_avatar = $this->get_user_avatar($res , 'avatar');
