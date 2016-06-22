@@ -1,6 +1,6 @@
 <?php
 
-class model_reply extends MY_Model{
+class Model_reply extends MY_Model{
 
     private $key = 'rep_id';
     private $table  = 'fyf_reply';

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class user extends MY_Controller  {
+class User extends MY_Controller  {
 	/**
 	 * Index Page for this controller.
 	 *

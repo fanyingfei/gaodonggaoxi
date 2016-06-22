@@ -1,6 +1,6 @@
 <?php
 
-class model_nav extends MY_Model{
+class Model_nav extends MY_Model{
 
     private $key = 'nav_id';
     private $table  = 'fyf_nav';

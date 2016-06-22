@@ -1,6 +1,6 @@
 <?php
 
-class model_access extends MY_Model{
+class Model_access extends MY_Model{
 
     private $key = 'rec_id';
     private $table  = 'fyf_access';

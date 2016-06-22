@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class member extends MY_Controller  {
+class Member extends MY_Controller  {
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');
 	/**
 	 * Index Page for this controller.

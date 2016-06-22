@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class reply extends MY_Controller  {
+class Reply extends MY_Controller  {
     private $table_name = 'reply';
 	/**
 	 * Index Page for this controller.

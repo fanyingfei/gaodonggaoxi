@@ -1,6 +1,6 @@
 <?php
 
-class model_users extends MY_Model{
+class Model_users extends MY_Model{
 
     private $key = 'user_id';
     private $table  = 'fyf_users';

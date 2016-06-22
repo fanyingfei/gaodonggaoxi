@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class admin extends MY_Controller  {
+class Admin extends MY_Controller  {
     private $status_pass = 1;
     private $status_fail   = 2;
     private $sex_data = array('W'=>'女','M'=>'男','U'=>'未知');

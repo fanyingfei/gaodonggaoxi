@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class content extends MY_Controller  {
+class Content extends MY_Controller  {
 
     private $sort_data = array(
         'new'=>array('name'=>'最新','value'=>'con_id desc'),
