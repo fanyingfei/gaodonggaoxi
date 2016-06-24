@@ -297,7 +297,7 @@ class User extends MY_Controller  {
         my_set_cookie('is_login',1);
         my_set_cookie('name', $one['name']);
         my_set_cookie('email',  $one['email']);
-        my_set_cookie('PHPSESSID',session_id());
+        my_set_cookie(SESS_NAME ,session_id());
     }
 
 }

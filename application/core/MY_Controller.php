@@ -4,7 +4,6 @@ class MY_controller extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        if(!isset($_SESSION)) session_start();
         $this->set_init();
         $ip = get_real_ip();
         $ip_list = array( '127.0.0.1','101.245.183.255','116.228.159.142');
@@ -172,6 +171,10 @@ class MY_controller extends CI_Controller {
     }
 
     public function set_init(){
+        if(!isset($_SESSION)){
+            session_name(SESS_NAME);
+            session_start();
+        }
         $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE

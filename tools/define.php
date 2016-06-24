@@ -4,6 +4,8 @@ define('ENCRYPTION','fanyingfei');
 
 define('COOKIE_EXPIRE',3600*24*30);
 
+define('SESS_NAME','gdgx');
+
 define('NAV_FILE',ROOT_PATH.'tools/nav.php');
 
 define('ACCESS_TIME_LIMIT',5);
