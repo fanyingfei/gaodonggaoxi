@@ -1,9 +1,9 @@
 <?php
 
-class Model_record extends MY_Model{
+class Users_model extends MY_Model{
 
-    private $key = 'rec_id';
-    private $table  = 'fyf_record';
+    private $key = 'user_id';
+    private $table  = 'fyf_users';
 
     function __construct()
     {

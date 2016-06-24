@@ -1,6 +1,6 @@
 <?php
 
-class Model_permission extends MY_Model{
+class Permission_model extends MY_Model{
 
     private $key = 'per_id';
     private $table  = 'fyf_permission';

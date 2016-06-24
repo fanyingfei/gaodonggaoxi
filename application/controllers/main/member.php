@@ -23,7 +23,6 @@ class Member extends MY_Controller  {
         $this->get_nav_list();
         $this->assign('keywords','用户中心');
         $this->assign('description','用户中心');
-        $this->load->model('Model_users');
     }
 
     public function user_info(){
@@ -31,7 +30,7 @@ class Member extends MY_Controller  {
             header_index('login');
         }
         $where = 'where user_id = '.$_SESSION['user_id'];
-        $user = $this->model_users->GetRow($where);
+        $user = $this->users_model->GetRow($where);
         if(empty($user)) $this->error_msg();
         $user['avatar'] = empty($user['avatar']) ? '' : $user['avatar'];
         $sex = $this->sex_data;
@@ -88,7 +87,7 @@ class Member extends MY_Controller  {
         $data['qq'] = trim(strip_tags($_REQUEST['qq']));
         if(empty($data['sex'])) $data['sex'] = 'U';
         if(!empty($data['mobile'])) valid_mobile($data['mobile']);
-        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
+        $res = $this->users_model->Update(array('user_id'=>$user_id),$data);
         if($res){
             splash('sucess','保存成功');
         }else{
@@ -101,14 +100,14 @@ class Member extends MY_Controller  {
         $email = trim($_REQUEST['email']);
         $user_id = $_SESSION['user_id'];
         $where = "where email = '$email' and is_validate = 1 and user_id != $user_id";
-        $user_by_email = $this->model_users->GetRow($where);
+        $user_by_email = $this->users_model->GetRow($where);
         if(!empty($user_by_email)) splash('error','该邮箱已被注册');
 
         $where = 'where user_id = '.$user_id;
-        $user_info = $this->model_users->GetRow($where);
+        $user_info = $this->users_model->GetRow($where);
         if($email != $user_info['email']){
             $_SESSION['email'] = $email;
-            $this->model_users->Update(array('user_id'=>$user_id),array('email'=>$email,'is_validate'=>0));
+            $this->users_model->Update(array('user_id'=>$user_id),array('email'=>$email,'is_validate'=>0));
         }else{
             if($user_info['is_validate'] == 1) splash('error','邮箱已验证');
         }
@@ -121,7 +120,7 @@ class Member extends MY_Controller  {
         $user_id = $_SESSION['user_id'];
         $data['avatar'] = trim(strip_tags($_REQUEST['avatar']));
         if(empty($data['avatar'])) splash('error','请输入图片url');
-        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
+        $res = $this->users_model->Update(array('user_id'=>$user_id),$data);
         if($res){
             $_SESSION['avatar'] = $data['avatar'];
             splash('sucess','保存成功');
@@ -140,14 +139,14 @@ class Member extends MY_Controller  {
         $confirm_pass = trim(strip_tags($_REQUEST['confirm_pass']));
 
         $where = 'where user_id = '.$user_id;
-        $user_info = $this->model_users->GetRow($where);
+        $user_info = $this->users_model->GetRow($where);
         if(md5($old_pass.ENCRYPTION) != $user_info['password']) splash('error','原密码输入不正确');
 
         if($old_pass == $new_pass) splash('sucess','保存成功');
         if($new_pass != $confirm_pass) splash('error','前后密码不一致');
 
         $data['password'] = md5($new_pass.ENCRYPTION);
-        $res = $this->model_users->Update(array('user_id'=>$user_id),$data);
+        $res = $this->users_model->Update(array('user_id'=>$user_id),$data);
         if($res){
             splash('sucess','修改成功');
         }else{
@@ -172,10 +171,8 @@ class Member extends MY_Controller  {
             $this->error_msg('该用户不存在');
         }
 
-        $this->load->model('Model_article');
-        $this->load->model('Model_content');
         $where = 'where user_id = '.$user_id;
-        $user_info = $this->model_users->GetRow($where);
+        $user_info = $this->users_model->GetRow($where);
 
         if(empty($user_info)) $this-> error_msg('该用户不存在');
         if(empty($user_info['sex']))  $user_info['sex'] = 'U';
@@ -192,8 +189,8 @@ class Member extends MY_Controller  {
 
         $count = 0;
         $where = 'where status = 1 and user_id = '.$user_id;
-        $group_article_count = $this->model_article->GetCountGroupBy($where , 'type');
-        $group_content_count = $this->model_content->GetCountGroupBy($where , 'type');
+        $group_article_count = $this->article_model->GetCountGroupBy($where , 'type');
+        $group_content_count = $this->content_model->GetCountGroupBy($where , 'type');
         $group_count = array_merge($group_content_count,$group_article_count);
         if(empty($group_count)){
             $this->display('member_empty.html');exit;
@@ -237,7 +234,6 @@ class Member extends MY_Controller  {
         $nav_info = $this->get_nav_info($type);
         $is_detail = $nav_info['is_detail'];
         $table_name = $nav_info['table_name'];
-        $this->load->model($table_name);
         //得到总数
         $count = $this->$table_name->GetTotal($where);
 
@@ -247,7 +243,7 @@ class Member extends MY_Controller  {
         //得到数据
         $list  = $this->$table_name->GetAll($where, '' ,$total_page - $p,$limit);
         //得到头像
-        $avatar = $this->model_users->GetRowByKey($user_id);
+        $avatar = $this->users_model->GetRowByKey($user_id);
 
         foreach($list as &$v){
             if($is_detail == 1){

@@ -20,7 +20,6 @@ class Reply extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('Model_reply');
     }
 
     public function reply_list(){
@@ -28,7 +27,7 @@ class Reply extends MY_Controller  {
         $type = intval($_REQUEST['type']);
         if(empty($con_id)) splash('error','打开失败，请刷新重试');
         $where = "where con_id = $con_id and type = $type";
-        $res = $this->model_reply->GetAll($where , 'rep_id asc');
+        $res = $this->reply_model->GetAll($where , 'rep_id asc');
         $user_avatar = $this->get_user_avatar($res , 'avatar');
 
         foreach($res as &$v){
@@ -74,11 +73,10 @@ class Reply extends MY_Controller  {
         $data['create_time'] = date('Y-m-d H:i:s');
         $data['user_id'] = $_SESSION['user_id'];
         $data['name'] = $_SESSION['name'];
-        $res  = $this->model_reply->Save($data);
+        $res  = $this->reply_model->Save($data);
         if($res){
             $nav_info = $this->get_nav_info($data['type']);
             $table_name = $nav_info['table_name'];
-            $this->load->model($table_name);
             $this->$table_name->UpdateNum($id,'reply');
             splash('success','提交成功');
         }else{

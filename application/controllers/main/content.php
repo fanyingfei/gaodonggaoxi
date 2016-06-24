@@ -13,8 +13,6 @@ class Content extends MY_Controller  {
     public function __construct() {
         parent::__construct();
         $this->get_nav_list();
-        $this->load->model('Model_content');
-        $this->load->model('Model_article');
     }
 
     public function pic($p = 0 , $s = ''){
@@ -72,7 +70,7 @@ class Content extends MY_Controller  {
         $search = $param['search'];
         $is_detail = $param['is_detail'];
         $html_name = $param['table_name'].'.html';
-        $table_name = 'Model_'.$param['table_name'];
+        $table_name = $param['table_name'].'_model';
 
         $this->load->library('page');
         $where = 'where status = 1 and type = '.$type;
@@ -143,14 +141,13 @@ class Content extends MY_Controller  {
     public function content_detail($time,$param){
         $id = intval(get_detail_id($param));
         $where = 'where con_id = '.$id;
-        $detail  = $this->model_content->GetRow($where);
+        $detail  = $this->content_model->GetRow($where);
         $detail['create_time'] = change_time($detail['create_time']);
         $detail['user_sn'] = $detail['avatar'] = '';
         $detail['u_name'] = empty($detail['user_id']) ? md5($detail['email']) : $detail['name'];
         if(!empty($detail['user_id'])){
-            $this->load->model('Model_users');
             $where = 'where user_id = '.$detail['user_id'];
-            $user_res = $this->model_users->GetRow($where);
+            $user_res = $this->users_model->GetRow($where);
             $detail['avatar'] = $user_res['avatar'];
             $detail['user_sn'] = get_user_sn($detail['user_id'] , $user_res['create_time']);
         }
@@ -172,7 +169,7 @@ class Content extends MY_Controller  {
         $id = intval(get_detail_id($param));
         if(empty($id)) $this->error_msg('你要找的内容不见啦！');
         $where = "where con_id = $id";
-        $detail = $this->model_article->GetRow($where);
+        $detail = $this->article_model->GetRow($where);
         if(empty($detail)) $this->error_msg('你要找的内容不见啦！');
         $this->scan_record($id);
         //   $detail['content'] = strip_tags($detail['content'],'<img><br>');
@@ -191,15 +188,14 @@ class Content extends MY_Controller  {
      * 记录浏览
      */
     public function scan_record($id){
-        $this->load->model('Model_record');
         $type = -1;  //文章详情浏览专用
         $ip = get_real_ip();
         $where = "where row_id = $id and type = $type and ip = '$ip'";
-        $res = $this->model_record->GetRow($where);
+        $res = $this->record_model->GetRow($where);
         if(empty($res)){
             $data = array('type'=>$type ,'row_id'=>$id,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
-            $list  = $this->model_record->save($data);
-            $this->model_article->UpdateNum($id , 'scan');
+            $list  = $this->record_model->save($data);
+            $this->article_model->UpdateNum($id , 'scan');
         }
     }
 
@@ -210,7 +206,6 @@ class Content extends MY_Controller  {
         //是否拉入黑名单
         $this->is_black();
 
-        $this->load->model('Model_users');
         $data['type'] = intval($_REQUEST['type']);
         $data['content'] = $this->deal_content($_REQUEST['content']);
 
@@ -223,7 +218,7 @@ class Content extends MY_Controller  {
             $data['name'] = $name = strip_tags(trim($_REQUEST['name']));
             //已经注册过的昵称不能用
             $where = "where name = '$name'";
-            $res_by_name = $this->model_users->GetRow($where);
+            $res_by_name = $this->users_model->GetRow($where);
             if(!empty($res_by_name)) splash('error','该昵称已被注册，仅本人登陆后可用');
 
             $data['name'] = strip_tags(trim($_REQUEST['name']));
@@ -234,7 +229,7 @@ class Content extends MY_Controller  {
         $data['create_time'] = date('Y-m-d H:i:s');
         $data['ip'] = get_real_ip();
 		if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
-        $res  = $this->model_content->Save($data);
+        $res  = $this->content_model->Save($data);
         if($res){
             splash('success','提交成功，审核后自动发布');
         }else{
@@ -246,7 +241,6 @@ class Content extends MY_Controller  {
         //是否拉入黑名单
         $this->is_black();
 
-        $this->load->model('Model_users');
         $data['type'] = intval($_REQUEST['type']);
         $data['tags'] = trim(strip_tags($_REQUEST['tags']));
         if(empty($data['tags'])) splash('error','请添加标签');
@@ -271,7 +265,7 @@ class Content extends MY_Controller  {
             $data['name'] = $name = strip_tags(trim($_REQUEST['name']));
             //已经注册过的昵称不能用
             $where = "where name = '$name'";
-            $res_by_name = $this->model_users->GetRow($where);
+            $res_by_name = $this->users_model->GetRow($where);
             if(!empty($res_by_name)) splash('error','该昵称已被注册，仅本人登陆后可用');
 
             $data['name'] = strip_tags(trim($_REQUEST['name']));
@@ -283,7 +277,7 @@ class Content extends MY_Controller  {
         $data['ip'] = get_real_ip();
         if(!empty($_SESSION['is_admin'])) $data['status'] = 1;
         if(empty($data['type'])) $data['status'] = 0;
-        $res  = $this->model_article->Save($data);
+        $res  = $this->article_model->Save($data);
         if($res){
             splash('success','提交成功，审核后自动发布');
         }else{

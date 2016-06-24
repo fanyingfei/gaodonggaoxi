@@ -5,30 +5,15 @@ class MY_controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         if(!isset($_SESSION)) session_start();
+        $this->set_init();
         $ip = get_real_ip();
-        if(!in_array($ip, array( '127.0.0.1','101.245.183.255','116.228.159.142'))){
+        $ip_list = array( '127.0.0.1','101.245.183.255','116.228.159.142');
+        if(!in_array($ip, $ip_list)){
             $this->check_access();
             $this->save_access();
         }
-        $is_login = is_login() ? 1 : 0;
-        $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
-        $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
-        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
-        $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
-        $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
-        $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
-        $url_wb = 'https://api.weibo.com/oauth2/authorize?client_id='.SINA_ID.'&response_type=code&redirect_uri='.REDIRECT_URL_WB ;
-
-        $this->assign('url_qq',$url_qq);
-        $this->assign('url_wb',$url_wb);
-        $this->ci_smarty->assign('nav','');
-        $this->ci_smarty->assign('name',$name);
-        $this->ci_smarty->assign('email',$email);
-        $this->ci_smarty->assign('avatar',$avatar);
-        $this->ci_smarty->assign('search',$search);
-        $this->ci_smarty->assign('is_login',$is_login);
-        $this->ci_smarty->assign('is_admin',$is_admin);
     }
+
     public function assign($key,$val)
     {
         $this->ci_smarty->assign($key,$val);
@@ -73,9 +58,8 @@ class MY_controller extends CI_Controller {
         }
         if(empty($user_column)) return array();
 
-        $this->load->model('Model_users');
         $where = 'where user_id in ('.implode(',',$user_column).')';
-        $user_res = $this->model_users->GetAll($where);
+        $user_res = $this->users_model->GetAll($where);
         if(empty($user_res))  return array();
 
         if($col == '') return $user_res;
@@ -87,19 +71,19 @@ class MY_controller extends CI_Controller {
         $click = $_REQUEST['click'];
         if(!in_array($click,array('good','bad'))) splash('error','Try again');
         if(empty($id) || empty($click)) splash('error','Try again');
-        $this->load->model('Model_record');
+
         $type = intval($_REQUEST['type']);
         $ip = get_real_ip();
 
         if(empty($_SESSION['is_admin'])){
             $where = "where row_id = $id and type = $type and ip = '$ip'";
-            $res = $this->model_record->GetRow($where);
+            $res = $this->record_model->GetRow($where);
             if(!empty($res)) splash('error','You are voted');
             $data = array('type'=>$type ,'row_id'=>$id , 'ip'=>$ip,'ip_address'=>'','create_time'=>date('Y-m-d H:i:s'));
-            $this->model_record->Save($data);
+            $this->record_model->Save($data);
         }
 
-        $model_name = 'Model_'.$table_name;
+        $model_name = $table_name.'_model';
         $res  = $this->$model_name->UpdateNum($id, $click);
         if($res){
             splash('success','Think you');
@@ -117,9 +101,8 @@ class MY_controller extends CI_Controller {
         $url = str_replace('/index.php?','',$url);
         if(strpos($url,'reply') !== false) return false;
         if(empty($url) || $url == '?') $url = 'shou';
-        $this->load->model('Model_access');
         $data = array('url'=>$url,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
-        $this->model_access->save($data);
+        $this->access_model->save($data);
     }
 
 
@@ -131,8 +114,7 @@ class MY_controller extends CI_Controller {
             return $nav_data;
         }
 
-        $this->load->model('Model_nav');
-        $res = $this->model_nav->GetAll( '' , 'sort desc');
+        $res = $this->nav_model->GetAll( '' , 'sort desc');
         $type = $alias = $view = array();
         foreach($res as $v){
             if(empty($v['is_detail'])){
@@ -151,18 +133,16 @@ class MY_controller extends CI_Controller {
     }
 
     public function get_nav_info($type){
-        $this->load->model('Model_nav');
         $where = "where type = $type";
-        $res = $this->model_nav->GetRow($where);
-        $res['table_name'] = empty($res['is_detail']) ? 'Model_content' : 'Model_article';
+        $res = $this->nav_model->GetRow($where);
+        $res['table_name'] = empty($res['is_detail']) ? 'content_model' : 'article_model';
         return $res;
     }
 
     public function is_black(){
-        $this->load->model('Model_black');
         $ip = get_real_ip();
         $where = "where ip = '$ip";
-        $res = $this->model_black->GetRow();
+        $res = $this->black_model->GetRow();
         if(!empty($res)) splash('error','你已被拉入黑名单');
     }
 
@@ -189,6 +169,37 @@ class MY_controller extends CI_Controller {
             $_SESSION['access_time'] = time();
             $_SESSION['access_count'] = 0;
         }
+    }
+
+    public function set_init(){
+        $is_login = is_login() ? 1 : 0;
+        $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
+        $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
+        $search = empty($_COOKIE['search']) ? '' : $_COOKIE['search'] ; //没登陆也有，用COOLIE
+        $avatar = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'] ; //登陆才有，用SESSION
+        $is_admin = empty($_SESSION['is_admin']) ? 0 : $_SESSION['is_admin']; //登陆才有，用SESSION
+        $url_qq = 'https://graph.qq.com/oauth/show?which=ConfirmPage&display=pc&display=pc&response_type=code&client_id='.APP_ID.'&redirect_uri='.REDIRECT_URL_QQ ;
+        $url_wb = 'https://api.weibo.com/oauth2/authorize?client_id='.SINA_ID.'&response_type=code&redirect_uri='.REDIRECT_URL_WB ;
+
+        $this->assign('url_qq',$url_qq);
+        $this->assign('url_wb',$url_wb);
+        $this->ci_smarty->assign('nav','');
+        $this->ci_smarty->assign('name',$name);
+        $this->ci_smarty->assign('email',$email);
+        $this->ci_smarty->assign('avatar',$avatar);
+        $this->ci_smarty->assign('search',$search);
+        $this->ci_smarty->assign('is_login',$is_login);
+        $this->ci_smarty->assign('is_admin',$is_admin);
+
+        $this->load->model('content_model');
+        $this->load->model('article_model');
+        $this->load->model('black_model');
+        $this->load->model('users_model');
+        $this->load->model('reply_model');
+        $this->load->model('access_model');
+        $this->load->model('record_model');
+        $this->load->model('nav_model');
+        $this->load->model('permission_model');
     }
 
 }

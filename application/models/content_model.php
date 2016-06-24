@@ -1,6 +1,6 @@
 <?php
 
-class Model_content extends MY_Model{
+class Content_model extends MY_Model{
 
     private $key = 'con_id';
     private $table  = 'fyf_content';

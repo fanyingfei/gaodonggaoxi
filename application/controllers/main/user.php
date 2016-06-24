@@ -19,7 +19,6 @@ class User extends MY_Controller  {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('Model_users');
     }
 
     public function login_index($param=''){
@@ -48,7 +47,7 @@ class User extends MY_Controller  {
         }else{
             $where = "where name = '$account'";
         }
-        $one = $this->model_users->GetRow($where);
+        $one = $this->users_model->GetRow($where);
 
         if(empty($one)) splash('error','账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
@@ -72,7 +71,7 @@ class User extends MY_Controller  {
         if(empty($password)) splash('error','请输入密码');
 
         $where = "where name = '$name'";
-        $one = $this->model_users->GetRow($where);
+        $one = $this->users_model->GetRow($where);
         if(empty($one)) splash('error','您要绑定的账号不存在');
         if($one['password'] != md5($password.ENCRYPTION)) splash('error','密码不正确');
         if(empty($one['is_validate']) || empty($one['name'])) splash('error','请先激活账号');
@@ -87,7 +86,7 @@ class User extends MY_Controller  {
             if(!empty($user_info)){
                 $user_info = json_decode($user_info,true);
                 if(!empty($user_info['gender']) && $one['sex'] == 'U'){
-                    $sex_array = array_flip($this->sex_data);
+                    $sex_array = array('女'=>'W','男'=>'M');
                     $data['sex'] = empty($sex_array[$user_info['gender']]) ? 'U' : $sex_array[$user_info['gender']];
                 }
                 if(!empty($user_info['year']) && empty($one['year'])) $data['year'] = $user_info['year'];
@@ -111,7 +110,7 @@ class User extends MY_Controller  {
 
         }
 
-        $this->model_users->Update(array('user_id'=>$one['user_id']),$data);
+        $this->users_model->Update(array('user_id'=>$one['user_id']),$data);
         $this->set_user_login($one);
         splash('success','绑定成功');
     }
@@ -168,7 +167,7 @@ class User extends MY_Controller  {
         }elseif($type=='wx'){
             $where = "where wx_id = '$id'";
         }
-        $one = $this->model_users->GetRow($where);
+        $one = $this->users_model->GetRow($where);
         if(empty($one)){
             $_SESSION['openid'] = $id;
             $_SESSION['third_type'] = $type;
@@ -211,17 +210,17 @@ class User extends MY_Controller  {
         unset($data['code']);
 
         $where = "where name = '$name'";
-        $res_by_name = $this->model_users->GetRow($where);
+        $res_by_name = $this->users_model->GetRow($where);
         if(!empty($res_by_name)) splash('error','该昵称已经被注册，不可使用');
 
         $where = "where email = '$email' and is_validate = 1";
-        $res_by_email = $this->model_users->GetRow($where);
+        $res_by_email = $this->users_model->GetRow($where);
         if(!empty($res_by_email)) splash('error','该邮箱已经被注册，不可使用');
 
         $data['password'] = md5($data['password'].ENCRYPTION);
         $data['create_time'] = date('Y-m-d H:i:s');
         $data['ip'] = get_real_ip();
-        $data['user_id'] = $this->model_users->Save($data);
+        $data['user_id'] = $this->users_model->Save($data);
 
         if($data['user_id']){
             $this->set_user_login($data);
@@ -245,14 +244,14 @@ class User extends MY_Controller  {
         if(empty($user_id)) $this->error_msg('出错啦');
 
         $where = "where user_id = '$user_id'";
-        $user_info = $this->model_users->GetRow($where);
+        $user_info = $this->users_model->GetRow($where);
         if(empty($user_info) || $user_info['email'] != $param['email']){
             $this->error_msg('出错啦');
         }
         if(!empty($user_info['is_validate']) && !empty($user_info['name'])){
             header_index('/login');
         }
-        $this->model_users->Update(array('user_id'=>$user_id),array('is_validate'=>1));
+        $this->users_model->Update(array('user_id'=>$user_id),array('is_validate'=>1));
         $this->assign('title','邮箱验证');
         $this->native_display('user/header.html');
         $this->native_display('user/valid_email.html');
@@ -266,7 +265,7 @@ class User extends MY_Controller  {
         valid_name($name);
 
         $where = "where user_id = $id";
-        $user_info = $this->model_users->GetRow($where);
+        $user_info = $this->users_model->GetRow($where);
         if(empty($user_info)) splash('error','激活失败，请刷新重试');
 
         if(!empty($user_info['name']) && !empty($user_info['is_validate'])){
@@ -274,9 +273,9 @@ class User extends MY_Controller  {
         }
 
         $where = "where name = '$name'";
-        $res_by_name = $this->model_users->GetRow($where);
+        $res_by_name = $this->users_model->GetRow($where);
         if(!empty($res_by_name) && $res_by_name['user_id'] != $id) splash('error','该昵称已被注册，不可使用');
-        $res = $this->model_users->UpdateByKey($id,array('name'=>$name,'is_validate'=>1));
+        $res = $this->users_model->UpdateByKey($id,array('name'=>$name,'is_validate'=>1));
         if($res){
             $user_info['name'] = $name;
             $this->set_user_login($user_info);
@@ -287,7 +286,7 @@ class User extends MY_Controller  {
     }
 
     public function set_user_login($one){
-        $this->model_users->UpdateByKey($one['user_id'],array('last_login'=>date('Y-m-d H:i:s'),'ip'=>get_real_ip()));
+        $this->users_model->UpdateByKey($one['user_id'],array('last_login'=>date('Y-m-d H:i:s'),'ip'=>get_real_ip()));
         $_SESSION['user_id'] = $one['user_id'];
         $_SESSION['email'] = $one['email'];
         $_SESSION['name'] = $one['name'];

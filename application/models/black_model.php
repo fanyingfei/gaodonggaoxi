@@ -1,9 +1,9 @@
 <?php
 
-class Model_reply extends MY_Model{
+class Black_model extends MY_Model{
 
-    private $key = 'rep_id';
-    private $table  = 'fyf_reply';
+    private $key = 'black_id';
+    private $table  = 'fyf_black';
 
     function __construct()
     {

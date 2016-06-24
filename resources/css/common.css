@@ -1034,6 +1034,7 @@ body.login{
 .section-middle .main-content{
     width:100%;
     clear:both;
+    font-size:14px;
 }
 .section-middle .loading{
     width:268px;

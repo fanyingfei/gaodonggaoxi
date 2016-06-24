@@ -1,9 +1,9 @@
 <?php
 
-class Model_nav extends MY_Model{
+class Reply_model extends MY_Model{
 
-    private $key = 'nav_id';
-    private $table  = 'fyf_nav';
+    private $key = 'rep_id';
+    private $table  = 'fyf_reply';
 
     function __construct()
     {

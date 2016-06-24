@@ -36,15 +36,6 @@ class Admin extends MY_Controller  {
         $type_name[0]  = '评论';
         $this->type_name = $type_name;
         $this->type_detail = array_column($nav_list,'is_detail','type');
-        $this->load->model('Model_content');
-        $this->load->model('Model_article');
-        $this->load->model('Model_black');
-        $this->load->model('Model_users');
-        $this->load->model('Model_reply');
-        $this->load->model('Model_access');
-        $this->load->model('Model_record');
-        $this->load->model('Model_nav');
-        $this->load->model('Model_permission');
     }
 
     public function index(){
@@ -65,7 +56,7 @@ class Admin extends MY_Controller  {
 
     public function main_list($name , $str=''){
         $where = $order_by = '';
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $function = $name.'_list';
         $params = deal_str_param($str);
         $p = empty($params['offset']) ? 0 : $params['offset']/10;
@@ -102,7 +93,7 @@ class Admin extends MY_Controller  {
 
     public function delete($name){
         $this->check_permission($name.'_delete');
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $ids = explode(',',$_REQUEST['ids']);
         $res = $this->$table_name->delete($ids);
         if($res){
@@ -114,7 +105,7 @@ class Admin extends MY_Controller  {
 
     public function pass($name){
         $this->check_permission($name.'_pass');
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $ids = trim($_REQUEST['ids']);
         $where = 'where con_id in ('.$ids.')';
         $res = $this->$table_name->UpdateBySql($where,'status',$this->status_pass);
@@ -127,7 +118,7 @@ class Admin extends MY_Controller  {
 
     public function fail($name){
         $this->check_permission($name.'_fail');
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $ids = $_REQUEST['ids'];
         $where = 'where con_id in ('.$ids.')';
         $res = $this->$table_name->UpdateBySql($where,'status',$this->status_fail);
@@ -140,7 +131,7 @@ class Admin extends MY_Controller  {
 
     public function update_row($name){
         $this->check_permission($name.'_edit');
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $con_id = intval($_REQUEST['con_id']);
         $data['type'] = intval($_REQUEST['type']);
         $data['status'] = intval($_REQUEST['status']);
@@ -209,7 +200,7 @@ class Admin extends MY_Controller  {
         $this->check_permission('user_add_admin');
         $ids = trim($_REQUEST['ids']);
         $where = "where user_id in ($ids)";
-        $res = $this->model_users->UpdateBySql($where , 'is_admin', 1);
+        $res = $this->users_model->UpdateBySql($where , 'is_admin', 1);
         if($res){
             splash('success','删除成功');
         }else{
@@ -221,7 +212,7 @@ class Admin extends MY_Controller  {
         $this->check_permission('user_remove_admin');
         $ids = trim($_REQUEST['ids']);
         $where = "where user_id in ($ids)";
-        $res = $this->model_users->UpdateBySql($where , 'is_admin', 0);
+        $res = $this->users_model->UpdateBySql($where , 'is_admin', 0);
         if($res){
             splash('success','移除管理员成功');
         }else{
@@ -232,12 +223,12 @@ class Admin extends MY_Controller  {
     public function user_permission(){
         $user_id = intval($_REQUEST['user_id']);
         if(empty($user_id)) splash('error','参数有误');
-        $user_res = $this->model_users->GetRow("where user_id = $user_id",'permission');
+        $user_res = $this->users_model->GetRow("where user_id = $user_id",'permission');
         if(empty($user_res)) splash('error','没有记录');
         $permission = explode(',',$user_res['permission']);
 
         $data = array();
-        $per_list = $this->model_permission->GetAll();
+        $per_list = $this->permission_model->GetAll();
         foreach($per_list as $v){
             $v['check'] = 0;
             if(in_array($v['value'],$permission)) $v['check'] = 1;
@@ -252,7 +243,7 @@ class Admin extends MY_Controller  {
         if(empty($user_id)) splash('error','参数有误');
         $priv_str = trim($_REQUEST['str']);
 
-        $res = $this->model_users->UpdateByKey($user_id,array('permission'=>$priv_str));
+        $res = $this->users_model->UpdateByKey($user_id,array('permission'=>$priv_str));
         if($res){
             $_SESSION['permission'] = $priv_str;
             splash('error','修改成功');
@@ -287,18 +278,18 @@ class Admin extends MY_Controller  {
         $this->check_permission('reply_delete');
         $ids = trim($_REQUEST['ids']);
         $where = 'where rep_id in ('.$ids.')';
-        $data = $this->model_reply->GetAll($where);
+        $data = $this->reply_model->GetAll($where);
         if(empty($data))  splash('error','数据为空,请重试');
         $detail_res = $this->type_detail;
         foreach($data as $v){
             if(empty($detail_res[$v['type']])){
-                $this->model_content->UpdateNum($v['con_id'] ,'reply',  '-1');
+                $this->content_model->UpdateNum($v['con_id'] ,'reply',  '-1');
             }else{
-                $this->model_article->UpdateNum($v['con_id'] ,'reply', '-1');
+                $this->article_model->UpdateNum($v['con_id'] ,'reply', '-1');
             }
         }
         $ids = explode(',',$ids);
-        $res = $this->model_reply->Delete($ids);
+        $res = $this->reply_model->Delete($ids);
         if($res){
             splash('success','删除成功');
         }else{
@@ -316,7 +307,7 @@ class Admin extends MY_Controller  {
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                if(!empty($v['ip_address'])) $this->model_record->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
+                if(!empty($v['ip_address'])) $this->record_model->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
             }
             $v['type'] = $this->type_name[$v['type']];
         }
@@ -333,7 +324,7 @@ class Admin extends MY_Controller  {
         foreach($list as &$v){
             if(empty($v['ip_address'])){
                 $v['ip_address'] = get_ip_local($v['ip']);
-                if(!empty($v['ip_address'])) $this->model_access->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
+                if(!empty($v['ip_address'])) $this->access_model->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
             }
         }
         return $list;
@@ -356,7 +347,7 @@ class Admin extends MY_Controller  {
 
     public function get_row($name){
         if(empty($name)) splash('error','参数有误');
-        $table_name = 'Model_'.$name;
+        $table_name = $name.'_model';
         $id = intval($_REQUEST['id']);
         if(empty($id)) splash('error','参数有误');
         $res  = $this->$table_name->GetRowByKey($id);
@@ -374,7 +365,7 @@ class Admin extends MY_Controller  {
         $data['is_view'] = empty($_REQUEST['is_view']) ? 0 : trim($_REQUEST['is_view']);
         $data['keywords'] = empty($_REQUEST['keywords']) ? '' : trim($_REQUEST['keywords']);
         $data['description'] = empty($_REQUEST['description']) ? '' : trim($_REQUEST['description']);
-        $res  = $this->model_nav->UpdateByKey($nav_id,$data);
+        $res  = $this->nav_model->UpdateByKey($nav_id,$data);
         @file_put_contents(NAV_FILE , '');
         if($res) splash('success','修改成功');
         splash('error','修改失败,请重试');
