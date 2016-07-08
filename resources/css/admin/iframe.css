@@ -49,6 +49,18 @@ body,td,td,div,input,select button{
 .container{
     margin-left:0px;
 }
+.chart-row{
+    margin-bottom: 10px;
+}
+.chart-label{
+    padding: 10px;
+}
+.chart-content{
+    background: rgba(220,220,220,1);
+}
+.chart-article{
+    background: rgba(151,187,205,1);
+}
 .modal-body{
     padding:20px 0;
     overflow:auto;

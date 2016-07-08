@@ -29,7 +29,7 @@ button{
 }
 body,
 .main{
-    background-color: #fafafa;
+  /*  background-color: #fafafa;*/
 }
 body.login{
     background-color: #fff;
@@ -74,7 +74,7 @@ body.login{
     clear:both;
     z-index: 9999;
     box-shadow: 0 0 2px 0px #666;
-    background-color: #fff;
+    background-color: #fbfbfb;
     border-top: 2px solid #fa7d3c;
     height: 48px;
 }
@@ -1002,7 +1002,7 @@ body.login{
     color:#b5b5b5;
     float:right;
 }
-.section-middle .sina-show {
+.body-content .section-middle .sina-show {
     max-height: 600px;
 }
 .peripheral img{
@@ -1441,7 +1441,6 @@ body.login{
     }
     .main-left{
         float:left;
-        border-radius: 2px;
         padding:0 20px;
         border: solid 1px #dedede;
         min-height: 100px;
@@ -1460,7 +1459,6 @@ body.login{
         min-height:50px;
     }
     .right-wrapper{
-        border-radius: 2px;
         border:1px solid #dedede;
         margin-bottom: 20px;
         background-color: #fff;

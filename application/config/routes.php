@@ -122,6 +122,10 @@ $route['admin/black'] = "admin/admin/black";
 $route['admin/record'] = "admin/admin/record";
 $route['admin/nav'] = "admin/admin/nav";
 $route['admin/access'] = "admin/admin/access";
+$route['admin/count_content'] = "admin/admin/count_content";
+$route['admin/count_access'] = "admin/admin/count_access";
+$route['admin/count_content_data'] = "admin/admin/count_content_data";
+$route['admin/count_access_data'] = "admin/admin/count_access_data";
 //得到列表
 $route['admin/list/(:any)?(:any)'] = "admin/admin/main_list/$1/$2";
 $route['admin/list/(:any)'] = "admin/admin/main_list/$1";

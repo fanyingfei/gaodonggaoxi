@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/date/css/pikaday.css">
+<link rel="stylesheet" href="/resources/css/admin/iframe.css">
+<div class="container">
+    <div class="table-toolbar">
+        <span>开始时间：</span>
+        <div class="form-group">
+            <input id="start_time" class="form-control" type="text" value="{$start_time}">
+        </div>
+        <span>结束时间：</span>
+        <div class="form-group">
+            <input id="end_time" class="form-control" type="text" value="{$end_time}">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-search">search</button>
+        </div>
+    </div>
+    <div class="table-toolbar chart-row">
+        <span class="chart-label chart-article"></span><span>UV</span>
+        <span class="chart-label chart-content"></span><span>PV</span>
+    </div>
+    <div>
+        <canvas id="my-chart"></canvas>
+    </div>
+</div>
+{literal}
+<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/admin/admin.js"></script>
+<script src="/resources/js/admin/chart.js"></script>
+<script src="/resources/date/js/pikaday.min.js"></script>
+<script>
+    var date = new Date;
+    var year = date.getFullYear();
+
+    var picker1 = new Pikaday(
+            {
+                field: document.getElementById('start_time'),
+                firstDay: 1,
+                minDate: new Date('2015-01-01'),
+                maxDate: new Date(year +'-12-31'),
+                yearRange: [2015,year]
+            });
+    var picker2 = new Pikaday(
+            {
+                field: document.getElementById('end_time'),
+                firstDay: 1,
+                minDate: new Date('2015-01-01'),
+                maxDate: new Date(year +'-12-31'),
+                yearRange: [2015,year]
+            });
+
+
+    function lineChart(result) {
+        var labels_arr = [];
+        var data_uv = [];
+        var data_pv = [];
+        for (k in result) {
+            labels_arr.push(k);
+            data_uv.push(result[k].uv);
+            data_pv.push(result[k].pv);
+        }
+
+        var data = {
+            labels: labels_arr,
+            datasets: [
+                {
+                    label: "",
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    pointColor : "rgba(151,187,205,1)",
+                    pointStrokeColor : "#fff",
+                    data:data_uv
+                },
+                {
+                    label: "",
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#fff",
+                    data:data_pv
+                }
+            ]
+        };
+        var ctx = document.getElementById('my-chart').getContext("2d");
+        window.myLine = new Chart(ctx).Bar(data, { responsive: true });
+    }
+
+    $("body").on("click", '.btn-search', function(){
+        init_data();
+    })
+
+    function init_data(){
+        var start_time = $('#start_time').val();
+        var end_time = $('#end_time').val();
+        var cfg = {};
+        cfg.requestUrl = '/admin/count_access_data';
+        cfg.success = function(result){
+            if (window.myLine) window.myLine.destroy();
+            lineChart(result);
+        }
+        cfg.data = {"start":start_time,"end":end_time};
+        admin_ajax_res(cfg);
+    }
+    init_data();
+</script>
+{/literal}

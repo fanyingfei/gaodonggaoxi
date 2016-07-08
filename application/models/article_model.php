@@ -22,6 +22,12 @@ class Article_model extends MY_Model{
         return $this->db->query($sql)->result_array();
     }
 
+    public function GetGroupByDate($start_time,$end_time){
+        $sql = "select count(".$this->key.") as num , DATE_FORMAT(create_time,'%Y-%m-%d') as time from " . $this->table.
+            " where create_time >= '$start_time' and create_time <= '$end_time' group by time";
+        return $this->db->query($sql)->result_array();
+    }
+
 }
 ?>
 

@@ -98,7 +98,7 @@ class MY_controller extends CI_Controller {
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
         $url = str_replace('/index.php?s=/','',$url);
         $url = str_replace('/index.php?','',$url);
-        if(strpos($url,'reply') !== false) return false;
+        if(strpos($url,'reply') !== false || strpos($url,'good') !== false || strpos($url,'bad') !== false) return false;
         if(empty($url) || $url == '?') $url = 'shou';
         $data = array('url'=>$url,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
         $this->access_model->save($data);
