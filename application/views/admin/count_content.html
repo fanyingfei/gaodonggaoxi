@@ -18,6 +18,9 @@
     <div class="table-toolbar chart-row">
         <span class="chart-label chart-content"></span><span>content</span>
         <span class="chart-label chart-article"></span><span>article</span>
+        <span class="change-chart" data-type="bar">柱状图</span>
+        <span class="change-chart cur-chart" data-type="line">条形图</span>
+        <span class="chart-name">chart / </span>
     </div>
     <div>
         <canvas id="my-chart"></canvas>
@@ -29,28 +32,7 @@
 <script src="/resources/js/admin/chart.js"></script>
 <script src="/resources/date/js/pikaday.min.js"></script>
 <script>
-    var date = new Date;
-    var year = date.getFullYear();
-
-    var picker1 = new Pikaday(
-            {
-                field: document.getElementById('start_time'),
-                firstDay: 1,
-                minDate: new Date('2015-01-01'),
-                maxDate: new Date(year +'-12-31'),
-                yearRange: [2015,year]
-            });
-    var picker2 = new Pikaday(
-            {
-                field: document.getElementById('end_time'),
-                firstDay: 1,
-                minDate: new Date('2015-01-01'),
-                maxDate: new Date(year +'-12-31'),
-                yearRange: [2015,year]
-            });
-
-
-    function lineChart(result) {
+    function myChart(result) {
         var labels_arr = [];
         var data_content = [];
         var data_article = [];
@@ -82,7 +64,11 @@
             ]
         };
         var ctx = document.getElementById('my-chart').getContext("2d");
-        window.myLine = new Chart(ctx).Line(data, { responsive: true });
+        if($('.cur-chart').length > 0 && $('.cur-chart').attr('data-type') == 'bar'){
+            window.myLine = new Chart(ctx).Bar(data, { responsive: true });
+        }else{
+            window.myLine = new Chart(ctx).Line(data, { responsive: true });
+        }
     }
 
     $("body").on("click", '.btn-search', function(){
@@ -96,11 +82,17 @@
         cfg.requestUrl = '/admin/count_content_data';
         cfg.success = function(result){
             if (window.myLine) window.myLine.destroy();
-            lineChart(result);
+            myChart(result);
         }
         cfg.data = {"start":start_time,"end":end_time};
         admin_ajax_res(cfg);
     }
+
     init_data();
+
+    $("body").on("click", '.change-chart', function(){
+        $(this).addClass('cur-chart').siblings().removeClass('cur-chart');
+        init_data();
+    })
 </script>
 {/literal}

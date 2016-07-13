@@ -440,6 +440,7 @@ body.login{
 }
 .reply-section {
     border-bottom: 1px solid #ccc;
+    padding-left:70px;
 }
 .reply-right p {
     width: 100%;
@@ -467,9 +468,9 @@ body.login{
     box-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     float: left;
     position: relative;
-    margin-right: 10px;
     margin-top: 3px;
     text-align: left;
+    margin-left:-60px;
 }
 .reply-avatar img {
     border-radius: 3px;
@@ -480,10 +481,10 @@ body.login{
     width: 50px;
 }
 .reply-right{
-    float:left;
+    float:right;
     overflow: hidden;
-    width: 515px;
     margin: 2px 0;
+    width:100%;
 }
 .reply-bottom{
     padding:2px 0;
@@ -539,12 +540,16 @@ body.login{
     padding: 10px;
     cursor: pointer;
 }
+.edit-wrapper{
+    padding-left:60px;
+}
 .textarea-wrapper {
     border-radius: 3px;
     border: 1px solid #ccc;
     height: 99px;
     border-bottom: 0;
-    float:left;
+    float:right;
+    width:100%;
 }
 .textarea-wrapper .edit-p {
     border: 0 none;
@@ -552,7 +557,6 @@ body.login{
     height: 60px;
     padding: 5px 10px;
     resize: none;
-    width: 495px;
     word-break: break-all;
     word-wrap: break-word;
     margin: 0;
@@ -1002,6 +1006,7 @@ body.login{
     color:#b5b5b5;
     float:right;
 }
+.body-member .section-middle .sina-show,
 .body-content .section-middle .sina-show {
     max-height: 600px;
 }
@@ -1226,10 +1231,23 @@ body.login{
     display: none;
     cursor: pointer;
     opacity: 0.6;
+    border-radius: 4px;
     background: url(/resources/images/png/gobacktop.png) no-repeat;
+    -webkit-transition: -webkit-transform 1s,opacity 1s,background 1s,width 1s,height 1s,font-size 1s;
+    -webkit-border-radius: 5px;
+    -o-transition-property: width,height,-o-transform,background,font-size,opacity;
+    -o-transition-duration: 1s,1s,1s,1s,1s,1s;
+    -moz-transition-property: width,height,-o-transform,background,font-size,opacity;
+    -moz-transition-duration: 1s,1s,1s,1s,1s,1s;
+    transition-property: width,height,transform,background,font-size,opacity;
+    transition-duration: 1s,1s,1s,1s,1s,1s;
 }
 #top:hover {
-    background-color: #6c6c6c;
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+    opacity: 0.8;
 }
 /*footer结束*/
 
@@ -1502,9 +1520,6 @@ body.login{
     }
     .row-left{
         width:100%;
-    }
-    .reply-right{
-        width:auto;
     }
     .user-center .user-info-right {
         width: auto;

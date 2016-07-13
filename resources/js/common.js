@@ -525,7 +525,6 @@ $(document).ready(function(){
             html += '<div class="reply-title">评论</div>';
             $.each(result.data.list, function(k, v){
                 html += '<div class="reply-section rep-id-'+v.rep_id+'">';
-                html += '<div class="reply-avatar"><img src="'+v.avatar+'" onerror="reply_avatar(this)" /></div>';
                 html += '<div class="reply-right">';
                 html += '<div class="reply-right-top"><div  class="reply-user-name">'+v.name+'</div>';
                 if(v.parent_id != 0 && v.parent_name != '' && v.reply_content != ''){
@@ -542,6 +541,7 @@ $(document).ready(function(){
                 html += '<a class="xx" data-id="'+v.rep_id+'">XX</a>[<span class="bad">'+v.bad+'</span>]';
                 html += '<span class="response"></span>';
                 html += '</p></div>';
+                html += '<div class="reply-avatar"><img src="'+v.avatar+'" onerror="reply_avatar(this)" /></div>';
                 html += '</div>';
             });
         }else{
@@ -551,11 +551,10 @@ $(document).ready(function(){
         if(result.data.is_login == 1){
             html += '<div class="reply-comment">';
             html += '<p><span>'+result.data.name+'</span><span class="qq-face"></span></p>';
-            html += '<div class="reply-avatar"><img src="'+result.data.avatar+'" /></div>';
-            html += '<div class="textarea-wrapper">';
+            html += '<div class="edit-wrapper"><div class="textarea-wrapper">';
             html += '<p class="edit-p" contenteditable="true"></p>';
             html += '<p class="post-toolbar"><button data-id="'+result.data.con_id+'" class="reply-submit ds-post-button">发布</button></p>';
-            html += '</div></div><p class="close-reply">[X]关闭评论</p></div>';
+            html += '</div><div class="reply-avatar"><img src="'+result.data.avatar+'" /></div></div></div><p class="close-reply">[X]关闭评论</p></div>';
         }else{
             html += '<div class="reply-no-login">';
             html += '<span onclick="login()">&nbsp;登录&nbsp;</span>后才能评论';

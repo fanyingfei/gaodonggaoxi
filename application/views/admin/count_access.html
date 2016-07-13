@@ -15,42 +15,18 @@
             <button class="btn btn-search">search</button>
         </div>
     </div>
-    <div class="table-toolbar chart-row">
-        <span class="chart-label chart-article"></span><span>UV</span>
-        <span class="chart-label chart-content"></span><span>PV</span>
-    </div>
+    <div class="table-toolbar"><br></div>
     <div>
-        <canvas id="my-chart"></canvas>
+        <div class="echarts" id="my-echarts" style="height:540px"></div>
     </div>
 </div>
 {literal}
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/admin/admin.js"></script>
-<script src="/resources/js/admin/chart.js"></script>
 <script src="/resources/date/js/pikaday.min.js"></script>
+<script src="/resources/js/admin/echarts.js"></script>
 <script>
-    var date = new Date;
-    var year = date.getFullYear();
-
-    var picker1 = new Pikaday(
-            {
-                field: document.getElementById('start_time'),
-                firstDay: 1,
-                minDate: new Date('2015-01-01'),
-                maxDate: new Date(year +'-12-31'),
-                yearRange: [2015,year]
-            });
-    var picker2 = new Pikaday(
-            {
-                field: document.getElementById('end_time'),
-                firstDay: 1,
-                minDate: new Date('2015-01-01'),
-                maxDate: new Date(year +'-12-31'),
-                yearRange: [2015,year]
-            });
-
-
-    function lineChart(result) {
+    function myEcharts(result) {
         var labels_arr = [];
         var data_uv = [];
         var data_pv = [];
@@ -60,29 +36,80 @@
             data_pv.push(result[k].pv);
         }
 
-        var data = {
-            labels: labels_arr,
-            datasets: [
-                {
-                    label: "",
-                    fillColor : "rgba(151,187,205,0.5)",
-                    strokeColor : "rgba(151,187,205,1)",
-                    pointColor : "rgba(151,187,205,1)",
-                    pointStrokeColor : "#fff",
-                    data:data_uv
-                },
-                {
-                    label: "",
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    data:data_pv
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: '/resources/js/admin'
+            }
+        });
+
+        // 使用
+        require(
+                [
+                    'echarts',
+                    'echarts/chart/line',
+                    'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('my-echarts'));
+
+                    var option = {
+                        title : {
+                            text: 'echarts图表统计',
+                            subtext: ''
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['PV','UV']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: false},
+                                dataView : {show: false, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: false},
+                                saveAsImage : {show: false}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                boundaryGap : false,
+                                data : labels_arr
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'UV',
+                                type:'line',
+                                smooth:true,
+                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                                data:data_uv
+                            },
+                            {
+                                name:'PV',
+                                type:'line',
+                                smooth:true,
+                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                                data:data_pv
+                            }
+                        ]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
                 }
-            ]
-        };
-        var ctx = document.getElementById('my-chart').getContext("2d");
-        window.myLine = new Chart(ctx).Bar(data, { responsive: true });
+        );
     }
 
     $("body").on("click", '.btn-search', function(){
@@ -96,7 +123,7 @@
         cfg.requestUrl = '/admin/count_access_data';
         cfg.success = function(result){
             if (window.myLine) window.myLine.destroy();
-            lineChart(result);
+            myEcharts(result);
         }
         cfg.data = {"start":start_time,"end":end_time};
         admin_ajax_res(cfg);
