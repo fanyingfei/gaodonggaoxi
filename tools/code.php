@@ -1,5 +1,11 @@
 <?php
-session_start();
+
+require_once './define.php';
+
+if(!isset($_SESSION)){
+    session_name(SESS_NAME);
+    session_start();
+}
 //随机生成的字符串
 $_SESSION["code"] = $str=random(4);
 $width = 60; //验证码图片的宽度
