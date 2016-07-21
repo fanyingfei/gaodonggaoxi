@@ -6,6 +6,8 @@ class MY_controller extends CI_Controller {
         parent::__construct();
         $this->set_init();
         $ip = get_real_ip();
+        $black_str = @file_get_contents(ROOT_PATH. '/tools/black.php');
+        if(strpos($black_str,$ip.',') !== false) splash('error','The IP is prohibited to access !');
         $ip_list = array( '127.0.0.1','101.245.183.255','116.228.159.142');
         if(!in_array($ip, $ip_list)){
             $this->check_access();
@@ -148,10 +150,6 @@ class MY_controller extends CI_Controller {
     public function check_access(){
         $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         if(strpos($url , 'admin') !== false) return false;
-
-        $ip = get_real_ip();
-        $black_str = @file_get_contents(ROOT_PATH. '/tools/black.php');
-        if(strpos($black_str,$ip.',') !== false) splash('error','The IP is prohibited to access !');
 
         if(!empty($_SESSION['access_time'])){
             if(time() - $_SESSION['access_time'] < ACCESS_TIME_LIMIT){
