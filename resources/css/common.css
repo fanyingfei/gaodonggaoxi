@@ -66,6 +66,10 @@ body.login{
 .valid_email{
     cursor: pointer;
 }
+.recommend-fixed{
+    position: fixed;
+    top:60px;
+}
 /*通用结束*/
 
 /*header*/
@@ -679,6 +683,7 @@ body.login{
 .facebox{
     position: absolute;
     display: none;
+    z-index: 999;
 }
 .facebox .qq-bg{
     border: 1px solid #aaa;
@@ -1432,6 +1437,7 @@ body.login{
 @media screen and (min-width: 661px) {
     .body-content  .nav ,
     .body-article .nav,
+    .body-detail .nav,
     .body-member .nav{
         position: fixed;
 		opacity:0.96;
@@ -1441,6 +1447,10 @@ body.login{
     .body-article .subnav-wrapper ,
     .body-member .subnav-wrapper{
        margin-top:80px;
+    }
+
+    .body-detail .main-detail{
+        margin-top:60px;
     }
     .nav-container{
         width:960px;
@@ -1480,13 +1490,26 @@ body.login{
         border:1px solid #dedede;
         margin-bottom: 20px;
         background-color: #fff;
-        padding:10px 20px;
+        padding:10px 14px;
+    }
+    .recommend{
+        padding-top:20px;
+        width: 272px;
+    }
+    .recommend p{
+        margin-bottom: 8px;
+    }
+    .recommend p .no{
+        color:#aaa;
+    }
+    .recommend p .title{
+        color:#444;
     }
     /*main-right结束*/
 }
-/*手机端结束*/
+/*PC端结束*/
 
-/*PC端*/
+/*手机端*/
 @media screen and (max-width: 660px) {
     .main-right,
     .nav-container .login-item,

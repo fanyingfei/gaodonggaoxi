@@ -130,6 +130,7 @@ class Content extends MY_Controller  {
             $v['create_time'] = change_time($v['create_time']);
         }
 
+
         $this->assign('list',$list);
         $this->assign('count',$count);
         $this->assign('page',$page);
@@ -151,6 +152,7 @@ class Content extends MY_Controller  {
             $detail['avatar'] = $user_res['avatar'];
             $detail['user_sn'] = get_user_sn($detail['user_id'] , $user_res['create_time']);
         }
+
         $this->assign('one',$detail);
         $this->assign('type',$detail['type']);
         $this->assign('body','body-single');
@@ -175,6 +177,7 @@ class Content extends MY_Controller  {
         //   $detail['content'] = strip_tags($detail['content'],'<img><br>');
         $detail['create_time'] = substr($detail['create_time'] , 0 , 10);
         $description = mb_substr(str_replace(array('"','\'',' '),'',strip_tags($detail['content'])), 0, 100, 'gbk');
+
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
         $this->assign('title',$detail['title'].'－搞东搞西');

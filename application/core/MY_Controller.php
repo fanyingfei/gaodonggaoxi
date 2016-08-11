@@ -22,6 +22,7 @@ class MY_controller extends CI_Controller {
 
     public function display($html,$header='header.html',$footer='footer.html',$right= 'right.html')
     {
+        $this->get_right_data();
         if(empty($header)) $header = 'header.html';
         if(empty($footer))   $footer = 'footer.html';
         $this->ci_smarty->display('main/'.$header);
@@ -173,6 +174,7 @@ class MY_controller extends CI_Controller {
             session_name(SESS_NAME);
             session_start();
         }
+    //    $this->output->cache(60);
         $is_login = is_login() ? 1 : 0;
         $name = empty($_COOKIE['name']) ? '' : $_COOKIE['name'] ; //没登陆也有，用COOLIE
         $email = empty($_COOKIE['email']) ? '' : $_COOKIE['email'] ; //没登陆也有，用COOLIE
@@ -191,16 +193,15 @@ class MY_controller extends CI_Controller {
         $this->ci_smarty->assign('search',$search);
         $this->ci_smarty->assign('is_login',$is_login);
         $this->ci_smarty->assign('is_admin',$is_admin);
+    }
 
-        $this->load->model('content_model');
-        $this->load->model('article_model');
-        $this->load->model('black_model');
-        $this->load->model('users_model');
-        $this->load->model('reply_model');
-        $this->load->model('access_model');
-        $this->load->model('record_model');
-        $this->load->model('nav_model');
-        $this->load->model('permission_model');
+    public function get_right_data(){
+        $sort = 'scan desc';
+        $list  = $this->article_model->GetAll('', $sort ,0,10);
+        foreach($list as &$v){
+            $v['detail_url'] = get_detail_url($v['con_id'],$v['create_time']);
+        }
+        $this->assign('recommend',$list);
     }
 
 }

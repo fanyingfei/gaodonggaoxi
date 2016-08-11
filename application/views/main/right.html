@@ -1,6 +1,9 @@
 <div class="main-right">
-    <div class="right-wrapper">
-        <p>欢迎光临！</p>
-        <p>请按"CTRL+D"收藏网址</p>
+    <div class="right-wrapper recommend">
+        {foreach from=$recommend key=key item=one}
+        <p>
+            <scan class="no">{$key+1}.</scan>
+            <a class="title" target="_blank" href="{$one.detail_url}">{$one.title}</a>
+        {/foreach}
     </div>
 </div>

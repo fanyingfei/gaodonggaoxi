@@ -198,6 +198,14 @@ function body_init(){
     }else{
         if($('.footer').hasClass('footer-bottom')) $('.footer').removeClass('footer-bottom');
     }
+
+    var scroll_height = $(document).scrollTop();
+    var right_height = $('.main-right').offset().top;
+    if(scroll_height > right_height){
+        $('.recommend').addClass('recommend-fixed');
+    }else{
+        if($('.recommend').hasClass('recommend-fixed')) $('.recommend').removeClass('recommend-fixed');
+    }
 }
 window.onload=function(){
     body_init();

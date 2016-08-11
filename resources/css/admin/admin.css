@@ -4,6 +4,7 @@ html,body{
     height: 100%;
     font-family: 'Microsoft YaHei','Arial';
     min-width:1400px;
+    overflow-x: hidden;
 }
 a{
     text-decoration: none;
@@ -16,7 +17,7 @@ a{
     background-color: #e5e5e5;
 }
 .main{
-    float:left;
+    margin-left:150px;
     height: 100%;
     width:100%;
 }
@@ -44,8 +45,8 @@ a{
     background: #f2f2f2 none repeat scroll 0 0;
     border-right: 1px solid #ccc;
     float: left;
-    min-width: 148px;
-    width:12%;
+    margin-left:-150px;
+    width:140px;
 }
 .sidebar-title {
     font-size: 18px;
@@ -95,8 +96,8 @@ ul, ol {
 .right-iframe{
     height: 100%;
     text-align: left;
-    float:left;
-    width: 85%;
+    float:right;
+    width: 100%;
 }
 .logout{
     float:right;
