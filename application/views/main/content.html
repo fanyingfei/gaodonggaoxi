@@ -28,7 +28,7 @@
                 </div>
                 <div class="section-middle">
                     <div class="main-content">{$one.content}</div>
-                    {if $one.type==1 || $one.type==5}<img class="loading" src="/resources/images/png/loading.png" />{/if}
+                    {if ($one.type==1 || $one.type==5) && strpos($one.content , 'img')}<img class="loading" src="/resources/images/png/loading.png" />{/if}
                 </div>
                 <div class="section-bottom oo-xx">
                     <span class="response"></span>

@@ -380,10 +380,10 @@ function post_fsockopen($url = '', $post = array() , $method = 'POST', $header =
     } else {
         $crlf = "\r\n";
         $commonHeader = $method == 'PROXY' ? array() : array(
-            'Host' => $host
-        ,'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; rv:16.0) Gecko/20100101 Firefox/16.0'
-        ,'Content-Type' => 'POST' == $method ? 'application/x-www-form-urlencoded' : 'text/html; charsert=UTF-8'
-        ,'Connection' => 'Close'
+            'Host' => $host,
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; rv:16.0) Gecko/20100101 Firefox/16.0',
+            'Content-Type' => 'POST' == $method ? 'application/x-www-form-urlencoded' : 'text/html; charsert=UTF-8',
+            'Connection' => 'Close'
         );
         is_array($header) and ($commonHeader = array_merge($commonHeader, $header));
 

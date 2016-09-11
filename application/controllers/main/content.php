@@ -130,6 +130,7 @@ class Content extends MY_Controller  {
             $v['create_time'] = change_time($v['create_time']);
         }
 
+        parent::get_right_data();
 
         $this->assign('list',$list);
         $this->assign('count',$count);

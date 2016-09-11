@@ -972,6 +972,7 @@ body.login{
     padding:10px 0;
     color:#252525;
     line-height: 24px;
+    font-size: 14px;
 }
 .peripheral{
     margin-top:4px;
@@ -1327,6 +1328,8 @@ body.login{
 }
 .user-center .person-info {
     margin-top: 20px;
+    overflow:auto;
+    padding-bottom:20px;
 }
 .user-center .person-info .div-wrapper {
     overflow: auto;
@@ -1339,6 +1342,11 @@ body.login{
     height: 40px;
     border-radius: 4px;
     margin-right: 15px;
+}
+#show-avatar{
+    margin-top:10px;
+    width: 60px;
+    height: 60px;
 }
 .person-info .name-email {
     float: left;
