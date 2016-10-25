@@ -1575,5 +1575,17 @@ body.login{
     .c-subbutton{
         width:60px;
     }
+    .ke-dialog-default{
+        width:98% !important;
+        margin-left:1% !important;
+        margin-right:1% !important;
+        left:0 !important;
+    }
+    .ke-dialog-image .ke-input-text {
+        width: 97% !important;
+    }
+    .reply-comment .qq-face{
+        display: none !important;
+    }
 }
 /*手机端结束*/

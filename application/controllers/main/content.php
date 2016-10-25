@@ -157,7 +157,7 @@ class Content extends MY_Controller  {
         $this->assign('one',$detail);
         $this->assign('type',$detail['type']);
         $this->assign('body','body-single');
-        $this->assign('title','搞东搞西－搞搞东西');
+        $this->assign('title','搞东搞西_搞搞东西');
         $this->assign('menu','搞笑－开开心心每一天');
         $this->assign('keywords','闲话,无聊,段子,轻松,内涵段子,神回复,冷笑话,趣事,糗事,成人笑话,GIF图');
         $this->assign('description','搞东搞西搞笑专区，快乐每一天，爆笑笑不停');
@@ -181,7 +181,7 @@ class Content extends MY_Controller  {
 
         $this->assign('data',$detail);
         $this->assign('body','body-detail');
-        $this->assign('title',$detail['title'].'－搞东搞西');
+        $this->assign('title',$detail['title'].'_搞东搞西');
         $this->assign('keywords',$detail['tags'].' 搞东搞西');
         $this->assign('description',empty($description) ? $detail['title'] : $description);
 
@@ -338,7 +338,9 @@ class Content extends MY_Controller  {
             }else{
                 $body = 'body-article body-'.$nav;
             }
-            $title = $val['name'].'－搞东搞西';
+            $title = $val['name'].'_搞东搞西';
+            if($_SERVER['REQUEST_URI'] == '/') $title = '搞东搞西_搞搞东西';
+
             $description = $val['description'];
             $keywords = $val['keywords'];
             $tags = explode(',',$val['tags']);

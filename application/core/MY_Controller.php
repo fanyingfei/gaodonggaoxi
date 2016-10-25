@@ -99,8 +99,7 @@ class MY_controller extends CI_Controller {
         if(isCrawler()) return false;
         if(!empty($_SESSION['is_admin'])) return false;
         $url = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
-        $url = str_replace('/index.php?s=/','',$url);
-        $url = str_replace('/index.php?','',$url);
+        $url = trim(str_replace(array('/index.php?','/index.php?s=/','s=/'),'',$url),'&');
         if(strpos($url,'reply') !== false || strpos($url,'good') !== false || strpos($url,'bad') !== false) return false;
         if(empty($url) || $url == '?') $url = 'shou';
         $data = array('url'=>$url,'ip'=>$ip,'create_time'=>date('Y-m-d H:i:s'));
@@ -171,6 +170,7 @@ class MY_controller extends CI_Controller {
 
     public function set_init(){
         if(!isset($_SESSION)){
+            ini_alter("session.gc_maxlifetime", COOKIE_EXPIRE);
             session_name(SESS_NAME);
             session_start();
         }

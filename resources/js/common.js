@@ -201,7 +201,8 @@ function body_init(){
 
     var scroll_height = $(document).scrollTop();
     var right_height = $('.main-right').offset().top;
-    if(scroll_height > right_height){
+    var nav_height = $('.nav').height();
+    if(scroll_height > right_height - nav_height){
         $('.recommend').addClass('recommend-fixed');
     }else{
         if($('.recommend').hasClass('recommend-fixed')) $('.recommend').removeClass('recommend-fixed');
