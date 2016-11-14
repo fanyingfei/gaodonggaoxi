@@ -136,6 +136,7 @@ body,td,td,div,input,select button{
 #m-content,#m-description,#m-ip{
     max-width: 480px;
     min-width: 480px;
+    min-height: 200px;
 }
 i.glyphicon{
     font-family: "Microsoft YaHei","Arial";

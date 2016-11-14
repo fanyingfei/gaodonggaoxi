@@ -8,7 +8,7 @@ class MY_controller extends CI_Controller {
         $ip = get_real_ip();
         $black_str = @file_get_contents(ROOT_PATH. '/tools/black.php');
         if(strpos($black_str,$ip.',') !== false) splash('error','The IP is prohibited to access !');
-        $ip_list = array( '127.0.0.1','101.245.183.255','116.228.159.142','116.236.190.58');
+        $ip_list = array( '127.0.0.1','180.168.183.186','101.45.153.202','116.236.190.58');
         if(!in_array($ip, $ip_list)){
             $this->check_access();
             $this->save_access();

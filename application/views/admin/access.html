@@ -4,6 +4,7 @@
 <div class="container">
     <div class="table-toolbar">
         <button class="btn btn-op" id="remove" data-url="/admin/delete/access">Delete</button>
+        <button class="btn btn-default" id="select_text" data-target="#myModal" data-toggle="modal" data-url="/admin/delete/black">black</button>
         <span>IP：</span>
         <div class="form-group">
             <input type="text"  size="15" class="form-control" id="search_ip" >
@@ -33,6 +34,29 @@
         </tr>
         </thead>
     </table>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary btn-submit" data-dismiss="modal">提交更改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
 </div>
 {literal}
 <script src="/resources/js/jquery.js"></script>
@@ -45,6 +69,28 @@
         var filter = '?ip='+search_ip;
         $('#table').bootstrapTable('refresh', {url: '/admin/list/access'+filter});
         return false;
+    })
+
+    $("body").on("click", '#select_text', function(){
+        var cfg = {};
+        cfg.requestUrl = '/admin/black_text';
+        cfg.success = function(result){
+            var html = '<div  class="form-group"><label>文本内容：</label>';
+            html += '<textarea class="form-control" id="m-ip">'+result+'</textarea></div>';
+            $('#myModalLabel').html('被禁ip');
+            $('#myModal .modal-body').html(html);
+        };
+        cfg.data = {};
+        admin_ajax_res(cfg);
+    })
+
+    $("body").on("click", '.btn-submit', function(){
+        var content = $('#m-ip').val();
+        var cfg = {};
+        cfg.requestUrl = '/admin/black_update';
+        cfg.success = function(result){alert('修改成功');};
+        cfg.data = {"content":content};
+        admin_ajax_res(cfg);
     })
 </script>
 {/literal}

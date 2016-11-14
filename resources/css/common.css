@@ -527,7 +527,7 @@ body.login{
 .reply-to-user{
     cursor: pointer;
 }
-.reply-to-user:hover ~ .reply-reply-content {
+.reply-to-reply:hover  .reply-reply-content {
     display: block;
 }
 .reply-no-login {
@@ -1506,6 +1506,11 @@ body.login{
     }
     .recommend p{
         margin-bottom: 8px;
+        height: 20px;
+        overflow: hidden;
+    }
+    .recommend p:last-child{
+        margin-left:-7px;
     }
     .recommend p .no{
         color:#aaa;
