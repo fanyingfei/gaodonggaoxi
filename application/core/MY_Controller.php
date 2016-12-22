@@ -196,8 +196,7 @@ class MY_controller extends CI_Controller {
     }
 
     public function get_right_data(){
-        $sort = 'scan desc';
-        $list  = $this->article_model->GetAll('', $sort ,0,10);
+        $list  = $this->article_model->GetTopTen();
         foreach($list as &$v){
             $v['detail_url'] = get_detail_url($v['con_id'],$v['create_time']);
         }

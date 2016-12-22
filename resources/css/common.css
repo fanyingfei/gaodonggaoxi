@@ -70,6 +70,9 @@ body.login{
     position: fixed;
     top:60px;
 }
+.nav-ul li:last-child{
+    display: none !important;
+}
 /*通用结束*/
 
 /*header*/
