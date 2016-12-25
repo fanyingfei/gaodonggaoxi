@@ -40,9 +40,6 @@ body.login{
 .body-duan .ke-toolbar{
     display: none !important;
 }
-.login-third{
-
-}
 .a-markdown{
     color:#0077bb;
 }
@@ -71,6 +68,9 @@ body.login{
     top:60px;
 }
 .nav-ul li:last-child{
+    display: none !important;
+}
+.subnam-member li[data-type='7']{
     display: none !important;
 }
 /*通用结束*/
@@ -1118,7 +1118,6 @@ body.login{
     max-width: 500px;
     display: block;
     float: left;
-    margin-top: -2px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1534,7 +1533,7 @@ body.login{
     .nav .search,
     .nav-desc,
     .footer,
-    .nav-user,
+    .u-dropdown,
     .nav-edit,
     .row-right{
         display: none !important;
@@ -1557,11 +1556,24 @@ body.login{
         overflow: auto;
         clear:both;
     }
+    .subnav li{
+        padding:0 10px;
+    }
     .row-left{
         width:100%;
     }
     .user-center .user-info-right {
         width: auto;
+    }
+    .layout{
+        width:90%;
+        margin-left:5%;
+    }
+    .nav-user{
+        padding-top:14px;
+        padding-right: 5px;
+        position: absolute;
+        right: 0;
     }
     .person-center .main {
         margin-left:10px;
