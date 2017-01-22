@@ -1543,6 +1543,7 @@ body.login{
     }
     .nav{
         overflow: auto;
+        height:40px;
     }
     .nav .nav-ul{
         float:left;

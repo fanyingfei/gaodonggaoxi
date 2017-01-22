@@ -23,7 +23,7 @@ class Article_model extends MY_Model{
     }
 
     public function GetTopTen(){
-        $sql = 'select con_id,title,scan from ' .$this->table. ' where type in (4,6) order by scan desc limit 10';
+        $sql = 'select con_id,title,scan,create_time from ' .$this->table. ' where type in (4,6) order by scan desc limit 10';
         return $this->db->query($sql)->result_array();
     }
 
