@@ -331,7 +331,7 @@ if(!function_exists("array_column")){
 
 function get_ip_local($queryIP){
     $url = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip='.$queryIP;
-    $location = grab_curl($url);
+    $location = post_fsockopen($url);
     $location = json_decode($location);
 
     $loc = "";

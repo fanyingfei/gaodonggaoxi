@@ -309,7 +309,7 @@ class Admin extends MY_Controller  {
                 $v['ip_address'] = get_ip_local($v['ip']);
                 if(!empty($v['ip_address'])) $this->record_model->UpdateByKey($v['rec_id'] , array('ip_address'=>$v['ip_address']));
             }
-            $v['type'] = $this->type_name[$v['type']];
+            $v['type'] = empty($this->type_name[$v['type']]) ? '' : $this->type_name[$v['type']];
         }
         return $list;
     }
